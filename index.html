@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meteo Conte</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0f2338" />
+</head>
+<body>
+  <header>
+    <div>
+      <h1>🌩️ Meteo Conte</h1>
+      <p>Plancia rapida per Villanova di Bagnacavallo</p>
+    </div>
+    <button id="saveBtn">Salva</button>
+  </header>
+
+  <main>
+    <section class="card status">
+      <div>
+        <span class="label">Indice Conte</span>
+        <strong id="indice">0/10</strong>
+      </div>
+      <p id="verdetto">Compila i dati sotto per una valutazione pratica.</p>
+    </section>
+
+    <section class="grid links">
+      <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank">📡 Radar ER</a>
+      <a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank">⏱ Evoluzione +1/+2/+3h</a>
+      <a href="https://www.lightningmaps.org" target="_blank">⚡ Fulmini live</a>
+      <a href="https://allertameteo.regione.emilia-romagna.it" target="_blank">🚨 Allerte ufficiali</a>
+      <a href="https://radar.protezionecivile.it" target="_blank">🛰 Radar nazionale</a>
+      <a href="https://www.centrometeoemiliaromagna.com/nowcasting" target="_blank">🌦 CMER nowcasting</a>
+    </section>
+
+    <section class="card">
+      <h2>Valutazione manuale</h2>
+
+      <label>Direzione del nucleo</label>
+      <select id="direzione">
+        <option value="0">Nessun nucleo evidente</option>
+        <option value="1">Lontano / laterale</option>
+        <option value="2">Punta verso Romagna</option>
+        <option value="3">Punta verso Lugo-Ravenna</option>
+      </select>
+
+      <label>Colore radar più intenso vicino alla traiettoria</label>
+      <select id="radar">
+        <option value="0">Verde / blu</option>
+        <option value="1">Giallo</option>
+        <option value="2">Arancione</option>
+        <option value="3">Rosso / viola</option>
+      </select>
+
+      <label>Fulmini</label>
+      <select id="fulmini">
+        <option value="0">Assenti o pochi</option>
+        <option value="1">Presenti ma stabili</option>
+        <option value="2">In aumento</option>
+        <option value="3">Molti e ravvicinati</option>
+      </select>
+
+      <label>Vento percepito</label>
+      <select id="vento">
+        <option value="0">Calmo</option>
+        <option value="1">In rinforzo</option>
+        <option value="2">Raffiche evidenti</option>
+        <option value="3">Raffiche forti / aria fredda improvvisa</option>
+      </select>
+
+      <label>Segnali grandine</label>
+      <select id="grandine">
+        <option value="0">Nessun segnale</option>
+        <option value="1">Nuclei intensi ma lontani</option>
+        <option value="2">Nuclei rossi/viola in traiettoria</option>
+        <option value="3">Cella intensa + fulmini in aumento</option>
+      </select>
+    </section>
+
+    <section class="card">
+      <h2>Note evento</h2>
+      <textarea id="note" placeholder="Esempio: 23:45 lampi verso ovest, vento da nord, radar rosso su Bologna..."></textarea>
+    </section>
+
+    <section class="card lesson">
+      <h2>Come leggerla</h2>
+      <p><b>Radar:</b> guarda movimento e intensità, non solo il colore sopra casa tua.</p>
+      <p><b>Fulmini:</b> se aumentano nella stessa zona, la cella si sta rinforzando.</p>
+      <p><b>Vento:</b> raffiche e aria più fresca prima della pioggia indicano outflow in arrivo.</p>
+      <p><b>Grandine:</b> occhio a nuclei rosso/viola compatti, soprattutto se elettrici e in traiettoria.</p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
