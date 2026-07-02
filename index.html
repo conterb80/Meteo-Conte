@@ -1,131 +1,113 @@
 <!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Conte Meteo</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#071827" />
+  <title>Meteo Conte</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
-  <meta name="theme-color" content="#071827" />
 </head>
 <body>
   <header class="topbar">
     <div>
-      <p class="eyebrow">Centrale operativa</p>
-      <h1>⚡ Conte Meteo</h1>
-      <p class="sub">Villanova di Bagnacavallo</p>
+      <div class="brand"><span>⛈️</span><strong>Meteo Conte</strong></div>
+      <div class="subtitle">Centrale operativa · Villanova di Bagnacavallo</div>
     </div>
-    <button id="installBtn" class="pill">Installa</button>
+    <button id="saveBtn" class="pill">Salva</button>
   </header>
 
   <main>
-    <section class="hero" id="hero">
-      <div class="heroTop">
-        <span id="statoBadge" class="badge green">Situazione tranquilla</span>
-        <span class="time" id="lastUpdate">--:--</span>
-      </div>
-      <div class="scoreRow">
+    <section class="hero" id="heroCard">
+      <div class="hero-row">
         <div>
-          <span class="label">Indice Conte</span>
-          <strong id="indice">0/10</strong>
+          <div class="label">Indice Conte</div>
+          <div class="score"><span id="score">0</span><small>/10</small></div>
         </div>
-        <div class="miniAdvice" id="miniAdvice">Controllo leggero ogni tanto.</div>
+        <div class="status" id="statusBadge">🟢 Tranquillo</div>
       </div>
-      <p id="verdetto">Nessun segnale importante: tieni solo d'occhio radar e fulmini se la situazione cambia.</p>
+      <p id="verdict">Situazione tranquilla: controlla radar, fulmini e fiumi ogni tanto.</p>
     </section>
 
-    <section class="tiles">
-      <article class="tile"><span>🌩️</span><b id="temporaleTxt">Basso</b><small>Temporale</small></article>
-      <article class="tile"><span>🧊</span><b id="grandineTxt">Bassa</b><small>Grandine</small></article>
-      <article class="tile"><span>💨</span><b id="ventoTxt">Basso</b><small>Vento</small></article>
-      <article class="tile"><span>🎯</span><b id="affidabilitaTxt">Media</b><small>Affidabilità</small></article>
+    <section class="quickgrid" aria-label="Link rapidi">
+      <a class="quick" href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank"><span>📡</span><b>Radar ER</b><small>pioggia live</small></a>
+      <a class="quick" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank"><span>⏱️</span><b>+1/+2/+3h</b><small>traiettoria</small></a>
+      <a class="quick" href="https://www.lightningmaps.org" target="_blank"><span>⚡</span><b>Fulmini</b><small>elettricità</small></a>
+      <a class="quick" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank"><span>🚨</span><b>Allerte</b><small>ufficiali</small></a>
+      <a class="quick" href="https://allertameteo.regione.emilia-romagna.it/precipitazioni" target="_blank"><span>🌧️</span><b>Pioggia</b><small>mm cumulati</small></a>
+      <a class="quick" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank"><span>🌊</span><b>Fiumi</b><small>idrometri</small></a>
     </section>
 
-    <section class="decisioni card">
-      <h2>Decisioni rapide</h2>
-      <div class="decisionGrid">
-        <div><span>🚗</span><p id="autoTxt">Auto ok</p></div>
-        <div><span>🌿</span><p id="ortoTxt">Orto ok</p></div>
-        <div><span>🐟</span><p id="laghettoTxt">Laghetto ok</p></div>
-        <div><span>🏭</span><p id="lavoroTxt">Lavoro ok</p></div>
+    <section class="panel compact">
+      <div class="section-title">🌊 Acqua e alluvione</div>
+      <div class="mini-cards">
+        <div><span>6h</span><b id="rain6">da controllare</b></div>
+        <div><span>24h</span><b id="rain24">da controllare</b></div>
+        <div><span>Fiumi</span><b id="riverLevel">da controllare</b></div>
       </div>
+      <p class="hint">Tieni d'occhio soprattutto pioggia cumulata e livelli di Lamone, Senio, Montone/Ronco.</p>
     </section>
 
-    <section class="quickLinks">
-      <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank">📡<span>Radar ER</span></a>
-      <a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank">⏱<span>Evoluzione</span></a>
-      <a href="https://www.lightningmaps.org" target="_blank">⚡<span>Fulmini</span></a>
-      <a href="https://allertameteo.regione.emilia-romagna.it" target="_blank">🚨<span>Allerte</span></a>
-      <a href="https://radar.protezionecivile.it" target="_blank">🛰<span>Radar IT</span></a>
-      <a href="https://www.centrometeoemiliaromagna.com/nowcasting" target="_blank">🌦<span>CMER</span></a>
-    </section>
-
-    <section class="card controls">
-      <h2>Valutazione manuale</h2>
-      <p class="hint">Compila dopo aver guardato radar + fulmini. L'app ti dà un verdetto pratico.</p>
-
-      <label>Direzione del nucleo</label>
-      <select id="direzione">
+    <section class="panel">
+      <div class="section-title">🎛️ Valutazione manuale</div>
+      <label>Direzione nucleo</label>
+      <select id="direction">
         <option value="0">Nessun nucleo evidente</option>
-        <option value="1">Lontano / laterale</option>
-        <option value="2">Punta verso Romagna</option>
-        <option value="3">Punta verso Lugo-Ravenna</option>
+        <option value="2">Lontano, ma da osservare</option>
+        <option value="4">In avvicinamento verso Romagna</option>
+        <option value="6">Diretto verso Ravenna/Lugo</option>
       </select>
 
-      <label>Colore radar più intenso in traiettoria</label>
+      <label>Colore radar più intenso sulla traiettoria</label>
       <select id="radar">
-        <option value="0">Verde / blu</option>
-        <option value="1">Giallo</option>
-        <option value="2">Arancione</option>
-        <option value="3">Rosso / viola</option>
+        <option value="0">Verde / debole</option>
+        <option value="1">Giallo / rovescio</option>
+        <option value="3">Arancione / forte</option>
+        <option value="5">Rosso-viola / molto intenso</option>
       </select>
 
       <label>Fulmini</label>
-      <select id="fulmini">
-        <option value="0">Assenti o pochi</option>
-        <option value="1">Presenti ma stabili</option>
-        <option value="2">In aumento</option>
-        <option value="3">Molti e ravvicinati</option>
+      <select id="lightning">
+        <option value="0">Assenti o lontani</option>
+        <option value="1">Pochi</option>
+        <option value="3">Molti o in aumento</option>
+        <option value="5">Frequenti e vicini</option>
       </select>
 
-      <label>Vento percepito</label>
-      <select id="vento">
+      <label>Vento / outflow</label>
+      <select id="wind">
         <option value="0">Calmo</option>
-        <option value="1">In rinforzo</option>
-        <option value="2">Raffiche evidenti</option>
-        <option value="3">Raffiche forti / aria fredda improvvisa</option>
+        <option value="2">Rinforza</option>
+        <option value="4">Raffiche evidenti</option>
+        <option value="6">Raffiche forti improvvise</option>
       </select>
 
-      <label>Segnali grandine</label>
-      <select id="grandine">
-        <option value="0">Nessun segnale</option>
-        <option value="1">Nuclei intensi ma lontani</option>
-        <option value="2">Nuclei rosso/viola in traiettoria</option>
-        <option value="3">Cella intensa + fulmini in aumento</option>
+      <label>Rischio acqua</label>
+      <select id="water">
+        <option value="0">Pioggia scarsa</option>
+        <option value="2">10-30 mm possibili</option>
+        <option value="4">30-50 mm possibili</option>
+        <option value="6">Oltre 50 mm / fiumi in salita</option>
       </select>
     </section>
 
-    <section class="card lesson">
-      <h2>Mini guida radar</h2>
-      <p><b>Movimento:</b> prima capisci dove va la cella, poi guardi quanto è forte.</p>
-      <p><b>Giallo/arancio:</b> rovescio o temporale discreto. Rosso/viola: nucleo serio.</p>
-      <p><b>Fulmini in aumento:</b> temporale che si rinforza.</p>
-      <p><b>Vento freddo improvviso:</b> outflow, spesso arriva prima della pioggia.</p>
+    <section class="panel decision">
+      <div class="section-title">✅ Decisioni rapide</div>
+      <div class="decision-grid">
+        <div><span>🚗 Auto</span><b id="autoAdvice">ok fuori</b></div>
+        <div><span>🌿 Orto</span><b id="gardenAdvice">controllo normale</b></div>
+        <div><span>🐟 Laghetto</span><b id="pondAdvice">tutto ok</b></div>
+        <div><span>🏭 Lavoro</span><b id="workAdvice">nessuna urgenza</b></div>
+      </div>
     </section>
 
-    <section class="card notes">
-      <h2>Note evento</h2>
-      <textarea id="note" placeholder="Esempio: 01:45 lampi verso ovest, vento in rinforzo, nucleo arancio verso Bologna..."></textarea>
-      <button id="saveBtn" class="fullBtn">Salva valutazione</button>
+    <section class="panel learn">
+      <div class="section-title">🎓 Impara a leggere i dati</div>
+      <details><summary>Radar</summary><p>Guarda movimento e colore: giallo = rovescio, arancione = forte, rosso/viola = nucleo intenso. Conta più la traiettoria del singolo colore.</p></details>
+      <details><summary>Fulmini</summary><p>Se nascono fulmini nuovi e aumentano, il temporale si sta rinforzando. Se diminuiscono, spesso si sta scaricando.</p></details>
+      <details><summary>Pioggia e fiumi</summary><p>30-50 mm in poche ore sono già attenzione seria. Sopra soglia 1 si monitora, soglia 2 attenzione alta, soglia 3 criticità importante.</p></details>
     </section>
   </main>
-
-  <nav class="bottomNav">
-    <a href="#hero">🏠<span>Home</span></a>
-    <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank">📡<span>Radar</span></a>
-    <a href="https://www.lightningmaps.org" target="_blank">⚡<span>Fulmini</span></a>
-    <a href="https://allertameteo.regione.emilia-romagna.it" target="_blank">🚨<span>Allerte</span></a>
-  </nav>
 
   <script src="app.js"></script>
 </body>

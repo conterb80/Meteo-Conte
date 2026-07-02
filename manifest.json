@@ -1,1 +1,1 @@
-{"name":"Conte Meteo","short_name":"Conte Meteo","start_url":"./","display":"standalone","background_color":"#06111d","theme_color":"#071827","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml"}]}
+{"name":"Meteo Conte","short_name":"Meteo Conte","start_url":"./?v=3","display":"standalone","background_color":"#06111d","theme_color":"#071827","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml"}]}
