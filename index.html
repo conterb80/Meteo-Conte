@@ -3,75 +3,79 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#07131f" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V5 Pro</title>
-  <link rel="manifest" href="manifest.json?v=5-pro-verificata" />
-  <link rel="stylesheet" href="style.css?v=5-pro-verificata-3" />
+  <meta name="theme-color" content="#071722" />
+  <title>Meteo Conte V6</title>
+  <link rel="manifest" href="manifest.json?v=6" />
+  <link rel="stylesheet" href="style.css?v=6" />
 </head>
 <body>
   <main class="app">
-    <header class="hero">
+    <header class="topbar">
       <div>
-        <p class="eyebrow">V5 PRO VERIFICATA</p>
-        <h1>Meteo Conte</h1>
-        <p id="place" class="place">Villanova di Bagnacavallo · Romagna</p>
+        <p class="eyebrow">Cabina meteo personale</p>
+        <h1>Meteo Conte <span>V6</span></h1>
+        <p id="place">Villanova di Bagnacavallo · Romagna</p>
       </div>
-      <div id="weatherIcon" class="weather-icon">⏳</div>
+      <button id="refreshBtn" class="ghost" aria-label="Aggiorna">↻</button>
     </header>
 
-    <section id="statusCard" class="status card loading">
-      <div>
-        <p class="label">Adesso</p>
-        <div class="temp"><span id="temp">--</span><small>°C</small></div>
-        <p id="summary" class="summary">Carico dati reali…</p>
+    <section id="alertCard" class="alert level-green">
+      <div class="alert-main">
+        <span id="alertDot" class="dot"></span>
+        <div>
+          <h2 id="alertTitle">Caricamento situazione...</h2>
+          <p id="alertText">Sto leggendo i dati meteo reali.</p>
+        </div>
       </div>
-      <div class="scoreBox">
-        <p>Indice Conte</p>
-        <strong id="conteIndex">--</strong>
-        <span id="conteText">in calcolo</span>
+      <p id="updated" class="updated">Aggiornamento in corso</p>
+    </section>
+
+    <section class="grid six" aria-label="Dati principali">
+      <article class="tile"><span>🌡️</span><p>Temperatura</p><strong id="temp">--</strong></article>
+      <article class="tile"><span>💧</span><p>Umidità</p><strong id="hum">--</strong></article>
+      <article class="tile"><span>🌬️</span><p>Vento</p><strong id="wind">--</strong></article>
+      <article class="tile"><span>💨</span><p>Raffica</p><strong id="gust">--</strong></article>
+      <article class="tile"><span>📈</span><p>Pressione</p><strong id="press">--</strong></article>
+      <article class="tile"><span>☔</span><p>Pioggia 1h</p><strong id="rain">--</strong></article>
+    </section>
+
+    <section class="conte-card">
+      <div class="score-wrap">
+        <div id="scoreCircle" class="score-circle"><span id="score">--</span><small>/100</small></div>
+        <div>
+          <p class="eyebrow">Indice Conte 2.0</p>
+          <h2 id="scoreTitle">In valutazione</h2>
+          <p id="scoreText">Analisi automatica di umidità, vento, pressione, pioggia e rischio temporalesco.</p>
+        </div>
       </div>
     </section>
 
-    <section id="alert" class="alert hidden">⚠️ controllo rischio in corso…</section>
-
-    <section class="grid metrics">
-      <article class="mini card"><span>💧</span><p>Umidità</p><strong id="humidity">--%</strong></article>
-      <article class="mini card"><span>💨</span><p>Vento</p><strong id="wind">-- km/h</strong></article>
-      <article class="mini card"><span>🌧️</span><p>Pioggia 6h</p><strong id="rain6h">-- mm</strong></article>
-      <article class="mini card"><span>📈</span><p>Pressione</p><strong id="pressure">-- hPa</strong></article>
+    <section class="timeline-card">
+      <div class="section-head"><h2>Timeline rischio</h2><span>prossime ore</span></div>
+      <div id="timeline" class="timeline"></div>
     </section>
 
-    <section class="card decision">
-      <p class="label">Decisione rapida</p>
-      <h2 id="decisionTitle">Sto valutando…</h2>
-      <p id="decisionText">Appena arrivano i dati ti dico se è tutto tranquillo o se tenere d'occhio il cielo.</p>
+    <section class="analysis-card">
+      <button id="analyzeBtn" class="analyze">🔍 Analizza situazione</button>
+      <p id="analysisText">Premi il pulsante per avere una lettura ragionata stile Conte.</p>
     </section>
 
-    <section class="card forecast">
-      <div class="sectionHead">
-        <h2>Prossime ore</h2>
-        <button id="refreshBtn" type="button">Aggiorna</button>
+    <section class="links-card">
+      <div class="section-head"><h2>Link rapidi</h2><span>1 tocco</span></div>
+      <div class="quick-links">
+        <a href="https://www.meteo60.it/radar-precipitazioni-italia" target="_blank" rel="noopener">📡<b>Radar</b></a>
+        <a href="https://map.blitzortung.org/#8/44.45/11.97" target="_blank" rel="noopener">⚡<b>Fulmini</b></a>
+        <a href="https://www.windy.com/44.45/11.97?rain,44.45,11.97,8" target="_blank" rel="noopener">🌪️<b>Windy</b></a>
+        <a href="https://pretemp.altervista.org/index.html" target="_blank" rel="noopener">⛈️<b>Pretemp</b></a>
+        <a href="https://www.sat24.com/it-it/country/it" target="_blank" rel="noopener">🛰️<b>Satellite</b></a>
+        <a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🚨<b>Allerta ER</b></a>
       </div>
-      <div id="hours" class="hours"></div>
-    </section>
-
-    <section class="links">
-      <a class="link" href="https://www.windy.com/44.414/11.978?radar,44.414,11.978,8" target="_blank" rel="noopener">Radar Windy</a>
-      <a class="link" href="https://map.blitzortung.org/#8/44.414/11.978" target="_blank" rel="noopener">Fulmini</a>
-      <a class="link" href="https://www.pretemp.it/archivio/" target="_blank" rel="noopener">Pretemp</a>
-      <a class="link" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">Allerta ER</a>
-      <a class="link" href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank" rel="noopener">Arpae</a>
-      <a class="link" href="https://www.ilmeteo.it/meteo/Villanova+di+Bagnacavallo" target="_blank" rel="noopener">IlMeteo</a>
     </section>
 
     <footer>
-      <span id="updated">Mai aggiornato</span>
-      <span>Fonte dati: Open-Meteo</span>
+      <p>Dati automatici da Open-Meteo. Uso personale: confrontare sempre con allerte ufficiali.</p>
     </footer>
   </main>
-  <script src="app.js?v=5-pro-verificata-3" defer></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>

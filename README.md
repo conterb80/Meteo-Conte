@@ -1,19 +1,13 @@
-# Meteo Conte V5 Pro - verificata
+# Meteo Conte V6
 
-Versione statica per GitHub Pages.
+Cabina meteo personale per Villanova di Bagnacavallo.
 
-## Upload
-Caricare tutti i file nella root del repository Meteo-Conte:
-- index.html
-- style.css
-- app.js
-- manifest.json
-- sw.js
-- icon.svg
-- README.md
-- .nojekyll
+Novità V6:
+- Pretemp corretto su `https://pretemp.altervista.org/index.html`
+- Indice Conte 2.0
+- Timeline rischio prossime ore
+- Pulsante Analizza situazione
+- Link rapidi grandi
+- Dati automatici Open-Meteo
 
-Pages: Deploy from a branch / main / root.
-
-Link consigliato dopo upload:
-https://conterb80.github.io/Meteo-Conte/?v=5-pro-verificata
+Caricare tutti i file nella root del repository GitHub Pages.

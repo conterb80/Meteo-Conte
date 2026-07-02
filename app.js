@@ -1,72 +1,29 @@
-const LAT = 44.414;
-const LON = 11.978;
-const API = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,weather_code,pressure_msl,wind_speed_10m,wind_gusts_10m&hourly=temperature_2m,precipitation_probability,precipitation,rain,weather_code,wind_speed_10m,wind_gusts_10m,relative_humidity_2m,pressure_msl&forecast_days=2&timezone=Europe%2FRome`;
-const $ = id => document.getElementById(id);
-const weatherMap = {
-  0:['☀️','Sereno'],1:['🌤️','Prevalentemente sereno'],2:['⛅','Poco nuvoloso'],3:['☁️','Nuvoloso'],
-  45:['🌫️','Nebbia'],48:['🌫️','Nebbia con brina'],51:['🌦️','Pioviggine debole'],53:['🌦️','Pioviggine'],55:['🌧️','Pioviggine forte'],
-  61:['🌧️','Pioggia debole'],63:['🌧️','Pioggia'],65:['🌧️','Pioggia forte'],66:['🌧️','Pioggia gelata'],67:['🌧️','Pioggia gelata forte'],
-  71:['🌨️','Neve debole'],73:['🌨️','Neve'],75:['🌨️','Neve forte'],80:['🌦️','Rovesci deboli'],81:['🌧️','Rovesci'],82:['⛈️','Rovesci forti'],
-  95:['⛈️','Temporale'],96:['⛈️','Temporale con grandine'],99:['⛈️','Temporale forte con grandine']
-};
-function codeInfo(c){return weatherMap[c] || ['🌡️','Meteo variabile'];}
-function n(v,d=0){return Number.isFinite(v)?v.toFixed(d):'--';}
-function hourLabel(s){return new Date(s).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});}
-function sum(arr){return arr.reduce((a,b)=>a+(Number(b)||0),0);}
-function calcConte(cur, next){
-  const rain6 = sum(next.precipitation.slice(0,6));
-  const probMax = Math.max(...next.precipitation_probability.slice(0,8).map(x=>x||0));
-  const gustMax = Math.max(cur.wind_gusts_10m||0,...next.wind_gusts_10m.slice(0,8).map(x=>x||0));
-  const stormCode = next.weather_code.slice(0,8).some(c=>[95,96,99,82].includes(c));
-  let score = 100;
-  score -= Math.min(38, rain6 * 9);
-  score -= Math.min(30, probMax * .28);
-  score -= Math.max(0, gustMax - 28) * 1.4;
-  if (stormCode) score -= 24;
-  score = Math.max(0, Math.min(100, Math.round(score)));
-  let text='tranquillo', level='good';
-  if(score<35){text='occhio forte';level='bad'} else if(score<65){text='da seguire';level='warn'}
-  return {score,text,level,rain6,probMax,gustMax,stormCode};
+const LAT=44.45, LON=11.97;
+const els = id => document.getElementById(id);
+let lastData=null;
+const codeMap={0:'Sereno',1:'Poco nuvoloso',2:'Nuvoloso',3:'Coperto',45:'Nebbia',48:'Nebbia',51:'Pioviggine',53:'Pioviggine',55:'Pioviggine',61:'Pioggia',63:'Pioggia',65:'Pioggia forte',66:'Gelata',67:'Gelata',71:'Neve',73:'Neve',75:'Neve forte',80:'Rovesci',81:'Rovesci',82:'Rovesci forti',95:'Temporale',96:'Temporale con grandine',99:'Temporale forte'};
+function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
+function setText(id,v){els(id).textContent=v}
+function riskLabel(score){if(score>=78)return ['level-red','🔴 Alta attenzione','Condizioni favorevoli a temporali/rovesci: da seguire.'];if(score>=55)return ['level-orange','🟠 Attenzione','Situazione instabile o in peggioramento.'];if(score>=32)return ['level-yellow','🟡 Da monitorare','Qualche segnale c’è, meglio controllare radar e cielo.'];return ['level-green','🟢 Tranquillo','Situazione al momento abbastanza stabile.']}
+function calcScore(c,h,i){let s=0;
+  s+=clamp((c.relative_humidity_2m-45)*0.55,0,25);
+  s+=clamp((c.wind_gusts_10m||0)*0.7,0,18);
+  s+=clamp((1016-(c.surface_pressure||1016))*1.1,0,18);
+  s+=clamp((i.precipitation_probability||0)*0.25,0,25);
+  s+=clamp((i.rain||0)*10,0,12);
+  if([95,96,99].includes(i.weather_code))s+=25; else if([80,81,82,61,63,65].includes(i.weather_code))s+=10;
+  return Math.round(clamp(s,0,100));
 }
-function render(data){
-  const cur = data.current;
-  const h = data.hourly;
-  const now = new Date(cur.time).getTime();
-  const idx = h.time.findIndex(t=>new Date(t).getTime()>=now);
-  const start = idx>=0?idx:0;
-  const next = {
-    time:h.time.slice(start,start+12), temperature_2m:h.temperature_2m.slice(start,start+12), precipitation_probability:h.precipitation_probability.slice(start,start+12), precipitation:h.precipitation.slice(start,start+12), weather_code:h.weather_code.slice(start,start+12), wind_gusts_10m:h.wind_gusts_10m.slice(start,start+12)
-  };
-  const [ico, desc] = codeInfo(cur.weather_code);
-  const ci = calcConte(cur,next);
-  $('statusCard').classList.remove('loading');
-  $('weatherIcon').textContent = ico;
-  $('temp').textContent = n(cur.temperature_2m,1);
-  $('summary').textContent = `${desc} · percepita ${n(cur.apparent_temperature,1)}°C`;
-  $('humidity').textContent = `${n(cur.relative_humidity_2m)}%`;
-  $('wind').textContent = `${n(cur.wind_speed_10m)} km/h`;
-  $('rain6h').textContent = `${n(ci.rain6,1)} mm`;
-  $('pressure').textContent = `${n(cur.pressure_msl)} hPa`;
-  $('conteIndex').textContent = ci.score;
-  $('conteText').textContent = ci.text;
-  const alert = $('alert');
-  alert.className = 'alert hidden';
-  if(ci.level==='bad') {alert.className='alert bad'; alert.textContent=`⚠️ Attenzione: rischio temporali/rovesci nelle prossime ore. Probabilità max ${n(ci.probMax)}%, raffiche fino a ${n(ci.gustMax)} km/h.`;}
-  else if(ci.level==='warn') {alert.className='alert'; alert.textContent=`🟡 Situazione da seguire: possibili piogge o vento. Probabilità pioggia max ${n(ci.probMax)}%.`;}
-  if(ci.level==='bad'){$('decisionTitle').textContent='Tieni d’occhio radar e cielo'; $('decisionText').textContent='Situazione potenzialmente movimentata: controlla fulmini/radar prima di organizzarti fuori.';}
-  else if(ci.level==='warn'){$('decisionTitle').textContent='Non è brutta, ma va seguita'; $('decisionText').textContent='Possibili rovesci sparsi o vento. Meglio ricontrollare tra un po’.';}
-  else {$('decisionTitle').textContent='Per ora abbastanza tranquilla'; $('decisionText').textContent='Nessun segnale pesante nelle prossime ore. App comunque da ricontrollare se vedi sviluppo nuvole.';}
-  $('hours').innerHTML = next.time.slice(0,8).map((t,i)=>{const [ic]=codeInfo(next.weather_code[i]);return `<div class="hour"><time>${hourLabel(t)}</time><div class="ico">${ic}</div><strong>${n(next.temperature_2m[i])}°</strong><span>${n(next.precipitation_probability[i])}% · ${n(next.precipitation[i],1)}mm</span></div>`}).join('');
-  $('updated').textContent = 'Aggiornato ' + new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+function scorePhrase(score){if(score>=78)return ['Indice alto','Umidità, vento/raffiche, pioggia o segnali temporaleschi danno un quadro da seguire con attenzione.'];if(score>=55)return ['Instabilità possibile','Non è detto che arrivi qualcosa, ma i parametri meritano monitoraggio.'];if(score>=32)return ['Occhio al cielo','Situazione non estrema, però qualche ingrediente può accendersi nelle prossime ore.'];return ['Aria abbastanza stabile','Per ora i parametri non mostrano segnali importanti.']}
+function updateUI(data){lastData=data;const c=data.current, h=data.hourly;const nowIndex=0;const i={precipitation_probability:h.precipitation_probability?.[nowIndex]??0,rain:h.rain?.[nowIndex]??0,weather_code:c.weather_code};
+  setText('temp',Math.round(c.temperature_2m)+'°');setText('hum',c.relative_humidity_2m+'%');setText('wind',Math.round(c.wind_speed_10m)+' km/h');setText('gust',Math.round(c.wind_gusts_10m||0)+' km/h');setText('press',Math.round(c.surface_pressure||0)+' hPa');setText('rain',(c.rain||0).toFixed(1)+' mm');
+  setText('updated','Aggiornato '+new Date(c.time).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})+' · '+(codeMap[c.weather_code]||'Meteo variabile'));
+  const score=calcScore(c,h,i); const [cls,title,text]=riskLabel(score); const alert=els('alertCard'); alert.className='alert '+cls; setText('alertTitle',title); setText('alertText',text);
+  const [st,sd]=scorePhrase(score); setText('score',score); setText('scoreTitle',st); setText('scoreText',sd); els('scoreCircle').style.background=`conic-gradient(${score>=78?'var(--red)':score>=55?'var(--orange)':score>=32?'var(--yellow)':'var(--green)'} ${score*3.6}deg,#1d4054 0deg)`;
+  buildTimeline(h);
 }
-async function load(){
-  $('summary').textContent = 'Aggiorno dati reali…';
-  try{const res=await fetch(API,{cache:'no-store'}); if(!res.ok) throw new Error('HTTP '+res.status); render(await res.json());}
-  catch(e){$('statusCard').classList.remove('loading'); $('weatherIcon').textContent='⚠️'; $('summary').textContent='Dati non disponibili. Controlla connessione e riprova.'; $('decisionTitle').textContent='Errore caricamento dati'; $('decisionText').textContent=e.message;}
-}
-async function clearOldCache(){
-  try{ if('serviceWorker' in navigator){ const regs=await navigator.serviceWorker.getRegistrations(); for(const r of regs) await r.unregister(); } if('caches' in window){ const keys=await caches.keys(); await Promise.all(keys.map(k=>caches.delete(k))); }}catch(e){}
-}
-$('refreshBtn').addEventListener('click', load);
-clearOldCache().finally(load);
-setInterval(load, 10*60*1000);
+function buildTimeline(h){const box=els('timeline');box.innerHTML='';for(let k=0;k<5;k++){const prob=h.precipitation_probability?.[k]??0;const rain=h.rain?.[k]??0;const code=h.weather_code?.[k]??0;let icon='🟢'; if(prob>65||[95,96,99,82].includes(code))icon='🔴';else if(prob>45||rain>1)icon='🟠';else if(prob>25||rain>.1)icon='🟡';const div=document.createElement('div');div.className='timebox';div.innerHTML=`<b>${k===0?'Ora':'+'+k+'h'}</b><span>${icon}</span><small>${prob}%</small>`;box.appendChild(div)}}
+function analyze(){if(!lastData)return;const c=lastData.current,h=lastData.hourly;const prob=h.precipitation_probability?.[0]??0;const rain=h.rain?.slice(0,4).reduce((a,b)=>a+(b||0),0);let parts=[];if(c.relative_humidity_2m>=75)parts.push('umidità alta');else parts.push('umidità non estrema');if((c.surface_pressure||1015)<1010)parts.push('pressione bassa');else if((c.surface_pressure||1015)>1018)parts.push('pressione abbastanza alta');if((c.wind_gusts_10m||0)>35)parts.push('raffiche già presenti');if(prob>55)parts.push('probabilità pioggia elevata nelle prossime ore');if([95,96,99].includes(c.weather_code))parts.push('segnale temporalesco già nel dato attuale');let msg='Lettura Conte: '+parts.join(', ')+'. ';if(prob>60||rain>2)msg+='Conviene tenere aperti radar e fulmini: se parte una cella sull’Appennino o entra da ovest, può diventare interessante.';else if(prob>30)msg+='Situazione da monitorare, ma per ora non è un segnale netto di peggioramento immediato.';else msg+='Al momento quadro abbastanza tranquillo; controlla comunque Pretemp/Allerta ER nei giorni instabili.';els('analysisText').textContent=msg}
+async function load(){try{setText('alertTitle','Aggiorno i dati...');const url=`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,rain,weather_code,surface_pressure,wind_speed_10m,wind_gusts_10m&hourly=precipitation_probability,rain,weather_code&forecast_days=1&timezone=Europe%2FRome`;const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('meteo non disponibile');updateUI(await res.json())}catch(e){setText('alertTitle','Dati non disponibili');setText('alertText','Controlla connessione o riprova. I link rapidi restano utilizzabili.');}}
+els('refreshBtn').addEventListener('click',load);els('analyzeBtn').addEventListener('click',analyze);load();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=6').catch(()=>{})}
