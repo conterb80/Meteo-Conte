@@ -1,5 +1,4 @@
-// V4.1 cache-fix: service worker volutamente neutro.
-// Serve solo a sostituire eventuali vecchie versioni in cache.
+// V5 Pro: service worker neutro. Non salva cache per evitare vecchie versioni bloccate su GitHub Pages.
 self.addEventListener('install', event => self.skipWaiting());
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
