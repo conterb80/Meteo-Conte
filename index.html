@@ -3,103 +3,106 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#061826" />
   <title>Meteo Conte</title>
-  <meta name="theme-color" content="#061727" />
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
     <header class="topbar">
-      <button class="icon-btn" id="menuBtn" aria-label="Menu">☰</button>
+      <button class="round" aria-label="Menu">☰</button>
       <div class="brand">
-        <div class="logo">⛈️</div>
+        <div class="logo">🌦️</div>
         <div>
           <h1>Meteo Conte</h1>
-          <p>📍 Centrale operativa · Villanova di Bagnacavallo</p>
+          <p>📍 Villanova di Bagnacavallo</p>
         </div>
       </div>
-      <button class="refresh" id="refreshBtn" aria-label="Aggiorna">↻<span>05:01</span></button>
+      <button id="refreshBtn" class="round" aria-label="Aggiorna">↻</button>
     </header>
 
     <main>
-      <section class="hero glass">
-        <div class="current">
-          <h2>Situazione attuale</h2>
-          <div class="current-row">
-            <div class="weather-icon">🌤️</div>
-            <div>
-              <div class="temp">24,8<span>°C</span></div>
-              <div class="desc">Poco nuvoloso</div>
-              <div class="muted">Percepita 24°</div>
-            </div>
-          </div>
-          <div class="metrics">
-            <div><b>💨</b><span>Vento</span><strong>11 km/h</strong><small>NE</small></div>
-            <div><b>💧</b><span>Umidità</span><strong>61%</strong><small>&nbsp;</small></div>
-            <div><b>🧭</b><span>Pressione</span><strong>1016 hPa</strong><small>↑</small></div>
-            <div><b>👁️</b><span>Visibilità</span><strong>10 km</strong><small>&nbsp;</small></div>
+      <section class="hero compact">
+        <div class="status-row">
+          <span class="badge green">🟢 Tranquillo</span>
+          <span id="updated" class="updated">agg. --:--</span>
+        </div>
+        <div class="weather-now">
+          <div class="iconbig">⛅</div>
+          <div>
+            <div class="temp">24,8<span>°C</span></div>
+            <div class="desc">Poco nuvoloso</div>
+            <div class="feel">percepita 24°</div>
           </div>
         </div>
-        <div class="forecast">
-          <div class="forecast-head">
-            <h2>Prossime ore</h2>
-            <span>☀️ ↑ 05:30 ↓ 20:59</span>
-          </div>
-          <div class="hours">
-            <div><span>21:00</span><strong>26°</strong><em>🌙</em><small>↗︎</small><p>💧 10%</p></div>
-            <div><span>22:00</span><strong>25°</strong><em>🌙</em><small>↗︎</small><p>💧 10%</p></div>
-            <div><span>23:00</span><strong>24°</strong><em>🌙</em><small>↗︎</small><p>💧 10%</p></div>
-            <div><span>00:00</span><strong>23°</strong><em>🌙</em><small>↗︎</small><p>💧 10%</p></div>
-            <div><span>01:00</span><strong>23°</strong><em>🌙</em><small>↗︎</small><p>💧 10%</p></div>
-          </div>
+        <div class="quick-metrics">
+          <div><b>💨 11</b><small>km/h NE</small></div>
+          <div><b>💧 61%</b><small>umidità</small></div>
+          <div><b>📈 1016</b><small>hPa ↑</small></div>
+          <div><b>🌧 0,0</b><small>mm oggi</small></div>
+        </div>
+        <div class="mini-forecast" aria-label="Prossime ore">
+          <div><time>18</time><span>🌤️</span><b>28°</b><small>10%</small></div>
+          <div><time>19</time><span>🌤️</span><b>27°</b><small>10%</small></div>
+          <div><time>20</time><span>🌙</span><b>26°</b><small>10%</small></div>
+          <div><time>21</time><span>🌙</span><b>25°</b><small>10%</small></div>
+          <div><time>22</time><span>🌙</span><b>24°</b><small>10%</small></div>
         </div>
       </section>
 
-      <section class="quick-grid">
-        <a class="tile" href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank"><span>📡</span><b>Radar ER</b><small>pioggia live</small><i>›</i></a>
-        <a class="tile" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank"><span>⏱️</span><b>+1/+2/+3h</b><small>traiettoria</small><i>›</i></a>
-        <a class="tile" href="https://www.lightningmaps.org/" target="_blank"><span>⚡</span><b>Fulmini</b><small>elettricità</small><i>›</i></a>
-        <a class="tile" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank"><span>🚨</span><b>Allerte</b><small>ufficiali</small><i>›</i></a>
-        <a class="tile" href="https://allertameteo.regione.emilia-romagna.it/precipitazioni" target="_blank"><span>🌧️</span><b>Pioggia</b><small>mm cumulati</small><i>›</i></a>
-        <a class="tile" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank"><span>🌊</span><b>Fiumi</b><small>idrometri</small><i>›</i></a>
+      <section class="conte-card">
+        <div>
+          <h2>Indice Conte</h2>
+          <p>Valutazione rapida per temporali, vento, grandine e acqua.</p>
+        </div>
+        <div class="score">0<span>/10</span></div>
+      </section>
+
+      <section class="grid-links">
+        <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank"><span>📡</span><b>Radar</b><small>ER live</small></a>
+        <a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank"><span>⏱️</span><b>+1/+2/+3h</b><small>traiettoria</small></a>
+        <a href="https://www.lightningmaps.org/" target="_blank"><span>⚡</span><b>Fulmini</b><small>live</small></a>
+        <a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank"><span>🚨</span><b>Allerte</b><small>ufficiali</small></a>
+        <a href="https://allertameteo.regione.emilia-romagna.it/precipitazioni" target="_blank"><span>🌧️</span><b>Pioggia</b><small>mm cumulati</small></a>
+        <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank"><span>🌊</span><b>Fiumi</b><small>idrometri</small></a>
+        <a href="https://www.pretemp.it/" target="_blank"><span>⛈️</span><b>Pretemp</b><small>temporali</small></a>
+        <a href="https://www.windy.com/" target="_blank"><span>🛰️</span><b>Windy</b><small>mappe</small></a>
       </section>
 
       <section class="panel water">
-        <div class="section-title"><span>🌊</span><h2>Acqua e alluvione</h2><i>›</i></div>
+        <div class="section-title"><span>🌊</span><h2>Acqua e alluvione</h2></div>
         <div class="water-grid">
-          <a href="https://allertameteo.regione.emilia-romagna.it/precipitazioni" target="_blank" class="mini-card"><span>🌧️ Pioggia 6h</span><strong>4,2 mm</strong><small class="warn">da controllare</small><b class="bars">▂▅▆▇</b></a>
-          <a href="https://allertameteo.regione.emilia-romagna.it/precipitazioni" target="_blank" class="mini-card"><span>Pioggia 24h</span><strong>12,6 mm</strong><small class="warn">da controllare</small><b class="bars">▃▆▇▅</b></a>
-          <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" class="mini-card"><span>Livello fiumi</span><strong>da controllare</strong><small class="ok">nessuna criticità</small><b>〰️</b></a>
+          <a href="https://allertameteo.regione.emilia-romagna.it/precipitazioni" target="_blank" class="mini"><small>Pioggia 6h</small><b>da controllare</b><em>mm osservati</em></a>
+          <a href="https://allertameteo.regione.emilia-romagna.it/precipitazioni" target="_blank" class="mini"><small>Pioggia 24h</small><b>da controllare</b><em>accumulo</em></a>
+          <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" class="mini"><small>Livello fiumi</small><b>da controllare</b><em>Lamone / Senio</em></a>
         </div>
       </section>
 
       <section class="panel decisions">
         <div class="section-title"><span>✅</span><h2>Decisioni rapide</h2></div>
-        <div class="decision-grid">
-          <div class="decision"><span>🚗 Auto</span><strong>ok fuori</strong><i></i></div>
-          <div class="decision"><span>🌱 Orto</span><strong>controllo normale</strong><i></i></div>
-          <div class="decision"><span>🐟 Laghetto</span><strong>tutto ok</strong><i></i></div>
-          <div class="decision"><span>🏭 Lavoro</span><strong>nessuna urgenza</strong><i></i></div>
+        <div class="decision-list">
+          <div><span>🚗 Auto</span><b>ok fuori</b><i></i></div>
+          <div><span>🌱 Orto</span><b>controllo normale</b><i></i></div>
+          <div><span>🐟 Laghetto</span><b>tutto ok</b><i></i></div>
+          <div><span>🏭 Lavoro</span><b>nessuna urgenza</b><i></i></div>
         </div>
       </section>
 
       <section class="panel learn">
         <div class="section-title"><span>🎓</span><h2>Impara a leggere i dati</h2></div>
-        <div class="learn-grid">
-          <details><summary>📖 Radar</summary><p>Guarda direzione e intensità. Rosso/viola = nucleo forte, ma conta soprattutto se punta verso di te.</p></details>
-          <details><summary>⚡ Fulmini</summary><p>Conta dove nascono i fulmini nuovi: se aumentano e si avvicinano, il temporale si sta rinforzando.</p></details>
-          <details><summary>🌊 Pioggia e fiumi</summary><p>Osserva mm cumulati e soglie idrometriche. Sopra soglia 1 si monitora, soglia 2 attenzione, soglia 3 criticità.</p></details>
-          <details><summary>🏛️ Accademia Meteo</summary><p>Qui raccoglieremo le lezioni: radar, modelli, grandine, pressione, vento e fiumi.</p></details>
-        </div>
+        <details><summary>📖 Radar</summary><p>Guarda direzione e intensità dei nuclei. Rosso/viola = rovesci molto intensi; conta soprattutto se si muovono verso la tua zona.</p></details>
+        <details><summary>⚡ Fulmini</summary><p>Se i fulmini aumentano e si concentrano, la cella si sta rinforzando. Se calano, spesso il temporale si scarica.</p></details>
+        <details><summary>🌊 Pioggia e fiumi</summary><p>Controlla accumuli su 6h/24h e trend degli idrometri. Sopra soglia 1 monitorare, soglia 2 attenzione alta, soglia 3 criticità.</p></details>
+        <details><summary>🏛️ Accademia Meteo</summary><p>Qui aggiungeremo CAPE, shear, modelli, grandine, supercelle e lettura delle carte.</p></details>
       </section>
     </main>
 
-    <nav class="bottom-nav">
+    <nav class="bottomnav">
       <a class="active">🏠<span>Home</span></a>
-      <a>☆<span>Preferiti</span></a>
+      <a>⭐<span>Preferiti</span></a>
       <a>📡<span>Stazione</span></a>
-      <a>◷<span>Archivio</span></a>
+      <a>🕘<span>Archivio</span></a>
       <a>⚙️<span>Impostazioni</span></a>
     </nav>
   </div>
