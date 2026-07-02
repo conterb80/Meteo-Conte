@@ -1,5 +1,13 @@
-const CACHE='meteo-conte-v4-compact';
-const FILES=['./','./index.html','./style.css','./app.js','./manifest.json','./icon.svg'];
-self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)))});
-self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim()});
-self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)))});
+// V4.1 cache-fix: service worker volutamente neutro.
+// Serve solo a sostituire eventuali vecchie versioni in cache.
+self.addEventListener('install', event => self.skipWaiting());
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    if (self.caches) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+    }
+    await self.clients.claim();
+  })());
+});
+self.addEventListener('fetch', event => {});
