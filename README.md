@@ -1,12 +1,19 @@
-# Meteo Conte V5 Pro
+# Meteo Conte V5 Pro - verificata
 
-App meteo personale statica per GitHub Pages.
+Versione statica per GitHub Pages.
 
-File principali:
+## Upload
+Caricare tutti i file nella root del repository Meteo-Conte:
 - index.html
 - style.css
 - app.js
 - manifest.json
 - sw.js
 - icon.svg
+- README.md
 - .nojekyll
+
+Pages: Deploy from a branch / main / root.
+
+Link consigliato dopo upload:
+https://conterb80.github.io/Meteo-Conte/?v=5-pro-verificata
