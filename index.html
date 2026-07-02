@@ -2,41 +2,67 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meteo Conte</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Conte Meteo</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
-  <meta name="theme-color" content="#0f2338" />
+  <meta name="theme-color" content="#071827" />
 </head>
 <body>
-  <header>
+  <header class="topbar">
     <div>
-      <h1>🌩️ Meteo Conte</h1>
-      <p>Plancia rapida per Villanova di Bagnacavallo</p>
+      <p class="eyebrow">Centrale operativa</p>
+      <h1>⚡ Conte Meteo</h1>
+      <p class="sub">Villanova di Bagnacavallo</p>
     </div>
-    <button id="saveBtn">Salva</button>
+    <button id="installBtn" class="pill">Installa</button>
   </header>
 
   <main>
-    <section class="card status">
-      <div>
-        <span class="label">Indice Conte</span>
-        <strong id="indice">0/10</strong>
+    <section class="hero" id="hero">
+      <div class="heroTop">
+        <span id="statoBadge" class="badge green">Situazione tranquilla</span>
+        <span class="time" id="lastUpdate">--:--</span>
       </div>
-      <p id="verdetto">Compila i dati sotto per una valutazione pratica.</p>
+      <div class="scoreRow">
+        <div>
+          <span class="label">Indice Conte</span>
+          <strong id="indice">0/10</strong>
+        </div>
+        <div class="miniAdvice" id="miniAdvice">Controllo leggero ogni tanto.</div>
+      </div>
+      <p id="verdetto">Nessun segnale importante: tieni solo d'occhio radar e fulmini se la situazione cambia.</p>
     </section>
 
-    <section class="grid links">
-      <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank">📡 Radar ER</a>
-      <a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank">⏱ Evoluzione +1/+2/+3h</a>
-      <a href="https://www.lightningmaps.org" target="_blank">⚡ Fulmini live</a>
-      <a href="https://allertameteo.regione.emilia-romagna.it" target="_blank">🚨 Allerte ufficiali</a>
-      <a href="https://radar.protezionecivile.it" target="_blank">🛰 Radar nazionale</a>
-      <a href="https://www.centrometeoemiliaromagna.com/nowcasting" target="_blank">🌦 CMER nowcasting</a>
+    <section class="tiles">
+      <article class="tile"><span>🌩️</span><b id="temporaleTxt">Basso</b><small>Temporale</small></article>
+      <article class="tile"><span>🧊</span><b id="grandineTxt">Bassa</b><small>Grandine</small></article>
+      <article class="tile"><span>💨</span><b id="ventoTxt">Basso</b><small>Vento</small></article>
+      <article class="tile"><span>🎯</span><b id="affidabilitaTxt">Media</b><small>Affidabilità</small></article>
     </section>
 
-    <section class="card">
+    <section class="decisioni card">
+      <h2>Decisioni rapide</h2>
+      <div class="decisionGrid">
+        <div><span>🚗</span><p id="autoTxt">Auto ok</p></div>
+        <div><span>🌿</span><p id="ortoTxt">Orto ok</p></div>
+        <div><span>🐟</span><p id="laghettoTxt">Laghetto ok</p></div>
+        <div><span>🏭</span><p id="lavoroTxt">Lavoro ok</p></div>
+      </div>
+    </section>
+
+    <section class="quickLinks">
+      <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank">📡<span>Radar ER</span></a>
+      <a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank">⏱<span>Evoluzione</span></a>
+      <a href="https://www.lightningmaps.org" target="_blank">⚡<span>Fulmini</span></a>
+      <a href="https://allertameteo.regione.emilia-romagna.it" target="_blank">🚨<span>Allerte</span></a>
+      <a href="https://radar.protezionecivile.it" target="_blank">🛰<span>Radar IT</span></a>
+      <a href="https://www.centrometeoemiliaromagna.com/nowcasting" target="_blank">🌦<span>CMER</span></a>
+    </section>
+
+    <section class="card controls">
       <h2>Valutazione manuale</h2>
+      <p class="hint">Compila dopo aver guardato radar + fulmini. L'app ti dà un verdetto pratico.</p>
 
       <label>Direzione del nucleo</label>
       <select id="direzione">
@@ -46,7 +72,7 @@
         <option value="3">Punta verso Lugo-Ravenna</option>
       </select>
 
-      <label>Colore radar più intenso vicino alla traiettoria</label>
+      <label>Colore radar più intenso in traiettoria</label>
       <select id="radar">
         <option value="0">Verde / blu</option>
         <option value="1">Giallo</option>
@@ -74,24 +100,32 @@
       <select id="grandine">
         <option value="0">Nessun segnale</option>
         <option value="1">Nuclei intensi ma lontani</option>
-        <option value="2">Nuclei rossi/viola in traiettoria</option>
+        <option value="2">Nuclei rosso/viola in traiettoria</option>
         <option value="3">Cella intensa + fulmini in aumento</option>
       </select>
     </section>
 
-    <section class="card">
-      <h2>Note evento</h2>
-      <textarea id="note" placeholder="Esempio: 23:45 lampi verso ovest, vento da nord, radar rosso su Bologna..."></textarea>
+    <section class="card lesson">
+      <h2>Mini guida radar</h2>
+      <p><b>Movimento:</b> prima capisci dove va la cella, poi guardi quanto è forte.</p>
+      <p><b>Giallo/arancio:</b> rovescio o temporale discreto. Rosso/viola: nucleo serio.</p>
+      <p><b>Fulmini in aumento:</b> temporale che si rinforza.</p>
+      <p><b>Vento freddo improvviso:</b> outflow, spesso arriva prima della pioggia.</p>
     </section>
 
-    <section class="card lesson">
-      <h2>Come leggerla</h2>
-      <p><b>Radar:</b> guarda movimento e intensità, non solo il colore sopra casa tua.</p>
-      <p><b>Fulmini:</b> se aumentano nella stessa zona, la cella si sta rinforzando.</p>
-      <p><b>Vento:</b> raffiche e aria più fresca prima della pioggia indicano outflow in arrivo.</p>
-      <p><b>Grandine:</b> occhio a nuclei rosso/viola compatti, soprattutto se elettrici e in traiettoria.</p>
+    <section class="card notes">
+      <h2>Note evento</h2>
+      <textarea id="note" placeholder="Esempio: 01:45 lampi verso ovest, vento in rinforzo, nucleo arancio verso Bologna..."></textarea>
+      <button id="saveBtn" class="fullBtn">Salva valutazione</button>
     </section>
   </main>
+
+  <nav class="bottomNav">
+    <a href="#hero">🏠<span>Home</span></a>
+    <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank">📡<span>Radar</span></a>
+    <a href="https://www.lightningmaps.org" target="_blank">⚡<span>Fulmini</span></a>
+    <a href="https://allertameteo.regione.emilia-romagna.it" target="_blank">🚨<span>Allerte</span></a>
+  </nav>
 
   <script src="app.js"></script>
 </body>

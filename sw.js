@@ -1,4 +1,3 @@
-const CACHE='meteo-conte-v1';
-const FILES=['./','./index.html','./style.css','./app.js','./manifest.json','./icon.svg'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES))));
+const CACHE='conte-meteo-v2';
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','index.html','style.css','app.js','manifest.json','icon.svg']))));
 self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
