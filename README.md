@@ -1,12 +1,5 @@
-# Meteo Conte V7
+# Meteo Conte V7 NO CACHE
 
-Centro operativo personale per Villanova di Bagnacavallo.
+Versione centrale operativa con service worker disattivato/svuotato per evitare blocchi sulle versioni precedenti.
 
-Novità:
-- grafica più compatta ma leggibile;
-- sezione Fiumi/Lamone;
-- sezione Allerte;
-- Indice Conte 2.0;
-- Analizza situazione;
-- link radar corretto;
-- cache PWA resettata con nuovo service worker.
+Caricare tutti i 7 file nella root del repository.

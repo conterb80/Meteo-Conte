@@ -87,5 +87,22 @@ async function load(){
   catch(e){$('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova tra poco. I link rapidi restano disponibili.'; $('statusDot').className='dot yellow';}
 }
 $('refreshBtn').addEventListener('click',load); $('analyzeBtn').addEventListener('click',analyze);
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js?v=7-centrale').catch(()=>{});}
+
+// V7 NO CACHE: disattiva service worker e svuota tutte le cache PWA.
+(async function disableOldPwaCache(){
+  try {
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r => r.unregister()));
+    }
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+    }
+    console.log('Meteo Conte V7 NO CACHE: service worker rimosso e cache svuotate');
+  } catch (e) {
+    console.warn('Cache reset non completato', e);
+  }
+})();
+
 load();
