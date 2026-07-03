@@ -4,78 +4,61 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#061621">
-  <title>Meteo Conte V8 HARD RESET</title>
+  <title>Meteo Conte V9 Ultra Compact</title>
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="icon" href="icon.svg?v=8-hard-reset" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=8-hard-reset-20260703-1605">
-
-  <script>
-    (async()=>{
-      try{
-        if('serviceWorker' in navigator){
-          const regs=await navigator.serviceWorker.getRegistrations();
-          await Promise.all(regs.map(r=>r.unregister()));
-        }
-        if('caches' in window){
-          const keys=await caches.keys();
-          await Promise.all(keys.map(k=>caches.delete(k)));
-        }
-      }catch(e){}
-    })();
-  </script>
+  <link rel="manifest" href="manifest.json?v=9-ultra-compact-test">
+  <link rel="icon" href="icon.svg?v=9-ultra-compact-test" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=9-ultra-compact-test-20260703-1700">
 </head>
 <body>
   <main class="app-shell">
     <header class="topbar">
-      <div class="brand">
-        <div class="version">V8 HARD RESET · COMPACT</div>
+      <div class="top-left">
+        <div class="version">V9 TEST · ULTRA COMPACT</div>
         <h1>Meteo Conte</h1>
         <p>Centro operativo personale · Villanova di B.</p>
       </div>
-      <div class="hero-weather" aria-hidden="true">🌦️</div>
+      <div class="top-now"><span id="topIcon">🌦️</span><strong id="topTemp">--°</strong></div>
     </header>
 
     <section class="ops-strip" aria-label="Semafori operativi">
-      <div class="ops-dot"><span id="opsMeteo" class="dot green"></span><small>Meteo</small></div>
-      <div class="ops-dot"><span id="opsLamone" class="dot yellow"></span><small>Lamone</small></div>
-      <div class="ops-dot"><span id="opsAllerte" class="dot green"></span><small>Allerte</small></div>
-      <div class="ops-dot"><span id="opsTemporali" class="dot green"></span><small>Temporali</small></div>
+      <div><span id="opsMeteo" class="dot green"></span><small>Meteo</small></div>
+      <div><span id="opsLamone" class="dot yellow"></span><small>Lamone</small></div>
+      <div><span id="opsAllerte" class="dot green"></span><small>Allerte</small></div>
+      <div><span id="opsTemporali" class="dot green"></span><small>Temporali</small></div>
     </section>
 
-    <section class="command-grid">
-      <article class="command-card status-card">
+    <section class="command-row">
+      <article class="mini-panel situation">
         <div class="label">Situazione</div>
-        <div class="status-line"><span id="statusDot" class="dot green"></span><strong id="statusTitle">Caricamento...</strong></div>
-        <p id="statusText">Sto leggendo i dati meteo della tua zona.</p>
+        <div class="bigline"><span id="statusDot" class="dot green"></span><strong id="statusTitle">Carico...</strong></div>
+        <p id="statusText">Lettura dati in corso.</p>
       </article>
-
-      <article class="command-card index-card">
-        <div class="label">Indice Conte 2.0</div>
-        <div class="index-row"><strong id="conteIndex">--</strong><span>/100</span></div>
+      <article class="mini-panel indice">
+        <div class="label">Indice Conte</div>
+        <div class="score"><strong id="conteIndex">--</strong><span>/100</span></div>
         <b id="conteLevel">--</b>
-        <p id="conteWhy">Analisi in corso.</p>
         <div class="bar"><i id="riskBar"></i></div>
       </article>
-
-      <article class="command-card decision-mini">
-        <div class="label">Decisione Conte</div>
-        <h2 id="decisionTitle">Valutazione...</h2>
-        <p id="decisionText">Appena arrivano i dati preparo una sintesi utile.</p>
-        <button id="analyzeBtn" class="mini-action">🔎 Analizza</button>
+      <article class="mini-panel decisione">
+        <div class="label">Decisione</div>
+        <h2 id="decisionTitle">Valuto...</h2>
+        <p id="decisionText">Sintesi in arrivo.</p>
+        <button id="analyzeBtn">🔎 Analizza</button>
       </article>
     </section>
 
-    <section class="weather-core">
-      <article class="main-temp">
-        <div class="label">Adesso</div>
-        <div class="temp"><span id="tempNow">--</span><small>°C</small></div>
-        <p id="weatherDesc">Aggiornamento dati...</p>
+    <section class="weather-grid">
+      <article class="temp-card">
+        <small>Adesso</small>
+        <strong><span id="tempNow">--</span><em>°C</em></strong>
+        <p id="weatherDesc">Aggiornamento...</p>
       </article>
       <article class="metric"><span>🥵</span><strong id="apparent">--°</strong><small>Percepita</small></article>
       <article class="metric"><span>💧</span><strong id="humidity">--%</strong><small>Umidità</small></article>
-      <article class="metric"><span>💦</span><strong id="dewpoint">--°</strong><small>Punto rugiada</small></article>
+      <article class="metric"><span>💦</span><strong id="dewpoint">--°</strong><small>Rugiada</small></article>
       <article class="metric"><span>🌬️</span><strong id="wind">--</strong><small>Vento</small></article>
       <article class="metric"><span>💨</span><strong id="gust">--</strong><small>Raffica</small></article>
       <article class="metric"><span>📈</span><strong id="pressure">--</strong><small id="pressureTrend">Pressione</small></article>
@@ -85,38 +68,36 @@
     <section id="analysisBox" class="analysis-box" hidden></section>
 
     <section class="territory-grid">
-      <article class="river-card panel-card">
+      <article class="panel-card lamone-card">
         <div class="panel-head"><div><div class="label">Fiumi · Lamone</div><h2>Solo asta Lamone</h2></div><span class="dot yellow"></span></div>
-        <div class="river-quick">
-          <div><small>Fonte</small><strong>sensori ufficiali</strong></div>
-          <div><small>Stato app</small><strong>da verificare</strong></div>
+        <div class="river-mini">
+          <div><small>Fonte</small><b>sensori Lamone</b></div>
+          <div><small>Stato app</small><b>da verificare</b></div>
         </div>
-        <p>Accesso diretto alla pagina con tutti i sensori del Fiume Lamone, più utile della lista generale dei fiumi.</p>
-        <a class="primary-link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📈 Apri dettagli Lamone</a>
+        <p>Accesso diretto ai sensori dell’asta fluviale del Lamone.</p>
+        <a class="primary-link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📈 Dettagli Lamone</a>
       </article>
 
-      <article class="alert-card panel-card">
+      <article class="panel-card alert-card">
         <div class="panel-head"><div><div class="label">Allerte</div><h2>Emilia-Romagna</h2></div><span id="alertDot" class="dot green"></span></div>
-        <div class="alert-mini">
-          <span>🌊 Idraulica</span><span>⛰️ Idrogeo</span><span>⛈️ Temporali</span><span>🌬️ Vento</span>
-        </div>
-        <p>Il dato ufficiale resta il bollettino regionale: qui lo teniamo a un tocco quando serve conferma.</p>
-        <a class="primary-link" href="https://allertameteo.regione.emilia-romagna.it/allerte-e-bollettini" target="_blank" rel="noopener">🛡️ Apri bollettini</a>
+        <div class="alert-mini"><span>🌊 Idr.</span><span>⛰️ Idro.</span><span>⛈️ Temp.</span><span>🌬️ Vento</span></div>
+        <p>Bollettini ufficiali sempre a un tocco.</p>
+        <a class="primary-link" href="https://allertameteo.regione.emilia-romagna.it/allerte-e-bollettini" target="_blank" rel="noopener">🛡️ Bollettini</a>
       </article>
     </section>
 
-    <section class="timeline-hours-grid">
-      <article class="timeline-card panel-card">
+    <section class="risk-hours-grid">
+      <article class="panel-card timeline-card">
         <div class="section-head"><h2>Timeline rischio</h2><button id="refreshBtn">Aggiorna</button></div>
         <div class="timeline" id="riskTimeline"></div>
       </article>
-      <article class="hours-card panel-card">
+      <article class="panel-card hours-card">
         <h2>Prossime ore</h2>
         <div class="hours" id="hourCards"></div>
       </article>
     </section>
 
-    <section class="links-card panel-card">
+    <section class="panel-card links-card">
       <h2>Link rapidi</h2>
       <div class="links-grid">
         <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener">📡 Radar ER</a>
@@ -134,9 +115,9 @@
 
     <footer>
       <span id="updatedAt">Aggiornamento...</span><br>
-      Meteo Conte V8 HARD RESET · sviluppo senza cache
+      Meteo Conte V9 TEST · installabile · sviluppo senza cache pesante
     </footer>
   </main>
-  <script src="app.js?v=8-hard-reset-20260703-1605"></script>
+  <script src="app.js?v=9-ultra-compact-test-20260703-1700"></script>
 </body>
 </html>

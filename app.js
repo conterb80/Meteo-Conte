@@ -1,4 +1,4 @@
-const VERSION = 'v8-compact-20260703';
+const VERSION = 'v9-ultra-compact-test-20260703';
 const LAT = 44.456;
 const LON = 11.978;
 const API = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,apparent_temperature,dew_point_2m,is_day,precipitation,rain,weather_code,surface_pressure,wind_speed_10m,wind_gusts_10m&hourly=temperature_2m,apparent_temperature,dew_point_2m,precipitation_probability,precipitation,weather_code,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_gusts_10m&forecast_days=1&timezone=Europe%2FRome`;
@@ -65,7 +65,7 @@ function render(data){
   $('pressure').textContent = round(c.surface_pressure)+' hPa';
   $('pressureTrend').textContent = pressureTrend(h,start,c.surface_pressure);
   $('rain6h').textContent = round(rain6,1)+' mm';
-  $('weatherDesc').textContent = `${weatherText[c.weather_code] || 'Meteo variabile'} · ${round(popMax)}% pioggia max 6h`;
+  $('weatherDesc').textContent = `${weatherText[c.weather_code] || 'Meteo variabile'} · ${round(popMax)}% pioggia max 6h`; if($('topTemp')) $('topTemp').textContent = round(c.temperature_2m,1)+'°'; if($('topIcon')) $('topIcon').textContent = weatherIcon(c.weather_code);
   $('conteIndex').textContent = risk;
   $('conteLevel').textContent = lv.name;
   $('conteWhy').textContent = whyShort(c,h,start,rain6,popMax);
@@ -146,7 +146,7 @@ $('analyzeBtn').addEventListener('click', analyze);
       const keys = await caches.keys();
       await Promise.all(keys.map(k=>caches.delete(k)));
     }
-    console.log('Meteo Conte V8: cache e service worker disattivati');
+    console.log('Meteo Conte V9: sviluppo senza cache pesante');
   }catch(e){console.warn('Reset cache non completato', e)}
 })();
 load();
