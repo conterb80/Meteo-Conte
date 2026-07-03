@@ -1,13 +1,11 @@
-# Meteo Conte V9 Ultra Compact Test
+# Meteo Conte V10 Plancia di Comando
 
-Versione installabile da testare.
+Versione test installabile senza cache.
 
 Novità:
-- grafica più compatta;
-- prima schermata meno invasiva;
-- situazione, indice e decisione in dashboard;
-- Lamone dedicato con link ai sensori dell'asta fluviale;
-- sviluppo senza cache pesante per aggiornamenti più semplici.
-
-Apri:
-https://conterb80.github.io/Meteo-Conte/index.html?v=9-ultra-compact-test
+- parte alta più compatta;
+- situazione + indice + decisione più densi;
+- ripristino dati, timeline e prossime ore;
+- Lamone dedicato ai sensori dell’asta fluviale;
+- link rapidi mantenuti in fondo;
+- service worker disattivato/svuotato per evitare vecchie versioni.
