@@ -1,15 +1,10 @@
-# Meteo Conte V8 Compact Operativa
+# Meteo Conte V8 HARD RESET
 
-Centro operativo personale per Villanova di Bagnacavallo.
+Versione compatta operativa con reset cache rafforzato.
 
-Novità principali:
-- grafica più compatta e stile dashboard;
-- semafori operativi in alto;
-- Situazione, Indice Conte e Decisione Conte nella prima parte;
-- meteo attuale più denso e leggibile;
-- sezione Lamone dedicata con link diretto ai sensori dell'asta fluviale;
-- Allerte Emilia-Romagna;
-- link Radar ER corretto;
-- sviluppo in modalità NO CACHE.
-
-Caricare tutti i 7 file nella root del repository.
+- grafica più compatta;
+- semafori operativi;
+- Lamone dedicato;
+- Allerte;
+- link rapidi;
+- service worker killer durante sviluppo.

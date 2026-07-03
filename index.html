@@ -4,15 +4,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#061621">
-  <title>Meteo Conte V8 Compact</title>
-  <link rel="icon" href="icon.svg?v=8-compact" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=8-compact-no-cache-20260703">
+  <title>Meteo Conte V8 HARD RESET</title>
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <link rel="icon" href="icon.svg?v=8-hard-reset" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=8-hard-reset-20260703-1605">
+
+  <script>
+    (async()=>{
+      try{
+        if('serviceWorker' in navigator){
+          const regs=await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(r=>r.unregister()));
+        }
+        if('caches' in window){
+          const keys=await caches.keys();
+          await Promise.all(keys.map(k=>caches.delete(k)));
+        }
+      }catch(e){}
+    })();
+  </script>
 </head>
 <body>
   <main class="app-shell">
     <header class="topbar">
       <div class="brand">
-        <div class="version">V8 COMPACT · NO CACHE</div>
+        <div class="version">V8 HARD RESET · COMPACT</div>
         <h1>Meteo Conte</h1>
         <p>Centro operativo personale · Villanova di B.</p>
       </div>
@@ -116,9 +134,9 @@
 
     <footer>
       <span id="updatedAt">Aggiornamento...</span><br>
-      Meteo Conte V8 Compact · sviluppo senza cache
+      Meteo Conte V8 HARD RESET · sviluppo senza cache
     </footer>
   </main>
-  <script src="app.js?v=8-compact-no-cache-20260703"></script>
+  <script src="app.js?v=8-hard-reset-20260703-1605"></script>
 </body>
 </html>
