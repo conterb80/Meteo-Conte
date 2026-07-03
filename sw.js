@@ -1,7 +1,5 @@
-// Meteo Conte V7 NO CACHE - service worker killer
-self.addEventListener('install', event => {
-  self.skipWaiting();
-});
+// Meteo Conte V8 COMPACT - no cache durante lo sviluppo
+self.addEventListener('install', event => self.skipWaiting());
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     if (self.caches) {
