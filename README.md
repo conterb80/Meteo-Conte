@@ -1,13 +1,13 @@
-# Meteo Conte V6
+# Meteo Conte V6 Reset
 
-Cabina meteo personale per Villanova di Bagnacavallo.
+Versione V6 con reset cache/PWA.
 
-Novità V6:
-- Pretemp corretto su `https://pretemp.altervista.org/index.html`
-- Indice Conte 2.0
-- Timeline rischio prossime ore
-- Pulsante Analizza situazione
-- Link rapidi grandi
-- Dati automatici Open-Meteo
+Novità:
+- scritta visibile `V6 RESET CACHE` in alto;
+- service worker che elimina le vecchie cache;
+- link Pretemp corretto: https://pretemp.altervista.org/index.html
+- Indice Conte 2.0;
+- timeline rischio;
+- pulsante Analizza situazione.
 
-Caricare tutti i file nella root del repository GitHub Pages.
+Carica tutti i file nella root del repository.
