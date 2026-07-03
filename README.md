@@ -1,11 +1,11 @@
-# Meteo Conte V10 Plancia di Comando
+# Meteo Conte V11 Test Definitivo
 
-Versione test installabile senza cache.
+Versione compatta per test quotidiano.
 
 Novità:
-- parte alta più compatta;
-- situazione + indice + decisione più densi;
-- ripristino dati, timeline e prossime ore;
-- Lamone dedicato ai sensori dell’asta fluviale;
-- link rapidi mantenuti in fondo;
-- service worker disattivato/svuotato per evitare vecchie versioni.
+- layout anti-trasbordo laterale;
+- prima schermata più compatta;
+- Indice Conte ridotto;
+- timeline e prossime ore ordinate;
+- Lamone dedicato;
+- sviluppo senza cache/service worker.
