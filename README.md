@@ -1,10 +1,8 @@
-# Meteo Conte V13 - Cruscotto Definitivo
+# Meteo Conte V14 Logo Personalizzato
 
-Versione test quasi definitiva.
+Cruscotto definitivo test con logo personalizzato inserito:
 
-- Header molto più compatto
-- Situazione + Indice Conte alleggeriti
-- Decisione Conte protagonista
-- Meteo attuale, Lamone, Allerte, Timeline e link mantenuti
-- Layout anti-trasbordo laterale
-- Sviluppo senza cache
+- icona app/PWA aggiornata;
+- logo nella dashboard in alto;
+- nessuna modifica alle funzioni della V13;
+- sviluppo senza cache per aggiornamenti immediati.

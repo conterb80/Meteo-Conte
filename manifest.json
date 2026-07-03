@@ -1,1 +1,16 @@
-{"name":"Meteo Conte","short_name":"Meteo Conte","start_url":"./index.html?v=12","display":"standalone","background_color":"#061b27","theme_color":"#062231","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml"}]}
+{
+  "name": "Meteo Conte",
+  "short_name": "Meteo Conte",
+  "start_url": "index.html?v=14-logo",
+  "display": "standalone",
+  "background_color": "#061b27",
+  "theme_color": "#062231",
+  "icons": [
+    {
+      "src": "icon.png?v=14",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
