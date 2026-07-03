@@ -2,121 +2,118 @@
 <html lang="it">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#062033" />
-  <title>Meteo Conte V11</title>
-  <link rel="manifest" href="manifest.json?v=11-test-definitivo" />
-  <link rel="icon" href="icon.svg?v=11" />
-  <link rel="stylesheet" href="style.css?v=11-test-definitivo" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#062231" />
+  <title>Meteo Conte V12</title>
+  <link rel="manifest" href="manifest.json?v=12" />
+  <link rel="stylesheet" href="style.css?v=12.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div>
-        <div class="version">V11 TEST · PLANCIA COMPATTA</div>
-        <h1>Meteo Conte</h1>
-        <p>Centro operativo personale · Villanova di B.</p>
+        <div class="version">V12 TEST · PLANCIA COMPATTA</div>
+        <h1>Meteo Conte <span id="headerIcon">☀️</span> <span id="headerTemp">--°</span></h1>
+        <p>Villanova di Bagnacavallo</p>
       </div>
-      <div class="weather-badge"><span id="weatherIcon">☀️</span><b id="headTemp">--°</b></div>
     </header>
 
-    <section class="semafori card thin">
+    <section class="semafori card slim">
       <div><span id="dotMeteo" class="dot green"></span>Meteo</div>
       <div><span id="dotLamone" class="dot yellow"></span>Lamone</div>
       <div><span id="dotAllerte" class="dot green"></span>Allerte</div>
       <div><span id="dotTemporali" class="dot green"></span>Temporali</div>
     </section>
 
-    <section class="command-grid">
-      <article class="card command main-status">
-        <small>Situazione</small>
-        <div class="status-line"><span id="bigDot" class="bigdot green"></span><b id="statusTitle">Valuto...</b></div>
-        <p id="statusText">Carico i dati aggiornati.</p>
+    <section class="status-grid">
+      <article class="card situazione">
+        <span class="label">SITUAZIONE</span>
+        <div class="row-main"><span id="statusDot" class="bigdot green"></span><strong id="statusTitle">Valuto...</strong></div>
+        <p id="statusText">Aggiornamento dati in corso.</p>
       </article>
-      <article class="card command mini-index">
-        <small>Indice Conte</small>
-        <b><span id="conteIndex">--</span><em>/100</em></b>
-        <p id="conteLevel">--</p>
+      <article class="card indice">
+        <span class="label">INDICE CONTE</span>
+        <div><strong id="indiceVal">--</strong><span>/100</span></div>
+        <b id="indiceLabel">--</b>
       </article>
     </section>
 
-    <section class="card decision compact-decision">
+    <section class="card decisione">
       <div>
-        <small>Decisione Conte</small>
-        <h2 id="decisionTitle">Sintesi in arrivo</h2>
-        <p id="decisionText">Appena caricati i dati ti dico cosa guardare.</p>
+        <span class="label">DECISIONE CONTE</span>
+        <h2 id="decisionTitle">Valuto...</h2>
+        <p id="decisionText">Sintesi in arrivo.</p>
       </div>
       <button id="analyzeBtn">🔎 Analizza</button>
     </section>
 
     <section class="card meteo-now">
-      <div class="now-row">
-        <small>Adesso</small>
-        <div class="temp-big"><span id="tempNow">--</span><sup>°C</sup></div>
-        <p id="weatherDesc">--</p>
+      <div class="now-head">
+        <span class="label">ADESSO</span>
+        <strong id="tempNow">--°</strong>
+        <p id="nowDesc">--</p>
       </div>
-      <div class="metric-grid">
+      <div class="metrics">
         <div class="metric">🥵 <b id="feels">--°</b><span>Percepita</span></div>
-        <div class="metric">💧 <b id="humidity">--%</b><span>Umidità</span></div>
+        <div class="metric">💧 <b id="hum">--%</b><span>Umidità</span></div>
         <div class="metric">💦 <b id="dew">--°</b><span>Rugiada</span></div>
         <div class="metric">🌬️ <b id="wind">-- km/h</b><span>Vento</span></div>
         <div class="metric">💨 <b id="gust">-- km/h</b><span>Raffica</span></div>
-        <div class="metric">📈 <b id="pressure">-- hPa</b><span>Pressione</span></div>
-        <div class="metric wide">☔ <b id="rain6">-- mm</b><span>Pioggia 6h</span></div>
+        <div class="metric">📈 <b id="press">-- hPa</b><span>Pressione →</span></div>
+        <div class="metric">☔ <b id="rain6">-- mm</b><span>Pioggia 6h</span></div>
       </div>
     </section>
 
-    <section id="analysisBox" class="card analysis-box hidden"></section>
+    <section id="analysisBox" class="card analysis hidden"></section>
 
-    <section class="two-col">
-      <article class="card lamone-card">
-        <div class="card-head"><small>Fiumi · Lamone</small><span class="dot yellow"></span></div>
-        <h2>Solo asta Lamone</h2>
-        <div class="river-mini">
-          <div><span>Fonte</span><b>Sensori Lamone</b></div>
-          <div><span>Stato app</span><b>da verificare</b></div>
-        </div>
-        <p>Accesso diretto ai sensori dell’asta fluviale del Lamone.</p>
-        <a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📈 Dettagli Lamone</a>
+    <section class="card river">
+      <span class="label">FIUMI · LAMONE</span><span class="cornerdot yellow"></span>
+      <h2>Solo asta Lamone</h2>
+      <div class="mini-grid">
+        <div><span>Fonte</span><b>Sensori Lamone</b></div>
+        <div><span>Stato app</span><b>da verificare</b></div>
+      </div>
+      <p>Accesso diretto ai sensori dell’asta fluviale del Lamone.</p>
+      <a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📈 Dettagli Lamone</a>
+    </section>
+
+    <section class="card alerts">
+      <span class="label">ALLERTE</span><span class="cornerdot green"></span>
+      <h2>Emilia-Romagna</h2>
+      <div class="pillrow"><span>🌊 Idr.</span><span>⛰️ Idro.</span><span>⛈️ Temp.</span><span>🌬️ Vento</span></div>
+      <p>Bollettini ufficiali sempre a un tocco.</p>
+      <a class="btn" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🛡️ Bollettini</a>
+    </section>
+
+    <section class="split-row">
+      <article class="card timeline">
+        <div class="section-head"><h2>Timeline rischio</h2><button id="refreshBtn">Aggiorna</button></div>
+        <div id="riskTimeline" class="riskline"></div>
       </article>
-
-      <article class="card alerts-card">
-        <div class="card-head"><small>Allerte</small><span class="dot green"></span></div>
-        <h2>Emilia-Romagna</h2>
-        <div class="chips"><span>🌊 Idr.</span><span>⛰️ Idro.</span><span>⛈️ Temp.</span><span>🌬️ Vento</span></div>
-        <p>Bollettini ufficiali sempre a un tocco.</p>
-        <a class="btn" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🛡️ Bollettini</a>
+      <article class="card forecast">
+        <h2>Prossime ore</h2>
+        <div id="hours" class="hours"></div>
       </article>
     </section>
 
-    <section class="card timeline-card">
-      <div class="section-title"><h2>Timeline rischio</h2><button id="refreshBtn">Aggiorna</button></div>
-      <div id="riskTimeline" class="risk-line"></div>
-    </section>
-
-    <section class="card hours-card">
-      <h2>Prossime ore</h2>
-      <div id="hourlyGrid" class="hourly-grid"></div>
-    </section>
-
-    <section class="card links-card">
+    <section class="card links">
       <h2>Link rapidi</h2>
-      <div class="links-grid">
-        <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank">📡 Radar ER</a>
-        <a href="https://map.blitzortung.org/#8/44.5/11.8" target="_blank">⚡ Fulmini</a>
-        <a href="https://www.windy.com/44.42/11.98?radar,44.42,11.98,8" target="_blank">🌬️ Windy</a>
-        <a href="https://pretemp.altervista.org/index.html" target="_blank">⛈️ Pretemp</a>
-        <a href="https://www.meteoam.it/it/satellite" target="_blank">🛰️ Satellite</a>
-        <a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank">🌊 Lamone</a>
-        <a href="https://allertameteo.regione.emilia-romagna.it/monitoraggio-eventi" target="_blank">🌊 Fiumi ER</a>
-        <a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank">🌦️ Arpae</a>
-        <a href="https://www.meteoam.it/it/meteo-citta/bagnacavallo" target="_blank">🛰️ MeteoAM</a>
-        <a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank">🚨 Allerte ER</a>
+      <div class="linkgrid">
+        <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener">📡 Radar ER</a>
+        <a href="https://www.lightningmaps.org/" target="_blank" rel="noopener">⚡ Fulmini</a>
+        <a href="https://www.windy.com/?44.42,11.98,8" target="_blank" rel="noopener">🌬️ Windy</a>
+        <a href="https://pretemp.altervista.org/index.html" target="_blank" rel="noopener">⛈️ Pretemp</a>
+        <a href="https://www.meteoam.it/it/satellite/italia" target="_blank" rel="noopener">🛰️ Satellite</a>
+        <a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">🌊 Lamone</a>
+        <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 Fiumi ER</a>
+        <a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank" rel="noopener">🌦️ Arpae</a>
+        <a href="https://www.meteoam.it/it/home" target="_blank" rel="noopener">🛰️ MeteoAM</a>
+        <a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🚨 Allerte ER</a>
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updatedAt">--:--</span><br>Meteo Conte V11 · sviluppo senza cache</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V12 · test senza cache</footer>
   </main>
-  <script src="app.js?v=11-test-definitivo"></script>
+  <script src="app.js?v=12.0.0"></script>
 </body>
 </html>

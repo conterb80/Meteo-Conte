@@ -1,11 +1,5 @@
-# Meteo Conte V11 Test Definitivo
+# Meteo Conte V12 Plancia Compatta
 
-Versione compatta per test quotidiano.
+Versione test installabile con layout più compatto e anti-trasbordo laterale.
 
-Novità:
-- layout anti-trasbordo laterale;
-- prima schermata più compatta;
-- Indice Conte ridotto;
-- timeline e prossime ore ordinate;
-- Lamone dedicato;
-- sviluppo senza cache/service worker.
+Apri: https://conterb80.github.io/Meteo-Conte/index.html?v=12-plancia-compatta
