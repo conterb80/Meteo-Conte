@@ -1,13 +1,12 @@
-# Meteo Conte V6 Reset
+# Meteo Conte V7
 
-Versione V6 con reset cache/PWA.
+Centro operativo personale per Villanova di Bagnacavallo.
 
 Novità:
-- scritta visibile `V6 RESET CACHE` in alto;
-- service worker che elimina le vecchie cache;
-- link Pretemp corretto: https://pretemp.altervista.org/index.html
+- grafica più compatta ma leggibile;
+- sezione Fiumi/Lamone;
+- sezione Allerte;
 - Indice Conte 2.0;
-- timeline rischio;
-- pulsante Analizza situazione.
-
-Carica tutti i file nella root del repository.
+- Analizza situazione;
+- link radar corretto;
+- cache PWA resettata con nuovo service worker.
