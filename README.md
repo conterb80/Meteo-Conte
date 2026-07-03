@@ -1,5 +1,10 @@
-# Meteo Conte V12 Plancia Compatta
+# Meteo Conte V13 - Cruscotto Definitivo
 
-Versione test installabile con layout più compatto e anti-trasbordo laterale.
+Versione test quasi definitiva.
 
-Apri: https://conterb80.github.io/Meteo-Conte/index.html?v=12-plancia-compatta
+- Header molto più compatto
+- Situazione + Indice Conte alleggeriti
+- Decisione Conte protagonista
+- Meteo attuale, Lamone, Allerte, Timeline e link mantenuti
+- Layout anti-trasbordo laterale
+- Sviluppo senza cache
