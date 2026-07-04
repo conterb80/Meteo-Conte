@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#062231" />
-  <title>Meteo Conte V15</title>
-  <link rel="manifest" href="manifest.json?v=15" />
-  <link rel="icon" type="image/png" href="icon.png?v=15" />
-  <link rel="stylesheet" href="style.css?v=15.0.0" />
+  <title>Meteo Conte V16</title>
+  <link rel="manifest" href="manifest.json?v=16" />
+  <link rel="icon" type="image/png" href="icon.png?v=16" />
+  <link rel="stylesheet" href="style.css?v=16.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=15" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=16" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -22,14 +22,14 @@
       <div class="head-weather"><span id="headerIcon">☀️</span><b id="headerTemp">--°</b></div>
     </header>
 
-    <section class="semafori card slim" aria-label="Semafori operativi">
+    <section class="semafori card slim smartbar" aria-label="Semafori operativi">
       <button class="sem" data-jump="meteoNow"><span id="dotMeteo" class="dot green"></span><small>Meteo</small></button>
       <button class="sem" data-jump="lamoneCard"><span id="dotLamone" class="dot green"></span><small>Lamone</small></button>
       <button class="sem" data-jump="alertsCard"><span id="dotAllerte" class="dot green"></span><small>Allerte</small></button>
       <button class="sem" data-jump="timelineCard"><span id="dotTemporali" class="dot green"></span><small>Temporali</small></button>
     </section>
 
-    <section class="top-status card">
+    <section class="top-status card status-v16">
       <div class="status-mini">
         <span id="statusDot" class="bigdot green"></span>
         <div>
@@ -38,14 +38,14 @@
           <p id="statusText">Aggiornamento dati in corso.</p>
         </div>
       </div>
-      <div class="indice-mini" id="indiceCard" role="button" tabindex="0" data-trend="indice">
-        <span>Indice Conte</span>
+      <button class="indice-mini" id="indiceCard" type="button" data-trend="indice" aria-label="Apri spiegazione Indice Conte">
+        <span>Indice</span>
         <b><span id="indiceVal">--</span><small>/100</small></b>
         <em id="indiceLabel">--</em>
-      </div>
+      </button>
     </section>
 
-    <section class="card decisione decisione-compact">
+    <section class="card decisione decisione-v16">
       <div>
         <span class="label">DECISIONE CONTE</span>
         <h2 id="decisionTitle">Valuto...</h2>
@@ -62,12 +62,7 @@
         <strong id="tempNow">--°</strong>
         <p id="nowDesc">--</p>
       </div>
-      <div class="trend-shortcuts" aria-label="Apri approfondimenti">
-        <button data-trend="temperatura">🌡️ Temperature</button>
-        <button data-trend="pioggia">☔ Pioggia</button>
-        <button data-trend="vento">🌬️ Vento</button>
-        <button data-trend="pressione">📈 Pressione</button>
-      </div>
+      <p class="tap-hint">Tocca un riquadro per aprire il trend rapido.</p>
       <div class="metrics">
         <button class="metric" data-trend="temperatura">🥵 <b id="feels">--°</b><span>Percepita</span></button>
         <button class="metric" data-trend="umidita">💧 <b id="hum">--%</b><span>Umidità</span></button>
@@ -126,8 +121,8 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V15 · dashboard operativa</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V16 · dashboard operativa</footer>
   </main>
-  <script src="app.js?v=15.0.0"></script>
+  <script src="app.js?v=16.0.0"></script>
 </body>
 </html>

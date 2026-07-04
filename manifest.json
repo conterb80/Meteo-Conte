@@ -1,9 +1,9 @@
 {
   "name":"Meteo Conte",
   "short_name":"Meteo Conte",
-  "start_url":"index.html?v=15-dashboard-operativa",
+  "start_url":"index.html?v=16-dashboard-operativa",
   "display":"standalone",
   "background_color":"#061b27",
   "theme_color":"#062231",
-  "icons":[{"src":"icon.png?v=15","sizes":"512x512","type":"image/png"}]
+  "icons":[{"src":"icon.png?v=16","sizes":"512x512","type":"image/png"}]
 }
