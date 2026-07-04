@@ -81,3 +81,15 @@
   .metric{padding:7px 22px 7px 8px}.metric b{font-size:19px}.metric span{font-size:13px}
   .app-logo{width:60px;height:60px}.logo-head p{font-size:16px}.head-weather b{font-size:28px}.head-weather{font-size:27px}
 }
+/* V18 trend grafici */
+.main-temp-btn{grid-area:temp;display:flex;align-items:center;justify-content:flex-end;gap:4px;border:0;background:transparent;color:var(--txt);padding:0;margin:0;box-shadow:none;cursor:pointer;min-width:0}
+.main-temp-btn strong{font-size:48px;letter-spacing:-.06em;line-height:1;display:block}
+.main-temp-btn .now-arrow{font-size:24px;color:#9fb2bf;opacity:.8;margin-left:2px}
+.main-temp-btn:active,.metric:active,.sem:active{transform:scale(.985);filter:brightness(1.08)}
+.trend-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:2px}
+.trend-head h2{margin:0;font-size:24px}
+.closeTrend{width:36px;height:36px;padding:0;display:grid;place-items:center;background:#ffffff10;color:var(--txt);border:1px solid var(--line);box-shadow:none;font-size:24px;line-height:1}
+.spark-card{border:1px solid var(--line);background:#ffffff08;border-radius:18px;padding:6px 4px 2px;margin:8px 0 8px;overflow:hidden}
+.spark-card svg{width:100%;height:auto;display:block}.spark-card .area{fill:url(#none);fill:#6fe09a22}.spark-card .line{fill:none;stroke:var(--lime);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}.spark-card circle{fill:var(--green);stroke:#eafff2;stroke-width:1}.spark-card text{fill:#eff9ff;font-size:11px;font-weight:750}.spark-card text.time{fill:#b8c9d4;font-size:10px;font-weight:500}.trend-list.mini{gap:5px}.trend-row.compact{grid-template-columns:52px 1fr auto;padding:6px 9px}.trend-row.compact b{font-size:15px}
+@media(max-width:430px){.main-temp-btn strong{font-size:45px}.trend-head h2{font-size:23px}.spark-card text{font-size:10.5px}.spark-card text.time{font-size:9.5px}}
+@media(max-width:370px){.main-temp-btn{justify-content:flex-start}.main-temp-btn strong{font-size:38px}}

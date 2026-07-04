@@ -1,3 +1,3 @@
-# Meteo Conte V17 Home Interattiva
+# Meteo Conte V18
 
-Dashboard rifinita: temperatura principale cliccabile, riquadri trend coerenti, barra operativa pronta e layout senza nuove sezioni.
+Home interattiva con temperatura principale cliccabile e trend grafici compatti.

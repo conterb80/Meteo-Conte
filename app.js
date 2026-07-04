@@ -29,26 +29,46 @@ async function load(){
 }
 function renderRisk(h,base){$('riskTimeline').innerHTML=''; for(let i=1;i<=4;i++){const p=h.precipitation_probability[i]||0;const risk=Math.max(base,p);const c=risk>=50?'yellow':'green'; const text=risk>=50?'attenzione':risk>=25?'monitorare':'tranquillo'; $('riskTimeline').insertAdjacentHTML('beforeend',`<div class="riskitem"><span class="rball ${c}"></span><small>+${i}h</small><b>${text}</b></div>`)} }
 function renderHours(h){$('hours').innerHTML=''; const start=nextStart(h.time); h.time.slice(start,start+6).forEach((t,i)=>{const k=start+i;const d=new Date(t); const code=h.weather_code[k]; const icon=(WMO[code]||['','☀️'])[1]; $('hours').insertAdjacentHTML('beforeend',`<div class="hour"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><b>${Math.round(h.temperature_2m[k])}°</b><span>${icon}</span><small>${h.precipitation_probability[k]}% · ${h.precipitation[k].toFixed(1)}mm</small></div>`)});}
+function makeChart(vals,times,unit,type){
+ const w=320,h=138,padX=18,padY=22;
+ const min=Math.min(...vals), max=Math.max(...vals), span=(max-min)||1;
+ const pts=vals.map((v,i)=>{
+   const x=padX + i*((w-padX*2)/(Math.max(vals.length-1,1)));
+   const y=h-padY - ((v-min)/span)*(h-padY*2);
+   return {x,y,v,i};
+ });
+ const line=pts.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
+ const area=line + ` L ${pts[pts.length-1].x.toFixed(1)} ${h-padY} L ${pts[0].x.toFixed(1)} ${h-padY} Z`;
+ const lab=pts.map((p,idx)=>{
+   const d=new Date(times[idx]);
+   const t=d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+   const val=(type==='pressione'||type==='vento'||type==='umidita'||type==='pioggia')?Math.round(p.v):Math.round(p.v*10)/10;
+   return `<g><circle cx="${p.x}" cy="${p.y}" r="4"></circle><text x="${p.x}" y="${Math.max(12,p.y-9)}" text-anchor="middle">${val}${unit}</text><text x="${p.x}" y="${h-4}" text-anchor="middle" class="time">${t}</text></g>`;
+ }).join('');
+ return `<div class="spark-card"><svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Grafico trend"><path class="area" d="${area}"></path><path class="line" d="${line}"></path>${lab}</svg></div>`;
+}
 function openTrend(type){
  if(!lastData) return; const h=lastData.hourly; const start=nextStart(h.time); const box=$('trendBox');
- const labels={temperatura:'Trend temperature',pioggia:'Trend pioggia',vento:'Trend vento e raffiche',pressione:'Trend pressione',umidita:'Umidità e rugiada',indice:'Indice Conte'};
- let rows='', intro='';
+ const labels={temperatura:'Trend temperatura',pioggia:'Trend pioggia',vento:'Trend vento e raffiche',pressione:'Trend pressione',umidita:'Umidità e rugiada',indice:'Indice Conte'};
+ let rows='', intro='', graph='';
  if(type==='indice'){
-  intro=`Indice ${lastIndex}/100: ${lastLevel?.[1]||'--'}. Tocca i dati meteo per vedere i trend collegati.`;
+  intro=`Indice ${lastIndex}/100: ${lastLevel?.[1]||'--'}. Sintesi dei fattori principali.`;
   rows=[['Pioggia 6h',$('rain6').textContent],['Vento',$('wind').textContent],['Raffica',$('gust').textContent],['Pressione',$('press').textContent]].map(x=>`<div class="trend-row"><time>${x[0]}</time><div class="bar"><i style="width:25%"></i></div><b>${x[1]}</b></div>`).join('');
  } else {
   const cfg={
-   temperatura:['temperature_2m','°','Temperatura prevista nelle prossime ore.'],
-   pioggia:['precipitation_probability','%','Probabilità di pioggia oraria.'],
-   vento:['wind_gusts_10m',' km/h','Raffica prevista.'],
+   temperatura:['temperature_2m','°','Temperatura prevista nelle prossime ore. Utile per capire calo serale, notte e picchi.'],
+   pioggia:['precipitation_probability','%','Probabilità di pioggia nelle prossime ore.'],
+   vento:['wind_gusts_10m',' km/h','Raffiche previste nelle prossime ore.'],
    pressione:['pressure_msl',' hPa','Pressione prevista nelle prossime ore.'],
    umidita:['relative_humidity_2m','%','Umidità prevista nelle prossime ore.']
   }[type] || ['temperature_2m','°','Trend rapido.'];
-  const vals=h[cfg[0]].slice(start,start+6); const min=Math.min(...vals), max=Math.max(...vals); intro=cfg[2];
-  rows=vals.map((v,i)=>{const d=new Date(h.time[start+i]); const pct=max===min?50:((v-min)/(max-min))*90+10; const val=(cfg[0]==='pressure_msl'||cfg[0].includes('wind')||cfg[0].includes('humidity')||cfg[0].includes('probability'))?Math.round(v):Math.round(v*10)/10; return `<div class="trend-row"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><div class="bar"><i style="width:${pct}%"></i></div><b>${val}${cfg[1]}</b></div>`}).join('');
+  const vals=h[cfg[0]].slice(start,start+6); const times=h.time.slice(start,start+6); const min=Math.min(...vals), max=Math.max(...vals); intro=cfg[2];
+  graph=makeChart(vals,times,cfg[1],type);
+  rows=vals.map((v,i)=>{const d=new Date(times[i]); const pct=max===min?50:((v-min)/(max-min))*90+10; const val=(cfg[0]==='pressure_msl'||cfg[0].includes('wind')||cfg[0].includes('humidity')||cfg[0].includes('probability'))?Math.round(v):Math.round(v*10)/10; return `<div class="trend-row compact"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><div class="bar"><i style="width:${pct}%"></i></div><b>${val}${cfg[1]}</b></div>`}).join('');
  }
- box.innerHTML=`<h2>${labels[type]||'Trend'}</h2><p>${intro}</p><div class="trend-list">${rows}</div>`;
+ box.innerHTML=`<div class="trend-head"><h2>${labels[type]||'Trend'}</h2><button class="closeTrend" type="button" aria-label="Chiudi trend">×</button></div><p>${intro}</p>${graph}<div class="trend-list ${graph?'mini':''}">${rows}</div>`;
  box.classList.remove('hidden'); box.scrollIntoView({behavior:'smooth',block:'start'});
+ box.querySelector('.closeTrend')?.addEventListener('click',()=>box.classList.add('hidden'));
 }
 $('analyzeBtn').addEventListener('click',()=>{$('analysisBox').classList.toggle('hidden');}); $('refreshBtn').addEventListener('click',load);
 document.querySelectorAll('[data-trend]').forEach(el=>{
