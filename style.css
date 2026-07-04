@@ -123,3 +123,17 @@
 .river-chart svg{width:100%;height:82px;display:block}.river-chart .river-line{fill:none;stroke:var(--lime);stroke-width:5;stroke-linecap:round}.river-chart .river-area{fill:#6fe09a22}.river-chart circle{fill:var(--green);stroke:#dfffee;stroke-width:1.5}.river-chart text{font-size:11px;fill:#bdd0dc}
 .river-actions{display:grid;grid-template-columns:1.4fr .9fr;gap:8px}.river-actions .btn{margin:0}.btn.secondary{background:#ffffff0c;color:var(--txt);border:1px solid var(--line);box-shadow:none}
 @media(max-width:430px){.river-status h2{font-size:26px}.river-status p{font-size:15px}.river-decision strong{font-size:19px}.river-actions{grid-template-columns:1fr}.river-chart svg{height:76px}}
+
+/* V21 - Lamone Step 2 */
+.river-info{min-width:0;border:1px solid var(--line);background:#ffffff08;border-radius:16px;padding:8px 10px;text-align:left}
+.river-info span{display:block;color:var(--muted);font-size:14px}.river-info b{font-size:18px}
+.river-chart.interactive{width:100%;color:var(--txt);text-align:left;box-shadow:none;cursor:pointer}
+.river-chart.interactive:active{transform:scale(.99);filter:brightness(1.07)}
+.river-chart svg{height:100px!important}
+.river-detail{border:1px solid var(--line);background:#ffffff08;border-radius:18px;padding:10px;margin:8px 0 10px;animation:trendIn .2s ease-out}
+.river-detail-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.river-detail-head b{font-size:18px}.river-detail-head button{width:34px;height:34px;padding:0;background:#ffffff10;color:var(--txt);border:1px solid var(--line);box-shadow:none;font-size:22px;display:grid;place-items:center}
+.river-detail p{font-size:14px;margin:0 0 8px;color:#dce8ef}
+.river-values{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.river-values span{border:1px solid var(--line);background:#ffffff08;border-radius:14px;padding:7px;text-align:center;color:var(--muted);font-size:13px}.river-values b{display:block;color:var(--green);font-size:15px}
+.river-actions .btn{padding:10px 12px;font-size:16px}
+@media(max-width:430px){.river-chart svg{height:92px!important}.river-values span{font-size:12px}.river-actions .btn{font-size:15.5px}}

@@ -77,11 +77,12 @@ document.querySelectorAll('[data-trend]').forEach(el=>{
 });
 document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>$(el.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'})));
 
-document.querySelectorAll('[data-river-info]').forEach(el=>el.addEventListener('click',()=>{
-  const box=$('trendBox');
-  box.innerHTML=`<div class="trend-head"><h2>Lamone</h2><button class="closeTrend" type="button" aria-label="Chiudi trend">×</button></div><p>Per ora Meteo Conte usa il collegamento diretto ai sensori ufficiali. Il prossimo passo sarà leggere livelli, soglie e andamento direttamente nella dashboard.</p>`;
-  box.classList.remove('hidden'); box.scrollIntoView({behavior:'smooth',block:'start'});
-  box.querySelector('.closeTrend')?.addEventListener('click',()=>box.classList.add('hidden'));
-}));
+$('riverChartBtn')?.addEventListener('click',()=>{
+  $('riverDetail')?.classList.toggle('hidden');
+});
+$('closeRiverDetail')?.addEventListener('click',(e)=>{
+  e.stopPropagation();
+  $('riverDetail')?.classList.add('hidden');
+});
 
 load();

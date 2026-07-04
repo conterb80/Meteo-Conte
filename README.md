@@ -1,3 +1,3 @@
-# Meteo Conte V20
+# Meteo Conte V21 - Lamone Step 2
 
-Lamone Step 1: cruscotto Lamone più operativo, grafica mantenuta e nessuna modifica alla Home.
+Dashboard Lamone rifinita: niente riquadro informativo extra, mini grafico più leggibile e dettaglio trend integrato.
