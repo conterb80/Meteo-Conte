@@ -1,3 +1,3 @@
-# Meteo Conte V22
+# Meteo Conte V23 Hard Reset Smart
 
-Lamone Smart: indice Lamone predisposto, stato dinamico su rischio meteo locale e schermata Lamone rifinita.
+Versione hard reset: index autosufficiente, cache disattivata, Lamone smart e home stabile.
