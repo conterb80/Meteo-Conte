@@ -137,3 +137,9 @@
 .river-values{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.river-values span{border:1px solid var(--line);background:#ffffff08;border-radius:14px;padding:7px;text-align:center;color:var(--muted);font-size:13px}.river-values b{display:block;color:var(--green);font-size:15px}
 .river-actions .btn{padding:10px 12px;font-size:16px}
 @media(max-width:430px){.river-chart svg{height:92px!important}.river-values span{font-size:12px}.river-actions .btn{font-size:15.5px}}
+
+/* V25 - Lamone link attivi */
+.river-info.river-link{display:block;text-decoration:none;color:var(--txt);position:relative;cursor:pointer}
+.river-info.river-link em{position:absolute;right:10px;top:10px;font-style:normal;color:var(--muted);font-size:12px;opacity:.85}
+.river-info.river-link:active{transform:scale(.98);background:#ffffff12}
+button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}

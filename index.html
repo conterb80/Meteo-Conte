@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#062231" />
-  <title>Meteo Conte V24</title>
-  <link rel="manifest" href="manifest.json?v=24" />
-  <link rel="icon" type="image/png" href="icon.png?v=24" />
-  <link rel="stylesheet" href="style.css?v=24.0.0" />
+  <title>Meteo Conte V25</title>
+  <link rel="manifest" href="manifest.json?v=25" />
+  <link rel="icon" type="image/png" href="icon.png?v=25" />
+  <link rel="stylesheet" href="style.css?v=25.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=24" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=25" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -85,7 +85,7 @@
         <span class="river-dot green"></span>
         <div>
           <h2>Lamone monitorato</h2>
-          <p>Accesso rapido ai sensori ufficiali dell’asta fluviale. Lettura automatica livelli non ancora collegata.</p>
+          <p>Accesso rapido ai sensori ufficiali dell’asta fluviale. Accesso diretto ai sensori ufficiali. Lettura automatica livelli in preparazione.</p>
         </div>
       </div>
 
@@ -96,24 +96,24 @@
       </div>
 
       <div class="mini-grid compact-mini river-mini">
-        <div class="river-info"><span>📡 Fonte</span><b>Sensori Lamone</b></div>
-        <div class="river-info"><span>🟢 Stato app</span><b id="lamoneState">link pronto</b></div>
+        <a class="river-info river-link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener"><span>📡 Fonte</span><b>Sensori Lamone</b><em>apri ↗</em></a>
+        <button id="riverStateBtn" class="river-info river-link" type="button"><span>🟢 Stato app</span><b id="lamoneState">link attivo</b><em>info</em></button>
       </div>
 
       <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri trend Lamone">
-        <div class="river-chart-head"><b>Trend Lamone</b><span>tocca per dettaglio</span></div>
+        <div class="river-chart-head"><b>Andamento Lamone</b><span>anteprima · tocca</span></div>
         <svg viewBox="0 0 320 96" aria-hidden="true">
           <path class="river-area" d="M18 66 C72 65 122 65 172 64 C220 63 260 62 302 61 L302 86 L18 86 Z"></path>
           <path class="river-line" d="M18 66 C72 65 122 65 172 64 C220 63 260 62 302 61"></path>
           <circle cx="18" cy="66" r="4"></circle><circle cx="172" cy="64" r="4"></circle><circle cx="302" cy="61" r="4"></circle>
-          <text x="18" y="92" text-anchor="middle">ora</text><text x="172" y="92" text-anchor="middle">+3h</text><text x="302" y="92" text-anchor="middle">+6h</text>
+          <text x="18" y="92" text-anchor="middle">ora</text><text x="172" y="92" text-anchor="middle">ultime ore</text><text x="302" y="92" text-anchor="middle">trend</text>
         </svg>
       </button>
 
       <div id="riverDetail" class="river-detail hidden">
-        <div class="river-detail-head"><b>Dettaglio trend</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
-        <p>Anteprima pronta. Il prossimo passo sarà collegare livello reale, soglie e andamento dai sensori.</p>
-        <div class="river-values"><span>ora <b>stabile</b></span><span>+3h <b>stabile</b></span><span>+6h <b>stabile</b></span></div>
+        <div class="river-detail-head"><b>Dettaglio andamento</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
+        <p>Per ora è una struttura pronta: qui entreranno livello reale, ultimo aggiornamento, soglie e variazione nelle ultime ore.</p>
+        <div class="river-values"><span>Livello <b>da collegare</b></span><span>Tendenza <b>stabile</b></span><span>Soglie <b>da leggere</b></span></div>
       </div>
 
       <div class="river-actions">

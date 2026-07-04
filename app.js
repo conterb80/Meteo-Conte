@@ -85,4 +85,13 @@ $('closeRiverDetail')?.addEventListener('click',(e)=>{
   $('riverDetail')?.classList.add('hidden');
 });
 
+$('riverStateBtn')?.addEventListener('click',()=>{
+  const d=$('riverDetail');
+  if(d){
+    d.classList.remove('hidden');
+    d.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+});
+
+
 load();

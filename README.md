@@ -1,6 +1,7 @@
-# Meteo Conte V24 - Fix Layout
+# Meteo Conte V25 - Lamone link attivi
 
-Versione correttiva: ripristina il layout stabile della V21 e mantiene il blocco Lamone step 2, evitando lo sballamento grafico della V23.
-
-Apri con:
-https://conterb80.github.io/Meteo-Conte/index.html?v=24-fix-layout
+- Link Dettagli Lamone attivo
+- Fiumi ER attivo
+- Box Fonte cliccabile
+- Stato app con info
+- Andamento Lamone rinominato come anteprima, non previsione reale
