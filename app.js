@@ -51,6 +51,9 @@ function openTrend(type){
  box.classList.remove('hidden'); box.scrollIntoView({behavior:'smooth',block:'start'});
 }
 $('analyzeBtn').addEventListener('click',()=>{$('analysisBox').classList.toggle('hidden');}); $('refreshBtn').addEventListener('click',load);
-document.querySelectorAll('[data-trend]').forEach(el=>el.addEventListener('click',()=>openTrend(el.dataset.trend)));
+document.querySelectorAll('[data-trend]').forEach(el=>{
+  el.addEventListener('click',()=>openTrend(el.dataset.trend));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend(el.dataset.trend)}});
+});
 document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>$(el.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'})));
 load();

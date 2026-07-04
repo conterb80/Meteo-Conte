@@ -1,7 +1,3 @@
-# Meteo Conte V16 Dashboard Operativa
+# Meteo Conte V17 Home Interattiva
 
-- Home più compatta
-- Lamone verde di default
-- Situazione e Decisione Conte ridotte
-- Card meteo cliccabili per trend rapidi
-- Sviluppo senza cache
+Dashboard rifinita: temperatura principale cliccabile, riquadri trend coerenti, barra operativa pronta e layout senza nuove sezioni.
