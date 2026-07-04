@@ -1,53 +1,163 @@
 <!doctype html>
 <html lang="it">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#062231" />
-<title>Meteo Conte V23</title>
-<link rel="manifest" href="manifest.json?v=23-hard-reset" />
-<link rel="icon" type="image/png" href="icon.png?v=23-hard-reset" />
-<style>
-:root{--bg:#061e2b;--card:#0b3041d9;--card2:#103d52d9;--line:#2e6175;--text:#f7fbff;--muted:#a9c1ca;--green:#6fe090;--yellow:#ffd85a;--orange:#ff9e45;--red:#ff5d5d;--accent:#9bf067}*{box-sizing:border-box}html,body{margin:0;background:linear-gradient(180deg,#0b5a72 0,#062532 24%,#041821 100%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}body{overscroll-behavior-y:none}.app{width:min(720px,100%);margin:auto;padding:18px 14px 36px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px}.brand{display:flex;align-items:center;gap:14px;min-width:0}.logo{width:74px;height:74px;border-radius:18px;object-fit:cover;box-shadow:0 8px 24px #0007}.brand h1{display:none}.brand p{font-size:26px;line-height:1.15;margin:0;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.weatherHead{font-size:42px;font-weight:750;display:flex;align-items:center;gap:8px}.weatherHead span{font-size:42px}.card{border:1px solid rgba(157,205,221,.18);background:linear-gradient(180deg,rgba(15,61,82,.82),rgba(7,40,54,.86));border-radius:26px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 12px 34px #00131b55;margin:12px 0;padding:22px}.semafori{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:9px 10px;border-radius:22px;background:rgba(4,24,35,.58)}.sem{border:0;background:transparent;color:var(--muted);font:inherit;display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 2px;border-radius:16px}.sem:active,.tap:active,.btn:active{transform:scale(.98);filter:brightness(1.12)}.dot,.corner{display:inline-block;width:24px;height:24px;border-radius:50%;background:var(--green)}.dot.yellow,.corner.yellow,.bigdot.yellow{background:var(--yellow)}.dot.orange,.corner.orange,.bigdot.orange{background:var(--orange)}.dot.red,.corner.red,.bigdot.red{background:var(--red)}.status{display:grid;grid-template-columns:1fr 154px;gap:12px;padding:18px}.statusMain{display:flex;align-items:center;gap:18px;min-width:0}.bigdot{width:72px;height:72px;border-radius:50%;background:var(--green);flex:0 0 auto}.label{display:block;color:#c5dce4;letter-spacing:.35em;font-size:15px;font-weight:800;margin-bottom:6px}.status strong{font-size:38px;line-height:1.05}.status p{font-size:25px;line-height:1.2;color:#d6e3e9;margin:8px 0 0}.indice{border-left:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;text-align:center}.indice .label{font-size:13px;letter-spacing:.3em}.indice b{font-size:52px;color:var(--green)}.indice span{font-size:27px;color:#cfe0e7}.indice small{display:block;color:var(--green);font-weight:800;font-size:20px}.decision{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:16px 22px}.decision h2{font-size:31px;line-height:1.08;margin:0}.decision p{font-size:24px;line-height:1.2;color:#d8e6ec;margin:8px 0 0}.btn{display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(100deg,#69df91,#b1fb67);color:#052d1b;text-decoration:none;border:0;border-radius:28px;padding:15px 26px;font-size:24px;font-weight:850}.now{padding:18px 20px}.nowHead{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}.now h2{margin:0;font-size:16px}.desc{font-size:25px;color:#e0edf2;margin:6px 0 8px}.hint{color:#93adb8;font-size:18px;margin:0 0 12px}.tempTap{font-size:66px;font-weight:760;line-height:.9;text-align:right;cursor:pointer}.tempTap .arrow{font-size:36px;color:#93adb8}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metric{min-width:0;border:1px solid rgba(157,205,221,.18);background:rgba(18,66,86,.62);border-radius:20px;padding:12px 16px;display:flex;align-items:center;gap:11px;cursor:pointer;overflow:hidden}.metric i{font-style:normal;font-size:35px;flex:0 0 auto}.metric b{font-size:31px;white-space:nowrap}.metric span{font-size:19px;color:#c5d1d6;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.metric .arr{margin-left:auto;color:#9bb0b8}.trend{display:none;position:relative;padding:20px}.trend.show{display:block;animation:fade .22s ease}@keyframes fade{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.trend h2{font-size:38px;margin:0 58px 10px 0}.trend p{font-size:23px;color:#d2e0e6;margin:0 0 18px}.close{position:absolute;right:18px;top:18px;width:58px;height:58px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);color:#fff;font-size:36px;font-weight:800}.chart{height:190px;border:1px solid rgba(157,205,221,.18);border-radius:22px;background:rgba(11,47,63,.62);padding:10px}.chart svg{width:100%;height:100%;display:block}.lamone{position:relative}.corner{position:absolute;right:22px;top:26px}.lamoneTop{display:flex;gap:20px;align-items:center}.lamone h2{font-size:40px;margin:0}.lamone p{font-size:23px;color:#dbe9ee;line-height:1.23;margin:8px 0}.lamDecision{margin-top:14px;padding:14px 18px;border:1px solid rgba(157,205,221,.18);border-radius:18px;background:rgba(255,255,255,.03)}.lamDecision b{font-size:28px}.infoGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.info{border:1px solid rgba(157,205,221,.18);border-radius:18px;padding:14px 18px;background:rgba(255,255,255,.035);font-size:18px;color:#bdd0d6}.info b{display:block;font-size:27px;color:#fff;margin-top:4px}.miniTrend{margin-top:14px;border:1px solid rgba(157,205,221,.18);border-radius:20px;padding:16px;background:rgba(11,47,63,.62)}.miniTrend .row{display:flex;justify-content:space-between;align-items:center}.miniTrend h3{font-size:27px;margin:0}.miniTrend small{color:#c8d7dc;font-size:17px;font-weight:750}.lamDetail{display:none;margin-top:14px;padding:14px 18px;border:1px solid rgba(157,205,221,.18);border-radius:20px;background:rgba(255,255,255,.04);position:relative}.lamDetail.show{display:block}.lamDetail h3{font-size:28px;margin:0 48px 10px 0}.lamBoxes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.lamBoxes span{border:1px solid rgba(157,205,221,.16);border-radius:16px;padding:10px;text-align:center;color:#bdd0d6}.lamBoxes b{display:block;color:var(--green);font-size:20px}.pillrow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}.pillrow span{border:1px solid rgba(157,205,221,.18);border-radius:17px;padding:10px;text-align:center;color:#d9e7ec;font-size:20px}.sectionHead{display:flex;justify-content:space-between;align-items:center;gap:10px}.sectionHead h2,.forecast h2,.links h2{font-size:38px;margin:0 0 14px}.sectionHead button{background:linear-gradient(100deg,#69df91,#b1fb67);border:0;border-radius:26px;padding:13px 22px;font-size:22px;font-weight:800;color:#052d1b}.riskline{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.risk{border:1px solid rgba(157,205,221,.18);border-radius:18px;padding:12px;text-align:center}.risk .dot{width:46px;height:46px}.risk b{display:block}.hours{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.hour{border:1px solid rgba(157,205,221,.18);border-radius:20px;text-align:center;padding:12px 8px}.hour b{font-size:35px;display:block}.hour span{color:#bdd0d6;font-size:19px}.linkgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.linkgrid a{border:1px solid rgba(157,205,221,.18);border-radius:18px;padding:16px;text-align:center;color:#fff;text-decoration:none;font-size:23px;font-weight:800;background:rgba(255,255,255,.035)}footer{text-align:center;color:#9fb5bd;font-size:21px;margin:24px 0 0}@media(max-width:440px){.app{padding:16px 14px 32px}.logo{width:66px;height:66px;border-radius:16px}.brand p{font-size:22px}.weatherHead{font-size:37px}.weatherHead span{font-size:36px}.sem small{font-size:18px}.dot{width:22px;height:22px}.status{grid-template-columns:1fr 132px;padding:16px}.bigdot{width:58px;height:58px}.status strong{font-size:32px}.status p{font-size:22px}.indice b{font-size:42px}.indice span{font-size:22px}.decision h2{font-size:28px}.decision p{font-size:21px}.btn{font-size:22px;padding:13px 18px}.tempTap{font-size:58px}.metrics{gap:10px}.metric{padding:10px 13px}.metric i{font-size:30px}.metric b{font-size:27px}.metric span{font-size:17px}.trend h2{font-size:34px}.chart{height:160px}.lamone h2{font-size:38px}.hours{grid-template-columns:repeat(3,1fr)}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#062231" />
+  <title>Meteo Conte V24</title>
+  <link rel="manifest" href="manifest.json?v=24" />
+  <link rel="icon" type="image/png" href="icon.png?v=24" />
+  <link rel="stylesheet" href="style.css?v=24.0.0" />
 </head>
 <body>
-<main class="app">
-<header class="topbar"><div class="brand"><img class="logo" src="icon.png?v=23-hard-reset" alt="Meteo Conte"><div><h1>Meteo Conte</h1><p>Villanova di Bagnacavallo</p></div></div><div class="weatherHead"><span id="headerIcon">🌤️</span><b id="headerTemp">--°</b></div></header>
-<section class="semafori card"><button class="sem" data-jump="meteoNow"><span id="dotMeteo" class="dot"></span><small>Meteo</small></button><button class="sem" data-jump="lamoneCard"><span id="dotLamone" class="dot"></span><small>Lamone</small></button><button class="sem" data-jump="alertsCard"><span id="dotAllerte" class="dot"></span><small>Allerte</small></button><button class="sem" data-jump="timelineCard"><span id="dotTemporali" class="dot"></span><small>Temporali</small></button></section>
-<section class="status card"><div class="statusMain"><span id="statusDot" class="bigdot"></span><div><span class="label">SITUAZIONE</span><strong id="statusTitle">Valuto...</strong><p id="statusText">Aggiornamento dati.</p></div></div><div class="indice"><div><span class="label">INDICE</span><b id="conteIndex">0</b><span>/100</span><small id="indexText">tranquillo</small></div></div></section>
-<section class="decision card"><div><span class="label">DECISIONE CONTE</span><h2 id="decisionTitle">Situazione gestibile</h2><p id="decisionText">Pioggia 0% · nessun rischio rilevante.</p></div><button id="analyzeBtn" class="btn">🔎 Analizza</button></section>
-<section id="meteoNow" class="now card"><div class="nowHead"><div><span class="label">ADESSO</span><p id="weatherDesc" class="desc">--</p><p class="hint">Tocca un riquadro per aprire il trend rapido.</p></div><div id="mainTempTap" class="tempTap tap" data-trend="temperature"><span id="mainTemp">--°C</span><span class="arrow">›</span></div></div><div class="metrics">
-<button class="metric tap" data-trend="apparent"><i>🥵</i><b id="apparent">--°</b><span>Percepita</span><span class="arr">›</span></button>
-<button class="metric tap" data-trend="humidity"><i>💧</i><b id="humidity">--%</b><span>Umidità</span><span class="arr">›</span></button>
-<button class="metric tap" data-trend="dew"><i>💦</i><b id="dew">--°</b><span>Rugiada</span><span class="arr">›</span></button>
-<button class="metric tap" data-trend="wind"><i>🌬️</i><b id="wind">-- km/h</b><span>Vento</span><span class="arr">›</span></button>
-<button class="metric tap" data-trend="gust"><i>💨</i><b id="gust">-- km/h</b><span>Raffica</span><span class="arr">›</span></button>
-<button class="metric tap" data-trend="pressure"><i>📈</i><b id="pressure">-- hPa</b><span>Pressione</span><span class="arr">›</span></button>
-<button class="metric tap" data-trend="rain"><i>☔</i><b id="rain6h">-- mm</b><span>Pioggia 6h</span><span class="arr">›</span></button>
-</div></section>
-<section id="trendPanel" class="trend card"><button class="close" id="closeTrend">×</button><h2 id="trendTitle">Trend temperatura</h2><p id="trendDesc">Temperatura prevista nelle prossime ore.</p><div class="chart"><svg id="trendSvg" viewBox="0 0 640 170" preserveAspectRatio="none"></svg></div></section>
-<section id="lamoneCard" class="lamone card"><span id="lamoneCorner" class="corner"></span><span class="label">FIUMI · LAMONE</span><div class="lamoneTop"><span class="bigdot"></span><div><h2>Lamone monitorato</h2><p>Accesso rapido ai sensori ufficiali dell'asta fluviale. Lettura automatica livelli in preparazione.</p></div></div><div class="lamDecision"><span class="label">DECISIONE CONTE · LAMONE</span><b>Controllo manuale pronto</b><p>Se sono previste piogge forti in Appennino o allerta idraulica, apri subito i dettagli Lamone.</p></div><div class="infoGrid"><div class="info">📡 Fonte<b>Sensori Lamone</b></div><div class="info">🟢 Stato app<b>link pronto</b></div></div><div id="lamoneTrend" class="miniTrend tap"><div class="row"><h3>Trend Lamone</h3><small>tocca per dettaglio</small></div><div class="chart"><svg id="lamoneSvg" viewBox="0 0 640 130" preserveAspectRatio="none"></svg></div></div><div id="lamoneDetail" class="lamDetail"><button class="close" id="closeLam" style="width:48px;height:48px;font-size:30px">×</button><h3>Dettaglio trend</h3><p>Anteprima pronta. Il prossimo passo sarà collegare livello reale, soglie e andamento dai sensori.</p><div class="lamBoxes"><span>ora<b>stabile</b></span><span>+3h<b>stabile</b></span><span>+6h<b>stabile</b></span></div></div><a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📈 Dettagli Lamone</a><a class="btn" style="margin-top:12px;background:rgba(255,255,255,.05);color:#fff" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 Fiumi ER</a></section>
-<section id="alertsCard" class="card lamone"><span class="corner"></span><span class="label">ALLERTE</span><h2>Emilia-Romagna</h2><div class="pillrow"><span>🌊 Idr.</span><span>⛰️ Idro.</span><span>⛈️ Temp.</span><span>🌬️ Vento</span></div><p>Bollettini ufficiali sempre a un tocco.</p><a class="btn" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🛡️ Bollettini</a></section>
-<section id="timelineCard" class="card"><div class="sectionHead"><h2>Timeline rischio</h2><button id="refreshBtn">Aggiorna</button></div><div id="riskTimeline" class="riskline"></div></section>
-<section class="forecast card"><h2>Prossime ore</h2><div id="hours" class="hours"></div></section>
-<section class="links card"><h2>Link rapidi</h2><div class="linkgrid"><a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank">📡 Radar ER</a><a href="https://www.lightningmaps.org/" target="_blank">⚡ Fulmini</a><a href="https://www.windy.com/?44.42,11.98,8" target="_blank">🌬️ Windy</a><a href="https://pretemp.altervista.org/index.html" target="_blank">⛈️ Pretemp</a><a href="https://www.meteoam.it/it/satellite/italia" target="_blank">🛰️ Satellite</a><a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank">🌊 Lamone</a><a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank">🌊 Fiumi ER</a><a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank">🌦️ Arpae</a><a href="https://www.meteoam.it/it/home" target="_blank">🛰️ MeteoAM</a><a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank">🚨 Allerte ER</a></div></section><footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V23 · hard reset smart</footer></main>
-<script>
-const VERSION='23-hard-reset-smart';
-if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister()));}
-const $=id=>document.getElementById(id); let hourly=[]; let current={};
-const codeMap={0:['☀️','Sereno'],1:['🌤️','Prevalentemente sereno'],2:['⛅','Parzialmente nuvoloso'],3:['☁️','Nuvoloso'],45:['🌫️','Nebbia'],48:['🌫️','Nebbia'],51:['🌦️','Pioviggine'],53:['🌦️','Pioviggine'],55:['🌧️','Pioviggine'],61:['🌧️','Pioggia'],63:['🌧️','Pioggia'],65:['🌧️','Pioggia forte'],80:['🌦️','Rovesci'],81:['🌧️','Rovesci'],82:['⛈️','Rovesci forti'],95:['⛈️','Temporale'],96:['⛈️','Temporale grandine'],99:['⛈️','Temporale grandine']};
-function round(v,d=1){return Number.isFinite(v)?Number(v).toFixed(d).replace('.0',''):'--'}
-function updateDots(risk){['dotMeteo','dotLamone','dotAllerte','dotTemporali','statusDot','lamoneCorner'].forEach(id=>$(id)?.classList.remove('yellow','orange','red')); if(risk>35){$('dotMeteo').classList.add('yellow');$('statusDot').classList.add('yellow')} }
-function calcRisk(h){let maxRain=Math.max(...h.slice(0,6).map(x=>x.precipitation_probability||0));let maxGust=Math.max(...h.slice(0,6).map(x=>x.wind_gusts_10m||0));let rainMm=h.slice(0,6).reduce((a,x)=>a+(x.precipitation||0),0);let r=Math.min(100,Math.round(maxRain*.35+rainMm*8+Math.max(0,maxGust-35)*1.5));return {r,maxRain,maxGust,rainMm};}
-function setData(data){const c=data.current; current=c; const H=data.hourly; const now=new Date(); hourly=H.time.map((t,i)=>({time:new Date(t),temperature_2m:H.temperature_2m[i],apparent_temperature:H.apparent_temperature[i],relative_humidity_2m:H.relative_humidity_2m[i],dew_point_2m:H.dew_point_2m[i],precipitation_probability:H.precipitation_probability[i],precipitation:H.precipitation[i],wind_speed_10m:H.wind_speed_10m[i],wind_gusts_10m:H.wind_gusts_10m[i],surface_pressure:H.surface_pressure[i],weather_code:H.weather_code[i]})).filter(x=>x.time>=new Date(now.getTime()-3600000)); const next=hourly.slice(0,8); const risk=calcRisk(next); const cm=codeMap[c.weather_code]||['🌤️','Meteo variabile']; $('headerIcon').textContent=cm[0]; $('headerTemp').textContent=round(c.temperature_2m)+'°'; $('mainTemp').textContent=round(c.temperature_2m)+'°C'; $('weatherDesc').textContent=cm[1]+' · '+risk.maxRain+'% pioggia max 6h'; $('apparent').textContent=round(c.apparent_temperature)+'°'; $('humidity').textContent=round(c.relative_humidity_2m,0)+'%'; $('dew').textContent=round(c.dew_point_2m)+'°'; $('wind').textContent=round(c.wind_speed_10m,0)+' km/h'; $('gust').textContent=round(c.wind_gusts_10m,0)+' km/h'; $('pressure').textContent=round(c.surface_pressure,0)+' hPa'; $('rain6h').textContent=round(risk.rainMm,1)+' mm'; $('conteIndex').textContent=risk.r; $('indexText').textContent=risk.r<25?'tranquillo':risk.r<55?'attenzione':'alto'; $('statusTitle').textContent=risk.r<25?'Tranquilla':risk.r<55?'Da seguire':'Attenzione'; $('statusText').textContent=risk.r<25?'Nessun segnale nelle prossime 6 ore.':'Controlla radar e allerte.'; $('decisionTitle').textContent=risk.r<25?'Situazione gestibile':'Da monitorare'; $('decisionText').textContent=`Pioggia ${risk.maxRain}% · raffica ${round(risk.maxGust,0)} km/h · ${risk.r<25?'nessun rischio rilevante':'controlla evoluzione'}.`; updateDots(risk.r); renderHours(next.slice(1,7)); renderRisk(next); showTrend('temperature'); $('trendPanel').classList.remove('show'); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});}
-function renderHours(arr){$('hours').innerHTML=arr.slice(0,6).map(x=>{let cm=codeMap[x.weather_code]||['🌤️',''];return `<div class="hour"><span>${x.time.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</span><b>${round(x.temperature_2m,0)}°</b><div>${cm[0]}</div><span>${x.precipitation_probability||0}% · ${round(x.precipitation||0,1)}mm</span></div>`}).join('')}
-function renderRisk(arr){$('riskTimeline').innerHTML=[1,2,3,4].map((n,i)=>`<div class="risk"><span class="dot"></span><span>+${n}h</span><b>tranquillo</b></div>`).join('')}
-const trendInfo={temperature:['Trend temperatura','Temperatura prevista nelle prossime ore. Utile per capire calo serale, notte e picchi.','temperature_2m','°'],apparent:['Trend percepita','Percepita prevista nelle prossime ore.','apparent_temperature','°'],humidity:['Umidità e rugiada','Umidità prevista nelle prossime ore.','relative_humidity_2m','%'],dew:['Punto di rugiada','Rugiada prevista nelle prossime ore.','dew_point_2m','°'],wind:['Trend vento','Vento previsto nelle prossime ore.','wind_speed_10m',' km/h'],gust:['Trend raffiche','Raffiche previste nelle prossime ore.','wind_gusts_10m',' km/h'],pressure:['Trend pressione','Pressione prevista nelle prossime ore.','surface_pressure',' hPa'],rain:['Trend pioggia','Probabilità e accumuli previsti.','precipitation_probability','%']};
-function svgLine(values,labels,suffix='°'){let min=Math.min(...values),max=Math.max(...values); if(max===min){max=min+1} const pts=values.map((v,i)=>[44+i*(552/(values.length-1)),128-((v-min)/(max-min))*90]); let d=pts.map((p,i)=>(i?'L':'M')+p[0]+','+p[1]).join(' '); return `<defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#9cf46a" stop-opacity=".35"/><stop offset="1" stop-color="#6fe090" stop-opacity=".06"/></linearGradient></defs><path d="M${pts[0][0]},138 ${pts.map(p=>'L'+p[0]+','+p[1]).join(' ')} L${pts.at(-1)[0]},138 Z" fill="url(#g)"/><path d="${d}" fill="none" stroke="#9cf46a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="7" fill="#6fe090" stroke="#d8fff0" stroke-width="2"/><text x="${p[0]}" y="${Math.max(16,p[1]-14)}" text-anchor="middle" fill="#efffff" font-size="18" font-weight="800">${round(values[i])}${suffix}</text><text x="${p[0]}" y="158" text-anchor="middle" fill="#bdd0d6" font-size="17">${labels[i]}</text>`).join('')}`}
-function showTrend(type){let inf=trendInfo[type]||trendInfo.temperature; let data=hourly.slice(1,6); if(!data.length)return; let vals=data.map(x=>x[inf[2]]||0); let labs=data.map(x=>x.time.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})); $('trendTitle').textContent=inf[0]; $('trendDesc').textContent=inf[1]; $('trendSvg').innerHTML=svgLine(vals,labs,inf[3]); $('trendPanel').classList.add('show'); $('trendPanel').scrollIntoView({behavior:'smooth',block:'center'});}
-function drawLamone(){let vals=[0.72,0.73,0.75]; let labs=['ora','+3h','+6h']; $('lamoneSvg').innerHTML=svgLine(vals,labs,'');}
-document.addEventListener('click',e=>{let t=e.target.closest('[data-trend]'); if(t) showTrend(t.dataset.trend); let s=e.target.closest('[data-jump]'); if(s) $(s.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'});});$('closeTrend').onclick=()=>$('trendPanel').classList.remove('show');$('lamoneTrend').onclick=()=>$('lamoneDetail').classList.add('show');$('closeLam').onclick=()=>$('lamoneDetail').classList.remove('show');$('refreshBtn').onclick=load;$('analyzeBtn').onclick=()=>alert('Analisi Conte: per ora situazione gestibile. Se cambia il cielo, controlla Radar ER, Fulmini e Lamone.');
-async function load(){try{let url='https://api.open-meteo.com/v1/forecast?latitude=44.42&longitude=11.98&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,surface_pressure&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,surface_pressure&timezone=Europe%2FRome&forecast_days=2'; let r=await fetch(url,{cache:'no-store'}); let data=await r.json(); setData(data);}catch(e){console.warn(e); $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'}} drawLamone(); load();
-</script>
-</body></html>
+  <main class="app">
+    <header class="topbar logo-head">
+      <div class="brand-block">
+        <img class="app-logo" src="icon.png?v=24" alt="Meteo Conte" />
+        <div>
+          <h1>Meteo Conte</h1>
+          <p>Villanova di Bagnacavallo</p>
+        </div>
+      </div>
+      <div class="head-weather"><span id="headerIcon">☀️</span><b id="headerTemp">--°</b></div>
+    </header>
+
+    <section class="semafori card slim smartbar" aria-label="Semafori operativi">
+      <button class="sem" data-jump="meteoNow"><span id="dotMeteo" class="dot green"></span><small>Meteo</small></button>
+      <button class="sem" data-jump="lamoneCard"><span id="dotLamone" class="dot green"></span><small>Lamone</small></button>
+      <button class="sem" data-jump="alertsCard"><span id="dotAllerte" class="dot green"></span><small>Allerte</small></button>
+      <button class="sem" data-jump="timelineCard"><span id="dotTemporali" class="dot green"></span><small>Temporali</small></button>
+    </section>
+
+    <section class="top-status card status-v16">
+      <div class="status-mini">
+        <span id="statusDot" class="bigdot green"></span>
+        <div>
+          <span class="label">SITUAZIONE</span>
+          <strong id="statusTitle">Valuto...</strong>
+          <p id="statusText">Aggiornamento dati in corso.</p>
+        </div>
+      </div>
+      <button class="indice-mini" id="indiceCard" type="button" data-trend="indice" aria-label="Apri spiegazione Indice Conte">
+        <span>Indice</span>
+        <b><span id="indiceVal">--</span><small>/100</small></b>
+        <em id="indiceLabel">--</em>
+      </button>
+    </section>
+
+    <section class="card decisione decisione-v16">
+      <div>
+        <span class="label">DECISIONE CONTE</span>
+        <h2 id="decisionTitle">Valuto...</h2>
+        <p id="decisionText">Sintesi in arrivo.</p>
+      </div>
+      <button id="analyzeBtn">🔎 Analizza</button>
+    </section>
+
+    <section id="analysisBox" class="card analysis hidden"></section>
+
+    <section id="meteoNow" class="card meteo-now">
+      <div class="now-head">
+        <span class="label">ADESSO</span>
+        <button class="main-temp-btn" type="button" data-trend="temperatura" aria-label="Apri trend temperatura">
+          <strong id="tempNow">--°</strong><span class="now-arrow">›</span>
+        </button>
+        <p id="nowDesc">--</p>
+      </div>
+      <p class="tap-hint">Tocca un riquadro per aprire il trend rapido.</p>
+      <div class="metrics">
+        <button class="metric" data-trend="temperatura">🥵 <b id="feels">--°</b><span>Percepita</span></button>
+        <button class="metric" data-trend="umidita">💧 <b id="hum">--%</b><span>Umidità</span></button>
+        <button class="metric" data-trend="umidita">💦 <b id="dew">--°</b><span>Rugiada</span></button>
+        <button class="metric" data-trend="vento">🌬️ <b id="wind">-- km/h</b><span>Vento</span></button>
+        <button class="metric" data-trend="vento">💨 <b id="gust">-- km/h</b><span>Raffica</span></button>
+        <button class="metric" data-trend="pressione">📈 <b id="press">-- hPa</b><span>Pressione →</span></button>
+        <button class="metric" data-trend="pioggia">☔ <b id="rain6">-- mm</b><span>Pioggia 6h</span></button>
+      </div>
+    </section>
+
+    <section id="trendBox" class="card trendbox hidden"></section>
+
+    <section id="lamoneCard" class="card river river-v20">
+      <span class="label">FIUMI · LAMONE</span><span id="lamoneCorner" class="cornerdot green"></span>
+
+      <div class="river-status">
+        <span class="river-dot green"></span>
+        <div>
+          <h2>Lamone monitorato</h2>
+          <p>Accesso rapido ai sensori ufficiali dell’asta fluviale. Lettura automatica livelli non ancora collegata.</p>
+        </div>
+      </div>
+
+      <div class="river-decision">
+        <span class="label">DECISIONE CONTE · LAMONE</span>
+        <strong>Controllo manuale pronto</strong>
+        <p>Se sono previste piogge forti in Appennino o allerta idraulica, apri subito i dettagli Lamone.</p>
+      </div>
+
+      <div class="mini-grid compact-mini river-mini">
+        <div class="river-info"><span>📡 Fonte</span><b>Sensori Lamone</b></div>
+        <div class="river-info"><span>🟢 Stato app</span><b id="lamoneState">link pronto</b></div>
+      </div>
+
+      <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri trend Lamone">
+        <div class="river-chart-head"><b>Trend Lamone</b><span>tocca per dettaglio</span></div>
+        <svg viewBox="0 0 320 96" aria-hidden="true">
+          <path class="river-area" d="M18 66 C72 65 122 65 172 64 C220 63 260 62 302 61 L302 86 L18 86 Z"></path>
+          <path class="river-line" d="M18 66 C72 65 122 65 172 64 C220 63 260 62 302 61"></path>
+          <circle cx="18" cy="66" r="4"></circle><circle cx="172" cy="64" r="4"></circle><circle cx="302" cy="61" r="4"></circle>
+          <text x="18" y="92" text-anchor="middle">ora</text><text x="172" y="92" text-anchor="middle">+3h</text><text x="302" y="92" text-anchor="middle">+6h</text>
+        </svg>
+      </button>
+
+      <div id="riverDetail" class="river-detail hidden">
+        <div class="river-detail-head"><b>Dettaglio trend</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
+        <p>Anteprima pronta. Il prossimo passo sarà collegare livello reale, soglie e andamento dai sensori.</p>
+        <div class="river-values"><span>ora <b>stabile</b></span><span>+3h <b>stabile</b></span><span>+6h <b>stabile</b></span></div>
+      </div>
+
+      <div class="river-actions">
+        <a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📈 Dettagli Lamone</a>
+        <a class="btn secondary" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 Fiumi ER</a>
+      </div>
+    </section>
+
+    <section id="alertsCard" class="card alerts">
+      <span class="label">ALLERTE</span><span id="allerteCorner" class="cornerdot green"></span>
+      <h2>Emilia-Romagna</h2>
+      <div class="pillrow"><span>🌊 Idr.</span><span>⛰️ Idro.</span><span>⛈️ Temp.</span><span>🌬️ Vento</span></div>
+      <p>Bollettini ufficiali sempre a un tocco.</p>
+      <a class="btn" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🛡️ Bollettini</a>
+    </section>
+
+    <section id="timelineCard" class="card timeline compact-timeline">
+      <div class="section-head"><h2>Timeline rischio</h2><button id="refreshBtn">Aggiorna</button></div>
+      <div id="riskTimeline" class="riskline"></div>
+    </section>
+
+    <section class="card forecast compact-forecast">
+      <h2>Prossime ore</h2>
+      <div id="hours" class="hours"></div>
+    </section>
+
+    <section class="card links">
+      <h2>Link rapidi</h2>
+      <div class="linkgrid">
+        <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener">📡 Radar ER</a>
+        <a href="https://www.lightningmaps.org/" target="_blank" rel="noopener">⚡ Fulmini</a>
+        <a href="https://www.windy.com/?44.42,11.98,8" target="_blank" rel="noopener">🌬️ Windy</a>
+        <a href="https://pretemp.altervista.org/index.html" target="_blank" rel="noopener">⛈️ Pretemp</a>
+        <a href="https://www.meteoam.it/it/satellite/italia" target="_blank" rel="noopener">🛰️ Satellite</a>
+        <a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">🌊 Lamone</a>
+        <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 Fiumi ER</a>
+        <a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank" rel="noopener">🌦️ Arpae</a>
+        <a href="https://www.meteoam.it/it/home" target="_blank" rel="noopener">🛰️ MeteoAM</a>
+        <a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🚨 Allerte ER</a>
+      </div>
+    </section>
+
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V24 · Lamone Step 2</footer>
+  </main>
+  <script src="app.js?v=24.0.0"></script>
+</body>
+</html>
