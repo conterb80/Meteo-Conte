@@ -1,8 +1,10 @@
-# Meteo Conte V14 Logo Personalizzato
+# Meteo Conte V15 Dashboard Operativa
 
-Cruscotto definitivo test con logo personalizzato inserito:
+Aggiornamento focalizzato sulla dashboard principale:
 
-- icona app/PWA aggiornata;
-- logo nella dashboard in alto;
-- nessuna modifica alle funzioni della V13;
-- sviluppo senza cache per aggiornamenti immediati.
+- Situazione e Decisione Conte più compatte.
+- Semafori operativi cliccabili.
+- Lamone riportato verde di default se non ci sono dati reali letti.
+- Card meteo cliccabili con trend rapidi interni.
+- Nessuna modifica ai link principali.
+- Cache in modalità sviluppo/reset.

@@ -4,28 +4,29 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#062231" />
-  <title>Meteo Conte V14</title>
-  <link rel="manifest" href="manifest.json?v=14" />
-  <link rel="icon" type="image/png" href="icon.png?v=14" />
-  <link rel="stylesheet" href="style.css?v=14.0.0" />
+  <title>Meteo Conte V15</title>
+  <link rel="manifest" href="manifest.json?v=15" />
+  <link rel="icon" type="image/png" href="icon.png?v=15" />
+  <link rel="stylesheet" href="style.css?v=15.0.0" />
 </head>
 <body>
   <main class="app">
-    <header class="topbar compact-head logo-head">
+    <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=14" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=15" alt="Meteo Conte" />
         <div>
+          <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
         </div>
       </div>
       <div class="head-weather"><span id="headerIcon">☀️</span><b id="headerTemp">--°</b></div>
     </header>
 
-    <section class="semafori card slim">
-      <div><span id="dotMeteo" class="dot green"></span>Meteo</div>
-      <div><span id="dotLamone" class="dot yellow"></span>Lamone</div>
-      <div><span id="dotAllerte" class="dot green"></span>Allerte</div>
-      <div><span id="dotTemporali" class="dot green"></span>Temporali</div>
+    <section class="semafori card slim" aria-label="Semafori operativi">
+      <button class="sem" data-jump="meteoNow"><span id="dotMeteo" class="dot green"></span><small>Meteo</small></button>
+      <button class="sem" data-jump="lamoneCard"><span id="dotLamone" class="dot green"></span><small>Lamone</small></button>
+      <button class="sem" data-jump="alertsCard"><span id="dotAllerte" class="dot green"></span><small>Allerte</small></button>
+      <button class="sem" data-jump="timelineCard"><span id="dotTemporali" class="dot green"></span><small>Temporali</small></button>
     </section>
 
     <section class="top-status card">
@@ -37,14 +38,14 @@
           <p id="statusText">Aggiornamento dati in corso.</p>
         </div>
       </div>
-      <div class="indice-mini">
+      <div class="indice-mini" id="indiceCard" role="button" tabindex="0" data-trend="indice">
         <span>Indice Conte</span>
         <b><span id="indiceVal">--</span><small>/100</small></b>
         <em id="indiceLabel">--</em>
       </div>
     </section>
 
-    <section class="card decisione decisione-hero">
+    <section class="card decisione decisione-compact">
       <div>
         <span class="label">DECISIONE CONTE</span>
         <h2 id="decisionTitle">Valuto...</h2>
@@ -53,45 +54,53 @@
       <button id="analyzeBtn">🔎 Analizza</button>
     </section>
 
-    <section class="card meteo-now">
+    <section id="analysisBox" class="card analysis hidden"></section>
+
+    <section id="meteoNow" class="card meteo-now">
       <div class="now-head">
         <span class="label">ADESSO</span>
         <strong id="tempNow">--°</strong>
         <p id="nowDesc">--</p>
       </div>
+      <div class="trend-shortcuts" aria-label="Apri approfondimenti">
+        <button data-trend="temperatura">🌡️ Temperature</button>
+        <button data-trend="pioggia">☔ Pioggia</button>
+        <button data-trend="vento">🌬️ Vento</button>
+        <button data-trend="pressione">📈 Pressione</button>
+      </div>
       <div class="metrics">
-        <div class="metric">🥵 <b id="feels">--°</b><span>Percepita</span></div>
-        <div class="metric">💧 <b id="hum">--%</b><span>Umidità</span></div>
-        <div class="metric">💦 <b id="dew">--°</b><span>Rugiada</span></div>
-        <div class="metric">🌬️ <b id="wind">-- km/h</b><span>Vento</span></div>
-        <div class="metric">💨 <b id="gust">-- km/h</b><span>Raffica</span></div>
-        <div class="metric">📈 <b id="press">-- hPa</b><span>Pressione →</span></div>
-        <div class="metric">☔ <b id="rain6">-- mm</b><span>Pioggia 6h</span></div>
+        <button class="metric" data-trend="temperatura">🥵 <b id="feels">--°</b><span>Percepita</span></button>
+        <button class="metric" data-trend="umidita">💧 <b id="hum">--%</b><span>Umidità</span></button>
+        <button class="metric" data-trend="umidita">💦 <b id="dew">--°</b><span>Rugiada</span></button>
+        <button class="metric" data-trend="vento">🌬️ <b id="wind">-- km/h</b><span>Vento</span></button>
+        <button class="metric" data-trend="vento">💨 <b id="gust">-- km/h</b><span>Raffica</span></button>
+        <button class="metric" data-trend="pressione">📈 <b id="press">-- hPa</b><span>Pressione →</span></button>
+        <button class="metric" data-trend="pioggia">☔ <b id="rain6">-- mm</b><span>Pioggia 6h</span></button>
       </div>
     </section>
 
-    <section id="analysisBox" class="card analysis hidden"></section>
+    <section id="trendBox" class="card trendbox hidden"></section>
 
-    <section class="card river">
-      <span class="label">FIUMI · LAMONE</span><span class="cornerdot yellow"></span>
+    <section id="lamoneCard" class="card river">
+      <span class="label">FIUMI · LAMONE</span><span id="lamoneCorner" class="cornerdot green"></span>
       <h2>Solo asta Lamone</h2>
       <div class="mini-grid compact-mini">
         <div><span>Fonte</span><b>Sensori Lamone</b></div>
-        <div><span>Stato app</span><b>da verificare</b></div>
+        <div><span>Stato app</span><b id="lamoneState">link pronto</b></div>
       </div>
       <p>Accesso diretto ai sensori dell’asta fluviale del Lamone.</p>
       <a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📈 Dettagli Lamone</a>
     </section>
 
-    <section class="card alerts">
-      <span class="label">ALLERTE</span><span class="cornerdot green"></span>
+    <section id="alertsCard" class="card alerts">
+      <span class="label">ALLERTE</span><span id="allerteCorner" class="cornerdot green"></span>
       <h2>Emilia-Romagna</h2>
       <div class="pillrow"><span>🌊 Idr.</span><span>⛰️ Idro.</span><span>⛈️ Temp.</span><span>🌬️ Vento</span></div>
       <p>Bollettini ufficiali sempre a un tocco.</p>
       <a class="btn" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🛡️ Bollettini</a>
     </section>
 
-    <section class="card timeline compact-timeline">
+    <section id="timelineCard" class="card timeline compact-timeline">
       <div class="section-head"><h2>Timeline rischio</h2><button id="refreshBtn">Aggiorna</button></div>
       <div id="riskTimeline" class="riskline"></div>
     </section>
@@ -117,8 +126,8 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V14 · logo personalizzato test</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V15 · dashboard operativa</footer>
   </main>
-  <script src="app.js?v=14.0.0"></script>
+  <script src="app.js?v=15.0.0"></script>
 </body>
 </html>
