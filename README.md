@@ -1,7 +1,6 @@
-# Meteo Conte V25 - Lamone link attivi
+# Meteo Conte V26 - Cache fix Lamone
 
-- Link Dettagli Lamone attivo
-- Fiumi ER attivo
-- Box Fonte cliccabile
-- Stato app con info
-- Andamento Lamone rinominato come anteprima, non previsione reale
+- Corretto footer/versione
+- Cache reset aggressivo
+- Link Lamone attivi
+- Mantiene layout stabile V24/V25
