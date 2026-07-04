@@ -1,3 +1,3 @@
-# Meteo Conte V18
+# Meteo Conte V19
 
-Home interattiva con temperatura principale cliccabile e trend grafici compatti.
+Trend compatti: grafico più basso, senza barre duplicate, home invariata.

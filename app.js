@@ -30,7 +30,7 @@ async function load(){
 function renderRisk(h,base){$('riskTimeline').innerHTML=''; for(let i=1;i<=4;i++){const p=h.precipitation_probability[i]||0;const risk=Math.max(base,p);const c=risk>=50?'yellow':'green'; const text=risk>=50?'attenzione':risk>=25?'monitorare':'tranquillo'; $('riskTimeline').insertAdjacentHTML('beforeend',`<div class="riskitem"><span class="rball ${c}"></span><small>+${i}h</small><b>${text}</b></div>`)} }
 function renderHours(h){$('hours').innerHTML=''; const start=nextStart(h.time); h.time.slice(start,start+6).forEach((t,i)=>{const k=start+i;const d=new Date(t); const code=h.weather_code[k]; const icon=(WMO[code]||['','☀️'])[1]; $('hours').insertAdjacentHTML('beforeend',`<div class="hour"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><b>${Math.round(h.temperature_2m[k])}°</b><span>${icon}</span><small>${h.precipitation_probability[k]}% · ${h.precipitation[k].toFixed(1)}mm</small></div>`)});}
 function makeChart(vals,times,unit,type){
- const w=320,h=138,padX=18,padY=22;
+ const w=320,h=104,padX=18,padY=18;
  const min=Math.min(...vals), max=Math.max(...vals), span=(max-min)||1;
  const pts=vals.map((v,i)=>{
    const x=padX + i*((w-padX*2)/(Math.max(vals.length-1,1)));
@@ -64,7 +64,7 @@ function openTrend(type){
   }[type] || ['temperature_2m','°','Trend rapido.'];
   const vals=h[cfg[0]].slice(start,start+6); const times=h.time.slice(start,start+6); const min=Math.min(...vals), max=Math.max(...vals); intro=cfg[2];
   graph=makeChart(vals,times,cfg[1],type);
-  rows=vals.map((v,i)=>{const d=new Date(times[i]); const pct=max===min?50:((v-min)/(max-min))*90+10; const val=(cfg[0]==='pressure_msl'||cfg[0].includes('wind')||cfg[0].includes('humidity')||cfg[0].includes('probability'))?Math.round(v):Math.round(v*10)/10; return `<div class="trend-row compact"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><div class="bar"><i style="width:${pct}%"></i></div><b>${val}${cfg[1]}</b></div>`}).join('');
+  rows='';
  }
  box.innerHTML=`<div class="trend-head"><h2>${labels[type]||'Trend'}</h2><button class="closeTrend" type="button" aria-label="Chiudi trend">×</button></div><p>${intro}</p>${graph}<div class="trend-list ${graph?'mini':''}">${rows}</div>`;
  box.classList.remove('hidden'); box.scrollIntoView({behavior:'smooth',block:'start'});
