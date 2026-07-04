@@ -18,6 +18,7 @@ async function load(){
   $('statusTitle').textContent=lv[0];
   $('statusText').textContent=idx<25?'Nessun segnale nelle prossime 6 ore.':idx<50?'Qualche segnale da seguire.':'Controlla radar, allerte e temporali.';
   setBig(lv[2]); setDot($('dotMeteo'),lv[2]); setDot($('dotTemporali'),idx>=40?'yellow':'green'); setDot($('dotLamone'),'green'); setDot($('dotAllerte'),'green'); $('lamoneCorner').className='cornerdot green';
+  updateLamoneSmart(c,h,idx,rainMax,rain6);
   $('indiceVal').textContent=idx; $('indiceLabel').textContent=lv[1];
   $('decisionTitle').textContent=idx<25?'Situazione gestibile':idx<50?'Da tenere d’occhio':'Controlla subito';
   $('decisionText').textContent=`Pioggia ${rainMax}% · raffica ${Math.round(c.wind_gusts_10m)} km/h · ${idx<25?'nessun rischio rilevante':'monitora evoluzione'}.`;
@@ -25,8 +26,43 @@ async function load(){
   $('feels').textContent=Math.round(c.apparent_temperature*10)/10+'°'; $('hum').textContent=Math.round(c.relative_humidity_2m)+'%'; $('dew').textContent=Math.round(dewPoint(c.temperature_2m,c.relative_humidity_2m)*10)/10+'°'; $('wind').textContent=Math.round(c.wind_speed_10m)+' km/h'; $('gust').textContent=Math.round(c.wind_gusts_10m)+' km/h'; $('press').textContent=Math.round(c.pressure_msl)+' hPa'; $('rain6').textContent=rain6.toFixed(1)+' mm';
   $('analysisBox').innerHTML=`<b>Perché ${idx}/100?</b><br>Pioggia max 6h ${rainMax}%, accumulo ${rain6.toFixed(1)} mm. Umidità ${Math.round(c.relative_humidity_2m)}%, raffica ${Math.round(c.wind_gusts_10m)} km/h, pressione ${Math.round(c.pressure_msl)} hPa. Se cambia il cielo, apri Radar ER, Fulmini e Lamone.`;
   renderRisk(h,idx); renderHours(h); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
- }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; }
+ }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; updateLamoneOffline(); }
 }
+
+function setRiverColor(color){
+  const dot=$('riverMainDot'); if(dot) dot.className='river-dot '+color;
+  const corner=$('lamoneCorner'); if(corner) corner.className='cornerdot '+color;
+  const top=$('dotLamone'); if(top) setDot(top,color);
+}
+function updateLamoneSmart(c,h,idx,rainMax,rain6){
+  // V22: motore Lamone predisposto. Per ora usa rischio meteo locale + pioggia prevista,
+  // in attesa del collegamento diretto ai livelli idrometrici reali.
+  let lamoneScore=Math.round(Math.min(100, rainMax*0.35 + rain6*8 + (idx>=50?15:idx>=25?8:0)));
+  let color='green', title='Lamone Smart', state='sensori pronti', decision='Controllo regolare';
+  let text='Nessun segnale meteo locale che suggerisca criticità immediata. Apri i dettagli se sono previste piogge forti in Appennino.';
+  let detail='Indice Lamone provvisorio calcolato da pioggia prevista, rischio meteo locale e stato allerte. Livelli reali ancora da collegare.';
+  let rv=['stabile','stabile','stabile'];
+  if(lamoneScore>=55){ color='yellow'; state='da seguire'; decision='Monitorare Lamone'; text='Pioggia o rischio meteo in aumento: apri i dettagli Lamone e controlla i sensori ufficiali.'; detail='Segnale di monitoraggio: verifica sensori e bollettini ufficiali.'; rv=['ok','controlla','controlla']; }
+  if(lamoneScore>=75){ color='red'; state='attenzione'; decision='Controllo immediato'; text='Scenario da verificare subito su sensori Lamone e bollettini ufficiali.'; detail='Segnale alto: apri subito i dettagli Lamone e le allerte regionali.'; rv=['attenzione','attenzione','attenzione']; }
+  setRiverColor(color);
+  if($('riverIndex')) $('riverIndex').textContent=lamoneScore;
+  if($('riverSmartTitle')) $('riverSmartTitle').textContent=title;
+  if($('riverSmartText')) $('riverSmartText').textContent=text;
+  if($('riverDecisionTitle')) $('riverDecisionTitle').textContent=decision;
+  if($('riverDecisionText')) $('riverDecisionText').textContent=`Pioggia max 6h ${rainMax}% · accumulo previsto ${rain6.toFixed(1)} mm · livelli reali da confermare sui sensori.`;
+  if($('lamoneState')) $('lamoneState').textContent=state;
+  if($('lamoneStateLabel')) $('lamoneStateLabel').textContent=(color==='green'?'🟢':color==='yellow'?'🟡':'🔴')+' Stato app';
+  if($('riverTrendHint')) $('riverTrendHint').textContent=color==='green'?'trend regolare':'tocca e verifica';
+  if($('riverDetailText')) $('riverDetailText').textContent=detail;
+  if($('rvNow')) $('rvNow').textContent=rv[0]; if($('rv3')) $('rv3').textContent=rv[1]; if($('rv6')) $('rv6').textContent=rv[2];
+}
+function updateLamoneOffline(){
+  setRiverColor('green');
+  if($('riverIndex')) $('riverIndex').textContent='--';
+  if($('riverSmartText')) $('riverSmartText').textContent='Dati meteo non disponibili. Link sensori Lamone sempre pronto.';
+  if($('lamoneState')) $('lamoneState').textContent='link pronto';
+}
+
 function renderRisk(h,base){$('riskTimeline').innerHTML=''; for(let i=1;i<=4;i++){const p=h.precipitation_probability[i]||0;const risk=Math.max(base,p);const c=risk>=50?'yellow':'green'; const text=risk>=50?'attenzione':risk>=25?'monitorare':'tranquillo'; $('riskTimeline').insertAdjacentHTML('beforeend',`<div class="riskitem"><span class="rball ${c}"></span><small>+${i}h</small><b>${text}</b></div>`)} }
 function renderHours(h){$('hours').innerHTML=''; const start=nextStart(h.time); h.time.slice(start,start+6).forEach((t,i)=>{const k=start+i;const d=new Date(t); const code=h.weather_code[k]; const icon=(WMO[code]||['','☀️'])[1]; $('hours').insertAdjacentHTML('beforeend',`<div class="hour"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><b>${Math.round(h.temperature_2m[k])}°</b><span>${icon}</span><small>${h.precipitation_probability[k]}% · ${h.precipitation[k].toFixed(1)}mm</small></div>`)});}
 function makeChart(vals,times,unit,type){

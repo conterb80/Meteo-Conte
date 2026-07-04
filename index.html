@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#062231" />
-  <title>Meteo Conte V21</title>
-  <link rel="manifest" href="manifest.json?v=21" />
-  <link rel="icon" type="image/png" href="icon.png?v=21" />
-  <link rel="stylesheet" href="style.css?v=21.0.0" />
+  <title>Meteo Conte V22</title>
+  <link rel="manifest" href="manifest.json?v=22" />
+  <link rel="icon" type="image/png" href="icon.png?v=22" />
+  <link rel="stylesheet" href="style.css?v=22.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=21" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=22" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -81,27 +81,31 @@
     <section id="lamoneCard" class="card river river-v20">
       <span class="label">FIUMI · LAMONE</span><span id="lamoneCorner" class="cornerdot green"></span>
 
-      <div class="river-status">
-        <span class="river-dot green"></span>
+      <div class="river-status river-smart-head">
+        <span id="riverMainDot" class="river-dot green"></span>
         <div>
-          <h2>Lamone monitorato</h2>
-          <p>Accesso rapido ai sensori ufficiali dell’asta fluviale. Lettura automatica livelli non ancora collegata.</p>
+          <h2 id="riverSmartTitle">Lamone Smart</h2>
+          <p id="riverSmartText">Controllo automatico predisposto. Sensori ufficiali ancora in lettura manuale.</p>
+        </div>
+        <div class="river-score">
+          <span>Indice</span>
+          <b id="riverIndex">0</b><small>/100</small>
         </div>
       </div>
 
       <div class="river-decision">
         <span class="label">DECISIONE CONTE · LAMONE</span>
-        <strong>Controllo manuale pronto</strong>
-        <p>Se sono previste piogge forti in Appennino o allerta idraulica, apri subito i dettagli Lamone.</p>
+        <strong id="riverDecisionTitle">Controllo manuale pronto</strong>
+        <p id="riverDecisionText">Se sono previste piogge forti in Appennino o allerta idraulica, apri subito i dettagli Lamone.</p>
       </div>
 
       <div class="mini-grid compact-mini river-mini">
         <div class="river-info"><span>📡 Fonte</span><b>Sensori Lamone</b></div>
-        <div class="river-info"><span>🟢 Stato app</span><b id="lamoneState">link pronto</b></div>
+        <div class="river-info"><span id="lamoneStateLabel">🟢 Stato app</span><b id="lamoneState">link pronto</b></div>
       </div>
 
       <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri trend Lamone">
-        <div class="river-chart-head"><b>Trend Lamone</b><span>tocca per dettaglio</span></div>
+        <div class="river-chart-head"><b>Trend Lamone</b><span id="riverTrendHint">sensori da collegare</span></div>
         <svg viewBox="0 0 320 96" aria-hidden="true">
           <path class="river-area" d="M18 66 C72 65 122 65 172 64 C220 63 260 62 302 61 L302 86 L18 86 Z"></path>
           <path class="river-line" d="M18 66 C72 65 122 65 172 64 C220 63 260 62 302 61"></path>
@@ -112,8 +116,8 @@
 
       <div id="riverDetail" class="river-detail hidden">
         <div class="river-detail-head"><b>Dettaglio trend</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
-        <p>Anteprima pronta. Il prossimo passo sarà collegare livello reale, soglie e andamento dai sensori.</p>
-        <div class="river-values"><span>ora <b>stabile</b></span><span>+3h <b>stabile</b></span><span>+6h <b>stabile</b></span></div>
+        <p><span id="riverDetailText">Anteprima pronta. Il prossimo passo sarà collegare livello reale, soglie e andamento dai sensori.</span></p>
+        <div class="river-values"><span>ora <b id="rvNow">stabile</b></span><span>+3h <b id="rv3">stabile</b></span><span>+6h <b id="rv6">stabile</b></span></div>
       </div>
 
       <div class="river-actions">
@@ -156,8 +160,8 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V21 · Lamone Step 2</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V22 · Lamone Step 2</footer>
   </main>
-  <script src="app.js?v=21.0.0"></script>
+  <script src="app.js?v=22.0.0"></script>
 </body>
 </html>

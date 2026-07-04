@@ -1,3 +1,3 @@
-# Meteo Conte V21 - Lamone Step 2
+# Meteo Conte V22
 
-Dashboard Lamone rifinita: niente riquadro informativo extra, mini grafico più leggibile e dettaglio trend integrato.
+Lamone Smart: indice Lamone predisposto, stato dinamico su rischio meteo locale e schermata Lamone rifinita.
