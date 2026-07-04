@@ -1,3 +1,3 @@
-# Meteo Conte V19
+# Meteo Conte V20
 
-Trend compatti: grafico più basso, senza barre duplicate, home invariata.
+Lamone Step 1: cruscotto Lamone più operativo, grafica mantenuta e nessuna modifica alla Home.

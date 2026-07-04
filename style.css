@@ -104,3 +104,22 @@
 .trend-head{margin-bottom:0!important;}
 .trend-head .closeTrend{width:42px;height:42px;padding:0;display:flex;align-items:center;justify-content:center;font-size:28px;line-height:1;}
 @media(max-width:430px){.spark-card svg{max-height:108px}.spark-card{padding:3px 6px 0}.trendbox{padding-bottom:10px}}
+
+/* V20 - Lamone dashboard step 1 */
+.river-v20{padding:12px 13px}
+.river-status{display:flex;gap:12px;align-items:center;margin-top:4px;margin-bottom:10px}
+.river-dot{width:38px;height:38px;border-radius:50%;flex:none;box-shadow:0 0 0 1px #ffffff18}
+.river-status h2{margin:0;font-size:28px;line-height:1.02}
+.river-status p{margin:5px 0 0;font-size:15.5px;line-height:1.22;color:#e4edf3}
+.river-decision{border:1px solid var(--line);background:#ffffff08;border-radius:18px;padding:10px 11px;margin:8px 0 10px}
+.river-decision strong{display:block;font-size:20px;line-height:1.05;margin-bottom:4px}
+.river-decision p{margin:0;font-size:14.7px;line-height:1.22;color:#e4edf3}
+.river-mini{margin:0 0 10px}
+.river-mini button{min-width:0;text-align:left;color:var(--txt);box-shadow:none;background:#ffffff08;border:1px solid var(--line);border-radius:16px;padding:8px 10px;cursor:pointer}
+.river-mini button:active{transform:scale(.98);background:#ffffff12}
+.river-chart{border:1px solid var(--line);background:#ffffff07;border-radius:18px;padding:9px 10px 4px;margin:8px 0 10px}
+.river-chart-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:2px}
+.river-chart-head b{font-size:18px}.river-chart-head span{font-size:13px;color:var(--muted);text-align:right}
+.river-chart svg{width:100%;height:82px;display:block}.river-chart .river-line{fill:none;stroke:var(--lime);stroke-width:5;stroke-linecap:round}.river-chart .river-area{fill:#6fe09a22}.river-chart circle{fill:var(--green);stroke:#dfffee;stroke-width:1.5}.river-chart text{font-size:11px;fill:#bdd0dc}
+.river-actions{display:grid;grid-template-columns:1.4fr .9fr;gap:8px}.river-actions .btn{margin:0}.btn.secondary{background:#ffffff0c;color:var(--txt);border:1px solid var(--line);box-shadow:none}
+@media(max-width:430px){.river-status h2{font-size:26px}.river-status p{font-size:15px}.river-decision strong{font-size:19px}.river-actions{grid-template-columns:1fr}.river-chart svg{height:76px}}
