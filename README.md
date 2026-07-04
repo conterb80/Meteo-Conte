@@ -1,6 +1,5 @@
-# Meteo Conte V26 - Cache fix Lamone
+# Meteo Conte V27 - Reset Service Worker
 
-- Corretto footer/versione
-- Cache reset aggressivo
-- Link Lamone attivi
-- Mantiene layout stabile V24/V25
+- Pagina reset.html per cancellare service worker/cache
+- Base V26 Lamone link attivi
+- Footer aggiornato V27
