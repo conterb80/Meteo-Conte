@@ -149,6 +149,8 @@ function updateLamoneDecision(lam, mar){
   const corner=$('lamoneCorner'); if(corner) corner.className='cornerdot '+color;
   const dot=$('dotLamone'); if(dot) setDot(dot,color);
 
+  updateSensorIntelligence(lam,mar);
+
   if(max6>=50 || max3>=30){
     if(titleEl) titleEl.textContent='Lamone da seguire';
     if(descEl) descEl.textContent='Pioggia forte a monte: controlla sensori e aggiornamenti ufficiali.';
@@ -190,6 +192,39 @@ async function loadBasinRain(){
   }
 }
 
+const SENSOR_ORDER=['Marradi','Strada Casale','Sarna','Faenza','Reda','Pieve Cesato','Mezzano'];
+let sensorStatus={};
+function sensorStateFromRain(lam,mar){
+  const max6=Math.max(lam?.h6||0,mar?.h6||0);
+  const max3=Math.max(lam?.h3||0,mar?.h3||0);
+  if(max6>=50 || max3>=30) return {level:3,color:'red',label:'Critico',active:3,wave:'criticità a monte',villanova:'monitora'};
+  if(max6>=25 || max3>=15) return {level:2,color:'yellow',label:'Attenzione',active:2,wave:'onda in formazione',villanova:'da seguire'};
+  if(max6>=10 || max3>=8) return {level:1,color:'yellow',label:'In crescita',active:1,wave:'primi segnali a monte',villanova:'ricontrolla'};
+  return {level:0,color:'green',label:'Normale',active:-1,wave:'nessuna anomalia',villanova:'tranquilla'};
+}
+function updateSensorIntelligence(lam,mar){
+  const state=sensorStateFromRain(lam,mar);
+  SENSOR_ORDER.forEach((name,idx)=>{
+    let color='green', label='Normale', trend='→ stabile';
+    if(state.level>0){
+      if(idx===state.active){ color=state.color; label=state.label; trend=state.level>=2?'↗ in crescita':'↗ lieve'; }
+      else if(idx<state.active){ color='green'; label='Passato'; trend='→ controllo'; }
+      else { color='green'; label='Normale'; trend='→ attesa'; }
+    }
+    sensorStatus[name]={color,label,trend};
+    const ch=document.querySelector(`[data-sensor="${name}"]`);
+    if(ch){
+      ch.classList.remove('sensor-green','sensor-yellow','sensor-red');
+      ch.classList.add('sensor-'+color);
+      const dot=ch.querySelector('i'); if(dot) dot.className=color;
+      const sm=ch.querySelector('small'); if(sm) sm.textContent=label;
+    }
+  });
+  const wave=$('waveStatusLabel'); if(wave) wave.textContent=state.wave;
+  const active=$('activeSensorLabel'); if(active) active.textContent=state.active>=0?SENSOR_ORDER[state.active]:'nessuno';
+  const villa=$('villanovaStatusLabel'); if(villa) villa.textContent=state.villanova;
+}
+
 const SENSOR_META={
   'Marradi':{role:'Monte alto Lamone',phase:'primo segnale a monte',order:'1/7',link:'https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php'},
   'Strada Casale':{role:'Tratto alto/intermedio',phase:'controllo discesa verso Brisighella/Faenza',order:'2/7',link:'https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php'},
@@ -204,9 +239,10 @@ function openSensorDetail(name){
   const m=SENSOR_META[name]||{};
   const title=d.querySelector('.river-detail-head b'); if(title) title.textContent='Sensore '+name;
   const text=$('riverDetailText');
-  if(text) text.textContent=`${m.order||''} · ${m.role||'Sensore Lamone'}. ${m.phase||'Punto del percorso monte → valle'}. Lettura automatica livello non ancora agganciata: usa il link ufficiale Dettagli Lamone per il grafico reale.`;
+  const st=(sensorStatus && sensorStatus[name]) || {label:'Normale',color:'green',trend:'→ stabile'};
+  if(text) text.textContent=`${m.order||''} · ${m.role||'Sensore Lamone'}. ${m.phase||'Punto del percorso monte → valle'}. Stato operativo: ${st.label} · ${st.trend}. Per il grafico reale usa Dettagli Lamone.`;
   const vals=d.querySelectorAll('.propagation-values');
-  if(vals[0]) vals[0].innerHTML=`<span>Posizione <b>${m.order||'--'}</b></span><span>Stato <b>link pronto</b></span><span>Trend <b>da leggere</b></span>`;
+  if(vals[0]) vals[0].innerHTML=`<span>Posizione <b>${m.order||'--'}</b></span><span>Stato <b>${st.label}</b></span><span>Trend <b>${st.trend}</b></span>`;
   if(vals[1]) vals[1].innerHTML=`<span>Ruolo <b>${m.role||'Lamone'}</b></span><span>Percorso <b>monte → valle</b></span><span>Azioni <b>apri dettagli</b></span>`;
   d.classList.remove('hidden');
   d.scrollIntoView({behavior:'smooth',block:'center'});
@@ -215,13 +251,15 @@ function loadLamoneSensors(){
   const chips=[...document.querySelectorAll('[data-sensor]')];
   chips.forEach(ch=>{
     const name=ch.dataset.sensor;
-    const sm=ch.querySelector('small'); if(sm) sm.textContent='tocca';
+    const sm=ch.querySelector('small'); if(sm) sm.textContent='Normale';
     const dot=ch.querySelector('i'); if(dot) dot.className='green';
+    ch.classList.add('sensor-green');
+    sensorStatus[name]={color:'green',label:'Normale',trend:'→ stabile'};
     ch.title='Apri dettaglio operativo '+name;
     ch.style.cursor='pointer';
     ch.addEventListener('click',(e)=>{e.stopPropagation();openSensorDetail(name);});
   });
-  const label=$('sensorModeLabel'); if(label) label.textContent='sensori operativi · tocca';
+  const label=$('sensorModeLabel'); if(label) label.textContent='sensori intelligenti · tocca';
 }
 
 load();

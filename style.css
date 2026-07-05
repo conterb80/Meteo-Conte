@@ -356,3 +356,13 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .river-emergency .sensor-route span{cursor:pointer;transition:transform .15s ease, background .15s ease;}
 .river-emergency .sensor-route span:active{transform:scale(.98);background:#ffffff10;}
 .river-emergency .sensor-route span small{color:var(--green)!important;}
+
+
+/* V40 - sensori intelligenti */
+.river-emergency .sensor-route span.sensor-green{border-color:rgba(41,215,120,.28);background:rgba(41,215,120,.07);}
+.river-emergency .sensor-route span.sensor-yellow{border-color:rgba(255,203,78,.45);background:rgba(255,203,78,.11);box-shadow:0 0 0 1px rgba(255,203,78,.08) inset;}
+.river-emergency .sensor-route span.sensor-red{border-color:rgba(255,92,92,.5);background:rgba(255,92,92,.12);box-shadow:0 0 0 1px rgba(255,92,92,.08) inset;}
+.river-emergency .sensor-route i.red{background:#ff5c5c;}
+.river-emergency .sensor-route span.sensor-yellow small{color:var(--yellow)!important;}
+.river-emergency .sensor-route span.sensor-red small{color:#ff8d8d!important;}
+#waveStatusLabel,#activeSensorLabel,#villanovaStatusLabel{text-transform:lowercase;}

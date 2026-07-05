@@ -1,4 +1,4 @@
-# Meteo Conte V39 - Fix JS sensori stabile
+# Meteo Conte V40 - Fix JS sensori stabile
 
 - Corretto errore JavaScript che bloccava il caricamento dati meteo
 - Ripristinato motore meteo funzionante
