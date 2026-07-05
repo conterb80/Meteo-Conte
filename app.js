@@ -79,6 +79,7 @@ document.querySelectorAll('[data-trend]').forEach(el=>{
 document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>$(el.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'})));
 
 $('riverChartBtn')?.addEventListener('click',()=>{
+  const t=$('riverDetailText'); if(t) delete t.dataset.manualSensor;
   $('riverDetail')?.classList.toggle('hidden');
 });
 $('closeRiverDetail')?.addEventListener('click',(e)=>{
@@ -137,9 +138,8 @@ function setBasinCard(key,d){
   el.style.color=d.h6>=25?'var(--yellow)':'var(--green)';
 }
 function updateLamoneDecision(lam, mar){
-  const max6=Math.max(lam.h6,mar.h6);
-  const max3=Math.max(lam.h3,mar.h3);
-  const color= max6>=50 || max3>=30 ? 'red' : max6>=25 || max3>=15 ? 'yellow' : max6>=10 || max3>=8 ? 'yellow' : 'green';
+  const state=sensorStateFromRain(lam,mar);
+  const color=state.color;
   const titleEl=document.querySelector('.emergency-status h2');
   const descEl=document.querySelector('.emergency-status p');
   const decStrong=document.querySelector('.compact-decision strong');
@@ -151,27 +151,24 @@ function updateLamoneDecision(lam, mar){
 
   updateSensorIntelligence(lam,mar);
 
-  if(max6>=50 || max3>=30){
-    if(titleEl) titleEl.textContent='Lamone da seguire';
-    if(descEl) descEl.textContent='Pioggia forte a monte: controlla sensori e aggiornamenti ufficiali.';
-    if(decStrong) decStrong.textContent='Attenzione a monte';
-    if(decText) decText.textContent=`Accumuli importanti: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h. Apri sensori e bollettini.`;
-  }else if(max6>=25 || max3>=15){
+  if(state.level>=3){
+    if(titleEl) titleEl.textContent='Lamone in criticità';
+    if(descEl) descEl.textContent='Accumuli forti a monte: priorità a sensori, bollettini e percorso onda.';
+    if(decStrong) decStrong.textContent='Attenzione operativa';
+  }else if(state.level===2){
     if(titleEl) titleEl.textContent='Lamone da monitorare';
-    if(descEl) descEl.textContent='Pioggia significativa a monte: segui l’evoluzione dei sensori.';
+    if(descEl) descEl.textContent='Pioggia significativa a monte: segui sensori da Marradi verso valle.';
     if(decStrong) decStrong.textContent='Monitoraggio consigliato';
-    if(decText) decText.textContent=`Pioggia a monte in aumento: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h. Controlla il percorso monte → valle.`;
-  }else if(max6>=10 || max3>=8){
+  }else if(state.level===1){
     if(titleEl) titleEl.textContent='Lamone sotto osservazione';
-    if(descEl) descEl.textContent='Qualche accumulo a monte: situazione da ricontrollare.';
+    if(descEl) descEl.textContent='Primi accumuli a monte: utile ricontrollare se la pioggia continua.';
     if(decStrong) decStrong.textContent='Ricontrollo utile';
-    if(decText) decText.textContent=`Accumuli moderati: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h. Per ora nessun segnale pesante.`;
   }else{
     if(titleEl) titleEl.textContent='Lamone sotto controllo';
     if(descEl) descEl.textContent='Bacini, Marzeno, sensori e onda verso valle in un solo colpo d’occhio.';
     if(decStrong) decStrong.textContent='Situazione tranquilla';
-    if(decText) decText.textContent=`Pioggia a monte bassa: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h.`;
   }
+  if(decText) decText.textContent=lamoneSmartMessage(lam,mar,state);
 }
 async function loadBasinRain(){
   try{
@@ -197,10 +194,18 @@ let sensorStatus={};
 function sensorStateFromRain(lam,mar){
   const max6=Math.max(lam?.h6||0,mar?.h6||0);
   const max3=Math.max(lam?.h3||0,mar?.h3||0);
-  if(max6>=50 || max3>=30) return {level:3,color:'red',label:'Critico',active:3,wave:'criticità a monte',villanova:'monitorare'};
-  if(max6>=25 || max3>=15) return {level:2,color:'yellow',label:'Attenzione',active:2,wave:'onda in formazione',villanova:'da seguire'};
-  if(max6>=10 || max3>=8) return {level:1,color:'yellow',label:'In crescita',active:1,wave:'primi segnali a monte',villanova:'ricontrolla'};
-  return {level:0,color:'green',label:'Normale',active:-1,wave:'nessuna anomalia',villanova:'tranquilla'};
+  const source=(lam?.h6||0)>=(mar?.h6||0)?'Lamone/Marradi':'Marzeno/Modigliana';
+  if(max6>=50 || max3>=30) return {level:3,color:'red',label:'Critico',active:3,wave:'criticità a monte',villanova:'monitorare',source};
+  if(max6>=25 || max3>=15) return {level:2,color:'yellow',label:'Attenzione',active:2,wave:'onda in formazione',villanova:'da seguire',source};
+  if(max6>=10 || max3>=8) return {level:1,color:'yellow',label:'In crescita',active:1,wave:'primi segnali a monte',villanova:'ricontrolla',source};
+  return {level:0,color:'green',label:'Normale',active:-1,wave:'nessuna anomalia',villanova:'tranquilla',source:'nessuno'};
+}
+function lamoneSmartMessage(lam,mar,state){
+  const l6=(lam?.h6||0).toFixed(1), m6=(mar?.h6||0).toFixed(1);
+  if(state.level>=3) return `Criticità possibile: accumuli forti su ${state.source}. Lamone ${l6} mm / Marzeno ${m6} mm nelle ultime 6h. Apri sensori, bollettini e segui il passaggio monte → Faenza → valle.`;
+  if(state.level===2) return `Monitoraggio consigliato: pioggia significativa su ${state.source}. Lamone ${l6} mm / Marzeno ${m6} mm nelle ultime 6h. Controlla Marradi, Sarna e Faenza.`;
+  if(state.level===1) return `Ricontrollo utile: primi accumuli a monte. Lamone ${l6} mm / Marzeno ${m6} mm nelle ultime 6h. Tieni d’occhio il trend se continua a piovere.`;
+  return `Situazione tranquilla: pioggia a monte bassa. Lamone ${l6} mm / Marzeno ${m6} mm nelle ultime 6h. Nessun segnale operativo sul percorso.`;
 }
 function updateSensorIntelligence(lam,mar){
   const state=sensorStateFromRain(lam,mar);
@@ -221,11 +226,18 @@ function updateSensorIntelligence(lam,mar){
     }
   });
   const wave=$('waveStatusLabel'); if(wave) wave.textContent=state.wave;
-  const active=$('activeSensorLabel'); if(active) active.textContent=state.active>=0?SENSOR_ORDER[state.active]:'nessuno';
+  const activeName=state.active>=0?SENSOR_ORDER[state.active]:'nessuno';
+  const active=$('activeSensorLabel'); if(active) active.textContent=activeName;
   const villa=$('villanovaStatusLabel'); if(villa) villa.textContent=state.villanova;
   const dw=$('detailWaveState'); if(dw) dw.textContent=state.wave;
-  const da=$('detailActiveState'); if(da) da.textContent=state.active>=0?SENSOR_ORDER[state.active]:'nessuno';
+  const da=$('detailActiveState'); if(da) da.textContent=activeName;
   const dv=$('detailVillaState'); if(dv) dv.textContent=state.villanova;
+  const text=$('riverDetailText');
+  if(text && !text.dataset.manualSensor){
+    text.textContent=state.level>0
+      ? `Decisione Conte 2.0: segnale su ${state.source}. Segui il percorso ${activeName} → Faenza → valle e confronta con bollettini ufficiali.`
+      : 'Decisione Conte 2.0: nessuna anomalia su pioggia a monte e percorso Lamone. Continua il controllo normale.';
+  }
 }
 
 const SENSOR_META={
@@ -243,7 +255,7 @@ function openSensorDetail(name){
   const title=d.querySelector('.river-detail-head b'); if(title) title.textContent='Sensore '+name;
   const text=$('riverDetailText');
   const st=(sensorStatus && sensorStatus[name]) || {label:'Normale',color:'green',trend:'→ stabile'};
-  if(text) text.textContent=`${m.order||''} · ${m.role||'Sensore Lamone'}. ${m.phase||'Punto del percorso monte → valle'}. Stato operativo: ${st.label} · ${st.trend}. Link ufficiale sempre disponibile da Dettagli Lamone.`;
+  if(text){ text.dataset.manualSensor='1'; text.textContent=`${m.order||''} · ${m.role||'Sensore Lamone'}. ${m.phase||'Punto del percorso monte → valle'}. Stato operativo: ${st.label} · ${st.trend}. Link ufficiale sempre disponibile da Dettagli Lamone.`; }
   const vals=d.querySelectorAll('.propagation-values');
   if(vals[0]) vals[0].innerHTML=`<span>Posizione <b>${m.order||'--'}</b></span><span>Stato <b>${st.label}</b></span><span>Trend <b>${st.trend}</b></span>`;
   if(vals[1]) vals[1].innerHTML=`<span>Ruolo <b>${m.role||'Lamone'}</b></span><span>Percorso <b>monte → valle</b></span><span>Azioni <b>apri dettagli</b></span>`;

@@ -1,7 +1,7 @@
-# Meteo Conte V41 - Lamone smart finale
+# Meteo Conte V42 - Decisione Conte 2.0
 
-- Base stabile V40 mantenuta
-- Sezione Lamone resa più operativa
-- Dettaglio percorso sincronizzato con stato onda/punto attivo/Villanova
-- Sensori smart monte → valle
-- Nessuna modifica al motore meteo
+- Base stabile V41 mantenuta
+- Decisione Lamone più operativa e leggibile
+- Stato onda e punto attivo sincronizzati con accumuli a monte
+- Sensori smart monte → valle invariati
+- Nessuna modifica al motore meteo principale
