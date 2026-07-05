@@ -1,7 +1,7 @@
-# Meteo Conte V38 - Ripristino stabile
+# Meteo Conte V39 - Fix JS sensori stabile
 
-- Ripristinata base stabile V35
-- Dati meteo iniziali di nuovo prioritari
-- Sezione Lamone mantenuta ordinata monte → valle
-- Rimossi tentativi automatici che bloccavano il caricamento
-- Footer aggiornato V38
+- Corretto errore JavaScript che bloccava il caricamento dati meteo
+- Ripristinato motore meteo funzionante
+- Mantenuta schermata Lamone compatta
+- Sensori Lamone cliccabili come dettagli operativi
+- Base stabile prima dei prossimi collegamenti reali
