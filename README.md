@@ -1,7 +1,7 @@
-# Meteo Conte V28 - Lamone Emergenza Step 1
+# Meteo Conte V29 - Lamone layout compatto
 
-- Schermata Lamone impostata come flusso emergenza
-- Bacino Lamone e Bacino Marzeno separati
-- Onda di piena con percorso monte-valle
-- Link sensori e pioggia a monte attivi
-- Base pronta per collegare accumuli e sensori reali
+- Schermata Lamone ottimizzata per stare in un colpo d’occhio
+- Header Lamone più compatto
+- Bacini a monte ridotti
+- Onda di piena più compatta
+- Link invariati e pronti per sensori reali

@@ -154,3 +154,131 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .basin-card span{display:block;color:var(--muted);font-size:14px;margin-bottom:4px}.basin-card b{display:block;font-size:17px;line-height:1.15}.basin-card em{display:block;font-style:normal;color:var(--green);font-weight:800;margin-top:8px;font-size:13px}.basin-card:active{transform:scale(.98);background:#ffffff12}
 .flood-route{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0 2px}.flood-route span{display:flex;align-items:center;justify-content:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:6px 4px;color:var(--muted);font-size:12px;font-weight:800;white-space:nowrap}.flood-route i{display:inline-block;width:10px;height:10px;border-radius:50%}.flood-route i.green{background:var(--green)}.flood-route i.yellow{background:var(--yellow)}.flood-route i.red{background:var(--red)}
 @media(max-width:430px){.basin-grid{grid-template-columns:1fr}.flood-route{grid-template-columns:repeat(2,1fr)}.river-emergency .emergency-status h2{font-size:32px}}
+
+/* V29 - Lamone layout compatto */
+.river-emergency{
+  padding:10px 12px 12px;
+}
+.river-emergency > .label{
+  margin-bottom:4px;
+}
+.river-emergency .cornerdot{
+  width:17px;
+  height:17px;
+  right:15px;
+  top:15px;
+}
+.river-emergency .river-status{
+  gap:10px;
+  align-items:center;
+  margin:2px 0 8px;
+}
+.river-emergency .river-dot{
+  width:42px;
+  height:42px;
+}
+.river-emergency .emergency-status h2{
+  font-size:30px;
+  line-height:1;
+  margin:0 0 3px;
+}
+.river-emergency .emergency-status p{
+  font-size:14px;
+  line-height:1.15;
+  margin:0;
+}
+.river-emergency .compact-decision{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  grid-template-areas:'label label' 'strong p';
+  gap:2px 10px;
+  padding:8px 10px;
+  margin:6px 0 8px;
+  border-radius:16px;
+}
+.river-emergency .compact-decision .label{grid-area:label;margin-bottom:0;font-size:10px;letter-spacing:.24em;}
+.river-emergency .compact-decision strong{grid-area:strong;font-size:18px;white-space:nowrap;align-self:center;}
+.river-emergency .compact-decision p{grid-area:p;font-size:13px;line-height:1.15;margin:0;align-self:center;}
+.river-emergency .basin-block{
+  padding:9px 10px;
+  margin:8px 0;
+  border-radius:18px;
+}
+.river-emergency .river-chart-head{margin-bottom:5px;}
+.river-emergency .river-chart-head b{font-size:18px;}
+.river-emergency .river-chart-head span{font-size:12.5px;}
+.river-emergency .basin-grid{
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:6px;
+}
+.river-emergency .basin-card{
+  padding:8px 9px;
+  border-radius:15px;
+}
+.river-emergency .basin-card span{font-size:12.5px;margin-bottom:2px;}
+.river-emergency .basin-card b{font-size:16px;line-height:1.05;}
+.river-emergency .basin-card em{font-size:12px;margin-top:5px;}
+.river-emergency .river-chart{
+  padding:8px 9px 2px;
+  margin:8px 0;
+  border-radius:18px;
+}
+.river-emergency .flood-route{
+  grid-template-columns:repeat(4,1fr);
+  gap:5px;
+  margin:5px 0 0;
+}
+.river-emergency .flood-route span{
+  font-size:11px;
+  padding:5px 2px;
+}
+.river-emergency .flood-route i{width:8px;height:8px;}
+.river-emergency .river-chart svg{
+  height:70px!important;
+}
+.river-emergency .mini-grid.river-mini{
+  gap:8px;
+  margin-bottom:8px;
+}
+.river-emergency .river-info{
+  padding:7px 9px;
+  border-radius:15px;
+}
+.river-emergency .river-info span{font-size:12.5px;}
+.river-emergency .river-info b{font-size:17px;}
+.river-emergency .river-info.river-link em{font-size:11px;top:8px;}
+.river-emergency .river-actions{
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.river-emergency .river-actions .btn{
+  padding:9px 8px;
+  font-size:15px;
+  margin:0;
+}
+.river-emergency .river-detail{
+  padding:8px;
+  margin:7px 0;
+  border-radius:16px;
+}
+.river-emergency .river-detail p{font-size:13px;line-height:1.15;}
+.river-emergency .river-values span{padding:6px 4px;font-size:12px;}
+.river-emergency .river-values b{font-size:13px;}
+@media(max-width:430px){
+  .river-emergency{padding:9px 10px 10px;}
+  .river-emergency .emergency-status h2{font-size:28px;}
+  .river-emergency .emergency-status p{font-size:13.5px;}
+  .river-emergency .river-dot{width:38px;height:38px;}
+  .river-emergency .compact-decision{grid-template-columns:1fr;grid-template-areas:'label' 'strong' 'p';gap:1px;padding:7px 9px;}
+  .river-emergency .compact-decision strong{font-size:17px;}
+  .river-emergency .compact-decision p{font-size:12.8px;}
+  .river-emergency .basin-grid{grid-template-columns:1fr 1fr;gap:6px;}
+  .river-emergency .basin-card{padding:7px 7px;}
+  .river-emergency .basin-card b{font-size:15px;}
+  .river-emergency .basin-card em{font-size:11.5px;}
+  .river-emergency .flood-route{grid-template-columns:repeat(4,1fr);gap:4px;}
+  .river-emergency .flood-route span{font-size:10.5px;padding:4px 1px;}
+  .river-emergency .river-chart svg{height:62px!important;}
+  .river-emergency .river-actions .btn{font-size:14px;padding:8px 6px;}
+}
