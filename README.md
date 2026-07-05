@@ -1,7 +1,8 @@
-# Meteo Conte V43 - Link rapidi final
+# Meteo Conte V44 - Pulizia centro operativo
 
-- Base stabile V42 mantenuta
-- Footer aggiornato V43
-- Link rapidi puliti e rinominati
-- Ultima schermata più essenziale
-- Nessuna modifica al motore meteo e Lamone
+- Rimossa Timeline rischio dalla schermata finale
+- Rimossa Prossime ore dalla schermata finale
+- Link rapidi portati subito sotto Allerte
+- Navigazione Temporali indirizzata ai Link rapidi
+- Base stabile V43 mantenuta
+- Motore meteo e sezione Lamone non modificati
