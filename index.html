@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V29</title>
-  <link rel="manifest" href="manifest.json?v=29" />
-  <link rel="icon" type="image/png" href="icon.png?v=29" />
-  <link rel="stylesheet" href="style.css?v=29.0.0" />
+  <title>Meteo Conte V30</title>
+  <link rel="manifest" href="manifest.json?v=30" />
+  <link rel="icon" type="image/png" href="icon.png?v=30" />
+  <link rel="stylesheet" href="style.css?v=30.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=29" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=30" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -124,25 +124,28 @@
       </div>
 
       <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri andamento Lamone">
-        <div class="river-chart-head"><b>Onda di piena</b><span>anteprima</span></div>
-        <div class="flood-route" aria-hidden="true">
+        <div class="river-chart-head"><b>Onda di piena</b><span>sensori monte → valle</span></div>
+        <div class="flood-route sensor-route" aria-hidden="true">
           <span><i class="green"></i>Marradi</span>
-          <span><i class="green"></i>Brisighella</span>
+          <span><i class="green"></i>Strada Casale</span>
+          <span><i class="green"></i>Sarna</span>
           <span><i class="green"></i>Faenza</span>
-          <span><i class="green"></i>Villanova</span>
+          <span><i class="green"></i>Reda</span>
+          <span><i class="green"></i>Pieve Cesato</span>
+          <span><i class="green"></i>Mezzano</span>
         </div>
-        <svg viewBox="0 0 320 86" aria-hidden="true">
-          <path class="river-area" d="M18 58 C72 57 122 56 172 55 C220 54 260 52 302 51 L302 76 L18 76 Z"></path>
-          <path class="river-line" d="M18 58 C72 57 122 56 172 55 C220 54 260 52 302 51"></path>
-          <circle cx="18" cy="58" r="4"></circle><circle cx="112" cy="56" r="4"></circle><circle cx="202" cy="54" r="4"></circle><circle cx="302" cy="51" r="4"></circle>
-          <text x="18" y="82" text-anchor="middle">monte</text><text x="160" y="82" text-anchor="middle">confluenza</text><text x="302" y="82" text-anchor="middle">valle</text>
+        <svg viewBox="0 0 320 82" aria-hidden="true">
+          <path class="river-area" d="M18 55 C60 55 95 54 132 53 C165 52 198 51 232 50 C258 49 282 48 302 47 L302 73 L18 73 Z"></path>
+          <path class="river-line" d="M18 55 C60 55 95 54 132 53 C165 52 198 51 232 50 C258 49 282 48 302 47"></path>
+          <circle cx="18" cy="55" r="3.8"></circle><circle cx="62" cy="54" r="3.8"></circle><circle cx="106" cy="54" r="3.8"></circle><circle cx="150" cy="53" r="3.8"></circle><circle cx="194" cy="51.5" r="3.8"></circle><circle cx="242" cy="49.5" r="3.8"></circle><circle cx="302" cy="47" r="3.8"></circle>
+          <text x="18" y="79" text-anchor="middle">monte</text><text x="160" y="79" text-anchor="middle">Faenza</text><text x="302" y="79" text-anchor="middle">valle</text>
         </svg>
       </button>
 
       <div id="riverDetail" class="river-detail hidden">
         <div class="river-detail-head"><b>Dettaglio percorso</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
         <p>Qui entreranno sensori reali, variazione livello e una stima prudente del movimento verso valle.</p>
-        <div class="river-values"><span>Monte <b>da leggere</b></span><span>Marzeno <b>da leggere</b></span><span>Villanova <b>da stimare</b></span></div>
+        <div class="river-values"><span>Monte <b>Marradi</b></span><span>Confluenza <b>Faenza</b></span><span>Valle <b>Mezzano</b></span></div>
       </div>
 
       <div class="mini-grid compact-mini river-mini">
@@ -190,7 +193,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V29 · Lamone emergenza step 1</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V30 · Lamone emergenza step 1</footer>
   </main>
   <script src="app.js?v=28.0.0"></script>
 </body>

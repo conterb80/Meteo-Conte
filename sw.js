@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v29-lamone-emergenza';
+const CACHE_NAME = 'meteo-conte-v30-lamone-sensori';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {

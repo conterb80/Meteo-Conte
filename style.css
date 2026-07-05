@@ -282,3 +282,27 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
   .river-emergency .river-chart svg{height:62px!important;}
   .river-emergency .river-actions .btn{font-size:14px;padding:8px 6px;}
 }
+
+/* V30 - sensori Lamone monte-valle */
+.river-emergency .sensor-route{
+  grid-template-columns:repeat(4,1fr);
+  gap:4px;
+}
+.river-emergency .sensor-route span{
+  font-size:10px;
+  padding:4px 2px;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.river-emergency .sensor-route span:nth-child(2){font-size:9.4px;}
+.river-emergency .sensor-route span:nth-child(6){font-size:9.2px;}
+.river-emergency .river-chart svg{height:58px!important;}
+@media(max-width:430px){
+  .river-emergency .sensor-route{grid-template-columns:repeat(4,1fr);gap:4px;}
+  .river-emergency .sensor-route span{font-size:9.6px;padding:4px 1px;}
+  .river-emergency .sensor-route span:nth-child(2),
+  .river-emergency .sensor-route span:nth-child(6){font-size:8.7px;}
+  .river-emergency .river-chart svg{height:56px!important;}
+}
