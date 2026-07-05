@@ -1,6 +1,6 @@
-# Meteo Conte V33 - Pioggia a monte
+# Meteo Conte V34 - Decisione Lamone smart
 
-- Bacini Marradi/Modigliana con accumuli meteo reali stimati
-- Dettaglio bacino 1h/3h/6h
-- Mantiene layout compatto V30/V32
-- Sensori Lamone pronti per step successivo
+- Decisione Conte Lamone automatica in base a pioggia a monte
+- Colori Lamone coerenti con accumuli Marradi/Modigliana
+- Sensori in modalità link ufficiale, senza falsi allarmi
+- Base V33 mantenuta

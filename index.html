@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V33</title>
+  <title>Meteo Conte V34</title>
   <link rel="manifest" href="manifest.json?v=33" />
   <link rel="icon" type="image/png" href="icon.png?v=33" />
   <link rel="stylesheet" href="style.css?v=33.0.0" />
@@ -98,7 +98,7 @@
       <div class="river-decision compact-decision">
         <span class="label">DECISIONE CONTE · LAMONE</span>
         <strong>Monitoraggio pronto</strong>
-        <p>Sensori e tempi indicativi pronti: prima guardi monte, poi segui la piena verso valle.</p>
+        <p id="lamoneDecisionText">Pioggia a monte e sensori pronti: prima guardi monte, poi segui la piena verso valle.</p>
       </div>
 
       <div class="basin-block">
@@ -124,7 +124,7 @@
       </div>
 
       <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri andamento Lamone">
-        <div class="river-chart-head"><b>Onda di piena</b><span>sensori monte → valle</span></div>
+        <div class="river-chart-head"><b>Onda di piena</b><span id="sensorModeLabel">sensori monte → valle</span></div>
         <div class="flood-route sensor-route" aria-hidden="true">
           <span data-sensor="Marradi"><i class="green"></i><b>Marradi</b><small>lettura…</small></span>
           <span data-sensor="Strada Casale"><i class="green"></i><b>Strada Casale</b><small>lettura…</small></span>
@@ -149,7 +149,7 @@
 
       <div id="riverDetail" class="river-detail hidden">
         <div class="river-detail-head"><b>Dettaglio percorso</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
-        <p>Step 2: qui prepariamo i tempi dell’onda. Per ora sono campi da tarare sui sensori reali: quando collegheremo i livelli, useremo il passaggio monte → Faenza → valle per stimare dove sta transitando la piena.</p>
+        <p id="riverDetailText">Step 3: pioggia a monte collegata. Sensori Lamone disponibili con link diretto; quando la lettura automatica sarà accessibile, useremo il passaggio monte → Faenza → valle per stimare dove sta transitando la piena.</p>
         <div class="river-values propagation-values"><span>Monte <b>Marradi</b></span><span>Confluenza <b>Faenza</b></span><span>Valle <b>Mezzano</b></span></div><div class="river-values propagation-values"><span>Monte→Faenza <b>da tarare</b></span><span>Faenza→valle <b>da tarare</b></span><span>Villanova <b>focus</b></span></div>
       </div>
 
@@ -198,7 +198,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V33 · Lamone emergenza step 1</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V34 · Decisione Lamone smart</footer>
   </main>
   <script src="app.js?v=33.0.0"></script>
 </body>

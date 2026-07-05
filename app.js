@@ -136,6 +136,41 @@ function setBasinCard(key,d){
   el.textContent=`1h ${d.h1.toFixed(1)} · 3h ${d.h3.toFixed(1)} · 6h ${d.h6.toFixed(1)} mm`;
   el.style.color=d.h6>=25?'var(--yellow)':'var(--green)';
 }
+function updateLamoneDecision(lam, mar){
+  const max6=Math.max(lam.h6,mar.h6);
+  const max3=Math.max(lam.h3,mar.h3);
+  const color= max6>=50 || max3>=30 ? 'red' : max6>=25 || max3>=15 ? 'yellow' : max6>=10 || max3>=8 ? 'yellow' : 'green';
+  const titleEl=document.querySelector('.emergency-status h2');
+  const descEl=document.querySelector('.emergency-status p');
+  const decStrong=document.querySelector('.compact-decision strong');
+  const decText=$('lamoneDecisionText') || document.querySelector('.compact-decision p');
+  const riverDot=document.querySelector('.river-status .river-dot');
+  if(riverDot) riverDot.className='river-dot '+color;
+  const corner=$('lamoneCorner'); if(corner) corner.className='cornerdot '+color;
+  const dot=$('dotLamone'); if(dot) setDot(dot,color);
+
+  if(max6>=50 || max3>=30){
+    if(titleEl) titleEl.textContent='Lamone da seguire';
+    if(descEl) descEl.textContent='Pioggia forte a monte: controlla sensori e aggiornamenti ufficiali.';
+    if(decStrong) decStrong.textContent='Attenzione a monte';
+    if(decText) decText.textContent=`Accumuli importanti: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h. Apri sensori e bollettini.`;
+  }else if(max6>=25 || max3>=15){
+    if(titleEl) titleEl.textContent='Lamone da monitorare';
+    if(descEl) descEl.textContent='Pioggia significativa a monte: segui l’evoluzione dei sensori.';
+    if(decStrong) decStrong.textContent='Monitoraggio consigliato';
+    if(decText) decText.textContent=`Pioggia a monte in aumento: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h. Controlla il percorso monte → valle.`;
+  }else if(max6>=10 || max3>=8){
+    if(titleEl) titleEl.textContent='Lamone sotto osservazione';
+    if(descEl) descEl.textContent='Qualche accumulo a monte: situazione da ricontrollare.';
+    if(decStrong) decStrong.textContent='Ricontrollo utile';
+    if(decText) decText.textContent=`Accumuli moderati: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h. Per ora nessun segnale pesante.`;
+  }else{
+    if(titleEl) titleEl.textContent='Lamone sotto controllo';
+    if(descEl) descEl.textContent='Bacini, Marzeno, sensori e onda verso valle in un solo colpo d’occhio.';
+    if(decStrong) decStrong.textContent='Situazione tranquilla';
+    if(decText) decText.textContent=`Pioggia a monte bassa: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h.`;
+  }
+}
 async function loadBasinRain(){
   try{
     const [lam,mar]=await Promise.all([
@@ -143,46 +178,29 @@ async function loadBasinRain(){
       fetchBasinRain('marzeno',44.159,11.793)
     ]);
     setBasinCard('lamone',lam); setBasinCard('marzeno',mar);
-    const max6=Math.max(lam.h6,mar.h6);
-    const color=rainColor(max6);
-    const lamDot=$('lamoneCorner'); if(lamDot) lamDot.className='cornerdot '+color;
-    const dot=$('dotLamone'); if(dot) setDot(dot,color);
-    const dec=document.querySelector('.compact-decision p');
-    if(dec){
-      dec.textContent=max6>=25?`Pioggia a monte significativa: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h. Apri sensori.`:`Pioggia a monte bassa: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h.`;
-    }
+    updateLamoneDecision(lam,mar);
   }catch(e){
     const a=$('basinLamoneSummary'), b=$('basinMarzenoSummary');
     if(a) a.textContent='accumuli non disponibili';
     if(b) b.textContent='accumuli non disponibili';
+    const decText=$('lamoneDecisionText') || document.querySelector('.compact-decision p');
+    const decStrong=document.querySelector('.compact-decision strong');
+    if(decStrong) decStrong.textContent='Controllo manuale pronto';
+    if(decText) decText.textContent='Accumuli non disponibili: usa Pioggia a monte, Radar ER e Dettagli Lamone.';
   }
 }
 
 async function loadLamoneSensors(){
-  const sensors=['Marradi','Strada Casale','Sarna','Faenza','Reda','Pieve Cesato','Mezzano'];
   const chips=[...document.querySelectorAll('[data-sensor]')];
-  const official='https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php';
-  chips.forEach(ch=>{ const sm=ch.querySelector('small'); if(sm) sm.textContent='lettura…'; });
-  try{
-    const res=await fetch(official+'?t='+Date.now(),{cache:'no-store',mode:'cors'});
-    if(!res.ok) throw new Error('sensori non raggiungibili');
-    const html=await res.text();
-    // Step 1 prudente: cerchiamo almeno presenza dei nomi e ultimo aggiornamento nella pagina ufficiale.
-    sensors.forEach(name=>{
-      const ch=document.querySelector(`[data-sensor="${name}"]`);
-      if(!ch) return;
-      const sm=ch.querySelector('small');
-      const ok=html.toLowerCase().includes(name.toLowerCase().split(' ')[0]);
-      if(sm) sm.textContent= ok ? 'online' : 'apri';
-      const dot=ch.querySelector('i'); if(dot) dot.className= ok ? 'green' : 'yellow';
-    });
-    const upd = html.match(/Ultimo\s+Aggiornamento[^0-9]*(\d{2}[:\/]\d{2}[^<]{0,25})/i);
-    const state=[...document.querySelectorAll('.river-mini .river-info')].find(x=>x.textContent.includes('Stato'));
-  }catch(err){
-    chips.forEach(ch=>{ const sm=ch.querySelector('small'); if(sm) sm.textContent='link'; const dot=ch.querySelector('i'); if(dot) dot.className='yellow'; });
-    const dec=document.querySelector('.compact-decision p');
-    if(dec) dec.textContent='Lettura automatica in test: se il dato non appare, usa il link ufficiale Dettagli Lamone.';
-  }
+  // Il sito dei sensori ufficiali può bloccare la lettura automatica dal browser.
+  // In V34 evitiamo falsi allarmi: sensori sempre pronti come link ufficiali,
+  // il colore reale della sezione viene dai dati pioggia a monte già collegati.
+  chips.forEach(ch=>{
+    const sm=ch.querySelector('small'); if(sm) sm.textContent='apri';
+    const dot=ch.querySelector('i'); if(dot) dot.className='green';
+    ch.title='Apri i sensori ufficiali Lamone';
+  });
+  const label=$('sensorModeLabel'); if(label) label.textContent='sensori ufficiali · link';
 }
 load();
 loadBasinRain();
