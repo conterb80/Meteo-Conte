@@ -1,7 +1,7 @@
-# Meteo Conte V42 - Decisione Conte 2.0
+# Meteo Conte V43 - Link rapidi final
 
-- Base stabile V41 mantenuta
-- Decisione Lamone più operativa e leggibile
-- Stato onda e punto attivo sincronizzati con accumuli a monte
-- Sensori smart monte → valle invariati
-- Nessuna modifica al motore meteo principale
+- Base stabile V42 mantenuta
+- Footer aggiornato V43
+- Link rapidi puliti e rinominati
+- Ultima schermata più essenziale
+- Nessuna modifica al motore meteo e Lamone

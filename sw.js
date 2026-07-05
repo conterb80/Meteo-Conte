@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v38-ripristino-stabile';
+const CACHE_NAME = 'meteo-conte-v43';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
