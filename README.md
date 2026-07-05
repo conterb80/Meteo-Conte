@@ -1,6 +1,7 @@
-# Meteo Conte V37 - Fix dati meteo
+# Meteo Conte V38 - Ripristino stabile
 
-- Corretto errore JavaScript che bloccava il caricamento dati
-- Ripristino dati meteo Home
-- Mantiene Lamone V36 con sensori operativi
-- Footer aggiornato V37
+- Ripristinata base stabile V35
+- Dati meteo iniziali di nuovo prioritari
+- Sezione Lamone mantenuta ordinata monte → valle
+- Rimossi tentativi automatici che bloccavano il caricamento
+- Footer aggiornato V38
