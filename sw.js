@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v30-lamone-sensori';
+const CACHE_NAME = 'meteo-conte-v31-lamone-sensori-reali';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {

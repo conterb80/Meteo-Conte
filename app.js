@@ -105,4 +105,33 @@ document.querySelectorAll('[data-basin]').forEach(btn=>btn.addEventListener('cli
 $('closeBasinDetail')?.addEventListener('click',(e)=>{e.stopPropagation();$('basinDetail')?.classList.add('hidden');});
 
 
+
+async function loadLamoneSensors(){
+  const sensors=['Marradi','Strada Casale','Sarna','Faenza','Reda','Pieve Cesato','Mezzano'];
+  const chips=[...document.querySelectorAll('[data-sensor]')];
+  const official='https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php';
+  chips.forEach(ch=>{ const sm=ch.querySelector('small'); if(sm) sm.textContent='lettura…'; });
+  try{
+    const res=await fetch(official+'?t='+Date.now(),{cache:'no-store',mode:'cors'});
+    if(!res.ok) throw new Error('sensori non raggiungibili');
+    const html=await res.text();
+    // Step 1 prudente: cerchiamo almeno presenza dei nomi e ultimo aggiornamento nella pagina ufficiale.
+    sensors.forEach(name=>{
+      const ch=document.querySelector(`[data-sensor="${name}"]`);
+      if(!ch) return;
+      const sm=ch.querySelector('small');
+      const ok=html.toLowerCase().includes(name.toLowerCase().split(' ')[0]);
+      if(sm) sm.textContent= ok ? 'online' : 'apri';
+      const dot=ch.querySelector('i'); if(dot) dot.className= ok ? 'green' : 'yellow';
+    });
+    const upd = html.match(/Ultimo\s+Aggiornamento[^0-9]*(\d{2}[:\/]\d{2}[^<]{0,25})/i);
+    const state=[...document.querySelectorAll('.river-mini .river-info')].find(x=>x.textContent.includes('Stato'));
+  }catch(err){
+    chips.forEach(ch=>{ const sm=ch.querySelector('small'); if(sm) sm.textContent='link'; const dot=ch.querySelector('i'); if(dot) dot.className='yellow'; });
+    const dec=document.querySelector('.compact-decision p');
+    if(dec) dec.textContent='Lettura automatica in test: se il dato non appare, usa il link ufficiale Dettagli Lamone.';
+  }
+}
 load();
+loadLamoneSensors();
+

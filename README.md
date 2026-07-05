@@ -1,6 +1,7 @@
-# Meteo Conte V30 - Lamone sensori monte-valle
+# Meteo Conte V31 - Sensori Lamone Step 1
 
-- Onda di piena con sensori in ordine da monte a valle
-- Marradi, Strada Casale, Sarna, Faenza, Reda, Pieve Cesato, Mezzano
-- Layout compatto V29 mantenuto
-- Pronta per collegamento sensori reali
+- Base grafica V30 mantenuta
+- Timeline sensori monte → valle pronta
+- Primo tentativo lettura pagina ufficiale sensori
+- Fallback automatico ai link ufficiali
+- Footer aggiornato V31

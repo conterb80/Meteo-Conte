@@ -306,3 +306,11 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
   .river-emergency .sensor-route span:nth-child(6){font-size:8.7px;}
   .river-emergency .river-chart svg{height:56px!important;}
 }
+
+
+/* V31 - sensori reali step 1 */
+.river-emergency .sensor-route span{display:flex;align-items:center;justify-content:center;gap:3px;flex-wrap:wrap;line-height:1.05;min-height:26px;}
+.river-emergency .sensor-route span b{font-size:inherit;font-weight:850;}
+.river-emergency .sensor-route span small{width:100%;font-size:8.6px;color:var(--green);font-weight:800;line-height:1;opacity:.95;}
+.river-emergency .sensor-route i.yellow{background:var(--yellow);}
+@media(max-width:430px){.river-emergency .sensor-route span small{font-size:7.8px}.river-emergency .sensor-route span{min-height:27px}}

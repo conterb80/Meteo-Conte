@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V30</title>
-  <link rel="manifest" href="manifest.json?v=30" />
-  <link rel="icon" type="image/png" href="icon.png?v=30" />
-  <link rel="stylesheet" href="style.css?v=30.0.0" />
+  <title>Meteo Conte V31</title>
+  <link rel="manifest" href="manifest.json?v=31" />
+  <link rel="icon" type="image/png" href="icon.png?v=31" />
+  <link rel="stylesheet" href="style.css?v=31.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=30" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=31" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -98,21 +98,21 @@
       <div class="river-decision compact-decision">
         <span class="label">DECISIONE CONTE · LAMONE</span>
         <strong>Monitoraggio pronto</strong>
-        <p>Se piove forte a monte, controlla bacini e sensori.</p>
+        <p>Sensori in lettura automatica: se il dato non arriva, resta pronto il link ufficiale.</p>
       </div>
 
       <div class="basin-block">
-        <div class="river-chart-head"><b>Bacini a monte</b><span>pioggia · da collegare</span></div>
+        <div class="river-chart-head"><b>Bacini a monte</b><span>pioggia · step successivo</span></div>
         <div class="basin-grid">
           <button class="basin-card" type="button" data-basin="lamone">
             <span>🏔️ Lamone</span>
             <b>Marradi</b>
-            <em>accumuli da collegare</em>
+            <em>accumuli step 2</em>
           </button>
           <button class="basin-card" type="button" data-basin="marzeno">
             <span>🏔️ Marzeno</span>
             <b>Modigliana</b>
-            <em>accumuli da collegare</em>
+            <em>accumuli step 2</em>
           </button>
         </div>
       </div>
@@ -126,13 +126,13 @@
       <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri andamento Lamone">
         <div class="river-chart-head"><b>Onda di piena</b><span>sensori monte → valle</span></div>
         <div class="flood-route sensor-route" aria-hidden="true">
-          <span><i class="green"></i>Marradi</span>
-          <span><i class="green"></i>Strada Casale</span>
-          <span><i class="green"></i>Sarna</span>
-          <span><i class="green"></i>Faenza</span>
-          <span><i class="green"></i>Reda</span>
-          <span><i class="green"></i>Pieve Cesato</span>
-          <span><i class="green"></i>Mezzano</span>
+          <span data-sensor="Marradi"><i class="green"></i><b>Marradi</b><small>lettura…</small></span>
+          <span data-sensor="Strada Casale"><i class="green"></i><b>Strada Casale</b><small>lettura…</small></span>
+          <span data-sensor="Sarna"><i class="green"></i><b>Sarna</b><small>lettura…</small></span>
+          <span data-sensor="Faenza"><i class="green"></i><b>Faenza</b><small>lettura…</small></span>
+          <span data-sensor="Reda"><i class="green"></i><b>Reda</b><small>lettura…</small></span>
+          <span data-sensor="Pieve Cesato"><i class="green"></i><b>Pieve Cesato</b><small>lettura…</small></span>
+          <span data-sensor="Mezzano"><i class="green"></i><b>Mezzano</b><small>lettura…</small></span>
         </div>
         <svg viewBox="0 0 320 82" aria-hidden="true">
           <path class="river-area" d="M18 55 C60 55 95 54 132 53 C165 52 198 51 232 50 C258 49 282 48 302 47 L302 73 L18 73 Z"></path>
@@ -144,7 +144,7 @@
 
       <div id="riverDetail" class="river-detail hidden">
         <div class="river-detail-head"><b>Dettaglio percorso</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
-        <p>Qui entreranno sensori reali, variazione livello e una stima prudente del movimento verso valle.</p>
+        <p>Step 1: l’app prova a leggere la pagina ufficiale dei sensori. Se il browser blocca la lettura, resta disponibile il collegamento diretto.</p>
         <div class="river-values"><span>Monte <b>Marradi</b></span><span>Confluenza <b>Faenza</b></span><span>Valle <b>Mezzano</b></span></div>
       </div>
 
@@ -193,7 +193,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V30 · Lamone emergenza step 1</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V31 · Lamone emergenza step 1</footer>
   </main>
   <script src="app.js?v=28.0.0"></script>
 </body>
