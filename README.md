@@ -1,7 +1,6 @@
-# Meteo Conte V36 - Onda Lamone smart
+# Meteo Conte V37 - Fix dati meteo
 
-- Footer aggiornato V36
-- Posizione onda indicativa basata sugli accumuli a monte
-- Colori sensori preparati per livello di attenzione
-- Dettaglio percorso aggiornato
-- Base per tempi stimati reali
+- Corretto errore JavaScript che bloccava il caricamento dati
+- Ripristino dati meteo Home
+- Mantiene Lamone V36 con sensori operativi
+- Footer aggiornato V37
