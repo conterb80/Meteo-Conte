@@ -136,6 +136,25 @@ function setBasinCard(key,d){
   el.textContent=`1h ${d.h1.toFixed(1)} · 3h ${d.h3.toFixed(1)} · 6h ${d.h6.toFixed(1)} mm`;
   el.style.color=d.h6>=25?'var(--yellow)':'var(--green)';
 }
+
+function updateWaveStatus(lam, mar){
+  const max6=Math.max(lam?.h6||0, mar?.h6||0);
+  const boxes=[...document.querySelectorAll('.propagation-mini span b')];
+  const route=[...document.querySelectorAll('[data-sensor] i')];
+  let zone='non rilevata', tratto='tranquillo', vill='ok', active=-1, color='green';
+  if(max6>=60){ zone='probabile a monte'; tratto='Marradi→Faenza'; vill='preallerta'; active=0; color='red'; }
+  else if(max6>=35){ zone='possibile a monte'; tratto='monte→Faenza'; vill='segui'; active=1; color='orange'; }
+  else if(max6>=18){ zone='da osservare'; tratto='bacini a monte'; vill='monitoraggio'; active=2; color='yellow'; }
+  if(boxes[0]) boxes[0].textContent = max6>=18 ? 'da seguire' : 'tranquillo';
+  if(boxes[1]) boxes[1].textContent = max6>=35 ? 'preparare' : 'da tarare';
+  if(boxes[2]) boxes[2].textContent = vill;
+  route.forEach((dot,i)=>{dot.className = active>=0 && i<=active ? color : 'green';});
+  const txt=$('riverDetailText');
+  if(txt && !txt.dataset.sensorOpen){
+    txt.textContent = `Posizione onda: ${zone}. Tratto da seguire: ${tratto}. Stima ancora indicativa: sarà tarata sui livelli reali dei sensori.`;
+  }
+}
+
 function updateLamoneDecision(lam, mar){
   const max6=Math.max(lam.h6,mar.h6);
   const max3=Math.max(lam.h3,mar.h3);
@@ -170,6 +189,7 @@ function updateLamoneDecision(lam, mar){
     if(decStrong) decStrong.textContent='Situazione tranquilla';
     if(decText) decText.textContent=`Pioggia a monte bassa: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h.`;
   }
+  updateWaveStatus(lam, mar);
 }
 async function loadBasinRain(){
   try{
@@ -205,7 +225,7 @@ function openSensorDetail(name){
   const m=SENSOR_META[name]||{};
   const title=d.querySelector('.river-detail-head b'); if(title) title.textContent='Sensore '+name;
   const text=$('riverDetailText');
-  if(text) text.textContent=`${m.order||''} · ${m.role||'Sensore Lamone'}. ${m.phase||'Punto del percorso monte → valle'}. Lettura automatica livello non ancora agganciata: usa il link ufficiale Dettagli Lamone per il grafico reale.`;
+  if(text){ text.dataset.sensorOpen='1'; text.textContent=`${m.order||''} · ${m.role||'Sensore Lamone'}. ${m.phase||'Punto del percorso monte → valle'}. Lettura automatica livello non ancora agganciata: usa il link ufficiale Dettagli Lamone per il grafico reale.`; }
   const vals=d.querySelectorAll('.propagation-values');
   if(vals[0]) vals[0].innerHTML=`<span>Posizione <b>${m.order||'--'}</b></span><span>Stato <b>link pronto</b></span><span>Trend <b>da leggere</b></span>`;
   if(vals[1]) vals[1].innerHTML=`<span>Ruolo <b>${m.role||'Lamone'}</b></span><span>Percorso <b>monte → valle</b></span><span>Azioni <b>apri dettagli</b></span>`;

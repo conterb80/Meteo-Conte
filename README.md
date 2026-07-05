@@ -1,7 +1,7 @@
-# Meteo Conte V35 - Sensori Lamone operativi
+# Meteo Conte V36 - Onda Lamone smart
 
-- Sensori ordinati monte → valle
-- Tocca ogni sensore per dettaglio operativo
-- Link ufficiale sempre disponibile
-- Base per collegamento livelli reali
-- Footer aggiornato V35
+- Footer aggiornato V36
+- Posizione onda indicativa basata sugli accumuli a monte
+- Colori sensori preparati per livello di attenzione
+- Dettaglio percorso aggiornato
+- Base per tempi stimati reali
