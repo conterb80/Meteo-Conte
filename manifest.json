@@ -1,1 +1,1 @@
-{"name": "Meteo Conte", "short_name": "Meteo Conte", "start_url": "index.html?v=26-cache-fix-lamone", "display": "standalone", "background_color": "#061b27", "theme_color": "#062231", "icons": [{"src": "icon.png?v=26", "sizes": "512x512", "type": "image/png"}]}
+{"name":"Meteo Conte","short_name":"Meteo Conte","start_url":"index.html?v=28-lamone-emergenza","display":"standalone","background_color":"#061b27","theme_color":"#062231","icons":[{"src":"icon.png?v=28","sizes":"512x512","type":"image/png"}]}

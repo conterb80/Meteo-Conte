@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V27</title>
-  <link rel="manifest" href="manifest.json?v=26" />
-  <link rel="icon" type="image/png" href="icon.png?v=26" />
-  <link rel="stylesheet" href="style.css?v=26.0.0" />
+  <title>Meteo Conte V28</title>
+  <link rel="manifest" href="manifest.json?v=28" />
+  <link rel="icon" type="image/png" href="icon.png?v=28" />
+  <link rel="stylesheet" href="style.css?v=28.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=26" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=28" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -84,47 +84,75 @@
 
     <section id="trendBox" class="card trendbox hidden"></section>
 
-    <section id="lamoneCard" class="card river river-v20">
+    <section id="lamoneCard" class="card river river-v20 river-emergency">
       <span class="label">FIUMI · LAMONE</span><span id="lamoneCorner" class="cornerdot green"></span>
 
-      <div class="river-status">
+      <div class="river-status emergency-status">
         <span class="river-dot green"></span>
         <div>
-          <h2>Lamone monitorato</h2>
-          <p>Accesso rapido ai sensori ufficiali dell’asta fluviale. Accesso diretto ai sensori ufficiali. Lettura automatica livelli in preparazione.</p>
+          <h2>Lamone sotto controllo</h2>
+          <p>Cruscotto emergenza: piogge a monte, Marzeno, sensori e tempi verso valle in un unico punto.</p>
         </div>
       </div>
 
       <div class="river-decision">
         <span class="label">DECISIONE CONTE · LAMONE</span>
-        <strong>Controllo manuale pronto</strong>
-        <p>Se sono previste piogge forti in Appennino o allerta idraulica, apri subito i dettagli Lamone.</p>
+        <strong>Monitoraggio pronto</strong>
+        <p>Quando piove forte su Marradi, Modigliana o Appennino, controlla prima bacini e sensori a monte.</p>
       </div>
 
-      <div class="mini-grid compact-mini river-mini">
-        <a class="river-info river-link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener"><span>📡 Fonte</span><b>Sensori Lamone</b><em>apri ↗</em></a>
-        <button id="riverStateBtn" class="river-info river-link" type="button"><span>🟢 Stato app</span><b id="lamoneState">link attivo</b><em>info</em></button>
+      <div class="basin-block">
+        <div class="river-chart-head"><b>Bacini a monte</b><span>pioggia · da collegare</span></div>
+        <div class="basin-grid">
+          <button class="basin-card" type="button" data-basin="lamone">
+            <span>🏔️ Bacino Lamone</span>
+            <b>Marradi · Alto Lamone</b>
+            <em>accumuli da collegare</em>
+          </button>
+          <button class="basin-card" type="button" data-basin="marzeno">
+            <span>🏔️ Bacino Marzeno</span>
+            <b>Modigliana · Marzeno</b>
+            <em>accumuli da collegare</em>
+          </button>
+        </div>
       </div>
 
-      <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri trend Lamone">
-        <div class="river-chart-head"><b>Andamento Lamone</b><span>anteprima · tocca</span></div>
-        <svg viewBox="0 0 320 96" aria-hidden="true">
-          <path class="river-area" d="M18 66 C72 65 122 65 172 64 C220 63 260 62 302 61 L302 86 L18 86 Z"></path>
-          <path class="river-line" d="M18 66 C72 65 122 65 172 64 C220 63 260 62 302 61"></path>
-          <circle cx="18" cy="66" r="4"></circle><circle cx="172" cy="64" r="4"></circle><circle cx="302" cy="61" r="4"></circle>
-          <text x="18" y="92" text-anchor="middle">ora</text><text x="172" y="92" text-anchor="middle">ultime ore</text><text x="302" y="92" text-anchor="middle">trend</text>
+      <div id="basinDetail" class="river-detail hidden">
+        <div class="river-detail-head"><b id="basinTitle">Bacino</b><button id="closeBasinDetail" type="button" aria-label="Chiudi dettaglio bacino">×</button></div>
+        <p id="basinText">Qui entreranno accumuli 1h, 3h, 6h e radar della zona a monte.</p>
+        <div class="river-values"><span>1h <b>da collegare</b></span><span>3h <b>da collegare</b></span><span>6h <b>da collegare</b></span></div>
+      </div>
+
+      <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri andamento Lamone">
+        <div class="river-chart-head"><b>Onda di piena</b><span>sensori · anteprima</span></div>
+        <div class="flood-route" aria-hidden="true">
+          <span><i class="green"></i>Marradi</span>
+          <span><i class="green"></i>Brisighella</span>
+          <span><i class="green"></i>Faenza</span>
+          <span><i class="green"></i>Villanova</span>
+        </div>
+        <svg viewBox="0 0 320 86" aria-hidden="true">
+          <path class="river-area" d="M18 58 C72 57 122 56 172 55 C220 54 260 52 302 51 L302 76 L18 76 Z"></path>
+          <path class="river-line" d="M18 58 C72 57 122 56 172 55 C220 54 260 52 302 51"></path>
+          <circle cx="18" cy="58" r="4"></circle><circle cx="112" cy="56" r="4"></circle><circle cx="202" cy="54" r="4"></circle><circle cx="302" cy="51" r="4"></circle>
+          <text x="18" y="82" text-anchor="middle">monte</text><text x="160" y="82" text-anchor="middle">confluenza</text><text x="302" y="82" text-anchor="middle">valle</text>
         </svg>
       </button>
 
       <div id="riverDetail" class="river-detail hidden">
-        <div class="river-detail-head"><b>Dettaglio andamento</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
-        <p>Per ora è una struttura pronta: qui entreranno livello reale, ultimo aggiornamento, soglie e variazione nelle ultime ore.</p>
-        <div class="river-values"><span>Livello <b>da collegare</b></span><span>Tendenza <b>stabile</b></span><span>Soglie <b>da leggere</b></span></div>
+        <div class="river-detail-head"><b>Dettaglio percorso</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
+        <p>Qui entreranno sensori reali, variazione livello e una stima prudente del movimento verso valle.</p>
+        <div class="river-values"><span>Monte <b>da leggere</b></span><span>Marzeno <b>da leggere</b></span><span>Villanova <b>da stimare</b></span></div>
+      </div>
+
+      <div class="mini-grid compact-mini river-mini">
+        <a class="river-info river-link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener"><span>📡 Sensori</span><b>Lamone</b><em>apri ↗</em></a>
+        <a class="river-info river-link" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener"><span>🌊 Mappa</span><b>Fiumi ER</b><em>apri ↗</em></a>
       </div>
 
       <div class="river-actions">
         <a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📈 Dettagli Lamone</a>
-        <a class="btn secondary" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 Fiumi ER</a>
+        <a class="btn secondary" href="https://www.windy.com/?rain,44.16,11.62,8" target="_blank" rel="noopener">🌧️ Pioggia a monte</a>
       </div>
     </section>
 
@@ -162,8 +190,8 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V27 · cache fix Lamone</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V28 · Lamone emergenza step 1</footer>
   </main>
-  <script src="app.js?v=26.0.0"></script>
+  <script src="app.js?v=28.0.0"></script>
 </body>
 </html>

@@ -1,5 +1,7 @@
-# Meteo Conte V27 - Reset Service Worker
+# Meteo Conte V28 - Lamone Emergenza Step 1
 
-- Pagina reset.html per cancellare service worker/cache
-- Base V26 Lamone link attivi
-- Footer aggiornato V27
+- Schermata Lamone impostata come flusso emergenza
+- Bacino Lamone e Bacino Marzeno separati
+- Onda di piena con percorso monte-valle
+- Link sensori e pioggia a monte attivi
+- Base pronta per collegare accumuli e sensori reali

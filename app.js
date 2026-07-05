@@ -93,5 +93,16 @@ $('riverStateBtn')?.addEventListener('click',()=>{
   }
 });
 
+document.querySelectorAll('[data-basin]').forEach(btn=>btn.addEventListener('click',()=>{
+  const box=$('basinDetail');
+  if(!box) return;
+  const isMarzeno=btn.dataset.basin==='marzeno';
+  $('basinTitle').textContent=isMarzeno?'Bacino Marzeno · Modigliana':'Bacino Lamone · Marradi';
+  $('basinText').textContent=isMarzeno?'Qui controlleremo gli accumuli sulla vallata di Modigliana e Marzeno, fondamentali prima della confluenza.':'Qui controlleremo gli accumuli sull’alto Lamone lato Marradi/Toscana, il primo segnale da guardare a monte.';
+  box.classList.remove('hidden');
+  box.scrollIntoView({behavior:'smooth',block:'center'});
+}));
+$('closeBasinDetail')?.addEventListener('click',(e)=>{e.stopPropagation();$('basinDetail')?.classList.add('hidden');});
+
 
 load();
