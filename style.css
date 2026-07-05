@@ -351,3 +351,8 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
   .propagation-mini small{font-size:8.8px;}
   .propagation-mini b{font-size:10px;}
 }
+
+/* V35 - sensori operativi cliccabili */
+.river-emergency .sensor-route span{cursor:pointer;transition:transform .15s ease, background .15s ease;}
+.river-emergency .sensor-route span:active{transform:scale(.98);background:#ffffff10;}
+.river-emergency .sensor-route span small{color:var(--green)!important;}

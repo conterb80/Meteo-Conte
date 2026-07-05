@@ -190,18 +190,41 @@ async function loadBasinRain(){
   }
 }
 
-async function loadLamoneSensors(){
-  const chips=[...document.querySelectorAll('[data-sensor]')];
-  // Il sito dei sensori ufficiali può bloccare la lettura automatica dal browser.
-  // In V34 evitiamo falsi allarmi: sensori sempre pronti come link ufficiali,
-  // il colore reale della sezione viene dai dati pioggia a monte già collegati.
-  chips.forEach(ch=>{
-    const sm=ch.querySelector('small'); if(sm) sm.textContent='apri';
-    const dot=ch.querySelector('i'); if(dot) dot.className='green';
-    ch.title='Apri i sensori ufficiali Lamone';
-  });
-  const label=$('sensorModeLabel'); if(label) label.textContent='sensori ufficiali · link';
+async 
+const SENSOR_META={
+  'Marradi':{role:'Monte alto Lamone',phase:'primo segnale a monte',order:'1/7',link:'https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php'},
+  'Strada Casale':{role:'Tratto alto/intermedio',phase:'controllo discesa verso Brisighella/Faenza',order:'2/7',link:'https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php'},
+  'Sarna':{role:'Avvicinamento Faenza',phase:'utile per capire se l’onda sta arrivando alla città',order:'3/7',link:'https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php'},
+  'Faenza':{role:'Nodo principale',phase:'riferimento per capire il passaggio verso valle',order:'4/7',link:'https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php'},
+  'Reda':{role:'Valle dopo Faenza',phase:'controllo propagazione verso Bagnacavallo',order:'5/7',link:'https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php'},
+  'Pieve Cesato':{role:'Bassa valle',phase:'segnale importante per il tratto verso Mezzano',order:'6/7',link:'https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php'},
+  'Mezzano':{role:'Valle / riferimento finale',phase:'ultimo controllo prima del tratto più vicino alla bassa Romagna',order:'7/7',link:'https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php'}
+};
+function openSensorDetail(name){
+  const d=$('riverDetail'); if(!d) return;
+  const m=SENSOR_META[name]||{};
+  const title=d.querySelector('.river-detail-head b'); if(title) title.textContent='Sensore '+name;
+  const text=$('riverDetailText');
+  if(text) text.textContent=`${m.order||''} · ${m.role||'Sensore Lamone'}. ${m.phase||'Punto del percorso monte → valle'}. Lettura automatica livello non ancora agganciata: usa il link ufficiale Dettagli Lamone per il grafico reale.`;
+  const vals=d.querySelectorAll('.propagation-values');
+  if(vals[0]) vals[0].innerHTML=`<span>Posizione <b>${m.order||'--'}</b></span><span>Stato <b>link pronto</b></span><span>Trend <b>da leggere</b></span>`;
+  if(vals[1]) vals[1].innerHTML=`<span>Ruolo <b>${m.role||'Lamone'}</b></span><span>Percorso <b>monte → valle</b></span><span>Azioni <b>apri dettagli</b></span>`;
+  d.classList.remove('hidden');
+  d.scrollIntoView({behavior:'smooth',block:'center'});
 }
+function loadLamoneSensors(){
+  const chips=[...document.querySelectorAll('[data-sensor]')];
+  chips.forEach(ch=>{
+    const name=ch.dataset.sensor;
+    const sm=ch.querySelector('small'); if(sm) sm.textContent='tocca';
+    const dot=ch.querySelector('i'); if(dot) dot.className='green';
+    ch.title='Apri dettaglio operativo '+name;
+    ch.style.cursor='pointer';
+    ch.addEventListener('click',(e)=>{e.stopPropagation();openSensorDetail(name);});
+  });
+  const label=$('sensorModeLabel'); if(label) label.textContent='sensori operativi · tocca';
+}
+
 load();
 loadBasinRain();
 loadLamoneSensors();

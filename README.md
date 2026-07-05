@@ -1,6 +1,7 @@
-# Meteo Conte V34 - Decisione Lamone smart
+# Meteo Conte V35 - Sensori Lamone operativi
 
-- Decisione Conte Lamone automatica in base a pioggia a monte
-- Colori Lamone coerenti con accumuli Marradi/Modigliana
-- Sensori in modalità link ufficiale, senza falsi allarmi
-- Base V33 mantenuta
+- Sensori ordinati monte → valle
+- Tocca ogni sensore per dettaglio operativo
+- Link ufficiale sempre disponibile
+- Base per collegamento livelli reali
+- Footer aggiornato V35
