@@ -314,3 +314,40 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .river-emergency .sensor-route span small{width:100%;font-size:8.6px;color:var(--green);font-weight:800;line-height:1;opacity:.95;}
 .river-emergency .sensor-route i.yellow{background:var(--yellow);}
 @media(max-width:430px){.river-emergency .sensor-route span small{font-size:7.8px}.river-emergency .sensor-route span{min-height:27px}}
+
+/* V32 - tempi indicativi onda di piena */
+.propagation-mini{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  margin-top:4px;
+}
+.propagation-mini span{
+  border:1px solid var(--line);
+  background:#ffffff08;
+  border-radius:12px;
+  padding:5px 4px;
+  text-align:center;
+  min-width:0;
+}
+.propagation-mini small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.05;
+  white-space:nowrap;
+}
+.propagation-mini b{
+  display:block;
+  color:var(--green);
+  font-size:11.5px;
+  line-height:1.05;
+  margin-top:2px;
+}
+.propagation-values + .propagation-values{margin-top:6px;}
+@media(max-width:430px){
+  .propagation-mini{gap:4px;}
+  .propagation-mini span{padding:4px 2px;}
+  .propagation-mini small{font-size:8.8px;}
+  .propagation-mini b{font-size:10px;}
+}

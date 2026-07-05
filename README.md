@@ -1,7 +1,7 @@
-# Meteo Conte V31 - Sensori Lamone Step 1
+# Meteo Conte V32 - Lamone tempi onda
 
-- Base grafica V30 mantenuta
-- Timeline sensori monte → valle pronta
-- Primo tentativo lettura pagina ufficiale sensori
-- Fallback automatico ai link ufficiali
-- Footer aggiornato V31
+- Base V30/V31 stabile
+- Sensori Lamone monte → valle
+- Primo riquadro tempi indicativi onda di piena
+- Grafica invariata e compatta
+- Footer aggiornato V32
