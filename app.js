@@ -197,7 +197,7 @@ let sensorStatus={};
 function sensorStateFromRain(lam,mar){
   const max6=Math.max(lam?.h6||0,mar?.h6||0);
   const max3=Math.max(lam?.h3||0,mar?.h3||0);
-  if(max6>=50 || max3>=30) return {level:3,color:'red',label:'Critico',active:3,wave:'criticità a monte',villanova:'monitora'};
+  if(max6>=50 || max3>=30) return {level:3,color:'red',label:'Critico',active:3,wave:'criticità a monte',villanova:'monitorare'};
   if(max6>=25 || max3>=15) return {level:2,color:'yellow',label:'Attenzione',active:2,wave:'onda in formazione',villanova:'da seguire'};
   if(max6>=10 || max3>=8) return {level:1,color:'yellow',label:'In crescita',active:1,wave:'primi segnali a monte',villanova:'ricontrolla'};
   return {level:0,color:'green',label:'Normale',active:-1,wave:'nessuna anomalia',villanova:'tranquilla'};
@@ -223,6 +223,9 @@ function updateSensorIntelligence(lam,mar){
   const wave=$('waveStatusLabel'); if(wave) wave.textContent=state.wave;
   const active=$('activeSensorLabel'); if(active) active.textContent=state.active>=0?SENSOR_ORDER[state.active]:'nessuno';
   const villa=$('villanovaStatusLabel'); if(villa) villa.textContent=state.villanova;
+  const dw=$('detailWaveState'); if(dw) dw.textContent=state.wave;
+  const da=$('detailActiveState'); if(da) da.textContent=state.active>=0?SENSOR_ORDER[state.active]:'nessuno';
+  const dv=$('detailVillaState'); if(dv) dv.textContent=state.villanova;
 }
 
 const SENSOR_META={
@@ -240,7 +243,7 @@ function openSensorDetail(name){
   const title=d.querySelector('.river-detail-head b'); if(title) title.textContent='Sensore '+name;
   const text=$('riverDetailText');
   const st=(sensorStatus && sensorStatus[name]) || {label:'Normale',color:'green',trend:'→ stabile'};
-  if(text) text.textContent=`${m.order||''} · ${m.role||'Sensore Lamone'}. ${m.phase||'Punto del percorso monte → valle'}. Stato operativo: ${st.label} · ${st.trend}. Per il grafico reale usa Dettagli Lamone.`;
+  if(text) text.textContent=`${m.order||''} · ${m.role||'Sensore Lamone'}. ${m.phase||'Punto del percorso monte → valle'}. Stato operativo: ${st.label} · ${st.trend}. Link ufficiale sempre disponibile da Dettagli Lamone.`;
   const vals=d.querySelectorAll('.propagation-values');
   if(vals[0]) vals[0].innerHTML=`<span>Posizione <b>${m.order||'--'}</b></span><span>Stato <b>${st.label}</b></span><span>Trend <b>${st.trend}</b></span>`;
   if(vals[1]) vals[1].innerHTML=`<span>Ruolo <b>${m.role||'Lamone'}</b></span><span>Percorso <b>monte → valle</b></span><span>Azioni <b>apri dettagli</b></span>`;
@@ -259,7 +262,7 @@ function loadLamoneSensors(){
     ch.style.cursor='pointer';
     ch.addEventListener('click',(e)=>{e.stopPropagation();openSensorDetail(name);});
   });
-  const label=$('sensorModeLabel'); if(label) label.textContent='sensori intelligenti · tocca';
+  const label=$('sensorModeLabel'); if(label) label.textContent='sensori smart · tocca';
 }
 
 load();

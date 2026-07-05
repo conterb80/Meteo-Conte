@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V40</title>
+  <title>Meteo Conte V41</title>
   <link rel="manifest" href="manifest.json?v=35" />
   <link rel="icon" type="image/png" href="icon.png?v=35" />
   <link rel="stylesheet" href="style.css?v=35.0.0" />
@@ -124,7 +124,7 @@
       </div>
 
       <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri andamento Lamone">
-        <div class="river-chart-head"><b>Onda di piena</b><span id="sensorModeLabel">sensori intelligenti</span></div>
+        <div class="river-chart-head"><b>Onda di piena</b><span id="sensorModeLabel">sensori smart · tocca</span></div>
         <div class="flood-route sensor-route" aria-hidden="true">
           <span data-sensor="Marradi"><i class="green"></i><b>Marradi</b><small>lettura…</small></span>
           <span data-sensor="Strada Casale"><i class="green"></i><b>Strada Casale</b><small>lettura…</small></span>
@@ -149,8 +149,8 @@
 
       <div id="riverDetail" class="river-detail hidden">
         <div class="river-detail-head"><b>Dettaglio percorso</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
-        <p id="riverDetailText">Step 4: sensori ordinati da monte a valle. Tocca un sensore per vedere ruolo, posizione e link ufficiale. Lettura automatica livello in fase di aggancio.</p>
-        <div class="river-values propagation-values"><span>Monte <b>Marradi</b></span><span>Confluenza <b>Faenza</b></span><span>Valle <b>Mezzano</b></span></div><div class="river-values propagation-values"><span>Monte→Faenza <b>da tarare</b></span><span>Faenza→valle <b>da tarare</b></span><span>Villanova <b>focus</b></span></div>
+        <p id="riverDetailText">Sintesi operativa del percorso Lamone: prima controlla monte, poi Faenza, poi valle. Tocca un sensore per capire ruolo e posizione nel transito della piena.</p>
+        <div class="river-values propagation-values"><span>Monte <b>Marradi</b></span><span>Confluenza <b>Faenza</b></span><span>Valle <b>Mezzano</b></span></div><div class="river-values propagation-values"><span>Onda <b id="detailWaveState">nessuna anomalia</b></span><span>Punto <b id="detailActiveState">nessuno</b></span><span>Villanova <b id="detailVillaState">tranquilla</b></span></div>
       </div>
 
       <div class="mini-grid compact-mini river-mini">
@@ -198,7 +198,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V40 · Sensori intelligenti</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V41 · Lamone smart</footer>
   </main>
   <script src="app.js?v=35.0.0"></script>
 </body>

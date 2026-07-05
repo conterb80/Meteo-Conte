@@ -1,7 +1,7 @@
-# Meteo Conte V40 - Fix JS sensori stabile
+# Meteo Conte V41 - Lamone smart finale
 
-- Corretto errore JavaScript che bloccava il caricamento dati meteo
-- Ripristinato motore meteo funzionante
-- Mantenuta schermata Lamone compatta
-- Sensori Lamone cliccabili come dettagli operativi
-- Base stabile prima dei prossimi collegamenti reali
+- Base stabile V40 mantenuta
+- Sezione Lamone resa più operativa
+- Dettaglio percorso sincronizzato con stato onda/punto attivo/Villanova
+- Sensori smart monte → valle
+- Nessuna modifica al motore meteo
