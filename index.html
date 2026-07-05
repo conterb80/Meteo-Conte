@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V32</title>
-  <link rel="manifest" href="manifest.json?v=32" />
-  <link rel="icon" type="image/png" href="icon.png?v=32" />
-  <link rel="stylesheet" href="style.css?v=32.0.0" />
+  <title>Meteo Conte V33</title>
+  <link rel="manifest" href="manifest.json?v=33" />
+  <link rel="icon" type="image/png" href="icon.png?v=33" />
+  <link rel="stylesheet" href="style.css?v=33.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=32" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=33" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -102,25 +102,25 @@
       </div>
 
       <div class="basin-block">
-        <div class="river-chart-head"><b>Bacini a monte</b><span>pioggia · step successivo</span></div>
+        <div class="river-chart-head"><b>Bacini a monte</b><span>pioggia · dati reali</span></div>
         <div class="basin-grid">
           <button class="basin-card" type="button" data-basin="lamone">
             <span>🏔️ Lamone</span>
             <b>Marradi</b>
-            <em>accumuli step 2</em>
+            <em id="basinLamoneSummary">lettura…</em>
           </button>
           <button class="basin-card" type="button" data-basin="marzeno">
             <span>🏔️ Marzeno</span>
             <b>Modigliana</b>
-            <em>accumuli step 2</em>
+            <em id="basinMarzenoSummary">lettura…</em>
           </button>
         </div>
       </div>
 
       <div id="basinDetail" class="river-detail hidden">
         <div class="river-detail-head"><b id="basinTitle">Bacino</b><button id="closeBasinDetail" type="button" aria-label="Chiudi dettaglio bacino">×</button></div>
-        <p id="basinText">Qui entreranno accumuli 1h, 3h, 6h e radar della zona a monte.</p>
-        <div class="river-values"><span>1h <b>da collegare</b></span><span>3h <b>da collegare</b></span><span>6h <b>da collegare</b></span></div>
+        <p id="basinText">Qui trovi gli accumuli stimati dal modello meteo per la zona a monte selezionata.</p>
+        <div class="river-values"><span>1h <b id="basin1h">-- mm</b></span><span>3h <b id="basin3h">-- mm</b></span><span>6h <b id="basin6h">-- mm</b></span></div>
       </div>
 
       <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri andamento Lamone">
@@ -198,8 +198,8 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V32 · Lamone emergenza step 1</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V33 · Lamone emergenza step 1</footer>
   </main>
-  <script src="app.js?v=32.0.0"></script>
+  <script src="app.js?v=33.0.0"></script>
 </body>
 </html>

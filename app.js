@@ -1,5 +1,6 @@
 const $=id=>document.getElementById(id);
 let lastData=null,lastIndex=0,lastLevel=null;
+let basinRainData={lamone:null,marzeno:null};
 const WMO={0:['Sereno','☀️'],1:['Prevalentemente sereno','🌤️'],2:['Parzialmente nuvoloso','⛅'],3:['Nuvoloso','☁️'],45:['Nebbia','🌫️'],48:['Nebbia','🌫️'],51:['Pioviggine','🌦️'],53:['Pioviggine','🌦️'],55:['Pioviggine','🌦️'],61:['Pioggia','🌧️'],63:['Pioggia','🌧️'],65:['Pioggia forte','🌧️'],80:['Rovescio','🌦️'],81:['Rovescio','🌧️'],82:['Rovescio forte','⛈️'],95:['Temporale','⛈️'],96:['Temporale/grandine','⛈️'],99:['Temporale/grandine','⛈️']};
 function dewPoint(t,h){const a=17.27,b=237.7;const alpha=((a*t)/(b+t))+Math.log(Math.max(h,1)/100);return (b*alpha)/(a-alpha)}
 function calcIndex(now,hourly){const rainMax=Math.max(...hourly.precipitation_probability.slice(0,6));const rainSum=hourly.precipitation.slice(0,6).reduce((a,b)=>a+b,0);let idx=0;idx+=rainMax*0.45;idx+=Math.min(25,rainSum*10);idx+=now.relative_humidity_2m>75?15:now.relative_humidity_2m>60?8:0;idx+=now.wind_gusts_10m>45?15:now.wind_gusts_10m>30?8:0;idx+=now.pressure_msl<1008?10:0;return Math.round(Math.min(100,idx))}
@@ -93,18 +94,69 @@ $('riverStateBtn')?.addEventListener('click',()=>{
   }
 });
 
-document.querySelectorAll('[data-basin]').forEach(btn=>btn.addEventListener('click',()=>{
+function openBasinDetail(key){
   const box=$('basinDetail');
   if(!box) return;
-  const isMarzeno=btn.dataset.basin==='marzeno';
+  const isMarzeno=key==='marzeno';
+  const d=basinRainData[key];
   $('basinTitle').textContent=isMarzeno?'Bacino Marzeno · Modigliana':'Bacino Lamone · Marradi';
-  $('basinText').textContent=isMarzeno?'Qui controlleremo gli accumuli sulla vallata di Modigliana e Marzeno, fondamentali prima della confluenza.':'Qui controlleremo gli accumuli sull’alto Lamone lato Marradi/Toscana, il primo segnale da guardare a monte.';
+  $('basinText').textContent=isMarzeno?'Accumuli stimati sulla vallata Modigliana/Marzeno: dato utile prima della confluenza con il Lamone.':'Accumuli stimati sull’alto Lamone lato Marradi/Toscana: primo segnale da guardare a monte.';
+  $('basin1h').textContent=d?d.h1.toFixed(1)+' mm':'-- mm';
+  $('basin3h').textContent=d?d.h3.toFixed(1)+' mm':'-- mm';
+  $('basin6h').textContent=d?d.h6.toFixed(1)+' mm':'-- mm';
   box.classList.remove('hidden');
   box.scrollIntoView({behavior:'smooth',block:'center'});
-}));
+}
+document.querySelectorAll('[data-basin]').forEach(btn=>btn.addEventListener('click',()=>openBasinDetail(btn.dataset.basin)));
 $('closeBasinDetail')?.addEventListener('click',(e)=>{e.stopPropagation();$('basinDetail')?.classList.add('hidden');});
 
 
+
+async function fetchBasinRain(key, lat, lon){
+  const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=precipitation&past_days=1&forecast_days=1&timezone=Europe%2FRome`;
+  const res=await fetch(url,{cache:'no-store'});
+  if(!res.ok) throw new Error('rain api');
+  const data=await res.json();
+  const times=data.hourly.time.map(t=>new Date(t));
+  const vals=data.hourly.precipitation||[];
+  const now=new Date();
+  const past=[];
+  for(let i=0;i<times.length;i++){
+    if(times[i] <= now) past.push({t:times[i],v:Number(vals[i]||0)});
+  }
+  function sumHours(n){return past.slice(-n).reduce((a,b)=>a+b.v,0)}
+  const d={h1:sumHours(1),h3:sumHours(3),h6:sumHours(6),h24:sumHours(24),updated:new Date()};
+  basinRainData[key]=d;
+  return d;
+}
+function rainColor(mm6){return mm6>=50?'red':mm6>=25?'yellow':'green'}
+function setBasinCard(key,d){
+  const el=$(key==='lamone'?'basinLamoneSummary':'basinMarzenoSummary');
+  if(!el) return;
+  el.textContent=`1h ${d.h1.toFixed(1)} · 3h ${d.h3.toFixed(1)} · 6h ${d.h6.toFixed(1)} mm`;
+  el.style.color=d.h6>=25?'var(--yellow)':'var(--green)';
+}
+async function loadBasinRain(){
+  try{
+    const [lam,mar]=await Promise.all([
+      fetchBasinRain('lamone',44.073,11.613),
+      fetchBasinRain('marzeno',44.159,11.793)
+    ]);
+    setBasinCard('lamone',lam); setBasinCard('marzeno',mar);
+    const max6=Math.max(lam.h6,mar.h6);
+    const color=rainColor(max6);
+    const lamDot=$('lamoneCorner'); if(lamDot) lamDot.className='cornerdot '+color;
+    const dot=$('dotLamone'); if(dot) setDot(dot,color);
+    const dec=document.querySelector('.compact-decision p');
+    if(dec){
+      dec.textContent=max6>=25?`Pioggia a monte significativa: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h. Apri sensori.`:`Pioggia a monte bassa: Lamone ${lam.h6.toFixed(1)} mm / Marzeno ${mar.h6.toFixed(1)} mm nelle ultime 6h.`;
+    }
+  }catch(e){
+    const a=$('basinLamoneSummary'), b=$('basinMarzenoSummary');
+    if(a) a.textContent='accumuli non disponibili';
+    if(b) b.textContent='accumuli non disponibili';
+  }
+}
 
 async function loadLamoneSensors(){
   const sensors=['Marradi','Strada Casale','Sarna','Faenza','Reda','Pieve Cesato','Mezzano'];
@@ -133,5 +185,6 @@ async function loadLamoneSensors(){
   }
 }
 load();
+loadBasinRain();
 loadLamoneSensors();
 

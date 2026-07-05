@@ -1,7 +1,6 @@
-# Meteo Conte V32 - Lamone tempi onda
+# Meteo Conte V33 - Pioggia a monte
 
-- Base V30/V31 stabile
-- Sensori Lamone monte → valle
-- Primo riquadro tempi indicativi onda di piena
-- Grafica invariata e compatta
-- Footer aggiornato V32
+- Bacini Marradi/Modigliana con accumuli meteo reali stimati
+- Dettaglio bacino 1h/3h/6h
+- Mantiene layout compatto V30/V32
+- Sensori Lamone pronti per step successivo
