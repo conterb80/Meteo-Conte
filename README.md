@@ -1,7 +1,6 @@
-# Meteo Conte V48 - Centro controllo ottimizzato
+# Meteo Conte V49 Beta - Centro Operativo Link
 
-- Box Centro Controllo Meteo più compatto
-- Messaggio operativo più breve
-- Pillole avviso più pulite e leggibili
-- Pulsanti azione rinominati Allerte ER / Radar live
-- Footer aggiornato V48
+- Prima bozza completa del Centro Operativo
+- Link divisi per uso reale: Allerte, Temporali, Fiumi, Vento, Webcam, Notizie
+- Struttura pensata per testare i link da smartphone
+- Footer aggiornato V49

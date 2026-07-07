@@ -554,3 +554,22 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
   #controlCard .control-status-grid-v48 .control-pill b{font-size:12.8px!important;}
   #controlCard .control-status-grid-v48 .control-pill small{font-size:11.5px!important;}
 }
+
+
+/* V49 - Centro Operativo Beta */
+.operative-beta .label{margin-bottom:2px}
+.operative-beta h2{margin:0 0 5px;font-size:28px}
+.operative-beta .links-intro{margin:0 0 12px;color:#dce8ef;font-size:15px;line-height:1.3}
+.tool-section{border:1px solid var(--line);background:linear-gradient(180deg,#ffffff08,#ffffff04);border-radius:18px;padding:10px;margin-top:10px;overflow:hidden}
+.tool-section.priority{border-color:#79f2a844;box-shadow:inset 0 1px 0 #ffffff12}
+.tool-title{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.tool-title>span{width:34px;height:34px;border-radius:13px;background:#ffffff10;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
+.tool-title b{display:block;font-size:17px;line-height:1.05}
+.tool-title small{display:block;color:var(--muted);font-size:13px;margin-top:2px;line-height:1.15}
+.tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tool-grid a{display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:52px;padding:9px 8px;border:1px solid var(--line);background:#ffffff0b;border-radius:15px;text-decoration:none;color:var(--txt);box-shadow:inset 0 1px 0 #fff1}
+.tool-grid a b{font-size:15.5px;line-height:1.05}
+.tool-grid a small{color:var(--muted);font-size:12.5px;line-height:1.1;font-weight:600}
+.tool-grid a:active{transform:scale(.985);background:#ffffff14}
+@media(max-width:430px){.operative-beta h2{font-size:26px}.tool-section{padding:9px;margin-top:8px;border-radius:16px}.tool-title>span{width:31px;height:31px;border-radius:12px;font-size:18px}.tool-title b{font-size:16px}.tool-title small{font-size:12.5px}.tool-grid{gap:7px}.tool-grid a{min-height:50px;padding:8px 7px}.tool-grid a b{font-size:14.5px}.tool-grid a small{font-size:11.5px}}
+@media(max-width:370px){.tool-grid{grid-template-columns:1fr}.tool-grid a{min-height:44px}}
