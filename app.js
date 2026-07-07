@@ -7,6 +7,57 @@ function calcIndex(now,hourly){const rainMax=Math.max(...hourly.precipitation_pr
 function level(idx){if(idx>=75)return ['Alta attenzione','rosso','red'];if(idx>=50)return ['Da seguire','arancione','yellow'];if(idx>=25)return ['Da monitorare','giallo','yellow'];return ['Tranquilla','tranquillo','green']}
 function setDot(el,c){el.className='dot '+c} function setBig(c){$('statusDot').className='bigdot '+c}
 function nextStart(times){const now=new Date(); let start=times.findIndex(t=>new Date(t)>now); return start<0?0:start;}
+
+function setControlChip(id,color,label){
+  const el=$(id); if(!el) return;
+  const dot=el.querySelector('i'); if(dot) dot.className=color;
+  const sm=el.querySelector('small'); if(sm) sm.textContent=label;
+}
+function updateControlBox(data){
+  const box=$('controlCard'); if(!box) return;
+  const c=data.current, h=data.hourly;
+  const rain6=h.precipitation.slice(0,6).reduce((a,b)=>a+b,0);
+  const rainMax=Math.max(...h.precipitation_probability.slice(0,6));
+  const gust=Math.round(c.wind_gusts_10m||0);
+  const code=c.weather_code||0;
+  const storm=code>=95 || h.weather_code.slice(0,6).some(x=>x>=95);
+  let color='green', title='Situazione regolare', msg='Nessun avviso operativo: sotto trovi gli strumenti migliori se vuoi controllare allerte, radar, vento, fiumi e live.';
+
+  setControlChip('controlAlertChip','green','controllo');
+  setControlChip('controlRainChip','green','tranquilla');
+  setControlChip('controlWindChip','green','regolare');
+  setControlChip('controlStormChip','green','nessun segnale');
+
+  if(rainMax>=70 || rain6>=10){
+    color='yellow'; title='Pioggia da seguire'; msg=`Pioggia possibile nelle prossime ore: probabilità fino a ${rainMax}% e accumulo ${rain6.toFixed(1)} mm. Apri Radar ER e Pretemp.`;
+    setControlChip('controlRainChip','yellow','da seguire');
+  }
+  if(gust>=50){
+    color=gust>=70?'red':'yellow'; title=gust>=70?'Raffiche forti':'Vento da monitorare'; msg=`Raffiche previste fino a ${gust} km/h. Controlla Windy e il bollettino vento.`;
+    setControlChip('controlWindChip',color,gust>=70?'forte':'monitorare');
+  }
+  if(storm){
+    color='yellow'; title='Temporali possibili'; msg='Possibili celle temporalesche: controlla Radar ER, Fulmini Live e Pretemp.';
+    setControlChip('controlStormChip','yellow','possibili');
+  }
+  if(lastIndex>=50){
+    color=lastIndex>=75?'red':'yellow'; title=lastIndex>=75?'Controllo immediato':'Situazione da controllare'; msg='Indice Meteo Conte in aumento: apri Allerte ER, Radar e strumenti meteo per verificare la situazione.';
+    setControlChip('controlAlertChip',color,'verifica');
+  }
+  const titleEl=$('controlTitle'), textEl=$('controlText'), corner=$('controlCorner');
+  if(titleEl) titleEl.textContent=title;
+  if(textEl) textEl.textContent=msg;
+  if(corner) corner.className='cornerdot '+color;
+}
+function updateControlBoxLamone(lam,mar,state){
+  if(!$('controlCard') || !state || state.level<2) return;
+  const titleEl=$('controlTitle'), textEl=$('controlText'), corner=$('controlCorner');
+  if(titleEl) titleEl.textContent='Fiumi da controllare';
+  if(textEl) textEl.textContent=`Piogge significative su ${state.source}: apri Lamone, Fiumi ER e Pioggia a monte.`;
+  if(corner) corner.className='cornerdot '+state.color;
+  setControlChip('controlAlertChip',state.color,'verifica');
+}
+
 async function load(){
  try{
   await navigator.serviceWorker?.getRegistrations?.().then(rs=>rs.forEach(r=>r.unregister()));
@@ -25,8 +76,8 @@ async function load(){
   $('tempNow').textContent=(Math.round(c.temperature_2m*10)/10)+'°C'; $('nowDesc').textContent=`${desc[0]} · ${rainMax}% pioggia max 6h`;
   $('feels').textContent=Math.round(c.apparent_temperature*10)/10+'°'; $('hum').textContent=Math.round(c.relative_humidity_2m)+'%'; $('dew').textContent=Math.round(dewPoint(c.temperature_2m,c.relative_humidity_2m)*10)/10+'°'; $('wind').textContent=Math.round(c.wind_speed_10m)+' km/h'; $('gust').textContent=Math.round(c.wind_gusts_10m)+' km/h'; $('press').textContent=Math.round(c.pressure_msl)+' hPa'; $('rain6').textContent=rain6.toFixed(1)+' mm';
   $('analysisBox').innerHTML=`<b>Perché ${idx}/100?</b><br>Pioggia max 6h ${rainMax}%, accumulo ${rain6.toFixed(1)} mm. Umidità ${Math.round(c.relative_humidity_2m)}%, raffica ${Math.round(c.wind_gusts_10m)} km/h, pressione ${Math.round(c.pressure_msl)} hPa. Se cambia il cielo, apri Radar ER, Fulmini e Lamone.`;
-  renderRisk(h,idx); renderHours(h); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
- }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; }
+  renderRisk(h,idx); renderHours(h); updateControlBox(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+ }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; const cc=$('controlCorner'); if(cc) cc.className='cornerdot yellow'; const ct=$('controlTitle'); if(ct) ct.textContent='Dati da aggiornare'; const cp=$('controlText'); if(cp) cp.textContent='Dati meteo non disponibili: usa i link ufficiali del Centro Controllo Meteo.'; }
 }
 function renderRisk(h,base){
  const target=$('riskTimeline'); if(!target) return;
@@ -177,6 +228,7 @@ function updateLamoneDecision(lam, mar){
     if(decStrong) decStrong.textContent='Situazione tranquilla';
   }
   if(decText) decText.textContent=lamoneSmartMessage(lam,mar,state);
+  updateControlBoxLamone(lam,mar,state);
 }
 async function loadBasinRain(){
   try{
