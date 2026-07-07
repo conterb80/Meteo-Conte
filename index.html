@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V44</title>
-  <link rel="manifest" href="manifest.json?v=44" />
-  <link rel="icon" type="image/png" href="icon.png?v=44" />
-  <link rel="stylesheet" href="style.css?v=44.0.0" />
+  <title>Meteo Conte V45</title>
+  <link rel="manifest" href="manifest.json?v=45" />
+  <link rel="icon" type="image/png" href="icon.png?v=45" />
+  <link rel="stylesheet" href="style.css?v=45.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=44" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=45" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -32,7 +32,7 @@
       <button class="sem" data-jump="meteoNow"><span id="dotMeteo" class="dot green"></span><small>Meteo</small></button>
       <button class="sem" data-jump="lamoneCard"><span id="dotLamone" class="dot green"></span><small>Lamone</small></button>
       <button class="sem" data-jump="alertsCard"><span id="dotAllerte" class="dot green"></span><small>Allerte</small></button>
-      <button class="sem" data-jump="linksCard"><span id="dotTemporali" class="dot green"></span><small>Temporali</small></button>
+      <button class="sem" data-jump="operativeLinks"><span id="dotTemporali" class="dot green"></span><small>Strumenti</small></button>
     </section>
 
     <section class="top-status card status-v16">
@@ -172,22 +172,52 @@
       <a class="btn" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🛡️ Bollettini</a>
     </section>
 
-    <section id="linksCard" class="card links">
-      <h2>Link rapidi</h2>
-      <div class="linkgrid">
-        <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener">📡 Radar pioggia</a>
-        <a href="https://www.lightningmaps.org/" target="_blank" rel="noopener">⚡ Fulmini live</a>
-        <a href="https://www.windy.com/?44.42,11.98,8" target="_blank" rel="noopener">🌬️ Windy mappe</a>
-        <a href="https://pretemp.altervista.org/index.html" target="_blank" rel="noopener">⛈️ Pretemp</a>
-        <a href="https://www.meteoam.it/it/satellite/italia" target="_blank" rel="noopener">🛰️ Satellite</a>
-        <a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">🌊 Sensori Lamone</a>
-        <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 Fiumi ER</a>
-        <a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🚨 Allerte ER</a>
+    <section id="operativeLinks" class="card links operative-center">
+      <span class="label">CENTRO OPERATIVO</span>
+      <h2>Strumenti meteo</h2>
+      <p class="links-intro">Il meglio a portata di mano: prima fonti ufficiali, poi radar, mappe, fiumi e live.</p>
+
+      <div class="linkgroup">
+        <h3>🚨 Allerte ufficiali</h3>
+        <div class="linkgrid compact-links">
+          <a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🛡️ Allerte ER</a>
+          <a href="https://allertameteo.regione.emilia-romagna.it/previsioni-e-dati" target="_blank" rel="noopener">📋 Dati ufficiali</a>
+        </div>
+      </div>
+
+      <div class="linkgroup">
+        <h3>🌧️ Tempo reale</h3>
+        <div class="linkgrid compact-links">
+          <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener">📡 Radar ER</a>
+          <a href="https://www.lightningmaps.org/" target="_blank" rel="noopener">⚡ Fulmini live</a>
+          <a href="https://www.meteoam.it/it/satellite/italia" target="_blank" rel="noopener">🛰️ Satellite</a>
+          <a href="https://pretemp.altervista.org/index.html" target="_blank" rel="noopener">⛈️ Pretemp</a>
+        </div>
+      </div>
+
+      <div class="linkgroup">
+        <h3>🌊 Fiumi e bacini</h3>
+        <div class="linkgrid compact-links">
+          <a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">🌊 Sensori Lamone</a>
+          <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 Fiumi ER</a>
+          <a href="https://www.windy.com/?rain,44.16,11.62,8" target="_blank" rel="noopener">🌧️ Pioggia monte</a>
+          <a href="https://www.arpae.it/it/temi-ambientali/acqua/dati-acque/acque-superficiali/dati-idrometrici-in-tempo-reale-1" target="_blank" rel="noopener">📈 Idrometri Arpae</a>
+        </div>
+      </div>
+
+      <div class="linkgroup">
+        <h3>🛰️ Mappe e live</h3>
+        <div class="linkgrid compact-links">
+          <a href="https://www.windy.com/?44.42,11.98,8" target="_blank" rel="noopener">🌬️ Windy mappe</a>
+          <a href="https://radar.protezionecivile.it/" target="_blank" rel="noopener">📡 Radar DPC</a>
+          <a href="https://www.arpae.it/it/temi-ambientali/meteo/dati-e-osservazioni/webcam/rete-webcam" target="_blank" rel="noopener">📷 Webcam costa</a>
+          <a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank" rel="noopener">🌤️ Meteo Arpae</a>
+        </div>
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V44 · Pulizia centro operativo</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V45 · Centro operativo</footer>
   </main>
-  <script src="app.js?v=44.0.0"></script>
+  <script src="app.js?v=45.0.0"></script>
 </body>
 </html>

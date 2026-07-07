@@ -1,8 +1,6 @@
-# Meteo Conte V44 - Pulizia centro operativo
+# Meteo Conte V45 - Centro operativo
 
-- Rimossa Timeline rischio dalla schermata finale
-- Rimossa Prossime ore dalla schermata finale
-- Link rapidi portati subito sotto Allerte
-- Navigazione Temporali indirizzata ai Link rapidi
-- Base stabile V43 mantenuta
-- Motore meteo e sezione Lamone non modificati
+- Link rapidi trasformati in Centro operativo
+- Gruppi: allerte ufficiali, tempo reale, fiumi/bacini, mappe/live
+- Rimossi doppioni inutili dalla schermata finale
+- Footer aggiornato V45

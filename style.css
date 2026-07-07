@@ -366,3 +366,6 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .river-emergency .sensor-route span.sensor-yellow small{color:var(--yellow)!important;}
 .river-emergency .sensor-route span.sensor-red small{color:#ff8d8d!important;}
 #waveStatusLabel,#activeSensorLabel,#villanovaStatusLabel{text-transform:lowercase;}
+
+/* V45 Centro operativo */
+.operative-center .label{margin-bottom:2px}.operative-center h2{margin-bottom:5px}.links-intro{margin:0 0 10px;color:#dce8ef;font-size:15.5px;line-height:1.28}.linkgroup{border:1px solid var(--line);background:#ffffff05;border-radius:18px;padding:10px;margin-top:9px}.linkgroup h3{margin:0 0 8px;font-size:16px;color:#d8e8ef;letter-spacing:.01em}.compact-links{gap:8px}.compact-links a{font-size:16px;padding:10px 6px;min-height:45px;display:flex;align-items:center;justify-content:center;line-height:1.1}@media(max-width:430px){.links-intro{font-size:14.5px}.linkgroup{padding:9px;margin-top:8px;border-radius:16px}.linkgroup h3{font-size:15px}.compact-links a{font-size:15.5px;padding:9px 4px;min-height:42px}}

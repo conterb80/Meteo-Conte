@@ -28,8 +28,16 @@ async function load(){
   renderRisk(h,idx); renderHours(h); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
  }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; }
 }
-function renderRisk(h,base){const el=$('riskTimeline'); if(!el) return; el.innerHTML=''; for(let i=1;i<=4;i++){const p=h.precipitation_probability[i]||0;const risk=Math.max(base,p);const c=risk>=50?'yellow':'green'; const text=risk>=50?'attenzione':risk>=25?'monitorare':'tranquillo'; el.insertAdjacentHTML('beforeend',`<div class="riskitem"><span class="rball ${c}"></span><small>+${i}h</small><b>${text}</b></div>`)} }
-function renderHours(h){const el=$('hours'); if(!el) return; el.innerHTML=''; const start=nextStart(h.time); h.time.slice(start,start+6).forEach((t,i)=>{const k=start+i;const d=new Date(t); const code=h.weather_code[k]; const icon=(WMO[code]||['','☀️'])[1]; el.insertAdjacentHTML('beforeend',`<div class="hour"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><b>${Math.round(h.temperature_2m[k])}°</b><span>${icon}</span><small>${h.precipitation_probability[k]}% · ${h.precipitation[k].toFixed(1)}mm</small></div>`)});}
+function renderRisk(h,base){
+ const target=$('riskTimeline'); if(!target) return;
+ target.innerHTML='';
+ for(let i=1;i<=4;i++){const p=h.precipitation_probability[i]||0;const risk=Math.max(base,p);const c=risk>=50?'yellow':'green'; const text=risk>=50?'attenzione':risk>=25?'monitorare':'tranquillo'; target.insertAdjacentHTML('beforeend',`<div class="riskitem"><span class="rball ${c}"></span><small>+${i}h</small><b>${text}</b></div>`)}
+}
+function renderHours(h){
+ const target=$('hours'); if(!target) return;
+ target.innerHTML=''; const start=nextStart(h.time);
+ h.time.slice(start,start+6).forEach((t,i)=>{const k=start+i;const d=new Date(t); const code=h.weather_code[k]; const icon=(WMO[code]||['','☀️'])[1]; target.insertAdjacentHTML('beforeend',`<div class="hour"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><b>${Math.round(h.temperature_2m[k])}°</b><span>${icon}</span><small>${h.precipitation_probability[k]}% · ${h.precipitation[k].toFixed(1)}mm</small></div>`)});
+}
 function makeChart(vals,times,unit,type){
  const w=320,h=104,padX=18,padY=18;
  const min=Math.min(...vals), max=Math.max(...vals), span=(max-min)||1;
@@ -71,7 +79,7 @@ function openTrend(type){
  box.classList.remove('hidden'); box.scrollIntoView({behavior:'smooth',block:'start'});
  box.querySelector('.closeTrend')?.addEventListener('click',()=>box.classList.add('hidden'));
 }
-$('analyzeBtn').addEventListener('click',()=>{$('analysisBox').classList.toggle('hidden');}); $('refreshBtn')?.addEventListener('click',load);
+$('analyzeBtn')?.addEventListener('click',()=>{$('analysisBox').classList.toggle('hidden');}); $('refreshBtn')?.addEventListener('click',load);
 document.querySelectorAll('[data-trend]').forEach(el=>{
   el.addEventListener('click',()=>openTrend(el.dataset.trend));
   el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend(el.dataset.trend)}});
