@@ -373,3 +373,106 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 /* V46 Centro Controllo Meteo */
 .meteo-control h2{font-size:29px;line-height:1.04;margin:0 0 8px}.meteo-control p{font-size:16px;line-height:1.28;margin:0 0 10px;color:#e7f0f5}.control-status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}.control-status-grid span{border:1px solid var(--line);background:#ffffff08;border-radius:16px;padding:8px 4px;text-align:center;min-width:0}.control-status-grid i{width:14px;height:14px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:4px}.control-status-grid b{font-size:14px;line-height:1;vertical-align:middle}.control-status-grid small{display:block;color:var(--green);font-size:12px;font-weight:800;margin-top:4px;white-space:nowrap}.control-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.control-actions .btn{margin-top:0}.btn.secondary{background:#ffffff0b;color:var(--txt);border:1px solid var(--line);box-shadow:none}
 @media(max-width:430px){.meteo-control h2{font-size:27px}.meteo-control p{font-size:15px}.control-status-grid{gap:6px}.control-status-grid span{padding:7px 2px}.control-status-grid b{font-size:13px}.control-status-grid small{font-size:11px}.control-actions .btn{font-size:15.5px;padding:10px 8px}}
+
+/* V47 - Centro Controllo Meteo premium */
+.control-premium{
+  position:relative;
+  overflow:hidden;
+}
+.control-premium::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 18% 0%, rgba(111,230,145,.12), transparent 38%), linear-gradient(180deg, rgba(255,255,255,.035), transparent 55%);
+}
+.control-premium > *{position:relative;z-index:1;}
+.control-premium .label{display:block;margin-bottom:10px;}
+.control-premium h2{
+  font-size:28px;
+  line-height:1.05;
+  margin:0 0 10px;
+  letter-spacing:-.02em;
+}
+.control-premium p{
+  font-size:16px;
+  line-height:1.32;
+  margin:0 0 12px;
+  color:#e8f2f6;
+  max-width:94%;
+}
+.control-premium .cornerdot{
+  box-shadow:0 0 0 8px rgba(111,230,145,.08), 0 0 22px rgba(111,230,145,.20);
+}
+.meteo-control .control-status-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,1fr)!important;
+  gap:8px!important;
+  margin:12px 0 12px!important;
+}
+.meteo-control .control-status-grid > span,
+.meteo-control .control-pill{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  border:1px solid rgba(190,235,245,.14)!important;
+  background:rgba(255,255,255,.065)!important;
+  border-radius:16px!important;
+  padding:9px 10px!important;
+  text-align:left!important;
+  min-width:0!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+.meteo-control .control-status-grid i{
+  width:13px!important;
+  height:13px!important;
+  flex:0 0 13px!important;
+  border-radius:50%!important;
+  display:block!important;
+  margin:0!important;
+  box-shadow:0 0 12px rgba(111,230,145,.25)!important;
+}
+.meteo-control .control-status-grid b{
+  display:block!important;
+  font-size:13.5px!important;
+  line-height:1.05!important;
+  color:#eef8fb!important;
+  white-space:nowrap!important;
+}
+.meteo-control .control-status-grid small{
+  display:block!important;
+  color:var(--green)!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1.05!important;
+  margin-top:3px!important;
+  white-space:nowrap!important;
+  text-transform:lowercase!important;
+}
+.meteo-control .control-actions{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:9px!important;
+  margin-top:4px!important;
+}
+.meteo-control .control-actions .btn{
+  margin:0!important;
+  min-height:48px!important;
+  font-size:16px!important;
+  border-radius:18px!important;
+}
+.meteo-control .control-actions .btn.secondary{
+  background:rgba(255,255,255,.07)!important;
+  color:var(--txt)!important;
+  border:1px solid rgba(190,235,245,.14)!important;
+  box-shadow:none!important;
+}
+@media(max-width:430px){
+  .control-premium h2{font-size:27px;}
+  .control-premium p{font-size:15.2px;max-width:100%;}
+  .meteo-control .control-status-grid{gap:7px!important;}
+  .meteo-control .control-status-grid > span{padding:8px 8px!important;border-radius:15px!important;}
+  .meteo-control .control-status-grid b{font-size:13px!important;}
+  .meteo-control .control-status-grid small{font-size:11.5px!important;}
+  .meteo-control .control-actions .btn{font-size:15px!important;min-height:46px!important;padding:10px 6px!important;}
+}

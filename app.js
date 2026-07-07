@@ -21,12 +21,12 @@ function updateControlBox(data){
   const gust=Math.round(c.wind_gusts_10m||0);
   const code=c.weather_code||0;
   const storm=code>=95 || h.weather_code.slice(0,6).some(x=>x>=95);
-  let color='green', title='Situazione regolare', msg='Nessun avviso operativo: sotto trovi gli strumenti migliori se vuoi controllare allerte, radar, vento, fiumi e live.';
+  let color='green', title='Situazione regolare', msg='Nessuna criticità rilevata. Sotto trovi gli strumenti giusti per controllare allerte, radar, vento, fiumi e live.';
 
-  setControlChip('controlAlertChip','green','controllo');
-  setControlChip('controlRainChip','green','tranquilla');
+  setControlChip('controlAlertChip','green','OK');
+  setControlChip('controlRainChip','green','assente');
   setControlChip('controlWindChip','green','regolare');
-  setControlChip('controlStormChip','green','nessun segnale');
+  setControlChip('controlStormChip','green','assenti');
 
   if(rainMax>=70 || rain6>=10){
     color='yellow'; title='Pioggia da seguire'; msg=`Pioggia possibile nelle prossime ore: probabilità fino a ${rainMax}% e accumulo ${rain6.toFixed(1)} mm. Apri Radar ER e Pretemp.`;

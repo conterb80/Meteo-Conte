@@ -1,6 +1,7 @@
-# Meteo Conte V46 - Centro Controllo Meteo
+# Meteo Conte V47 - Centro controllo premium
 
-- Box Allerte trasformato in Centralina avvisi
-- Semaforo operativo per allerte, pioggia, vento e temporali
-- Messaggio breve con azione consigliata
-- Link rapidi mantenuti sotto come strumenti operativi
+- Box Centro Controllo Meteo rifinito graficamente
+- Pillole stato più leggibili
+- Messaggio operativo più corto
+- Pulsanti azione più chiari
+- Base V46 mantenuta
