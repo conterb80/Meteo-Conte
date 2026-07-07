@@ -476,3 +476,81 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
   .meteo-control .control-status-grid small{font-size:11.5px!important;}
   .meteo-control .control-actions .btn{font-size:15px!important;min-height:46px!important;padding:10px 6px!important;}
 }
+
+
+/* V48 - Centro Controllo ottimizzato */
+#controlCard.control-premium{
+  padding-top:18px;
+  padding-bottom:18px;
+  border-color:rgba(111,230,145,.18);
+}
+#controlCard.control-premium .label{
+  margin-bottom:8px;
+  letter-spacing:.22em;
+  color:#d6edf3;
+}
+#controlCard.control-premium h2{
+  font-size:26px!important;
+  line-height:1.02!important;
+  margin:0 0 8px!important;
+}
+#controlCard.control-premium p{
+  font-size:15px!important;
+  line-height:1.28!important;
+  margin:0 0 12px!important;
+  max-width:96%!important;
+  color:#dfeef3!important;
+}
+#controlCard .control-status-grid-v48{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  margin:10px 0 12px!important;
+}
+#controlCard .control-status-grid-v48 .control-pill{
+  display:grid!important;
+  grid-template-columns:14px 1fr!important;
+  grid-template-rows:auto auto!important;
+  column-gap:8px!important;
+  row-gap:2px!important;
+  align-items:center!important;
+  padding:9px 10px!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035))!important;
+  border:1px solid rgba(190,235,245,.15)!important;
+}
+#controlCard .control-status-grid-v48 .control-pill i{
+  grid-row:1 / span 2!important;
+  width:13px!important;
+  height:13px!important;
+  margin:0!important;
+}
+#controlCard .control-status-grid-v48 .control-pill b{
+  font-size:13.2px!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+}
+#controlCard .control-status-grid-v48 .control-pill small{
+  font-size:12px!important;
+  line-height:1.05!important;
+  margin:0!important;
+  white-space:nowrap!important;
+}
+#controlCard .control-actions{
+  gap:10px!important;
+}
+#controlCard .control-actions .btn{
+  min-height:46px!important;
+  border-radius:17px!important;
+  font-size:15.5px!important;
+  padding:10px 8px!important;
+}
+@media(max-width:430px){
+  #controlCard.control-premium{padding-top:16px;padding-bottom:16px;}
+  #controlCard.control-premium h2{font-size:25px!important;}
+  #controlCard.control-premium p{font-size:14.4px!important;}
+  #controlCard .control-status-grid-v48{gap:7px!important;}
+  #controlCard .control-status-grid-v48 .control-pill{padding:8px 9px!important;}
+  #controlCard .control-status-grid-v48 .control-pill b{font-size:12.8px!important;}
+  #controlCard .control-status-grid-v48 .control-pill small{font-size:11.5px!important;}
+}

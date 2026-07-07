@@ -21,7 +21,7 @@ function updateControlBox(data){
   const gust=Math.round(c.wind_gusts_10m||0);
   const code=c.weather_code||0;
   const storm=code>=95 || h.weather_code.slice(0,6).some(x=>x>=95);
-  let color='green', title='Situazione regolare', msg='Nessuna criticità rilevata. Sotto trovi gli strumenti giusti per controllare allerte, radar, vento, fiumi e live.';
+  let color='green', title='Situazione regolare', msg='Nessun avviso operativo. Se cambia il tempo, controlla prima Allerte ER e Radar live.';
 
   setControlChip('controlAlertChip','green','OK');
   setControlChip('controlRainChip','green','assente');
@@ -29,11 +29,11 @@ function updateControlBox(data){
   setControlChip('controlStormChip','green','assenti');
 
   if(rainMax>=70 || rain6>=10){
-    color='yellow'; title='Pioggia da seguire'; msg=`Pioggia possibile nelle prossime ore: probabilità fino a ${rainMax}% e accumulo ${rain6.toFixed(1)} mm. Apri Radar ER e Pretemp.`;
+    color='yellow'; title='Pioggia da seguire'; msg=`Pioggia possibile nelle prossime ore. Apri Radar ER e Pretemp per seguire l’evoluzione.`;
     setControlChip('controlRainChip','yellow','da seguire');
   }
   if(gust>=50){
-    color=gust>=70?'red':'yellow'; title=gust>=70?'Raffiche forti':'Vento da monitorare'; msg=`Raffiche previste fino a ${gust} km/h. Controlla Windy e il bollettino vento.`;
+    color=gust>=70?'red':'yellow'; title=gust>=70?'Raffiche forti':'Vento da monitorare'; msg=`Raffiche previste fino a ${gust} km/h. Controlla Windy e bollettino vento.`;
     setControlChip('controlWindChip',color,gust>=70?'forte':'monitorare');
   }
   if(storm){
@@ -41,7 +41,7 @@ function updateControlBox(data){
     setControlChip('controlStormChip','yellow','possibili');
   }
   if(lastIndex>=50){
-    color=lastIndex>=75?'red':'yellow'; title=lastIndex>=75?'Controllo immediato':'Situazione da controllare'; msg='Indice Meteo Conte in aumento: apri Allerte ER, Radar e strumenti meteo per verificare la situazione.';
+    color=lastIndex>=75?'red':'yellow'; title=lastIndex>=75?'Controllo immediato':'Situazione da controllare'; msg='Indice Meteo Conte in aumento. Apri Allerte ER e Radar live per verificare.';
     setControlChip('controlAlertChip',color,'verifica');
   }
   const titleEl=$('controlTitle'), textEl=$('controlText'), corner=$('controlCorner');

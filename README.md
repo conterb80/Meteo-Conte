@@ -1,7 +1,7 @@
-# Meteo Conte V47 - Centro controllo premium
+# Meteo Conte V48 - Centro controllo ottimizzato
 
-- Box Centro Controllo Meteo rifinito graficamente
-- Pillole stato più leggibili
-- Messaggio operativo più corto
-- Pulsanti azione più chiari
-- Base V46 mantenuta
+- Box Centro Controllo Meteo più compatto
+- Messaggio operativo più breve
+- Pillole avviso più pulite e leggibili
+- Pulsanti azione rinominati Allerte ER / Radar live
+- Footer aggiornato V48
