@@ -1,6 +1,6 @@
-# Meteo Conte V45 - Centro operativo
+# Meteo Conte V46 - Centro Controllo Meteo
 
-- Link rapidi trasformati in Centro operativo
-- Gruppi: allerte ufficiali, tempo reale, fiumi/bacini, mappe/live
-- Rimossi doppioni inutili dalla schermata finale
-- Footer aggiornato V45
+- Box Allerte trasformato in Centralina avvisi
+- Semaforo operativo per allerte, pioggia, vento e temporali
+- Messaggio breve con azione consigliata
+- Link rapidi mantenuti sotto come strumenti operativi

@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V45</title>
+  <title>Meteo Conte V46</title>
   <link rel="manifest" href="manifest.json?v=45" />
   <link rel="icon" type="image/png" href="icon.png?v=45" />
   <link rel="stylesheet" href="style.css?v=45.0.0" />
@@ -164,12 +164,20 @@
       </div>
     </section>
 
-    <section id="alertsCard" class="card alerts">
-      <span class="label">ALLERTE</span><span id="allerteCorner" class="cornerdot green"></span>
-      <h2>Emilia-Romagna</h2>
-      <div class="pillrow"><span>🌊 Idr.</span><span>⛰️ Idro.</span><span>⛈️ Temp.</span><span>🌬️ Vento</span></div>
-      <p>Bollettini ufficiali sempre a un tocco.</p>
-      <a class="btn" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🛡️ Bollettini</a>
+    <section id="controlCard" class="card meteo-control">
+      <span class="label">CENTRO CONTROLLO METEO</span><span id="controlCorner" class="cornerdot green"></span>
+      <h2 id="controlTitle">Situazione regolare</h2>
+      <p id="controlText">Nessun avviso operativo: sotto trovi gli strumenti migliori se vuoi controllare allerte, radar, vento, fiumi e live.</p>
+      <div class="control-status-grid">
+        <span id="controlAlertChip"><i class="green"></i><b>Allerte</b><small>controllo</small></span>
+        <span id="controlRainChip"><i class="green"></i><b>Pioggia</b><small>tranquilla</small></span>
+        <span id="controlWindChip"><i class="green"></i><b>Vento</b><small>regolare</small></span>
+        <span id="controlStormChip"><i class="green"></i><b>Temporali</b><small>nessun segnale</small></span>
+      </div>
+      <div class="control-actions">
+        <a class="btn" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🛡️ Allerte ER</a>
+        <a class="btn secondary" href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener">📡 Radar ER</a>
+      </div>
     </section>
 
     <section id="operativeLinks" class="card links operative-center">
@@ -216,8 +224,8 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V45 · Centro operativo</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V46 · Centro controllo meteo</footer>
   </main>
-  <script src="app.js?v=45.0.0"></script>
+  <script src="app.js?v=46.0.0"></script>
 </body>
 </html>
