@@ -615,3 +615,24 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .lamone-drawer{padding-bottom:13px}
 .lamone-drawer-open{min-height:39px;padding:7px 12px;font-size:14px}
 @media(max-width:430px){.lamone-drawer{padding-bottom:12px}.lamone-drawer-open{min-height:38px;padding:7px 10px;font-size:13.7px}}
+
+
+/* V54 - Cassetto PRETEMP */
+.pretemp-drawer{position:relative;overflow:hidden;border-color:rgba(255,205,72,.22);background:linear-gradient(180deg,rgba(13,61,79,.98),rgba(7,43,58,.98));padding:14px 15px 13px}
+.pretemp-drawer:before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,#ffe34e,#ff9d32,#ef4b43,#d72be9);opacity:.95}
+.pretemp-drawer>.label{display:block;padding-right:60px}
+.pretemp-drawer-live{position:absolute;right:15px;top:13px;display:grid;place-items:center;min-width:48px;height:28px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.08em;color:#063124;background:var(--green);box-shadow:0 0 0 5px rgba(111,224,154,.1)}
+.pretemp-drawer-main{display:grid;grid-template-columns:43px 1fr;gap:10px;align-items:center;margin-top:7px}
+.pretemp-drawer-icon{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:rgba(255,205,72,.1);border:1px solid rgba(255,205,72,.23);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.pretemp-drawer h2{margin:0 0 2px;font-size:22px;line-height:1}
+.pretemp-drawer p{margin:0;color:#cfe1e8;font-size:12.8px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pretemp-drawer-status{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0 8px}
+.pretemp-drawer-status span{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);background:#ffffff07;border-radius:13px;padding:7px 9px;min-width:0}
+.pretemp-drawer-status small{display:block;color:var(--muted);font-size:10.5px;white-space:nowrap}
+.pretemp-drawer-status b{display:block;color:#ffe06a;font-size:12.5px;margin:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pretemp-drawer-open{width:100%;margin:0;min-height:39px;border-radius:14px;font-size:14px;padding:7px 12px}
+.pretemp-drawer-active{box-shadow:0 0 0 1px rgba(255,205,72,.24),0 12px 30px rgba(0,0,0,.18)}
+.pretemp-toolbar{margin-bottom:12px}
+.pretemp-container-openable.hidden{display:none}
+@media(max-width:430px){.pretemp-drawer{padding:13px 13px 12px}.pretemp-drawer-main{grid-template-columns:40px 1fr;gap:9px}.pretemp-drawer-icon{width:40px;height:40px;border-radius:13px;font-size:21px}.pretemp-drawer h2{font-size:21px}.pretemp-drawer p{font-size:12.3px}.pretemp-drawer-status span{padding:7px 8px}.pretemp-drawer-status b{font-size:12px}.pretemp-drawer-open{min-height:38px;padding:7px 10px;font-size:13.7px}.pretemp-drawer-live{right:13px;top:12px}}
+@media(max-width:360px){.pretemp-drawer-status{grid-template-columns:1fr}.pretemp-drawer p{white-space:normal}.pretemp-drawer-status span{min-height:36px}}

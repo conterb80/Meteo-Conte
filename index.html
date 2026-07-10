@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V53 · Lamone definitivo</title>
+  <title>Meteo Conte V54 · Cassetto PRETEMP</title>
   <link rel="manifest" href="manifest.json?v=52" />
   <link rel="icon" type="image/png" href="icon.png?v=52" />
   <link rel="stylesheet" href="style.css?v=52.0.0" />
@@ -32,7 +32,7 @@
       <button class="sem" data-jump="meteoNow"><span id="dotMeteo" class="dot green"></span><small>Meteo</small></button>
       <button class="sem" data-jump="lamoneDrawer"><span id="dotLamone" class="dot green"></span><small>Lamone</small></button>
       <button class="sem" data-jump="alertsCard"><span id="dotAllerte" class="dot green"></span><small>Allerte</small></button>
-      <button class="sem" data-jump="pretempContainer"><span id="dotTemporali" class="dot green"></span><small>PRETEMP</small></button>
+      <button class="sem" data-jump="pretempDrawer"><span id="dotTemporali" class="dot green"></span><small>PRETEMP</small></button>
     </section>
 
     <section class="top-status card status-v16">
@@ -187,7 +187,28 @@
 
 
 
-    <section id="pretempContainer" class="card pretemp-container">
+    <section id="pretempDrawer" class="card pretemp-drawer" aria-label="Cassetto PRETEMP">
+      <span class="label">CASSETTO 02</span>
+      <span class="pretemp-drawer-live">LIVE</span>
+      <div class="pretemp-drawer-main">
+        <div class="pretemp-drawer-icon">⛈️</div>
+        <div>
+          <h2>PRETEMP</h2>
+          <p>Previsione temporali e fenomeni intensi.</p>
+        </div>
+      </div>
+      <div class="pretemp-drawer-status">
+        <span><small>Zona</small><b>Romagna</b></span>
+        <span><small>Validità</small><b id="pretempDrawerValidity">oggi · 00–24 UTC</b></span>
+      </div>
+      <button id="openPretempDrawer" class="btn pretemp-drawer-open" type="button">⛈️ Apri Centro PRETEMP →</button>
+    </section>
+
+    <section id="pretempContainer" class="card pretemp-container hidden pretemp-container-openable">
+      <div class="container-toolbar pretemp-toolbar">
+        <div><span>CASSETTO PRETEMP</span><b>Previsione completa</b></div>
+        <button id="closePretempDrawer" type="button" aria-label="Chiudi contenitore PRETEMP">×</button>
+      </div>
       <div class="pretemp-head">
         <div>
           <span class="label">CONTENITORE 01 · PRETEMP</span>
@@ -311,7 +332,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V53 · Lamone definitivo</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V54 · Cassetto PRETEMP</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>

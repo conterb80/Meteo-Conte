@@ -377,6 +377,37 @@ loadLamoneSensors();
   closeBtn?.addEventListener('click',closeDrawer);
 })();
 
+
+
+// V54 - Cassetto PRETEMP: Home compatta, contenuto V1 invariato
+(function(){
+  const openBtn=document.getElementById('openPretempDrawer');
+  const closeBtn=document.getElementById('closePretempDrawer');
+  const drawer=document.getElementById('pretempDrawer');
+  const content=document.getElementById('pretempContainer');
+  const validity=document.getElementById('pretempValidity');
+  const drawerValidity=document.getElementById('pretempDrawerValidity');
+  if(!openBtn||!content) return;
+  const syncValidity=()=>{if(drawerValidity&&validity) drawerValidity.textContent=validity.textContent;};
+  const openDrawer=()=>{
+    syncValidity();
+    content.classList.remove('hidden');
+    drawer?.classList.add('pretemp-drawer-active');
+    openBtn.setAttribute('aria-expanded','true');
+    setTimeout(()=>content.scrollIntoView({behavior:'smooth',block:'start'}),40);
+  };
+  const closeDrawer=()=>{
+    content.classList.add('hidden');
+    drawer?.classList.remove('pretemp-drawer-active');
+    openBtn.setAttribute('aria-expanded','false');
+    setTimeout(()=>drawer?.scrollIntoView({behavior:'smooth',block:'center'}),40);
+  };
+  openBtn.setAttribute('aria-expanded','false');
+  openBtn.addEventListener('click',openDrawer);
+  closeBtn?.addEventListener('click',closeDrawer);
+  setTimeout(syncValidity,800);
+})();
+
 // V50 - PRETEMP V1: mappa giornaliera e visualizzazione mobile
 (function setupPretempV1(){
   const map=document.getElementById('pretempMap');

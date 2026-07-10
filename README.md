@@ -1,8 +1,7 @@
-# Meteo Conte V53 - Lamone definitivo
+# Meteo Conte V54 - Cassetto PRETEMP
 
-- Titolo cassetto semplificato in “Lamone”
-- Descrizione ridotta ai soli elementi essenziali
-- Pulsante rinominato “Apri Centro Lamone”
-- Pulsante e spaziatura inferiore più compatti
-- Motore Lamone, sensori, bacini, onda e logica invariati
-- Footer e cache aggiornati V53
+- PRETEMP trasformato in cassetto compatto nella Home
+- Apertura e chiusura del contenitore completo
+- Mappa, zoom, fenomeni e collegamenti PRETEMP invariati
+- Motore Lamone invariato
+- Footer e cache aggiornati V54
