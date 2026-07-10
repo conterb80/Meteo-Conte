@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v50-pretemp-v1';
+const CACHE_NAME = 'meteo-conte-v51-cassetto-lamone';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {

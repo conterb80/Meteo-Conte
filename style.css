@@ -586,3 +586,25 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .pretemp-modal{position:fixed;z-index:9999;inset:0;background:#03141df2;padding:max(12px,env(safe-area-inset-top)) 10px max(12px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:9px}.pretemp-modal.hidden{display:none}.pretemp-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;color:white}.pretemp-modal-head span{display:block;font-size:11px;letter-spacing:.22em;color:#b8ccd6}.pretemp-modal-head b{display:block;font-size:20px}.pretemp-modal-head button{width:42px;height:42px;border-radius:50%;padding:0;display:grid;place-items:center;background:#ffffff12;border:1px solid #ffffff2c;color:white;font-size:27px;box-shadow:none}.pretemp-modal-scroll{flex:1;overflow:auto;border:1px solid #ffffff25;border-radius:16px;background:#071d28;-webkit-overflow-scrolling:touch}.pretemp-modal-scroll img{display:block;width:100%;min-width:680px;height:auto}.pretemp-modal>.btn{margin:0;min-height:50px}.pretemp-modal-open{overflow:hidden}
 @media(max-width:430px){.pretemp-container{padding:15px 14px}.pretemp-head h2{font-size:27px}.pretemp-head p{font-size:14px}.pretemp-map-card,.pretemp-map-card img,.pretemp-map-fallback{min-height:248px}.pretemp-actions{grid-template-columns:1fr 1fr}.pretemp-actions .btn{font-size:13.2px}.pretemp-modal-scroll img{min-width:620px}}
 @media(max-width:360px){.pretemp-meta,.pretemp-phenomena,.pretemp-actions{grid-template-columns:1fr}.pretemp-map-card,.pretemp-map-card img,.pretemp-map-fallback{min-height:220px}}
+
+
+/* V51 - Cassetto Lamone */
+.lamone-drawer{position:relative;overflow:hidden;border-color:rgba(111,224,154,.22);background:linear-gradient(180deg,rgba(11,55,73,.98),rgba(7,42,57,.98));padding:17px}
+.lamone-drawer:before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,#57dca0,#8cf06e);opacity:.95}
+.lamone-drawer-main{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:center;margin-top:8px}
+.lamone-drawer-icon{width:52px;height:52px;border-radius:18px;display:grid;place-items:center;font-size:29px;background:rgba(111,224,154,.13);border:1px solid rgba(111,224,154,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.lamone-drawer h2{margin:0 0 4px;font-size:25px;line-height:1.02}
+.lamone-drawer p{margin:0;color:#dce9ef;font-size:14px;line-height:1.28}
+.lamone-drawer-status{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:13px 0 10px}
+.lamone-drawer-status span{border:1px solid var(--line);background:#ffffff08;border-radius:15px;padding:8px 10px}
+.lamone-drawer-status small{display:block;color:var(--muted);font-size:11.5px}
+.lamone-drawer-status b{display:block;color:var(--green);font-size:14px;margin-top:2px}
+.lamone-drawer-open{width:100%;margin:0;min-height:49px;border-radius:17px;font-size:15.5px}
+.lamone-drawer-active{box-shadow:0 0 0 1px rgba(111,224,154,.25),0 12px 30px rgba(0,0,0,.18)}
+.lamone-container-openable{scroll-margin-top:10px}
+.container-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-2px 0 12px;padding:9px 10px;border:1px solid var(--line);background:#ffffff08;border-radius:15px}
+.container-toolbar span{display:block;font-size:10px;letter-spacing:.18em;color:var(--muted)}
+.container-toolbar b{display:block;font-size:14px;margin-top:2px}
+.container-toolbar button{width:38px;height:38px;border-radius:50%;padding:0;display:grid;place-items:center;background:#ffffff10;border:1px solid #ffffff25;color:white;font-size:24px;box-shadow:none}
+@media(max-width:430px){.lamone-drawer{padding:15px 14px}.lamone-drawer-main{grid-template-columns:47px 1fr}.lamone-drawer-icon{width:47px;height:47px;border-radius:16px;font-size:26px}.lamone-drawer h2{font-size:23px}.lamone-drawer p{font-size:13.4px}}
+@media(max-width:360px){.lamone-drawer-status{grid-template-columns:1fr}}

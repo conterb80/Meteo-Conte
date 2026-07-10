@@ -207,6 +207,15 @@ function updateLamoneDecision(lam, mar){
   if(riverDot) riverDot.className='river-dot '+color;
   const corner=$('lamoneCorner'); if(corner) corner.className='cornerdot '+color;
   const dot=$('dotLamone'); if(dot) setDot(dot,color);
+  const drawerCorner=$('lamoneDrawerCorner'); if(drawerCorner) drawerCorner.className='cornerdot '+color;
+  const drawerTitle=$('lamoneDrawerTitle');
+  const drawerText=$('lamoneDrawerText');
+  const drawerState=$('lamoneDrawerState');
+  const drawerRain=$('lamoneDrawerRain');
+  if(drawerRain) drawerRain.textContent=`${Math.max(lam?.h6||0,mar?.h6||0).toFixed(1)} mm / 6h`;
+  if(drawerState) drawerState.textContent=state.level>=3?'criticità':state.level===2?'monitorare':state.level===1?'osservazione':'regolare';
+  if(drawerTitle) drawerTitle.textContent=state.level>=3?'Lamone in criticità':state.level===2?'Lamone da monitorare':state.level===1?'Lamone sotto osservazione':'Lamone sotto controllo';
+  if(drawerText) drawerText.textContent=state.level>=2?'Piogge significative a monte: apri il contenitore e segui sensori e onda verso valle.':state.level===1?'Primi accumuli a monte: il contenitore è pronto per un controllo rapido.':'Sensori, pioggia a monte e onda di piena sono pronti quando servono.';
 
   updateSensorIntelligence(lam,mar);
 
@@ -342,6 +351,31 @@ loadBasinRain();
 loadLamoneSensors();
 
 
+
+
+// V51 - Cassetto Lamone: Home compatta, motore invariato
+(function(){
+  const openBtn=document.getElementById('openLamoneDrawer');
+  const closeBtn=document.getElementById('closeLamoneDrawer');
+  const drawer=document.getElementById('lamoneDrawer');
+  const content=document.getElementById('lamoneCard');
+  if(!openBtn||!content) return;
+  const openDrawer=()=>{
+    content.classList.remove('hidden');
+    drawer?.classList.add('lamone-drawer-active');
+    openBtn.setAttribute('aria-expanded','true');
+    setTimeout(()=>content.scrollIntoView({behavior:'smooth',block:'start'}),40);
+  };
+  const closeDrawer=()=>{
+    content.classList.add('hidden');
+    drawer?.classList.remove('lamone-drawer-active');
+    openBtn.setAttribute('aria-expanded','false');
+    setTimeout(()=>drawer?.scrollIntoView({behavior:'smooth',block:'center'}),40);
+  };
+  openBtn.setAttribute('aria-expanded','false');
+  openBtn.addEventListener('click',openDrawer);
+  closeBtn?.addEventListener('click',closeDrawer);
+})();
 
 // V50 - PRETEMP V1: mappa giornaliera e visualizzazione mobile
 (function setupPretempV1(){

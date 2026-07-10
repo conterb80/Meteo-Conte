@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V50 · PRETEMP V1</title>
+  <title>Meteo Conte V51 · Cassetto Lamone</title>
   <link rel="manifest" href="manifest.json?v=50" />
   <link rel="icon" type="image/png" href="icon.png?v=50" />
   <link rel="stylesheet" href="style.css?v=50.0.0" />
@@ -19,7 +19,7 @@
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=50" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=51" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -30,7 +30,7 @@
 
     <section class="semafori card slim smartbar" aria-label="Semafori operativi">
       <button class="sem" data-jump="meteoNow"><span id="dotMeteo" class="dot green"></span><small>Meteo</small></button>
-      <button class="sem" data-jump="lamoneCard"><span id="dotLamone" class="dot green"></span><small>Lamone</small></button>
+      <button class="sem" data-jump="lamoneDrawer"><span id="dotLamone" class="dot green"></span><small>Lamone</small></button>
       <button class="sem" data-jump="alertsCard"><span id="dotAllerte" class="dot green"></span><small>Allerte</small></button>
       <button class="sem" data-jump="pretempContainer"><span id="dotTemporali" class="dot green"></span><small>PRETEMP</small></button>
     </section>
@@ -84,7 +84,28 @@
 
     <section id="trendBox" class="card trendbox hidden"></section>
 
-    <section id="lamoneCard" class="card river river-v20 river-emergency">
+    <section id="lamoneDrawer" class="card lamone-drawer" aria-label="Cassetto Lamone">
+      <span class="label">CASSETTO 01 · LAMONE</span>
+      <span id="lamoneDrawerCorner" class="cornerdot green"></span>
+      <div class="lamone-drawer-main">
+        <div class="lamone-drawer-icon">🌊</div>
+        <div>
+          <h2 id="lamoneDrawerTitle">Lamone sotto controllo</h2>
+          <p id="lamoneDrawerText">Sensori, pioggia a monte e onda di piena sono pronti quando servono.</p>
+        </div>
+      </div>
+      <div class="lamone-drawer-status">
+        <span><small>Stato</small><b id="lamoneDrawerState">regolare</b></span>
+        <span><small>Pioggia a monte</small><b id="lamoneDrawerRain">in lettura…</b></span>
+      </div>
+      <button id="openLamoneDrawer" class="btn lamone-drawer-open" type="button">Apri contenitore Lamone →</button>
+    </section>
+
+    <section id="lamoneCard" class="card river river-v20 river-emergency hidden lamone-container-openable">
+      <div class="container-toolbar">
+        <div><span>CASSETTO LAMONE</span><b>Centro controllo completo</b></div>
+        <button id="closeLamoneDrawer" type="button" aria-label="Chiudi contenitore Lamone">×</button>
+      </div>
       <span class="label">FIUMI · LAMONE</span><span id="lamoneCorner" class="cornerdot green"></span>
 
       <div class="river-status emergency-status">
@@ -290,7 +311,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V50 · PRETEMP V1</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V51 · Cassetto Lamone</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
