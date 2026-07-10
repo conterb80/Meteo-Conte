@@ -1,7 +1,7 @@
-# Meteo Conte V54 - Cassetto PRETEMP
+# Meteo Conte V55 - Fix Cassetto PRETEMP
 
-- PRETEMP trasformato in cassetto compatto nella Home
-- Apertura e chiusura del contenitore completo
-- Mappa, zoom, fenomeni e collegamenti PRETEMP invariati
-- Motore Lamone invariato
-- Footer e cache aggiornati V54
+- Corretto il mancato aggiornamento di `app.js` e `style.css` dovuto ai riferimenti cache rimasti alla V52.
+- Ripristinata la grafica compatta del cassetto PRETEMP.
+- Il pulsante **Apri Centro PRETEMP** apre ora il contenitore completo.
+- Nessuna modifica al motore Lamone o al contenuto PRETEMP V1.
+- Service worker aggiornato e cache forzata alla V55.
