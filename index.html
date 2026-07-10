@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V49 Beta</title>
-  <link rel="manifest" href="manifest.json?v=49" />
-  <link rel="icon" type="image/png" href="icon.png?v=49" />
-  <link rel="stylesheet" href="style.css?v=49.0.0" />
+  <title>Meteo Conte V50 · PRETEMP V1</title>
+  <link rel="manifest" href="manifest.json?v=50" />
+  <link rel="icon" type="image/png" href="icon.png?v=50" />
+  <link rel="stylesheet" href="style.css?v=50.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=49" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=50" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -32,7 +32,7 @@
       <button class="sem" data-jump="meteoNow"><span id="dotMeteo" class="dot green"></span><small>Meteo</small></button>
       <button class="sem" data-jump="lamoneCard"><span id="dotLamone" class="dot green"></span><small>Lamone</small></button>
       <button class="sem" data-jump="alertsCard"><span id="dotAllerte" class="dot green"></span><small>Allerte</small></button>
-      <button class="sem" data-jump="operativeLinks"><span id="dotTemporali" class="dot green"></span><small>Strumenti</small></button>
+      <button class="sem" data-jump="pretempContainer"><span id="dotTemporali" class="dot green"></span><small>PRETEMP</small></button>
     </section>
 
     <section class="top-status card status-v16">
@@ -164,6 +164,51 @@
       </div>
     </section>
 
+
+
+    <section id="pretempContainer" class="card pretemp-container">
+      <div class="pretemp-head">
+        <div>
+          <span class="label">CONTENITORE 01 · PRETEMP</span>
+          <h2>Previsione temporali</h2>
+          <p>La mappa ufficiale resa comoda da consultare sul telefono.</p>
+        </div>
+        <span id="pretempStatusDot" class="pretemp-state green" aria-label="Stato mappa">LIVE</span>
+      </div>
+
+      <div class="pretemp-meta">
+        <span><small>Zona di interesse</small><b>Romagna</b></span>
+        <span><small>Validità</small><b id="pretempValidity">oggi · 00–24 UTC</b></span>
+      </div>
+
+      <button id="pretempMapButton" class="pretemp-map-card" type="button" aria-label="Apri la mappa PRETEMP ingrandita">
+        <span class="pretemp-map-badge">Mappa ufficiale · tocca per ingrandire</span>
+        <img id="pretempMap" alt="Mappa ufficiale PRETEMP del giorno" loading="lazy" />
+        <span id="pretempMapFallback" class="pretemp-map-fallback hidden">
+          <b>Mappa non ancora pubblicata</b>
+          <small>Apri PRETEMP completo oppure riprova più tardi.</small>
+        </span>
+      </button>
+
+      <div class="pretemp-phenomena" aria-label="Fenomeni PRETEMP da integrare nei prossimi step">
+        <span><i>🌧️</i><b>Piogge forti</b><small>lettura nello step 2</small></span>
+        <span><i>🧊</i><b>Grandine</b><small>lettura nello step 2</small></span>
+        <span><i>💨</i><b>Raffiche</b><small>lettura nello step 2</small></span>
+        <span><i>🌪️</i><b>Tornado</b><small>lettura nello step 2</small></span>
+      </div>
+
+      <div class="pretemp-note">
+        <b>V1 · obiettivo pratico</b>
+        <p>Per ora non interpretiamo la previsione: testiamo mappa, leggibilità, zoom e navigazione da smartphone.</p>
+      </div>
+
+      <div class="pretemp-actions">
+        <a id="pretempForecastLink" class="btn" href="https://www.pretemp.it/" target="_blank" rel="noopener">⛈️ Previsione completa</a>
+        <a class="btn secondary" href="https://www.pretemp.it/Come_leggere_la_previsione_2022.html" target="_blank" rel="noopener">📖 Come si legge</a>
+      </div>
+      <p class="pretemp-disclaimer">PRETEMP pubblica previsioni sperimentali probabilistiche e non sostituisce le allerte ufficiali.</p>
+    </section>
+
     <section id="controlCard" class="card meteo-control control-premium">
       <span class="label">CENTRO CONTROLLO METEO</span><span id="controlCorner" class="cornerdot green"></span>
       <h2 id="controlTitle">Situazione regolare</h2>
@@ -245,8 +290,19 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V49 · Centro Operativo Beta</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V50 · PRETEMP V1</footer>
+    <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
+      <div class="pretemp-modal-head">
+        <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
+        <button id="closePretempModal" type="button" aria-label="Chiudi mappa">×</button>
+      </div>
+      <div class="pretemp-modal-scroll">
+        <img id="pretempMapLarge" alt="Mappa PRETEMP ingrandita" />
+      </div>
+      <a id="pretempModalForecastLink" class="btn" href="https://www.pretemp.it/" target="_blank" rel="noopener">Apri previsione completa ↗</a>
+    </div>
+
   </main>
-  <script src="app.js?v=49.0.0"></script>
+  <script src="app.js?v=50.0.0"></script>
 </body>
 </html>

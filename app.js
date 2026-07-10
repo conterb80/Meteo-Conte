@@ -341,3 +341,66 @@ load();
 loadBasinRain();
 loadLamoneSensors();
 
+
+
+// V50 - PRETEMP V1: mappa giornaliera e visualizzazione mobile
+(function setupPretempV1(){
+  const map=document.getElementById('pretempMap');
+  const mapLarge=document.getElementById('pretempMapLarge');
+  const mapButton=document.getElementById('pretempMapButton');
+  const fallback=document.getElementById('pretempMapFallback');
+  const modal=document.getElementById('pretempModal');
+  const close=document.getElementById('closePretempModal');
+  const validity=document.getElementById('pretempValidity');
+  const forecastLink=document.getElementById('pretempForecastLink');
+  const modalForecastLink=document.getElementById('pretempModalForecastLink');
+  if(!map || !mapButton) return;
+
+  const months=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  const pad=n=>String(n).padStart(2,'0');
+  const makeUrls=date=>{
+    const y=date.getFullYear(), m=date.getMonth(), d=date.getDate();
+    const stamp=`${pad(d)}_${pad(m+1)}_${y}`;
+    const base=`https://pretemp.altervista.org/archivio/${y}/${months[m]}`;
+    return {
+      image:`${base}/cartine/${stamp}.png`,
+      forecast:`${base}/previsioni/${stamp}.html`,
+      label:date.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'})
+    };
+  };
+
+  const candidates=[];
+  const today=new Date();
+  for(let i=0;i<4;i++){const d=new Date(today);d.setDate(today.getDate()-i);candidates.push(makeUrls(d));}
+  let attempt=0,current=candidates[0];
+  const applyCandidate=()=>{
+    current=candidates[attempt];
+    map.src=current.image;
+    if(mapLarge) mapLarge.src=current.image;
+    forecastLink.href=current.forecast;
+    if(modalForecastLink) modalForecastLink.href=current.forecast;
+    validity.textContent=(attempt===0?'oggi':'ultima disponibile')+' · 00–24 UTC';
+  };
+  map.addEventListener('load',()=>{fallback?.classList.add('hidden');map.classList.remove('hidden');});
+  map.addEventListener('error',()=>{
+    attempt++;
+    if(attempt<candidates.length){applyCandidate();return;}
+    map.classList.add('hidden');fallback?.classList.remove('hidden');
+    forecastLink.href='https://www.pretemp.it/';
+    if(modalForecastLink) modalForecastLink.href='https://www.pretemp.it/';
+    validity.textContent='in attesa di pubblicazione';
+  });
+  applyCandidate();
+
+  const openModal=()=>{
+    if(map.classList.contains('hidden')){window.open(forecastLink.href,'_blank','noopener');return;}
+    if(mapLarge) mapLarge.src=map.src;
+    modal?.classList.remove('hidden');
+    document.body.classList.add('pretemp-modal-open');
+  };
+  const closeModal=()=>{modal?.classList.add('hidden');document.body.classList.remove('pretemp-modal-open');};
+  mapButton.addEventListener('click',openModal);
+  close?.addEventListener('click',closeModal);
+  modal?.addEventListener('click',e=>{if(e.target===modal) closeModal();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal();});
+})();
