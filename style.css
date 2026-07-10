@@ -588,7 +588,7 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 @media(max-width:360px){.pretemp-meta,.pretemp-phenomena,.pretemp-actions{grid-template-columns:1fr}.pretemp-map-card,.pretemp-map-card img,.pretemp-map-fallback{min-height:220px}}
 
 
-/* V52 - Cassetto Lamone compatto */
+/* V53 - Lamone definitivo */
 .lamone-drawer{position:relative;overflow:hidden;border-color:rgba(111,224,154,.22);background:linear-gradient(180deg,rgba(11,55,73,.98),rgba(7,42,57,.98));padding:14px 15px 15px}
 .lamone-drawer:before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,#57dca0,#8cf06e);opacity:.95}
 .lamone-drawer>.label{display:block;padding-right:34px}
@@ -610,3 +610,8 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 @media(max-width:430px){.lamone-drawer{padding:13px 13px 14px}.lamone-drawer-main{grid-template-columns:40px 1fr;gap:9px}.lamone-drawer-icon{width:40px;height:40px;border-radius:13px;font-size:22px}.lamone-drawer h2{font-size:21px}.lamone-drawer p{font-size:12.3px}.lamone-drawer-status span{padding:7px 8px}.lamone-drawer-status b{font-size:12px}}
 @media(max-width:360px){.lamone-drawer-status{grid-template-columns:1fr}.lamone-drawer p{white-space:normal}.lamone-drawer-status span{min-height:36px}}
 
+
+/* V53 - rifinitura finale cassetto Lamone */
+.lamone-drawer{padding-bottom:13px}
+.lamone-drawer-open{min-height:39px;padding:7px 12px;font-size:14px}
+@media(max-width:430px){.lamone-drawer{padding-bottom:12px}.lamone-drawer-open{min-height:38px;padding:7px 10px;font-size:13.7px}}

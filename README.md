@@ -1,8 +1,8 @@
-# Meteo Conte V52 - Cassetto Lamone compatto
+# Meteo Conte V53 - Lamone definitivo
 
-- Cassetto Lamone ridotto e più rapido da leggere nella Home
-- Titolo, icona, stato e pioggia a monte resi più compatti
-- Pulsante di apertura semplificato
-- Motore Lamone, sensori, bacini, onda e collegamenti invariati
-- PRETEMP V1 e resto dell’app non modificati
-- Footer e cache aggiornati V52
+- Titolo cassetto semplificato in “Lamone”
+- Descrizione ridotta ai soli elementi essenziali
+- Pulsante rinominato “Apri Centro Lamone”
+- Pulsante e spaziatura inferiore più compatti
+- Motore Lamone, sensori, bacini, onda e logica invariati
+- Footer e cache aggiornati V53
