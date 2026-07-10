@@ -588,23 +588,25 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 @media(max-width:360px){.pretemp-meta,.pretemp-phenomena,.pretemp-actions{grid-template-columns:1fr}.pretemp-map-card,.pretemp-map-card img,.pretemp-map-fallback{min-height:220px}}
 
 
-/* V51 - Cassetto Lamone */
-.lamone-drawer{position:relative;overflow:hidden;border-color:rgba(111,224,154,.22);background:linear-gradient(180deg,rgba(11,55,73,.98),rgba(7,42,57,.98));padding:17px}
+/* V52 - Cassetto Lamone compatto */
+.lamone-drawer{position:relative;overflow:hidden;border-color:rgba(111,224,154,.22);background:linear-gradient(180deg,rgba(11,55,73,.98),rgba(7,42,57,.98));padding:14px 15px 15px}
 .lamone-drawer:before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,#57dca0,#8cf06e);opacity:.95}
-.lamone-drawer-main{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:center;margin-top:8px}
-.lamone-drawer-icon{width:52px;height:52px;border-radius:18px;display:grid;place-items:center;font-size:29px;background:rgba(111,224,154,.13);border:1px solid rgba(111,224,154,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
-.lamone-drawer h2{margin:0 0 4px;font-size:25px;line-height:1.02}
-.lamone-drawer p{margin:0;color:#dce9ef;font-size:14px;line-height:1.28}
-.lamone-drawer-status{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:13px 0 10px}
-.lamone-drawer-status span{border:1px solid var(--line);background:#ffffff08;border-radius:15px;padding:8px 10px}
-.lamone-drawer-status small{display:block;color:var(--muted);font-size:11.5px}
-.lamone-drawer-status b{display:block;color:var(--green);font-size:14px;margin-top:2px}
-.lamone-drawer-open{width:100%;margin:0;min-height:49px;border-radius:17px;font-size:15.5px}
+.lamone-drawer>.label{display:block;padding-right:34px}
+.lamone-drawer-main{display:grid;grid-template-columns:43px 1fr;gap:10px;align-items:center;margin-top:7px}
+.lamone-drawer-icon{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:rgba(111,224,154,.12);border:1px solid rgba(111,224,154,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.lamone-drawer h2{margin:0 0 2px;font-size:22px;line-height:1}
+.lamone-drawer p{margin:0;color:#cfe1e8;font-size:12.8px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lamone-drawer-status{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0 8px}
+.lamone-drawer-status span{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);background:#ffffff07;border-radius:13px;padding:7px 9px;min-width:0}
+.lamone-drawer-status small{display:block;color:var(--muted);font-size:10.5px;white-space:nowrap}
+.lamone-drawer-status b{display:block;color:var(--green);font-size:12.5px;margin:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lamone-drawer-open{width:100%;margin:0;min-height:43px;border-radius:14px;font-size:14.5px;padding:9px 12px}
 .lamone-drawer-active{box-shadow:0 0 0 1px rgba(111,224,154,.25),0 12px 30px rgba(0,0,0,.18)}
 .lamone-container-openable{scroll-margin-top:10px}
 .container-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-2px 0 12px;padding:9px 10px;border:1px solid var(--line);background:#ffffff08;border-radius:15px}
 .container-toolbar span{display:block;font-size:10px;letter-spacing:.18em;color:var(--muted)}
 .container-toolbar b{display:block;font-size:14px;margin-top:2px}
 .container-toolbar button{width:38px;height:38px;border-radius:50%;padding:0;display:grid;place-items:center;background:#ffffff10;border:1px solid #ffffff25;color:white;font-size:24px;box-shadow:none}
-@media(max-width:430px){.lamone-drawer{padding:15px 14px}.lamone-drawer-main{grid-template-columns:47px 1fr}.lamone-drawer-icon{width:47px;height:47px;border-radius:16px;font-size:26px}.lamone-drawer h2{font-size:23px}.lamone-drawer p{font-size:13.4px}}
-@media(max-width:360px){.lamone-drawer-status{grid-template-columns:1fr}}
+@media(max-width:430px){.lamone-drawer{padding:13px 13px 14px}.lamone-drawer-main{grid-template-columns:40px 1fr;gap:9px}.lamone-drawer-icon{width:40px;height:40px;border-radius:13px;font-size:22px}.lamone-drawer h2{font-size:21px}.lamone-drawer p{font-size:12.3px}.lamone-drawer-status span{padding:7px 8px}.lamone-drawer-status b{font-size:12px}}
+@media(max-width:360px){.lamone-drawer-status{grid-template-columns:1fr}.lamone-drawer p{white-space:normal}.lamone-drawer-status span{min-height:36px}}
+
