@@ -1,6 +1,7 @@
-# Meteo Conte V69 - Fix comandi PRETEMP
+# Meteo Conte V70 - Fix definitivo comandi PRETEMP
 
-- Corretto il caricamento di app.js e style.css con versione V69
-- Ripristinati i comandi: Apri mappa, Leggi bollettino, Carica bollettino e Salva lettura
-- Cache e service worker aggiornati
-- Nessuna modifica al motore Lamone
+- Ripristinati tutti i pulsanti JavaScript del Centro PRETEMP
+- Aggiunto il riferimento interno mancante alla previsione ufficiale
+- Reso il codice robusto anche se il collegamento interno non fosse disponibile
+- Grafica e funzioni della V68/V69 invariate
+- Lamone invariato

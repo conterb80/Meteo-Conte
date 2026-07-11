@@ -483,7 +483,7 @@ loadLamoneSensors();
     current=candidates[attempt];
     map.src=current.image;
     if(mapLarge) mapLarge.src=current.image;
-    forecastLink.href=current.forecast;
+    if(forecastLink) forecastLink.href=current.forecast;
     if(modalForecastLink) modalForecastLink.href=current.forecast;
     validity.textContent=(attempt===0?'oggi':'ultima disponibile')+' · 00–24 UTC';
   };
@@ -513,7 +513,7 @@ loadLamoneSensors();
     attempt++;
     if(attempt<candidates.length){applyCandidate();return;}
     map.classList.add('hidden');fallback?.classList.remove('hidden');
-    forecastLink.href='https://www.pretemp.it/';
+    if(forecastLink) forecastLink.href='https://www.pretemp.it/';
     if(modalForecastLink) modalForecastLink.href='https://www.pretemp.it/';
     validity.textContent='in attesa di pubblicazione';
     setDecision('error','Fonte da aprire','La mappa non è disponibile nell’app. Apri PRETEMP completo per controllare la previsione ufficiale.','↗ Apri PRETEMP');
@@ -524,7 +524,7 @@ loadLamoneSensors();
   applyCandidate();
 
   const openModal=()=>{
-    if(map.classList.contains('hidden')){window.open(forecastLink.href,'_blank','noopener');return;}
+    if(map.classList.contains('hidden')){window.open(forecastLink?.href||'https://www.pretemp.it/','_blank','noopener');return;}
     if(mapLarge) mapLarge.src=map.src;
     modal?.classList.remove('hidden');
     document.body.classList.add('pretemp-modal-open');
@@ -532,7 +532,7 @@ loadLamoneSensors();
   const closeModal=()=>{modal?.classList.add('hidden');document.body.classList.remove('pretemp-modal-open');};
   mapButton.addEventListener('click',openModal);
   decisionAction?.addEventListener('click',()=>{
-    if(map.classList.contains('hidden')) window.open(forecastLink.href,'_blank','noopener');
+    if(map.classList.contains('hidden')) window.open(forecastLink?.href||'https://www.pretemp.it/','_blank','noopener');
     else openModal();
   });
   close?.addEventListener('click',closeModal);

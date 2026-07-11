@@ -10,10 +10,10 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V69 · Fix comandi PRETEMP</title>
+  <title>Meteo Conte V70 · Fix comandi PRETEMP</title>
   <link rel="manifest" href="manifest.json?v=66" />
   <link rel="icon" type="image/png" href="icon.png?v=66" />
-  <link rel="stylesheet" href="style.css?v=69" />
+  <link rel="stylesheet" href="style.css?v=70" />
 </head>
 <body>
   <main class="app">
@@ -233,6 +233,7 @@
         <button id="pretempDecisionAction" type="button">🗺️ Apri mappa</button>
       </section>
 
+      <a id="pretempForecastLink" class="hidden" href="https://www.pretemp.it/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1"></a>
       <button id="pretempMapButton" class="pretemp-map-card" type="button" aria-label="Apri la mappa PRETEMP ingrandita">
         <span class="pretemp-map-badge"><b>Mappa ufficiale</b><small>Tocca per ingrandire</small></span>
         <img id="pretempMap" alt="Mappa ufficiale PRETEMP del giorno" loading="lazy" />
@@ -391,7 +392,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V69 · Fix comandi PRETEMP</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V70 · Fix comandi PRETEMP</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -404,6 +405,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=69"></script>
+  <script src="app.js?v=70"></script>
 </body>
 </html>
