@@ -1,7 +1,6 @@
-# Meteo Conte V68 - PRETEMP ottimizzato
+# Meteo Conte V69 - Fix comandi PRETEMP
 
-- Aggiunto pulsante Radar meteo 24h accanto agli approfondimenti PRETEMP
-- Guida ufficiale spostata vicino a mappa e bollettino
-- Lettura essenziale resa più compatta
-- Rimossa la schermata finale ridondante con legenda, guida interna e doppi pulsanti
-- Mappa, bollettino e motore Lamone invariati
+- Corretto il caricamento di app.js e style.css con versione V69
+- Ripristinati i comandi: Apri mappa, Leggi bollettino, Carica bollettino e Salva lettura
+- Cache e service worker aggiornati
+- Nessuna modifica al motore Lamone
