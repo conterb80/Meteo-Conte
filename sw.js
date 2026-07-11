@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v75-quadro-rapido';
+const CACHE_NAME = 'meteo-conte-v76-analisi-conte';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {

@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V75 · Centro Analisi 1.3</title>
-  <link rel="manifest" href="manifest.json?v=75" />
-  <link rel="icon" type="image/png" href="icon.png?v=75" />
-  <link rel="stylesheet" href="style.css?v=75" />
+  <title>Meteo Conte V76 · Analisi Conte 1.4</title>
+  <link rel="manifest" href="manifest.json?v=76" />
+  <link rel="icon" type="image/png" href="icon.png?v=76" />
+  <link rel="stylesheet" href="style.css?v=76" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=75" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=76" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -328,9 +328,9 @@
       </div>
     </section>
 
-    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v75">
+    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v76">
       <div class="analysis-hero">
-        <span class="label">CENTRO ANALISI · V75</span>
+        <span class="label">CENTRO ANALISI · V76</span>
         <h2>Segui il meteo passo dopo passo</h2>
         <p class="links-intro">Osserva, prevedi, controlla, conferma e segui: gli strumenti sono divisi secondo il tuo percorso operativo.</p>
       </div>
@@ -349,7 +349,20 @@
         <p id="snapshotAdvice">I dati sintetici servono a scegliere il primo strumento da aprire.</p>
       </section>
 
-      <div class="tool-section observe priority">
+      <section id="conteAnalysis" class="conte-analysis" aria-label="Analisi Conte">
+        <div class="conte-analysis-head">
+          <div><span>ANALISI CONTE</span><b id="conteState">Valutazione in corso</b></div>
+          <i id="conteStateDot" class="green" aria-hidden="true"></i>
+        </div>
+        <div class="conte-analysis-grid">
+          <div><small>Evoluzione</small><b id="conteEvolution">--</b></div>
+          <div><small>Attenzione</small><b id="conteAttention">--</b></div>
+          <div class="conte-action"><small>Azione consigliata</small><b id="conteAction">Attendi aggiornamento dati</b></div>
+        </div>
+        <p id="conteReason">La valutazione combina pioggia, raffiche e segnali temporaleschi delle prossime ore.</p>
+      </section>
+
+      <div class="tool-section observe priority" id="observeSection">
         <div class="tool-title"><span>👁️</span><div><b>1. Osserva</b><small>Cosa sta succedendo adesso</small></div></div>
         <div class="tool-grid analysis-tools five-tools">
           <a class="featured zoom" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><i>🌍</i><b>Zoom Earth</b><small>radar e satellite animati</small><em>CONSIGLIATO</em></a>
@@ -360,7 +373,7 @@
         </div>
       </div>
 
-      <div class="tool-section forecast-step">
+      <div class="tool-section forecast-step" id="forecastSection">
         <div class="tool-title"><span>🌩️</span><div><b>2. Prevedi</b><small>Cosa potrebbe succedere nelle prossime ore</small></div></div>
         <div class="tool-grid analysis-tools">
           <button class="tool-link-button featured" type="button" data-jump="pretempDrawer"><i>⛈️</i><b>Centro PRETEMP</b><small>rischio temporali intensi</small><em>PRINCIPALE</em></button>
@@ -401,7 +414,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V75 · Centro Analisi 1.3</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V76 · Analisi Conte 1.4</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -414,6 +427,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=75"></script>
+  <script src="app.js?v=76"></script>
 </body>
 </html>

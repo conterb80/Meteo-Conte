@@ -59,6 +59,32 @@ function updateAnalysisSnapshot(data){
   $('snapshotTitle').textContent=title;
   $('snapshotAdvice').textContent=advice;
   $('snapshotDot').className=color;
+
+  const conteState=$('conteState'), conteDot=$('conteStateDot');
+  const conteEvolution=$('conteEvolution'), conteAttention=$('conteAttention');
+  const conteAction=$('conteAction'), conteReason=$('conteReason');
+  let state='Situazione stabile', evolution='Stabile', attention='Bassa';
+  let action='Controllo generale con Zoom Earth';
+  let reason='Nessun segnale significativo dal modello nelle prossime 6 ore.';
+  let conteColor='green';
+  if(rainMax>=35 || rainSum>=1 || gustMax>=35 || showers){
+    state='Situazione da seguire'; evolution=showers?'Rovesci possibili':'Possibile cambiamento'; attention='Moderata';
+    action='Apri PRETEMP e Radar live ER';
+    reason=`Pioggia max ${rainMax}%, accumulo ${rainSum.toFixed(1)} mm, raffiche fino a ${Math.round(gustMax)} km/h.`;
+    conteColor='yellow';
+  }
+  if(storm || rainMax>=70 || rainSum>=8 || gustMax>=60){
+    state='Controllo operativo'; evolution=storm?'Temporali possibili':'Fenomeni più intensi'; attention=storm||gustMax>=70?'Alta':'Elevata';
+    action=storm?'PRETEMP → Radar → Fulmini':'PRETEMP → Radar → Lamone se persiste';
+    reason=`Segnale più marcato: pioggia max ${rainMax}%, accumulo ${rainSum.toFixed(1)} mm, raffiche ${Math.round(gustMax)} km/h.`;
+    conteColor=storm||gustMax>=70?'red':'yellow';
+  }
+  if(conteState) conteState.textContent=state;
+  if(conteDot) conteDot.className=conteColor;
+  if(conteEvolution) conteEvolution.textContent=evolution;
+  if(conteAttention) conteAttention.textContent=attention;
+  if(conteAction) conteAction.textContent=action;
+  if(conteReason) conteReason.textContent=reason;
 }
 
 function updateControlBox(data){
