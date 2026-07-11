@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V80 · Release Candidate 1.0</title>
-  <link rel="manifest" href="manifest.json?v=79" />
-  <link rel="icon" type="image/png" href="icon.png?v=79" />
-  <link rel="stylesheet" href="style.css?v=79" />
+  <title>Meteo Conte V81 · Mobile UX</title>
+  <link rel="manifest" href="manifest.json?v=81" />
+  <link rel="icon" type="image/png" href="icon.png?v=81" />
+  <link rel="stylesheet" href="style.css?v=81" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=79" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=81" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -328,9 +328,9 @@
       </div>
     </section>
 
-    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v78 analysis-center-v80">
+    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v78 analysis-center-v80 analysis-center-v81">
       <div class="analysis-hero">
-        <span class="label">CENTRO ANALISI · V80</span>
+        <span class="label">CENTRO ANALISI · V81</span>
         <h2>Segui il meteo passo dopo passo</h2>
         <p class="links-intro">Osserva, prevedi, controlla, conferma e segui: gli strumenti sono divisi secondo il tuo percorso operativo.</p>
       </div>
@@ -377,9 +377,9 @@
         <p id="routeNote">Un percorso breve per verificare la situazione senza aprire strumenti inutili.</p>
       </section>
 
-      <div class="tool-section observe priority" id="observeSection">
-        <div class="tool-title"><span>👁️</span><div><b>1. Osserva</b><small>Cosa sta succedendo adesso</small></div></div>
-        <div class="tool-grid analysis-tools five-tools">
+      <div class="tool-section accordion-section observe priority open" id="observeSection">
+        <button class="tool-title accordion-toggle" type="button" aria-expanded="true"><span>👁️</span><div><b>1. Osserva</b><small>Cosa sta succedendo adesso</small></div><i>⌄</i></button>
+        <div class="tool-grid analysis-tools five-tools accordion-content">
           <a id="toolZoom" class="featured zoom" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><i>🌍</i><b>Zoom Earth</b><small>radar e satellite animati</small><em>CONSIGLIATO</em></a>
           <a id="toolRadar" href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener"><i>📡</i><b>Radar live ER</b><small>pioggia osservata</small></a>
           <a id="toolLightning" href="https://www.lightningmaps.org/" target="_blank" rel="noopener"><i>⚡</i><b>Fulmini live</b><small>scariche in tempo reale</small></a>
@@ -388,9 +388,9 @@
         </div>
       </div>
 
-      <div class="tool-section forecast-step" id="forecastSection">
-        <div class="tool-title"><span>🌩️</span><div><b>2. Prevedi</b><small>Cosa potrebbe succedere nelle prossime ore</small></div></div>
-        <div class="tool-grid analysis-tools">
+      <div class="tool-section accordion-section forecast-step" id="forecastSection">
+        <button class="tool-title accordion-toggle" type="button" aria-expanded="false"><span>🌩️</span><div><b>2. Prevedi</b><small>Cosa potrebbe succedere nelle prossime ore</small></div><i>›</i></button>
+        <div class="tool-grid analysis-tools accordion-content">
           <button id="toolPretempMain" class="tool-link-button featured" type="button" data-jump="pretempDrawer"><i>⛈️</i><b>Centro PRETEMP</b><small>rischio temporali intensi</small><em>PRINCIPALE</em></button>
           <a href="https://www.windy.com/?44.42,11.98,8" target="_blank" rel="noopener"><i>🌀</i><b>Windy mappe</b><small>vento e pressione</small></a>
           <a href="https://www.windy.com/?rain,44.42,11.98,8" target="_blank" rel="noopener"><i>🌧️</i><b>Pioggia prevista</b><small>ore successive</small></a>
@@ -398,9 +398,9 @@
         </div>
       </div>
 
-      <div class="tool-section river-step">
-        <div class="tool-title"><span>🌊</span><div><b>3. Controlla</b><small>Se la pioggia diventa persistente</small></div></div>
-        <div class="tool-grid analysis-tools">
+      <div class="tool-section accordion-section river-step" id="riverSection">
+        <button class="tool-title accordion-toggle" type="button" aria-expanded="false"><span>🌊</span><div><b>3. Controlla</b><small>Se la pioggia diventa persistente</small></div><i>›</i></button>
+        <div class="tool-grid analysis-tools accordion-content">
           <button id="toolLamone" class="tool-link-button featured" type="button" data-jump="lamoneDrawer"><i>🌊</i><b>Centro Lamone</b><small>controllo monte-valle</small><em>PRINCIPALE</em></button>
           <a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener"><i>📡</i><b>Sensori Lamone</b><small>livelli del percorso</small></a>
           <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener"><i>📈</i><b>Idrometri ER</b><small>livelli ufficiali</small></a>
@@ -408,9 +408,9 @@
         </div>
       </div>
 
-      <div class="tool-section webcam-step">
-        <div class="tool-title"><span>📷</span><div><b>4. Conferma</b><small>Guarda il cielo con le webcam</small></div></div>
-        <div class="tool-grid analysis-tools">
+      <div class="tool-section accordion-section webcam-step" id="webcamSection">
+        <button class="tool-title accordion-toggle" type="button" aria-expanded="false"><span>📷</span><div><b>4. Conferma</b><small>Guarda il cielo con le webcam</small></div><i>›</i></button>
+        <div class="tool-grid analysis-tools accordion-content">
           <a href="https://www.emiliaromagnameteo.com/rete-stazioni/servizi/mappa-webcam/" target="_blank" rel="noopener"><i>🗺️</i><b>Webcam Romagna</b><small>mappa regionale</small></a>
           <a href="https://www.arpae.it/it/temi-ambientali/meteo/dati-e-osservazioni/webcam/rete-webcam" target="_blank" rel="noopener"><i>🏖️</i><b>Webcam costa</b><small>rete Arpae</small></a>
           <a href="https://www.appenninoromagnolo.it/pagine/webcam.asp" target="_blank" rel="noopener"><i>⛰️</i><b>Webcam Appennino</b><small>crinali e zone interne</small></a>
@@ -418,9 +418,9 @@
         </div>
       </div>
 
-      <div class="tool-section news follow-step">
-        <div class="tool-title"><span>🔔</span><div><b>5. Segui</b><small>Aggiornamenti e fonti affidabili</small></div></div>
-        <div class="tool-grid analysis-tools">
+      <div class="tool-section accordion-section news follow-step" id="followSection">
+        <button class="tool-title accordion-toggle" type="button" aria-expanded="false"><span>🔔</span><div><b>5. Segui</b><small>Aggiornamenti e fonti affidabili</small></div><i>›</i></button>
+        <div class="tool-grid analysis-tools accordion-content">
           <a id="toolAlerts" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener"><i>⚠️</i><b>Allerte ufficiali</b><small>bollettini regionali</small></a>
           <a href="https://www.arpae.it/it/notizie" target="_blank" rel="noopener"><i>📰</i><b>Arpae News</b><small>aggiornamenti ufficiali</small></a>
           <a href="https://www.regione.emilia-romagna.it/protezione-civile" target="_blank" rel="noopener"><i>🛡️</i><b>Protezione Civile</b><small>comunicazioni regionali</small></a>
@@ -429,7 +429,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V80 · Release Candidate 1.0</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V81 · Mobile UX</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -442,6 +442,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=79"></script>
+  <script src="app.js?v=81"></script>
 </body>
 </html>

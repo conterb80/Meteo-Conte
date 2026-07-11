@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v80-release-candidate';
+const CACHE_NAME = 'meteo-conte-v81-release-candidate';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {

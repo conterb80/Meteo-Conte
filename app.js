@@ -844,3 +844,25 @@ loadLamoneSensors();
   }catch(_e){}
   paint();
 })();;
+
+/* V81 — Centro Analisi a fisarmonica */
+(function(){
+  const sections=[...document.querySelectorAll('#operativeLinks .accordion-section')];
+  function openSection(section, scroll=false){
+    sections.forEach(s=>{
+      const open=s===section;
+      s.classList.toggle('open',open);
+      const btn=s.querySelector('.accordion-toggle');
+      if(btn){btn.setAttribute('aria-expanded',String(open)); const icon=btn.querySelector(':scope > i'); if(icon) icon.textContent=open?'⌄':'›';}
+    });
+    if(scroll) setTimeout(()=>section.scrollIntoView({behavior:'smooth',block:'start'}),60);
+  }
+  sections.forEach(section=>section.querySelector('.accordion-toggle')?.addEventListener('click',()=>openSection(section,!section.classList.contains('open'))));
+  document.querySelectorAll('[data-analysis-jump]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const target=document.getElementById(btn.dataset.analysisJump);
+      const section=target?.classList.contains('accordion-section')?target:target?.closest('.accordion-section');
+      if(section) openSection(section,true);
+    });
+  });
+})();
