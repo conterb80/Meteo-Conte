@@ -1,3 +1,3 @@
-# Meteo Conte V64 - PRETEMP Lettura Rifinita
+# Meteo Conte V65 - PRETEMP Home Smart
 
-Rifinisce la lettura assistita PRETEMP: selezioni più compatte, riepilogo immediato, colori coerenti, Decisione Conte più chiara e pulsante dedicato per azzerare la lettura. Lamone e resto dell’app invariati.
+Collega la lettura assistita PRETEMP alla Home: il cassetto mostra livello, stato, fenomeni principali, zona e fascia oraria; anche il semaforo PRETEMP cambia colore. Lamone e resto dell’app invariati.

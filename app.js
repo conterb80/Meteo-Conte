@@ -556,7 +556,7 @@ loadLamoneSensors();
 })();
 
 
-// V64 - Lettura assistita PRETEMP rifinita e compatta
+// V65 - PRETEMP Home Smart + lettura assistita rifinita
 (function setupPretempAssistedReading(){
   const reader=document.getElementById('pretempReader');
   const levelButtons=[...document.querySelectorAll('[data-pretemp-level]')];
@@ -581,9 +581,12 @@ loadLamoneSensors();
   const labels={rain:'piogge forti',hail:'grandine',wind:'raffiche forti',tornado:'rischio tornadico'};
   const zoneLabels={romagna:'Romagna',appennino:'Appennino romagnolo',pianura:'pianura romagnola',costa:'costa romagnola'};
   const timeLabels={mattina:'in mattinata',pomeriggio:'nel pomeriggio',sera:'in serata',notte:'nella notte',giornata:'durante la giornata'};
-  const storageKey='meteoContePretempReadingV64';
-  const legacyStorageKey='meteoContePretempReadingV63';
-  const drawerReading=document.getElementById('pretempDrawerReading');
+  const storageKey='meteoContePretempReadingV65';
+  const legacyStorageKeys=['meteoContePretempReadingV64','meteoContePretempReadingV63'];
+  const drawerState=document.getElementById('pretempDrawerState');
+  const drawerFocus=document.getElementById('pretempDrawerFocus');
+  const drawerContext=document.getElementById('pretempDrawerContext');
+  const pretempDot=document.getElementById('dotTemporali');
   const selectedLevel=document.getElementById('pretempSelectedLevel');
   const selectedPhenomena=document.getElementById('pretempSelectedPhenomena');
   const selectedZone=document.getElementById('pretempSelectedZone');
@@ -605,11 +608,25 @@ loadLamoneSensors();
     if(selectedZone) selectedZone.textContent=zoneLabels[zone]||'Romagna';
     if(selectedTime) selectedTime.textContent=time?(time==='giornata'?'Tutto il giorno':time.charAt(0).toUpperCase()+time.slice(1)):'—';
     apply.disabled=level===null;
-    if(drawerReading){
-      const count=phenomena.size;
-      const timeShort=time?` · ${time==='giornata'?'tutto il giorno':time}`:'';
-      drawerReading.textContent=level===null?'da compilare':`${levelText}${count?` · ${count} fenomen${count===1?'o':'i'}`:''}${timeShort}`;
-      drawerReading.className=level===null?'':level==='none'||level==='0'?'ok':level==='1'?'watch':'alert';
+    const count=phenomena.size;
+    const chosen=[...phenomena].map(k=>labels[k]);
+    const levelClass=level===null?'':level==='none'||level==='0'?'ok':level==='1'?'watch':'alert';
+    if(drawerState){
+      drawerState.textContent=level===null?'Da compilare':level==='none'?'Fuori area':level==='0'?'L0 · tranquillo':level==='1'?'L1 · attenzione':level==='2'?'L2 · monitorare':'L3 · alta attenzione';
+      drawerState.className=levelClass;
+    }
+    if(drawerFocus){
+      drawerFocus.textContent=level===null?'Apri la mappa':count?chosen.slice(0,2).join(' + '):(level==='none'||level==='0'?'Nessun fenomeno':'Controlla simboli');
+      drawerFocus.className=levelClass;
+    }
+    if(drawerContext){
+      const area=zoneLabels[zone]||'Romagna';
+      const fascia=time?(time==='giornata'?'tutta la giornata':time):'fascia da definire';
+      drawerContext.textContent=`${area} · ${fascia}`;
+    }
+    if(pretempDot){
+      pretempDot.classList.remove('green','yellow','red');
+      pretempDot.classList.add(level===null||level==='none'||level==='0'?'green':level==='1'?'yellow':'red');
     }
     Object.entries(phenomenonCards).forEach(([key,card])=>{
       if(!card) return;
@@ -676,7 +693,12 @@ loadLamoneSensors();
   });
   try{
     let saved=JSON.parse(localStorage.getItem(storageKey)||'null');
-    if(!saved){ saved=JSON.parse(localStorage.getItem(legacyStorageKey)||'null'); }
+    if(!saved){
+      for(const key of legacyStorageKeys){
+        saved=JSON.parse(localStorage.getItem(key)||'null');
+        if(saved) break;
+      }
+    }
     if(saved&&saved.day===new Date().toDateString()){
       level=saved.level??null;
       zone=saved.zone||'romagna';

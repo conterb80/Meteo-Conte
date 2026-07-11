@@ -857,3 +857,9 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
   .pretemp-reader-actions{grid-template-columns:1.35fr 1fr}
 }
 @media(max-width:350px){.pretemp-reader-actions{grid-template-columns:1fr}}
+
+/* V65 - Stato PRETEMP visibile dalla Home */
+.pretemp-home-status{margin-bottom:6px}
+.pretemp-drawer-context{display:flex;align-items:center;justify-content:center;min-height:27px;margin:0 0 8px;padding:5px 9px;border-radius:11px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:#bcd1da;font-size:11.5px;font-weight:750;letter-spacing:.01em}
+.pretemp-home-status b{max-width:64%}
+@media(max-width:390px){.pretemp-home-status{grid-template-columns:1fr}.pretemp-home-status span{min-height:35px}.pretemp-home-status b{max-width:70%}.pretemp-drawer-context{font-size:11px}}
