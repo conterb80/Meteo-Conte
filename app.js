@@ -556,7 +556,7 @@ loadLamoneSensors();
 })();
 
 
-// V63 - Lettura assistita PRETEMP con zona, fascia oraria e stato del giorno
+// V64 - Lettura assistita PRETEMP rifinita e compatta
 (function setupPretempAssistedReading(){
   const reader=document.getElementById('pretempReader');
   const levelButtons=[...document.querySelectorAll('[data-pretemp-level]')];
@@ -581,9 +581,13 @@ loadLamoneSensors();
   const labels={rain:'piogge forti',hail:'grandine',wind:'raffiche forti',tornado:'rischio tornadico'};
   const zoneLabels={romagna:'Romagna',appennino:'Appennino romagnolo',pianura:'pianura romagnola',costa:'costa romagnola'};
   const timeLabels={mattina:'in mattinata',pomeriggio:'nel pomeriggio',sera:'in serata',notte:'nella notte',giornata:'durante la giornata'};
-  const storageKey='meteoContePretempReadingV63';
-  const legacyStorageKey='meteoContePretempReadingV62';
+  const storageKey='meteoContePretempReadingV64';
+  const legacyStorageKey='meteoContePretempReadingV63';
   const drawerReading=document.getElementById('pretempDrawerReading');
+  const selectedLevel=document.getElementById('pretempSelectedLevel');
+  const selectedPhenomena=document.getElementById('pretempSelectedPhenomena');
+  const selectedZone=document.getElementById('pretempSelectedZone');
+  const selectedTime=document.getElementById('pretempSelectedTime');
   const phenomenonCards={rain:document.getElementById('pretempPhenRain'),hail:document.getElementById('pretempPhenHail'),wind:document.getElementById('pretempPhenWind'),tornado:document.getElementById('pretempPhenTornado')};
 
   const save=()=>{
@@ -596,6 +600,11 @@ loadLamoneSensors();
     timeButtons.forEach(btn=>btn.classList.toggle('selected',btn.dataset.pretempTime===time));
     const levelText=level===null?'da compilare':level==='none'?'fuori area':`livello ${level}`;
     if(state) state.textContent=levelText;
+    if(selectedLevel) selectedLevel.textContent=level===null?'—':level==='none'?'Fuori area':`L${level}`;
+    if(selectedPhenomena) selectedPhenomena.textContent=String(phenomena.size);
+    if(selectedZone) selectedZone.textContent=zoneLabels[zone]||'Romagna';
+    if(selectedTime) selectedTime.textContent=time?(time==='giornata'?'Tutto il giorno':time.charAt(0).toUpperCase()+time.slice(1)):'—';
+    apply.disabled=level===null;
     if(drawerReading){
       const count=phenomena.size;
       const timeShort=time?` · ${time==='giornata'?'tutto il giorno':time}`:'';
@@ -631,15 +640,15 @@ loadLamoneSensors();
     const phenomenaText=listed.length?` Fenomeni indicati: ${listed.join(', ')}.`:' Non hai selezionato simboli specifici.';
     const contextText=` Area di riferimento: ${zoneLabels[zone]||'Romagna'}${time?`, soprattutto ${timeLabels[time]}`:''}.`;
     if(level==='none'){
-      setDecision('ready','Romagna fuori dalle aree','La zona selezionata non risulta compresa nelle aree colorate della mappa.'+contextText+phenomenaText+' Verifica comunque data e testo ufficiale.','↗ Apri previsione completa');
+      setDecision('ready','Romagna fuori dalle aree','La zona selezionata non risulta compresa nelle aree colorate.'+contextText+phenomenaText+' Verifica comunque data e testo ufficiale.','↗ Apri previsione completa');
     }else if(level==='0'){
-      setDecision('ready','Rischio basso','Hai individuato un livello 0: temporali severi poco probabili, ma non impossibili.'+contextText+phenomenaText,'📖 Controlla la guida');
+      setDecision('ready','Rischio basso','Livello 0: fenomeni severi poco probabili, ma non impossibili.'+contextText+phenomenaText,'📖 Controlla la guida');
     }else if(level==='1'){
-      setDecision('warning','Attenzione moderata','Hai individuato un livello 1: possibili fenomeni localmente intensi.'+contextText+phenomenaText+' Controlla il testo ufficiale.','↗ Leggi previsione completa');
+      setDecision('warning','Attenzione moderata','Livello 1: possibili fenomeni localmente intensi.'+contextText+phenomenaText+' Controlla il testo ufficiale.','↗ Leggi previsione completa');
     }else if(level==='2'){
-      setDecision('alert','Giornata da monitorare','Hai individuato un livello 2: rischio elevato di fenomeni intensi nelle aree indicate.'+contextText+phenomenaText+' Affianca Radar e Allerte ER.','📡 Apri Radar live');
+      setDecision('alert','Giornata da monitorare','Livello 2: rischio elevato di fenomeni intensi nelle aree indicate.'+contextText+phenomenaText+' Affianca Radar e Allerte ER.','📡 Apri Radar live');
     }else{
-      setDecision('alert','Alta attenzione','Hai individuato un livello 3: scenario potenzialmente molto severo.'+contextText+phenomenaText+' Consulta subito previsione completa e allerte ufficiali.','🛡️ Apri Allerte ER');
+      setDecision('alert','Alta attenzione','Livello 3: scenario potenzialmente molto severo.'+contextText+phenomenaText+' Consulta subito previsione completa e allerte ufficiali.','🛡️ Apri Allerte ER');
     }
     save();
   };

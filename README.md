@@ -1,3 +1,3 @@
-# Meteo Conte V63 - PRETEMP Zona e Fascia
+# Meteo Conte V64 - PRETEMP Lettura Rifinita
 
-Aggiunge alla lettura assistita PRETEMP la zona più interessata e la fascia oraria più delicata, mantenendo invariati Lamone e il resto dell’app.
+Rifinisce la lettura assistita PRETEMP: selezioni più compatte, riepilogo immediato, colori coerenti, Decisione Conte più chiara e pulsante dedicato per azzerare la lettura. Lamone e resto dell’app invariati.

@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V63 · PRETEMP Zona e Fascia</title>
-  <link rel="manifest" href="manifest.json?v=63" />
-  <link rel="icon" type="image/png" href="icon.png?v=63" />
-  <link rel="stylesheet" href="style.css?v=63.0.0" />
+  <title>Meteo Conte V64 · PRETEMP Lettura Rifinita</title>
+  <link rel="manifest" href="manifest.json?v=64" />
+  <link rel="icon" type="image/png" href="icon.png?v=64" />
+  <link rel="stylesheet" href="style.css?v=64.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=63" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=64" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -267,7 +267,13 @@
           <div><span class="label">LETTURA ASSISTITA</span><h3>Cosa vedi sulla Romagna?</h3></div>
           <span id="pretempReaderState">da compilare</span>
         </div>
-        <p class="pretemp-reader-intro">Guarda la mappa e tocca il livello e gli eventuali simboli presenti sulla tua zona. Meteo Conte prepara subito una sintesi semplice.</p>
+        <p class="pretemp-reader-intro">Seleziona ciò che riconosci sulla mappa: Meteo Conte prepara una sintesi semplice per la tua zona.</p>
+        <div class="pretemp-selection-summary" aria-live="polite">
+          <span><small>Livello</small><b id="pretempSelectedLevel">—</b></span>
+          <span><small>Fenomeni</small><b id="pretempSelectedPhenomena">0</b></span>
+          <span><small>Zona</small><b id="pretempSelectedZone">Romagna</b></span>
+          <span><small>Fascia</small><b id="pretempSelectedTime">—</b></span>
+        </div>
         <div class="pretemp-reader-group">
           <small>Livello sulla Romagna</small>
           <div class="pretemp-level-picker" role="group" aria-label="Seleziona livello PRETEMP sulla Romagna">
@@ -308,7 +314,7 @@
         </div>
         <div class="pretemp-reader-actions">
           <button id="applyPretempReading" type="button">✨ Genera Lettura Conte</button>
-          <button id="resetPretempReading" class="secondary" type="button">Azzera</button>
+          <button id="resetPretempReading" class="secondary reset-reading" type="button">↺ Azzera lettura</button>
         </div>
       </section>
 
@@ -346,7 +352,7 @@
       </section>
 
       <div class="pretemp-note">
-        <b>V63 · zona e fascia</b>
+        <b>V64 · lettura rifinita</b>
         <p>Seleziona livello e fenomeni: il cassetto, le spie e la Decisione Conte si sincronizzano e restano salvati per la giornata.</p>
       </div>
 
@@ -438,7 +444,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V63 · PRETEMP Zona e Fascia</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V64 · PRETEMP Lettura Rifinita</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -451,6 +457,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=63.0.0"></script>
+  <script src="app.js?v=64.0.0"></script>
 </body>
 </html>
