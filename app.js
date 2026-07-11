@@ -465,10 +465,12 @@ loadLamoneSensors();
   const makeUrls=date=>{
     const y=date.getFullYear(), m=date.getMonth(), d=date.getDate();
     const stamp=`${pad(d)}_${pad(m+1)}_${y}`;
+    const officialStamp=`${pad(d)}_${pad(m+1)}-${y}`;
     const base=`https://pretemp.altervista.org/archivio/${y}/${months[m]}`;
+    const officialBase=`https://www.pretemp.it/archivio/${y}/${months[m]}`;
     return {
       image:`${base}/cartine/${stamp}.png`,
-      forecast:`${base}/previsioni/${stamp}.html`,
+      forecast:`${officialBase}/previsioni/${officialStamp}.html`,
       label:date.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'})
     };
   };
@@ -556,13 +558,56 @@ loadLamoneSensors();
 })();
 
 
-// V66 - PRETEMP finale: Home Smart + lettura assistita rifinita
+// V67 - PRETEMP compatto: lettura essenziale
+
+// V67 - Bollettino PRETEMP pulito e link ufficiale corretto
+(function setupPretempBulletin(){
+  const toggle=document.getElementById('togglePretempBulletin');
+  const panel=document.getElementById('pretempBulletinPanel');
+  const load=document.getElementById('loadPretempBulletin');
+  const status=document.getElementById('pretempBulletinStatus');
+  const text=document.getElementById('pretempBulletinText');
+  const official=document.getElementById('pretempOfficialForecastLink');
+  const forecast=document.getElementById('pretempForecastLink');
+  if(!toggle||!panel) return;
+  const syncLink=()=>{if(forecast?.href){official.href=forecast.href;}};
+  toggle.addEventListener('click',()=>{const open=panel.classList.toggle('hidden')===false;toggle.setAttribute('aria-expanded',String(open));toggle.classList.toggle('is-open',open);syncLink();});
+  load?.addEventListener('click',async()=>{
+    syncLink();
+    if(!forecast?.href) return;
+    load.disabled=true;load.textContent='Carico…';status.textContent='Recupero il testo ufficiale PRETEMP.';
+    try{
+      const proxy='https://r.jina.ai/http://'+forecast.href.replace(/^https?:\/\//,'');
+      const res=await fetch(proxy,{cache:'no-store'});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const raw=await res.text();
+      const lines=raw.split(/\n+/).map(s=>s.trim()).filter(Boolean)
+        .filter(s=>!s.startsWith('![')&&!s.startsWith('Image')&&!s.startsWith('URL Source:')&&!s.startsWith('Markdown Content:'));
+      let start=lines.findIndex(s=>/previsione per|previsioni per/i.test(s));
+      if(start<0) start=0;
+      const useful=[];
+      for(const line of lines.slice(start+1)){
+        if(/^(home|archivio|contatti|privacy|copyright|pretemp -)/i.test(line)) continue;
+        if(line.length<35) continue;
+        useful.push(line.replace(/^#+\s*/,''));
+        if(useful.join(' ').length>4200) break;
+      }
+      if(!useful.length) throw new Error('testo non trovato');
+      text.innerHTML=useful.map(p=>`<p>${p.replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</p>`).join('');
+      text.classList.remove('hidden');status.textContent='Bollettino ufficiale del giorno, ripulito per la lettura da telefono.';
+      load.textContent='Ricarica testo';
+    }catch(_e){
+      status.textContent='Il testo pulito non è disponibile in questo momento. Usa “Apri pagina ufficiale”.';
+      load.textContent='Riprova';
+    }finally{load.disabled=false;}
+  });
+})();
+
 (function setupPretempAssistedReading(){
   const reader=document.getElementById('pretempReader');
   const levelButtons=[...document.querySelectorAll('[data-pretemp-level]')];
   const phenomenonButtons=[...document.querySelectorAll('[data-pretemp-phenomenon]')];
   const zoneButtons=[...document.querySelectorAll('[data-pretemp-zone]')];
-  const timeButtons=[...document.querySelectorAll('[data-pretemp-time]')];
   const apply=document.getElementById('applyPretempReading');
   const reset=document.getElementById('resetPretempReading');
   const state=document.getElementById('pretempReaderState');
@@ -575,12 +620,11 @@ loadLamoneSensors();
   if(!reader || !apply) return;
 
   let level=null;
-  let zone='romagna';
-  let time=null;
+  let zone='bassa';
+  let noSymbols=false;
   const phenomena=new Set();
   const labels={rain:'piogge forti',hail:'grandine',wind:'raffiche forti',tornado:'rischio tornadico'};
-  const zoneLabels={romagna:'Romagna',appennino:'Appennino romagnolo',pianura:'pianura romagnola',costa:'costa romagnola'};
-  const timeLabels={mattina:'in mattinata',pomeriggio:'nel pomeriggio',sera:'in serata',notte:'nella notte',giornata:'durante la giornata'};
+  const zoneLabels={bassa:'Bassa Romagna',romagna:'Romagna',appennino:'Appennino romagnolo',pianura:'pianura romagnola',costa:'costa romagnola'};
   const storageKey='meteoContePretempReading';
   const legacyStorageKeys=['meteoContePretempReadingV65','meteoContePretempReadingV64','meteoContePretempReadingV63'];
   const drawerState=document.getElementById('pretempDrawerState');
@@ -590,123 +634,78 @@ loadLamoneSensors();
   const selectedLevel=document.getElementById('pretempSelectedLevel');
   const selectedPhenomena=document.getElementById('pretempSelectedPhenomena');
   const selectedZone=document.getElementById('pretempSelectedZone');
-  const selectedTime=document.getElementById('pretempSelectedTime');
   const phenomenonCards={rain:document.getElementById('pretempPhenRain'),hail:document.getElementById('pretempPhenHail'),wind:document.getElementById('pretempPhenWind'),tornado:document.getElementById('pretempPhenTornado')};
 
-  const save=()=>{
-    try{localStorage.setItem(storageKey,JSON.stringify({level,zone,time,phenomena:[...phenomena],day:new Date().toDateString()}));}catch(_e){}
-  };
-  const paint=()=>{
-    levelButtons.forEach(btn=>btn.classList.toggle('selected',btn.dataset.pretempLevel===String(level)));
-    phenomenonButtons.forEach(btn=>btn.classList.toggle('selected',phenomena.has(btn.dataset.pretempPhenomenon)));
-    zoneButtons.forEach(btn=>btn.classList.toggle('selected',btn.dataset.pretempZone===zone));
-    timeButtons.forEach(btn=>btn.classList.toggle('selected',btn.dataset.pretempTime===time));
-    const levelText=level===null?'da compilare':level==='none'?'fuori area':`livello ${level}`;
-    if(state) state.textContent=levelText;
-    if(selectedLevel) selectedLevel.textContent=level===null?'—':level==='none'?'Fuori area':`L${level}`;
-    if(selectedPhenomena) selectedPhenomena.textContent=String(phenomena.size);
-    if(selectedZone) selectedZone.textContent=zoneLabels[zone]||'Romagna';
-    if(selectedTime) selectedTime.textContent=time?(time==='giornata'?'Tutto il giorno':time.charAt(0).toUpperCase()+time.slice(1)):'—';
-    apply.disabled=level===null;
-    const count=phenomena.size;
-    const chosen=[...phenomena].map(k=>labels[k]);
-    const levelClass=level===null?'':level==='none'||level==='0'?'ok':level==='1'?'watch':'alert';
-    if(drawerState){
-      drawerState.textContent=level===null?'Da compilare':level==='none'?'Fuori area':level==='0'?'L0 · tranquillo':level==='1'?'L1 · attenzione':level==='2'?'L2 · monitorare':'L3 · alta attenzione';
-      drawerState.className=levelClass;
-    }
-    if(drawerFocus){
-      drawerFocus.textContent=level===null?'Apri la mappa':count?chosen.slice(0,2).join(' + '):(level==='none'||level==='0'?'Nessun fenomeno':'Controlla simboli');
-      drawerFocus.className=levelClass;
-    }
-    if(drawerContext){
-      const area=zoneLabels[zone]||'Romagna';
-      const fascia=time?(time==='giornata'?'tutta la giornata':time):'fascia da definire';
-      drawerContext.textContent=`${area} · ${fascia}`;
-    }
-    if(pretempDot){
-      pretempDot.classList.remove('green','yellow','red');
-      pretempDot.classList.add(level===null||level==='none'||level==='0'?'green':level==='1'?'yellow':'red');
-    }
-    Object.entries(phenomenonCards).forEach(([key,card])=>{
-      if(!card) return;
-      const active=phenomena.has(key);
-      card.classList.toggle('is-active',active);
-      const small=card.querySelector('small');
-      if(small) small.textContent=active?'segnalata sulla zona':'non selezionata';
-    });
-  };
   const setDecision=(mode,title,text,action)=>{
     decision?.classList.remove('is-ready','is-warning','is-error','is-alert');
     decision?.classList.add(mode==='ready'?'is-ready':mode==='error'?'is-error':mode==='alert'?'is-alert':'is-warning');
     if(decisionTitle) decisionTitle.textContent=title;
     if(decisionText) decisionText.textContent=text;
     if(decisionAction) decisionAction.textContent=action;
-    if(decisionDot){
-      decisionDot.classList.remove('green','yellow','red');
-      decisionDot.classList.add(mode==='ready'?'green':mode==='error'||mode==='alert'?'red':'yellow');
-    }
+    if(decisionDot){decisionDot.classList.remove('green','yellow','red');decisionDot.classList.add(mode==='ready'?'green':mode==='error'||mode==='alert'?'red':'yellow');}
   };
-  const buildReading=()=>{
+  const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify({level,zone,noSymbols,phenomena:[...phenomena],day:new Date().toDateString()}));}catch(_e){}};
+  const buildReading=(persist=false)=>{
     if(level===null){
-      setDecision('warning','Completa la lettura','Seleziona il livello che vedi sulla Romagna. Aggiungi poi gli eventuali simboli presenti sulla zona.','🗺️ Torna alla mappa');
-      mapButton?.scrollIntoView({behavior:'smooth',block:'center'});
+      setDecision('warning','Da leggere','Seleziona il livello che vedi sulla tua zona. I simboli sono facoltativi; l’orario si ricava dal bollettino testuale.','🗺️ Apri mappa');
       return;
     }
     const listed=[...phenomena].map(k=>labels[k]);
-    const phenomenaText=listed.length?` Fenomeni indicati: ${listed.join(', ')}.`:' Non hai selezionato simboli specifici.';
-    const contextText=` Area di riferimento: ${zoneLabels[zone]||'Romagna'}${time?`, soprattutto ${timeLabels[time]}`:''}.`;
-    if(level==='none'){
-      setDecision('ready','Romagna fuori dalle aree','La zona selezionata non risulta compresa nelle aree colorate.'+contextText+phenomenaText+' Verifica comunque data e testo ufficiale.','↗ Apri previsione completa');
-    }else if(level==='0'){
-      setDecision('ready','Rischio basso','Livello 0: fenomeni severi poco probabili, ma non impossibili.'+contextText+phenomenaText,'📖 Controlla la guida');
-    }else if(level==='1'){
-      setDecision('warning','Attenzione moderata','Livello 1: possibili fenomeni localmente intensi.'+contextText+phenomenaText+' Controlla il testo ufficiale.','↗ Leggi previsione completa');
-    }else if(level==='2'){
-      setDecision('alert','Giornata da monitorare','Livello 2: rischio elevato di fenomeni intensi nelle aree indicate.'+contextText+phenomenaText+' Affianca Radar e Allerte ER.','📡 Apri Radar live');
-    }else{
-      setDecision('alert','Alta attenzione','Livello 3: scenario potenzialmente molto severo.'+contextText+phenomenaText+' Consulta subito previsione completa e allerte ufficiali.','🛡️ Apri Allerte ER');
-    }
-    save();
+    const symbols=listed.length?` Simboli presenti: ${listed.join(', ')}.`:' Nessun simbolo specifico indicato sulla zona.';
+    const area=zoneLabels[zone]||'Bassa Romagna';
+    if(level==='none') setDecision('ready','Fuori dalle aree colorate',`${area} non risulta compresa nelle aree evidenziate.${symbols} Verifica comunque il bollettino.`, '📝 Leggi bollettino');
+    else if(level==='0') setDecision('ready','Livello 0',`${area}: rischio basso di fenomeni severi.${symbols}`, '📝 Leggi bollettino');
+    else if(level==='1') setDecision('warning','Livello 1 · attenzione',`${area}: possibili fenomeni localmente intensi.${symbols} Il bollettino chiarisce zone e orari.`, '📝 Leggi bollettino');
+    else if(level==='2') setDecision('alert','Livello 2 · monitorare',`${area}: rischio elevato di fenomeni intensi.${symbols} Leggi il bollettino e affianca radar e allerte.`, '📝 Leggi bollettino');
+    else setDecision('alert','Livello 3 · alta attenzione',`${area}: scenario potenzialmente molto severo.${symbols} Consulta subito bollettino e allerte ufficiali.`, '🛡️ Apri Allerte ER');
+    if(persist) save();
+  };
+  const paint=()=>{
+    levelButtons.forEach(btn=>btn.classList.toggle('selected',btn.dataset.pretempLevel===String(level)));
+    phenomenonButtons.forEach(btn=>{
+      const key=btn.dataset.pretempPhenomenon;
+      btn.classList.toggle('selected',key==='none'?noSymbols:phenomena.has(key));
+    });
+    zoneButtons.forEach(btn=>btn.classList.toggle('selected',btn.dataset.pretempZone===zone));
+    const levelText=level===null?'da compilare':level==='none'?'fuori area':`livello ${level}`;
+    if(state) state.textContent=levelText;
+    if(selectedLevel) selectedLevel.textContent=level===null?'—':level==='none'?'Fuori area':`L${level}`;
+    if(selectedPhenomena) selectedPhenomena.textContent=noSymbols?'nessuno':String(phenomena.size);
+    if(selectedZone) selectedZone.textContent=zoneLabels[zone]||'Bassa Romagna';
+    apply.disabled=level===null;
+    const count=phenomena.size;
+    const chosen=[...phenomena].map(k=>labels[k]);
+    const levelClass=level===null?'':level==='none'||level==='0'?'ok':level==='1'?'watch':'alert';
+    if(drawerState){drawerState.textContent=level===null?'Da compilare':level==='none'?'Fuori area':level==='0'?'L0 · tranquillo':level==='1'?'L1 · attenzione':level==='2'?'L2 · monitorare':'L3 · alta attenzione';drawerState.className=levelClass;}
+    if(drawerFocus){drawerFocus.textContent=level===null?'Apri la mappa':count?chosen.slice(0,2).join(' + '):'Nessun simbolo';drawerFocus.className=levelClass;}
+    if(drawerContext) drawerContext.textContent=zoneLabels[zone]||'Bassa Romagna';
+    if(pretempDot){pretempDot.classList.remove('green','yellow','red');pretempDot.classList.add(level===null||level==='none'||level==='0'?'green':level==='1'?'yellow':'red');}
+    Object.entries(phenomenonCards).forEach(([key,card])=>{if(!card)return;const active=phenomena.has(key);card.classList.toggle('is-active',active);const small=card.querySelector('small');if(small)small.textContent=active?'segnalata sulla zona':'non selezionata';});
+    buildReading(false);
   };
 
   levelButtons.forEach(btn=>btn.addEventListener('click',()=>{level=btn.dataset.pretempLevel;paint();}));
   phenomenonButtons.forEach(btn=>btn.addEventListener('click',()=>{
     const key=btn.dataset.pretempPhenomenon;
-    phenomena.has(key)?phenomena.delete(key):phenomena.add(key);
+    if(key==='none'){noSymbols=!noSymbols;if(noSymbols)phenomena.clear();}
+    else{noSymbols=false;phenomena.has(key)?phenomena.delete(key):phenomena.add(key);}
     paint();
   }));
-  zoneButtons.forEach(btn=>btn.addEventListener('click',()=>{zone=btn.dataset.pretempZone||'romagna';paint();}));
-  timeButtons.forEach(btn=>btn.addEventListener('click',()=>{time=btn.dataset.pretempTime===time?null:btn.dataset.pretempTime;paint();}));
-  apply.addEventListener('click',buildReading);
-  reset?.addEventListener('click',()=>{
-    level=null;zone='romagna';time=null;phenomena.clear();paint();
-    try{localStorage.removeItem(storageKey);}catch(_e){}
-    setDecision('warning','Lettura guidata','Prima controlla la data, poi la Romagna, il colore del livello e infine i simboli dei fenomeni.','🗺️ Vai alla mappa');
-  });
+  zoneButtons.forEach(btn=>btn.addEventListener('click',()=>{zone=btn.dataset.pretempZone||'bassa';paint();}));
+  apply.addEventListener('click',()=>{buildReading(true);apply.textContent='✓ Lettura salvata';setTimeout(()=>apply.textContent='💾 Salva lettura del giorno',1400);});
+  reset?.addEventListener('click',()=>{level=null;zone='bassa';noSymbols=false;phenomena.clear();try{localStorage.removeItem(storageKey);}catch(_e){}paint();});
   decisionAction?.addEventListener('click',()=>{
     const text=decisionAction.textContent||'';
-    if(text.includes('Radar')) document.querySelector('a[href*="radar-meteo"]')?.click();
-    else if(text.includes('Allerte')) document.querySelector('a[href="https://allertameteo.regione.emilia-romagna.it/"]')?.click();
-    else if(text.includes('previsione')) document.getElementById('pretempForecastLink')?.click();
-    else if(text.includes('guida')) document.getElementById('togglePretempGuide')?.click();
+    if(text.includes('Allerte')) document.querySelector('a[href="https://allertameteo.regione.emilia-romagna.it/"]')?.click();
+    else if(text.includes('bollettino')) document.getElementById('togglePretempBulletin')?.click();
+    else mapButton?.click();
   });
   try{
     let saved=JSON.parse(localStorage.getItem(storageKey)||'null');
-    if(!saved){
-      for(const key of legacyStorageKeys){
-        saved=JSON.parse(localStorage.getItem(key)||'null');
-        if(saved) break;
-      }
-    }
+    if(!saved){for(const key of legacyStorageKeys){saved=JSON.parse(localStorage.getItem(key)||'null');if(saved)break;}}
     if(saved&&saved.day===new Date().toDateString()){
-      level=saved.level??null;
-      zone=saved.zone||'romagna';
-      time=saved.time||null;
-      (saved.phenomena||[]).forEach(k=>phenomena.add(k));
-      paint();
-      buildReading();
+      level=saved.level??null;zone=saved.zone==='romagna'?'bassa':(saved.zone||'bassa');noSymbols=!!saved.noSymbols;(saved.phenomena||[]).forEach(k=>phenomena.add(k));
     }
   }catch(_e){}
   paint();
-})();
+})();;

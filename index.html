@@ -10,10 +10,10 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V66 · PRETEMP Finale</title>
+  <title>Meteo Conte V67 · PRETEMP Compatto</title>
   <link rel="manifest" href="manifest.json?v=66" />
   <link rel="icon" type="image/png" href="icon.png?v=66" />
-  <link rel="stylesheet" href="style.css?v=66.0.0" />
+  <link rel="stylesheet" href="style.css?v=67" />
 </head>
 <body>
   <main class="app">
@@ -224,33 +224,13 @@
       </div>
 
 
-      <section id="pretempDecision" class="pretemp-decision-beta" aria-live="polite">
+      <section id="pretempDecision" class="pretemp-decision-beta pretemp-decision-compact" aria-live="polite">
         <div class="pretemp-decision-head">
-          <div>
-            <span class="label">DECISIONE CONTE · PRETEMP</span>
-            <h3 id="pretempDecisionTitle">Lettura guidata</h3>
-          </div>
+          <div><span class="label">SINTESI CONTE · PRETEMP</span><h3 id="pretempDecisionTitle">Da leggere</h3></div>
           <span id="pretempDecisionDot" class="bigdot yellow" aria-label="Stato decisione"></span>
         </div>
-        <p id="pretempDecisionText">Prima controlla la data, poi la Romagna, il colore del livello e infine i simboli dei fenomeni.</p>
-        <button id="pretempDecisionAction" type="button">🗺️ Vai alla mappa</button>
-        <small class="pretemp-decision-note">Lettura assistita: seleziona livello e simboli che riconosci sulla Romagna. La fonte ufficiale resta PRETEMP.</small>
-      </section>
-
-      <section id="pretempSummary" class="pretemp-summary" aria-live="polite">
-        <div class="pretemp-summary-head">
-          <div>
-            <span class="label">SINTESI PRETEMP</span>
-            <h3 id="pretempSummaryTitle">Carico la previsione…</h3>
-          </div>
-          <span id="pretempSummaryDot" class="dot yellow"></span>
-        </div>
-        <p id="pretempSummaryText">Sto verificando la disponibilità della mappa ufficiale del giorno.</p>
-        <div class="pretemp-summary-grid">
-          <span><small>Zona</small><b>Romagna</b></span>
-          <span><small>Stato</small><b id="pretempSummaryState">verifica…</b></span>
-          <span><small>Azione</small><b id="pretempSummaryAction">attendi</b></span>
-        </div>
+        <p id="pretempDecisionText">Guarda il livello sulla tua zona e gli eventuali simboli. L’orario va cercato nel bollettino testuale, non nella mappa.</p>
+        <button id="pretempDecisionAction" type="button">🗺️ Apri mappa</button>
       </section>
 
       <button id="pretempMapButton" class="pretemp-map-card" type="button" aria-label="Apri la mappa PRETEMP ingrandita">
@@ -258,25 +238,38 @@
         <img id="pretempMap" alt="Mappa ufficiale PRETEMP del giorno" loading="lazy" />
         <span id="pretempMapFallback" class="pretemp-map-fallback hidden">
           <b>Mappa non ancora pubblicata</b>
-          <small>Apri PRETEMP completo oppure riprova più tardi.</small>
+          <small>Apri il sito PRETEMP oppure riprova più tardi.</small>
         </span>
       </button>
 
-      <section id="pretempReader" class="pretemp-reader" aria-label="Lettura assistita PRETEMP">
+      <section class="pretemp-bulletin" aria-label="Bollettino testuale PRETEMP">
+        <button id="togglePretempBulletin" class="pretemp-bulletin-toggle" type="button" aria-expanded="false">
+          <span><b>📝 Bollettino PRETEMP</b><small>Testo ufficiale pulito e leggibile</small></span><i>⌄</i>
+        </button>
+        <div id="pretempBulletinPanel" class="pretemp-bulletin-panel hidden">
+          <p id="pretempBulletinStatus">Tocca “Carica bollettino” per leggere il testo del previsore senza uscire dall’app.</p>
+          <div id="pretempBulletinText" class="pretemp-bulletin-text hidden"></div>
+          <div class="pretemp-bulletin-actions">
+            <button id="loadPretempBulletin" type="button">Carica bollettino</button>
+            <a id="pretempOfficialForecastLink" href="https://www.pretemp.it/" target="_blank" rel="noopener">Apri pagina ufficiale ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="pretempReader" class="pretemp-reader pretemp-reader-compact" aria-label="Lettura assistita PRETEMP">
         <div class="pretemp-reader-head">
-          <div><span class="label">LETTURA ASSISTITA</span><h3>Cosa vedi sulla Romagna?</h3></div>
+          <div><span class="label">LETTURA ESSENZIALE</span><h3>Cosa vedi sulla tua zona?</h3></div>
           <span id="pretempReaderState">da compilare</span>
         </div>
-        <p class="pretemp-reader-intro">Seleziona ciò che riconosci sulla mappa: Meteo Conte prepara una sintesi semplice per la tua zona.</p>
+        <p class="pretemp-reader-intro">Compila solo ciò che la mappa mostra davvero: livello, eventuali simboli e area osservata.</p>
         <div class="pretemp-selection-summary" aria-live="polite">
           <span><small>Livello</small><b id="pretempSelectedLevel">—</b></span>
-          <span><small>Fenomeni</small><b id="pretempSelectedPhenomena">0</b></span>
-          <span><small>Zona</small><b id="pretempSelectedZone">Romagna</b></span>
-          <span><small>Fascia</small><b id="pretempSelectedTime">—</b></span>
+          <span><small>Simboli</small><b id="pretempSelectedPhenomena">0</b></span>
+          <span><small>Area</small><b id="pretempSelectedZone">Bassa Romagna</b></span>
         </div>
         <div class="pretemp-reader-group">
-          <small>Livello sulla Romagna</small>
-          <div class="pretemp-level-picker" role="group" aria-label="Seleziona livello PRETEMP sulla Romagna">
+          <small>Livello sulla tua zona</small>
+          <div class="pretemp-level-picker" role="group" aria-label="Seleziona livello PRETEMP">
             <button type="button" data-pretemp-level="none">Fuori area</button>
             <button type="button" data-pretemp-level="0"><i class="l0"></i>0</button>
             <button type="button" data-pretemp-level="1"><i class="l1"></i>1</button>
@@ -285,8 +278,9 @@
           </div>
         </div>
         <div class="pretemp-reader-group">
-          <small>Fenomeni indicati</small>
+          <small>Simboli presenti sulla zona <em>(facoltativo)</em></small>
           <div class="pretemp-phenomena-picker" role="group" aria-label="Seleziona fenomeni PRETEMP">
+            <button type="button" data-pretemp-phenomenon="none">✓ Nessun simbolo</button>
             <button type="button" data-pretemp-phenomenon="rain">🌧️ Pioggia forte</button>
             <button type="button" data-pretemp-phenomenon="hail">🧊 Grandine</button>
             <button type="button" data-pretemp-phenomenon="wind">💨 Raffiche</button>
@@ -294,31 +288,22 @@
           </div>
         </div>
         <div class="pretemp-reader-group pretemp-context-group">
-          <small>Zona più interessata</small>
-          <div class="pretemp-context-picker" role="group" aria-label="Seleziona la zona PRETEMP più interessata">
-            <button type="button" data-pretemp-zone="romagna">Romagna</button>
+          <small>Area osservata</small>
+          <div class="pretemp-context-picker" role="group" aria-label="Seleziona area osservata">
+            <button type="button" data-pretemp-zone="bassa">Bassa Romagna</button>
             <button type="button" data-pretemp-zone="appennino">Appennino</button>
             <button type="button" data-pretemp-zone="pianura">Pianura</button>
             <button type="button" data-pretemp-zone="costa">Costa</button>
           </div>
         </div>
-        <div class="pretemp-reader-group pretemp-context-group">
-          <small>Fascia più delicata</small>
-          <div class="pretemp-context-picker pretemp-time-picker" role="group" aria-label="Seleziona la fascia oraria PRETEMP">
-            <button type="button" data-pretemp-time="mattina">Mattina</button>
-            <button type="button" data-pretemp-time="pomeriggio">Pomeriggio</button>
-            <button type="button" data-pretemp-time="sera">Sera</button>
-            <button type="button" data-pretemp-time="notte">Notte</button>
-            <button type="button" data-pretemp-time="giornata">Tutta la giornata</button>
-          </div>
-        </div>
         <div class="pretemp-reader-actions">
-          <button id="applyPretempReading" type="button">✨ Genera Lettura Conte</button>
-          <button id="resetPretempReading" class="secondary reset-reading" type="button">↺ Azzera lettura</button>
+          <button id="applyPretempReading" type="button">💾 Salva lettura del giorno</button>
+          <button id="resetPretempReading" class="secondary reset-reading" type="button">↺ Azzera</button>
         </div>
       </section>
 
-      <div class="pretemp-quickread" aria-label="Legenda rapida PRETEMP">
+      <details class="pretemp-quickread pretemp-quickread-details" aria-label="Legenda rapida PRETEMP">
+        <summary>Legenda simboli e livelli</summary>
         <div class="pretemp-quickread-head">
           <div><span class="label">LETTURA RAPIDA</span><h3>Cosa cercare sulla mappa</h3></div>
           <small>simboli ufficiali</small>
@@ -335,7 +320,7 @@
           <span><i class="level l2"></i><b>2</b><small>elevato</small></span>
           <span><i class="level l3"></i><b>3</b><small>molto elevato</small></span>
         </div>
-      </div>
+      </details>
 
       <section class="pretemp-guide-card" aria-label="Guida rapida PRETEMP">
         <button id="togglePretempGuide" class="pretemp-guide-toggle" type="button" aria-expanded="false" aria-controls="pretempGuidePanel">
@@ -351,13 +336,8 @@
         </div>
       </section>
 
-      <div class="pretemp-note">
-        <b>V66 · collaudo finale</b>
-        <p>Seleziona livello e fenomeni: il cassetto, le spie e la Decisione Conte si sincronizzano e restano salvati per la giornata.</p>
-      </div>
-
       <div class="pretemp-actions">
-        <a id="pretempForecastLink" class="btn" href="https://www.pretemp.it/" target="_blank" rel="noopener">⛈️ Previsione completa</a>
+        <a id="pretempForecastLink" class="btn" href="https://www.pretemp.it/" target="_blank" rel="noopener">📝 Apri bollettino ufficiale</a>
         <button id="openPretempGuide" class="btn secondary" type="button">📖 Guida rapida</button>
       </div>
       <p class="pretemp-disclaimer">PRETEMP pubblica previsioni sperimentali probabilistiche e non sostituisce le allerte ufficiali.</p>
@@ -444,7 +424,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V66 · PRETEMP Finale</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V67 · PRETEMP Compatto</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -457,6 +437,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=66.0.0"></script>
+  <script src="app.js?v=67"></script>
 </body>
 </html>

@@ -863,3 +863,26 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .pretemp-drawer-context{display:flex;align-items:center;justify-content:center;min-height:27px;margin:0 0 8px;padding:5px 9px;border-radius:11px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:#bcd1da;font-size:11.5px;font-weight:750;letter-spacing:.01em}
 .pretemp-home-status b{max-width:64%}
 @media(max-width:390px){.pretemp-home-status{grid-template-columns:1fr}.pretemp-home-status span{min-height:35px}.pretemp-home-status b{max-width:70%}.pretemp-drawer-context{font-size:11px}}
+
+
+/* V67 PRETEMP compatto */
+.pretemp-container{gap:14px}
+.pretemp-decision-compact{padding:18px 20px;margin:0}
+.pretemp-decision-compact .pretemp-decision-note{display:none}
+.pretemp-decision-compact p{margin:8px 0 12px;line-height:1.35}
+.pretemp-map-card{margin:0}
+.pretemp-bulletin{border:1px solid rgba(155,220,235,.18);border-radius:24px;background:rgba(19,61,77,.68);overflow:hidden}
+.pretemp-bulletin-toggle{width:100%;border:0;background:transparent;color:inherit;padding:17px 20px;display:flex;align-items:center;justify-content:space-between;text-align:left}
+.pretemp-bulletin-toggle span{display:flex;flex-direction:column;gap:3px}.pretemp-bulletin-toggle b{font-size:1.05rem}.pretemp-bulletin-toggle small{color:var(--muted)}
+.pretemp-bulletin-toggle i{font-style:normal;font-size:1.4rem;transition:.2s}.pretemp-bulletin-toggle.is-open i{transform:rotate(180deg)}
+.pretemp-bulletin-panel{padding:0 20px 20px}.pretemp-bulletin-panel>p{color:var(--muted);line-height:1.45}
+.pretemp-bulletin-text{max-height:460px;overflow:auto;padding:14px 15px;border-radius:18px;background:rgba(5,37,50,.55);font-size:.98rem;line-height:1.55}
+.pretemp-bulletin-text p{margin:0 0 14px}.pretemp-bulletin-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.pretemp-bulletin-actions button,.pretemp-bulletin-actions a{min-height:48px;border-radius:18px;border:1px solid rgba(170,220,235,.18);display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;text-decoration:none;color:inherit;background:rgba(24,72,89,.72)}
+.pretemp-reader-compact{padding:20px}.pretemp-reader-compact .pretemp-selection-summary{grid-template-columns:repeat(3,1fr)}
+.pretemp-reader-group small em{font-style:normal;color:var(--muted);font-weight:400}
+.pretemp-reader-compact .pretemp-phenomena-picker{grid-template-columns:1fr 1fr}.pretemp-reader-compact .pretemp-phenomena-picker button:first-child{grid-column:1/-1}
+.pretemp-reader-compact .pretemp-reader-actions{grid-template-columns:1.4fr .6fr}
+.pretemp-quickread-details{padding:0;overflow:hidden}.pretemp-quickread-details>summary{list-style:none;cursor:pointer;padding:17px 20px;font-weight:800}.pretemp-quickread-details>summary::-webkit-details-marker{display:none}.pretemp-quickread-details[open]>summary{border-bottom:1px solid rgba(170,220,235,.14)}
+.pretemp-quickread-details>.pretemp-quickread-head,.pretemp-quickread-details>.pretemp-phenomena,.pretemp-quickread-details>.pretemp-levels{margin-left:18px;margin-right:18px}.pretemp-quickread-details>.pretemp-quickread-head{margin-top:15px}.pretemp-quickread-details>.pretemp-levels{margin-bottom:18px}
+@media(max-width:520px){.pretemp-bulletin-actions{grid-template-columns:1fr}.pretemp-reader-compact .pretemp-selection-summary{grid-template-columns:repeat(3,minmax(0,1fr))}.pretemp-reader-compact .pretemp-selection-summary b{font-size:.9rem}.pretemp-decision-compact{padding:16px}.pretemp-reader-compact{padding:17px}}

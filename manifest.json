@@ -1,1 +1,15 @@
-{"name":"Meteo Conte","short_name":"Meteo Conte","start_url":"index.html?v=66-pretemp-finale","display":"standalone","background_color":"#061b27","theme_color":"#062231","icons":[{"src":"icon.png?v=66","sizes":"512x512","type":"image/png"}]}
+{
+  "name": "Meteo Conte V67",
+  "short_name": "Meteo Conte",
+  "start_url": "index.html?v=66-pretemp-finale",
+  "display": "standalone",
+  "background_color": "#061b27",
+  "theme_color": "#062231",
+  "icons": [
+    {
+      "src": "icon.png?v=66",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
