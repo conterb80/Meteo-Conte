@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V61 · PRETEMP Lettura Assistita</title>
+  <title>Meteo Conte V62 · PRETEMP Stato del Giorno</title>
   <link rel="manifest" href="manifest.json?v=61" />
   <link rel="icon" type="image/png" href="icon.png?v=61" />
   <link rel="stylesheet" href="style.css?v=61.0.0" />
@@ -199,7 +199,7 @@
       </div>
       <div class="pretemp-drawer-status">
         <span><small>Zona</small><b>Romagna</b></span>
-        <span><small>Validità</small><b id="pretempDrawerValidity">oggi · 00–24 UTC</b></span>
+        <span><small>Lettura</small><b id="pretempDrawerReading">da compilare</b></span>
       </div>
       <button id="openPretempDrawer" class="btn pretemp-drawer-open" type="button">⛈️ Apri Centro PRETEMP →</button>
     </section>
@@ -299,10 +299,10 @@
           <small>simboli ufficiali</small>
         </div>
         <div class="pretemp-phenomena">
-          <span class="phenomenon rain"><i class="symbol-dot blue"></i><b>Piogge forti</b><small>cerchio blu</small></span>
-          <span class="phenomenon hail"><i class="symbol-triangle green"></i><b>Grandine</b><small>triangolo verde</small></span>
-          <span class="phenomenon wind"><i class="symbol-star">★</i><b>Raffiche forti</b><small>stella gialla</small></span>
-          <span class="phenomenon tornado"><i class="symbol-triangle red down"></i><b>Tornado</b><small>triangolo rosso</small></span>
+          <span id="pretempPhenRain" class="phenomenon rain" data-phenomenon-card="rain"><i class="symbol-dot blue"></i><b>Piogge forti</b><small>non selezionata</small></span>
+          <span id="pretempPhenHail" class="phenomenon hail" data-phenomenon-card="hail"><i class="symbol-triangle green"></i><b>Grandine</b><small>non selezionata</small></span>
+          <span id="pretempPhenWind" class="phenomenon wind" data-phenomenon-card="wind"><i class="symbol-star">★</i><b>Raffiche forti</b><small>non selezionata</small></span>
+          <span id="pretempPhenTornado" class="phenomenon tornado" data-phenomenon-card="tornado"><i class="symbol-triangle red down"></i><b>Tornado</b><small>non selezionata</small></span>
         </div>
         <div class="pretemp-levels" aria-label="Livelli di pericolosità PRETEMP">
           <span><i class="level l0"></i><b>0</b><small>basso</small></span>
@@ -327,8 +327,8 @@
       </section>
 
       <div class="pretemp-note">
-        <b>V61 · lettura assistita</b>
-        <p>Seleziona manualmente ciò che riconosci sulla Romagna: livello e fenomeni alimentano una prima Lettura Conte senza alterare la previsione ufficiale.</p>
+        <b>V62 · stato del giorno</b>
+        <p>Seleziona livello e fenomeni: il cassetto, le spie e la Decisione Conte si sincronizzano e restano salvati per la giornata.</p>
       </div>
 
       <div class="pretemp-actions">
@@ -419,7 +419,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V61 · PRETEMP Lettura Assistita</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V62 · PRETEMP Stato del Giorno</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>

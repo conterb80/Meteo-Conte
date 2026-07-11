@@ -408,7 +408,7 @@ loadLamoneSensors();
   setTimeout(syncValidity,800);
 })();
 
-// V61 - PRETEMP lettura assistita + decisione beta + mappa giornaliera
+// V62 - PRETEMP stato del giorno + lettura assistita + mappa giornaliera
 (function setupPretempV1(){
   const map=document.getElementById('pretempMap');
   const mapLarge=document.getElementById('pretempMapLarge');
@@ -556,7 +556,7 @@ loadLamoneSensors();
 })();
 
 
-// V61 - Lettura assistita PRETEMP: selezione manuale livello e fenomeni
+// V62 - Lettura assistita PRETEMP sincronizzata con cassetto e spie
 (function setupPretempAssistedReading(){
   const reader=document.getElementById('pretempReader');
   const levelButtons=[...document.querySelectorAll('[data-pretemp-level]')];
@@ -575,7 +575,10 @@ loadLamoneSensors();
   let level=null;
   const phenomena=new Set();
   const labels={rain:'piogge forti',hail:'grandine',wind:'raffiche forti',tornado:'rischio tornadico'};
-  const storageKey='meteoContePretempReadingV61';
+  const storageKey='meteoContePretempReadingV62';
+  const legacyStorageKey='meteoContePretempReadingV61';
+  const drawerReading=document.getElementById('pretempDrawerReading');
+  const phenomenonCards={rain:document.getElementById('pretempPhenRain'),hail:document.getElementById('pretempPhenHail'),wind:document.getElementById('pretempPhenWind'),tornado:document.getElementById('pretempPhenTornado')};
 
   const save=()=>{
     try{localStorage.setItem(storageKey,JSON.stringify({level,phenomena:[...phenomena],day:new Date().toDateString()}));}catch(_e){}
@@ -583,7 +586,20 @@ loadLamoneSensors();
   const paint=()=>{
     levelButtons.forEach(btn=>btn.classList.toggle('selected',btn.dataset.pretempLevel===String(level)));
     phenomenonButtons.forEach(btn=>btn.classList.toggle('selected',phenomena.has(btn.dataset.pretempPhenomenon)));
-    if(state) state.textContent=level===null?'da compilare':level==='none'?'fuori area':`livello ${level}`;
+    const levelText=level===null?'da compilare':level==='none'?'fuori area':`livello ${level}`;
+    if(state) state.textContent=levelText;
+    if(drawerReading){
+      const count=phenomena.size;
+      drawerReading.textContent=level===null?'da compilare':`${levelText}${count?` · ${count} fenomen${count===1?'o':'i'}`:''}`;
+      drawerReading.className=level===null?'':level==='none'||level==='0'?'ok':level==='1'?'watch':'alert';
+    }
+    Object.entries(phenomenonCards).forEach(([key,card])=>{
+      if(!card) return;
+      const active=phenomena.has(key);
+      card.classList.toggle('is-active',active);
+      const small=card.querySelector('small');
+      if(small) small.textContent=active?'segnalata sulla zona':'non selezionata';
+    });
   };
   const setDecision=(mode,title,text,action)=>{
     decision?.classList.remove('is-ready','is-warning','is-error','is-alert');
@@ -638,11 +654,13 @@ loadLamoneSensors();
     else if(text.includes('guida')) document.getElementById('togglePretempGuide')?.click();
   });
   try{
-    const saved=JSON.parse(localStorage.getItem(storageKey)||'null');
+    let saved=JSON.parse(localStorage.getItem(storageKey)||'null');
+    if(!saved){ saved=JSON.parse(localStorage.getItem(legacyStorageKey)||'null'); }
     if(saved&&saved.day===new Date().toDateString()){
       level=saved.level??null;
       (saved.phenomena||[]).forEach(k=>phenomena.add(k));
       paint();
+      buildReading();
     }
   }catch(_e){}
   paint();

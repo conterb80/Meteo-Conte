@@ -790,7 +790,7 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 }
 
 
-/* V61 - PRETEMP lettura assistita */
+/* V62 - PRETEMP stato del giorno */
 .pretemp-reader{margin:0 16px 12px;padding:12px 13px;border:1px solid rgba(255,255,255,.13);border-radius:19px;background:linear-gradient(180deg,rgba(111,184,255,.075),rgba(255,255,255,.025))}
 .pretemp-reader-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .pretemp-reader-head h3{margin:4px 0 0;font-size:18px;line-height:1.1}
@@ -808,3 +808,12 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .pretemp-decision-beta.is-alert>button{border-color:rgba(255,104,92,.3);background:rgba(255,104,92,.11)}
 @media(max-width:430px){.pretemp-reader{margin-left:13px;margin-right:13px;padding:11px 12px}.pretemp-level-picker{grid-template-columns:1.2fr repeat(4,.7fr);gap:5px}.pretemp-level-picker button{font-size:10.5px;padding:6px 3px}.pretemp-phenomena-picker button{font-size:10.8px}.pretemp-reader-actions{grid-template-columns:1.4fr .65fr}}
 @media(max-width:360px){.pretemp-level-picker{grid-template-columns:1fr repeat(2,1fr)}.pretemp-level-picker button:first-child{grid-column:1/-1}.pretemp-reader-actions{grid-template-columns:1fr}}
+
+
+/* V62 - sincronizzazione visiva lettura PRETEMP */
+.pretemp-drawer-status b.ok{color:var(--green)}
+.pretemp-drawer-status b.watch{color:#ffd866}
+.pretemp-drawer-status b.alert{color:#ff8b7a}
+.pretemp-phenomena .phenomenon{transition:border-color .18s ease,background .18s ease,transform .18s ease,box-shadow .18s ease;opacity:.72}
+.pretemp-phenomena .phenomenon.is-active{opacity:1;transform:translateY(-1px);border-color:rgba(255,222,94,.52);background:linear-gradient(180deg,rgba(255,222,94,.13),rgba(255,255,255,.035));box-shadow:0 0 0 1px rgba(255,222,94,.08),0 8px 20px rgba(0,0,0,.16)}
+.pretemp-phenomena .phenomenon.is-active small{color:#fff1a6;font-weight:800}
