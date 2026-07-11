@@ -886,3 +886,18 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .pretemp-quickread-details{padding:0;overflow:hidden}.pretemp-quickread-details>summary{list-style:none;cursor:pointer;padding:17px 20px;font-weight:800}.pretemp-quickread-details>summary::-webkit-details-marker{display:none}.pretemp-quickread-details[open]>summary{border-bottom:1px solid rgba(170,220,235,.14)}
 .pretemp-quickread-details>.pretemp-quickread-head,.pretemp-quickread-details>.pretemp-phenomena,.pretemp-quickread-details>.pretemp-levels{margin-left:18px;margin-right:18px}.pretemp-quickread-details>.pretemp-quickread-head{margin-top:15px}.pretemp-quickread-details>.pretemp-levels{margin-bottom:18px}
 @media(max-width:520px){.pretemp-bulletin-actions{grid-template-columns:1fr}.pretemp-reader-compact .pretemp-selection-summary{grid-template-columns:repeat(3,minmax(0,1fr))}.pretemp-reader-compact .pretemp-selection-summary b{font-size:.9rem}.pretemp-decision-compact{padding:16px}.pretemp-reader-compact{padding:17px}}
+
+
+/* V68 PRETEMP ottimizzato: confronto radar e pulizia finale */
+.pretemp-compare-tools{display:grid;grid-template-columns:1.25fr .9fr;gap:10px;margin:0 16px 12px}
+.pretemp-compare-tools a{min-height:48px;border-radius:17px;border:1px solid rgba(170,220,235,.18);display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;color:#fff;font-weight:800;background:rgba(24,72,89,.72);padding:8px 10px}
+.pretemp-compare-tools .pretemp-radar-link{background:linear-gradient(135deg,rgba(93,220,166,.22),rgba(111,240,124,.14));border-color:rgba(111,224,154,.36)}
+.pretemp-reader-compact{margin-top:0;padding:14px 14px 15px}
+.pretemp-reader-compact .pretemp-reader-intro{margin:6px 0 8px;font-size:11.5px}
+.pretemp-reader-compact .pretemp-selection-summary{gap:7px;margin-bottom:6px}
+.pretemp-reader-compact .pretemp-selection-summary span{padding:8px 6px;border-radius:13px}
+.pretemp-reader-compact .pretemp-reader-group{margin-top:8px}
+.pretemp-reader-compact .pretemp-level-picker button,.pretemp-reader-compact .pretemp-phenomena-picker button,.pretemp-reader-compact .pretemp-context-picker button{min-height:42px}
+.pretemp-reader-compact .pretemp-reader-actions{margin-top:9px}
+.pretemp-disclaimer-compact{margin:4px 18px 8px!important;padding:0!important;font-size:10.5px!important;line-height:1.35!important;color:#9fb3bd!important}
+@media(max-width:430px){.pretemp-compare-tools{margin-left:13px;margin-right:13px;grid-template-columns:1.25fr .85fr;gap:7px}.pretemp-compare-tools a{font-size:11.5px;min-height:44px}.pretemp-reader-compact{padding:12px 11px 13px}.pretemp-reader-head h3{font-size:17px}}

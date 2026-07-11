@@ -1,9 +1,7 @@
-# Meteo Conte V67 - PRETEMP compatto
+# Meteo Conte V68 - PRETEMP ottimizzato
 
-- Corretto il link al bollettino ufficiale PRETEMP
-- Aggiunto bollettino testuale pulito e leggibile in app, con fallback alla fonte ufficiale
-- Lettura assistita ridotta a livello, simboli facoltativi e area osservata
-- Rimossa la fascia oraria dalla compilazione: si ricava dal bollettino
-- Pulsante rinominato in “Salva lettura del giorno”
-- Legenda resa richiudibile per ridurre lo scorrimento
-- Motore Lamone invariato
+- Aggiunto pulsante Radar meteo 24h accanto agli approfondimenti PRETEMP
+- Guida ufficiale spostata vicino a mappa e bollettino
+- Lettura essenziale resa più compatta
+- Rimossa la schermata finale ridondante con legenda, guida interna e doppi pulsanti
+- Mappa, bollettino e motore Lamone invariati

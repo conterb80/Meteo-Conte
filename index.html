@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V67 · PRETEMP Compatto</title>
+  <title>Meteo Conte V68 · PRETEMP Ottimizzato</title>
   <link rel="manifest" href="manifest.json?v=66" />
   <link rel="icon" type="image/png" href="icon.png?v=66" />
   <link rel="stylesheet" href="style.css?v=67" />
@@ -256,12 +256,17 @@
         </div>
       </section>
 
+      <div class="pretemp-compare-tools" aria-label="Confronta e approfondisci PRETEMP">
+        <a class="pretemp-radar-link" href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener">📡 Radar meteo 24h</a>
+        <a class="pretemp-guide-link" href="https://www.pretemp.it/Come_leggere_la_previsione_2022.html" target="_blank" rel="noopener">📖 Guida ufficiale</a>
+      </div>
+
       <section id="pretempReader" class="pretemp-reader pretemp-reader-compact" aria-label="Lettura assistita PRETEMP">
         <div class="pretemp-reader-head">
-          <div><span class="label">LETTURA ESSENZIALE</span><h3>Cosa vedi sulla tua zona?</h3></div>
+          <div><span class="label">LETTURA ESSENZIALE</span><h3>La tua lettura</h3></div>
           <span id="pretempReaderState">da compilare</span>
         </div>
-        <p class="pretemp-reader-intro">Compila solo ciò che la mappa mostra davvero: livello, eventuali simboli e area osservata.</p>
+        <p class="pretemp-reader-intro">Seleziona solo livello, simboli visibili e area.</p>
         <div class="pretemp-selection-summary" aria-live="polite">
           <span><small>Livello</small><b id="pretempSelectedLevel">—</b></span>
           <span><small>Simboli</small><b id="pretempSelectedPhenomena">0</b></span>
@@ -302,45 +307,7 @@
         </div>
       </section>
 
-      <details class="pretemp-quickread pretemp-quickread-details" aria-label="Legenda rapida PRETEMP">
-        <summary>Legenda simboli e livelli</summary>
-        <div class="pretemp-quickread-head">
-          <div><span class="label">LETTURA RAPIDA</span><h3>Cosa cercare sulla mappa</h3></div>
-          <small>simboli ufficiali</small>
-        </div>
-        <div class="pretemp-phenomena">
-          <span id="pretempPhenRain" class="phenomenon rain" data-phenomenon-card="rain"><i class="symbol-dot blue"></i><b>Piogge forti</b><small>non selezionata</small></span>
-          <span id="pretempPhenHail" class="phenomenon hail" data-phenomenon-card="hail"><i class="symbol-triangle green"></i><b>Grandine</b><small>non selezionata</small></span>
-          <span id="pretempPhenWind" class="phenomenon wind" data-phenomenon-card="wind"><i class="symbol-star">★</i><b>Raffiche forti</b><small>non selezionata</small></span>
-          <span id="pretempPhenTornado" class="phenomenon tornado" data-phenomenon-card="tornado"><i class="symbol-triangle red down"></i><b>Tornado</b><small>non selezionata</small></span>
-        </div>
-        <div class="pretemp-levels" aria-label="Livelli di pericolosità PRETEMP">
-          <span><i class="level l0"></i><b>0</b><small>basso</small></span>
-          <span><i class="level l1"></i><b>1</b><small>moderato</small></span>
-          <span><i class="level l2"></i><b>2</b><small>elevato</small></span>
-          <span><i class="level l3"></i><b>3</b><small>molto elevato</small></span>
-        </div>
-      </details>
-
-      <section class="pretemp-guide-card" aria-label="Guida rapida PRETEMP">
-        <button id="togglePretempGuide" class="pretemp-guide-toggle" type="button" aria-expanded="false" aria-controls="pretempGuidePanel">
-          <span><b>📖 Guida rapida interna</b><small>Leggi la mappa in tre passaggi</small></span>
-          <i aria-hidden="true">⌄</i>
-        </button>
-        <div id="pretempGuidePanel" class="pretemp-guide-panel hidden">
-          <div class="pretemp-guide-step"><strong>1</strong><span><b>Trova la Romagna</b><small>Controlla se la tua zona è dentro un’area colorata.</small></span></div>
-          <div class="pretemp-guide-step"><strong>2</strong><span><b>Guarda il colore</b><small>Il livello 0–3 indica quanto possono essere intensi i temporali.</small></span></div>
-          <div class="pretemp-guide-step"><strong>3</strong><span><b>Cerca i simboli</b><small>Pioggia forte, grandine, raffiche e tornado indicano il fenomeno principale.</small></span></div>
-          <div class="pretemp-guide-warning"><b>Importante</b><span>PRETEMP è una previsione probabilistica sperimentale. Le allerte ufficiali restano quelle della Protezione Civile.</span></div>
-          <a class="pretemp-official-guide" href="https://www.pretemp.it/Come_leggere_la_previsione_2022.html" target="_blank" rel="noopener">Apri la guida ufficiale PRETEMP ↗</a>
-        </div>
-      </section>
-
-      <div class="pretemp-actions">
-        <a id="pretempForecastLink" class="btn" href="https://www.pretemp.it/" target="_blank" rel="noopener">📝 Apri bollettino ufficiale</a>
-        <button id="openPretempGuide" class="btn secondary" type="button">📖 Guida rapida</button>
-      </div>
-      <p class="pretemp-disclaimer">PRETEMP pubblica previsioni sperimentali probabilistiche e non sostituisce le allerte ufficiali.</p>
+      <p class="pretemp-disclaimer pretemp-disclaimer-compact">PRETEMP è una previsione sperimentale probabilistica e non sostituisce le allerte ufficiali.</p>
     </section>
 
     <section id="controlCard" class="card meteo-control control-premium">
@@ -424,7 +391,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V67 · PRETEMP Compatto</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V68 · PRETEMP Ottimizzato</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>

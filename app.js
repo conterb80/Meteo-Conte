@@ -558,9 +558,9 @@ loadLamoneSensors();
 })();
 
 
-// V67 - PRETEMP compatto: lettura essenziale
+// V68 - PRETEMP ottimizzato: lettura essenziale
 
-// V67 - Bollettino PRETEMP pulito e link ufficiale corretto
+// V68 - Bollettino PRETEMP pulito e confronto radar
 (function setupPretempBulletin(){
   const toggle=document.getElementById('togglePretempBulletin');
   const panel=document.getElementById('pretempBulletinPanel');
