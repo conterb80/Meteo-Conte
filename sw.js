@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v71-fix-comandi-pretemp';
+const CACHE_NAME = 'meteo-conte-v72-centro-analisi';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {

@@ -1,13 +1,13 @@
 {
-  "name": "Meteo Conte V70",
+  "name": "Meteo Conte V72",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=66-pretemp-finale",
+  "start_url": "index.html?v=72-centro-analisi",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
   "icons": [
     {
-      "src": "icon.png?v=66",
+      "src": "icon.png?v=72",
       "sizes": "512x512",
       "type": "image/png"
     }
