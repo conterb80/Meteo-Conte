@@ -845,7 +845,7 @@ loadLamoneSensors();
   paint();
 })();;
 
-/* V81 — Centro Analisi a fisarmonica */
+/* V82 — Centro Analisi a fisarmonica */
 (function(){
   const sections=[...document.querySelectorAll('#operativeLinks .accordion-section')];
   function openSection(section, scroll=false){

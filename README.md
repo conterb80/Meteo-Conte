@@ -1,12 +1,14 @@
-# Meteo Conte V81 — Mobile UX
+# Meteo Conte V82 — Ottimizzazione Grafica
 
-Ottimizzazione del Centro Analisi per smartphone.
+Versione dedicata esclusivamente alla resa su smartphone.
 
-- sezioni 1–5 a fisarmonica;
-- una sola sezione aperta alla volta;
-- Osserva aperta all’avvio;
-- testi più grandi;
-- Quadro Rapido compatto su una riga;
-- nessuna modifica a Home, Lamone, PRETEMP o ai collegamenti.
+## Modifiche
+- fisarmonica corretta: resta aperta una sola sezione;
+- sezioni chiuse ridotte a una sola riga;
+- card strumenti più basse e disposte orizzontalmente;
+- testi principali più grandi;
+- icone ridotte e affiancate al testo;
+- Quadro Rapido, Analisi Conte e Percorso Operativo compattati;
+- nessuna modifica a dati, funzioni, Home, Lamone, PRETEMP o collegamenti.
 
-Dopo il caricamento aprire: `reset.html?v=81`.
+Dopo il caricamento aprire `reset.html?v=82`.
