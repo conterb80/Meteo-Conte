@@ -788,3 +788,23 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
   .pretemp-decision-beta>p{font-size:12.6px}
   .pretemp-decision-beta>button{min-height:40px;font-size:12.5px}
 }
+
+
+/* V61 - PRETEMP lettura assistita */
+.pretemp-reader{margin:0 16px 12px;padding:12px 13px;border:1px solid rgba(255,255,255,.13);border-radius:19px;background:linear-gradient(180deg,rgba(111,184,255,.075),rgba(255,255,255,.025))}
+.pretemp-reader-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.pretemp-reader-head h3{margin:4px 0 0;font-size:18px;line-height:1.1}
+.pretemp-reader-head>span{padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:10px;color:#b9ccd4;white-space:nowrap}
+.pretemp-reader-intro{margin:8px 0 11px;color:#d3e3e9;font-size:12.5px;line-height:1.35}
+.pretemp-reader-group{margin-top:10px}.pretemp-reader-group>small{display:block;margin-bottom:6px;color:#9fb3bd;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.pretemp-level-picker{display:grid;grid-template-columns:1.25fr repeat(4,.7fr);gap:6px}
+.pretemp-level-picker button,.pretemp-phenomena-picker button{min-width:0;border:1px solid rgba(255,255,255,.11);border-radius:13px;background:rgba(0,0,0,.11);color:#e9f4f7;font:inherit;font-size:11px;font-weight:800;box-shadow:none}
+.pretemp-level-picker button{min-height:38px;padding:7px 5px;display:flex;align-items:center;justify-content:center;gap:5px}
+.pretemp-level-picker i{width:7px;height:22px;border-radius:999px}.pretemp-level-picker .l0{background:#ffef19}.pretemp-level-picker .l1{background:#ff8a1d}.pretemp-level-picker .l2{background:#f13b2f}.pretemp-level-picker .l3{background:#e62dd8}
+.pretemp-level-picker button.selected,.pretemp-phenomena-picker button.selected{border-color:rgba(111,224,154,.55);background:rgba(111,224,154,.13);box-shadow:inset 0 0 0 1px rgba(111,224,154,.18)}
+.pretemp-phenomena-picker{display:grid;grid-template-columns:1fr 1fr;gap:6px}.pretemp-phenomena-picker button{min-height:39px;padding:7px 8px;text-align:left}
+.pretemp-reader-actions{display:grid;grid-template-columns:1.5fr .7fr;gap:7px;margin-top:11px}.pretemp-reader-actions button{min-height:42px;border:1px solid rgba(111,224,154,.25);border-radius:14px;background:rgba(111,224,154,.1);color:#fff;font:inherit;font-size:12px;font-weight:850;box-shadow:none}.pretemp-reader-actions button.secondary{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#b9ccd4}
+.pretemp-decision-beta.is-alert{background:linear-gradient(180deg,rgba(255,104,92,.13),rgba(255,255,255,.025));border-color:rgba(255,104,92,.27)}
+.pretemp-decision-beta.is-alert>button{border-color:rgba(255,104,92,.3);background:rgba(255,104,92,.11)}
+@media(max-width:430px){.pretemp-reader{margin-left:13px;margin-right:13px;padding:11px 12px}.pretemp-level-picker{grid-template-columns:1.2fr repeat(4,.7fr);gap:5px}.pretemp-level-picker button{font-size:10.5px;padding:6px 3px}.pretemp-phenomena-picker button{font-size:10.8px}.pretemp-reader-actions{grid-template-columns:1.4fr .65fr}}
+@media(max-width:360px){.pretemp-level-picker{grid-template-columns:1fr repeat(2,1fr)}.pretemp-level-picker button:first-child{grid-column:1/-1}.pretemp-reader-actions{grid-template-columns:1fr}}

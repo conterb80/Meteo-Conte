@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V60 · Decisione PRETEMP Beta</title>
-  <link rel="manifest" href="manifest.json?v=60" />
-  <link rel="icon" type="image/png" href="icon.png?v=60" />
-  <link rel="stylesheet" href="style.css?v=60.0.0" />
+  <title>Meteo Conte V61 · PRETEMP Lettura Assistita</title>
+  <link rel="manifest" href="manifest.json?v=61" />
+  <link rel="icon" type="image/png" href="icon.png?v=61" />
+  <link rel="stylesheet" href="style.css?v=61.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=60" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=61" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -227,14 +227,14 @@
       <section id="pretempDecision" class="pretemp-decision-beta" aria-live="polite">
         <div class="pretemp-decision-head">
           <div>
-            <span class="label">DECISIONE CONTE · PRETEMP BETA</span>
+            <span class="label">DECISIONE CONTE · PRETEMP</span>
             <h3 id="pretempDecisionTitle">Lettura guidata</h3>
           </div>
           <span id="pretempDecisionDot" class="bigdot yellow" aria-label="Stato decisione"></span>
         </div>
         <p id="pretempDecisionText">Prima controlla la data, poi la Romagna, il colore del livello e infine i simboli dei fenomeni.</p>
         <button id="pretempDecisionAction" type="button">🗺️ Vai alla mappa</button>
-        <small class="pretemp-decision-note">Beta: in questa fase guida la consultazione, ma non interpreta ancora automaticamente il rischio.</small>
+        <small class="pretemp-decision-note">Lettura assistita: seleziona livello e simboli che riconosci sulla Romagna. La fonte ufficiale resta PRETEMP.</small>
       </section>
 
       <section id="pretempSummary" class="pretemp-summary" aria-live="polite">
@@ -261,6 +261,37 @@
           <small>Apri PRETEMP completo oppure riprova più tardi.</small>
         </span>
       </button>
+
+      <section id="pretempReader" class="pretemp-reader" aria-label="Lettura assistita PRETEMP">
+        <div class="pretemp-reader-head">
+          <div><span class="label">LETTURA ASSISTITA</span><h3>Cosa vedi sulla Romagna?</h3></div>
+          <span id="pretempReaderState">da compilare</span>
+        </div>
+        <p class="pretemp-reader-intro">Guarda la mappa e tocca il livello e gli eventuali simboli presenti sulla tua zona. Meteo Conte prepara subito una sintesi semplice.</p>
+        <div class="pretemp-reader-group">
+          <small>Livello sulla Romagna</small>
+          <div class="pretemp-level-picker" role="group" aria-label="Seleziona livello PRETEMP sulla Romagna">
+            <button type="button" data-pretemp-level="none">Fuori area</button>
+            <button type="button" data-pretemp-level="0"><i class="l0"></i>0</button>
+            <button type="button" data-pretemp-level="1"><i class="l1"></i>1</button>
+            <button type="button" data-pretemp-level="2"><i class="l2"></i>2</button>
+            <button type="button" data-pretemp-level="3"><i class="l3"></i>3</button>
+          </div>
+        </div>
+        <div class="pretemp-reader-group">
+          <small>Fenomeni indicati</small>
+          <div class="pretemp-phenomena-picker" role="group" aria-label="Seleziona fenomeni PRETEMP">
+            <button type="button" data-pretemp-phenomenon="rain">🌧️ Pioggia forte</button>
+            <button type="button" data-pretemp-phenomenon="hail">🧊 Grandine</button>
+            <button type="button" data-pretemp-phenomenon="wind">💨 Raffiche</button>
+            <button type="button" data-pretemp-phenomenon="tornado">🌪️ Tornado</button>
+          </div>
+        </div>
+        <div class="pretemp-reader-actions">
+          <button id="applyPretempReading" type="button">✨ Genera Lettura Conte</button>
+          <button id="resetPretempReading" class="secondary" type="button">Azzera</button>
+        </div>
+      </section>
 
       <div class="pretemp-quickread" aria-label="Legenda rapida PRETEMP">
         <div class="pretemp-quickread-head">
@@ -296,8 +327,8 @@
       </section>
 
       <div class="pretemp-note">
-        <b>V59 · guida interna</b>
-        <p>La pagina ora include una guida rapida interna: prima zona e colore, poi simboli e livello. L’interpretazione automatica arriverà nei prossimi step.</p>
+        <b>V61 · lettura assistita</b>
+        <p>Seleziona manualmente ciò che riconosci sulla Romagna: livello e fenomeni alimentano una prima Lettura Conte senza alterare la previsione ufficiale.</p>
       </div>
 
       <div class="pretemp-actions">
@@ -388,7 +419,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V60 · Decisione PRETEMP Beta</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V61 · PRETEMP Lettura Assistita</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -401,6 +432,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=59.0.0"></script>
+  <script src="app.js?v=61.0.0"></script>
 </body>
 </html>

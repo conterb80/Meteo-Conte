@@ -408,7 +408,7 @@ loadLamoneSensors();
   setTimeout(syncValidity,800);
 })();
 
-// V60 - PRETEMP decisione beta + guida interna + mappa giornaliera
+// V61 - PRETEMP lettura assistita + decisione beta + mappa giornaliera
 (function setupPretempV1(){
   const map=document.getElementById('pretempMap');
   const mapLarge=document.getElementById('pretempMapLarge');
@@ -553,4 +553,97 @@ loadLamoneSensors();
   };
   toggle?.addEventListener('click',()=>setOpen(panel.classList.contains('hidden'),false));
   open?.addEventListener('click',()=>setOpen(true,true));
+})();
+
+
+// V61 - Lettura assistita PRETEMP: selezione manuale livello e fenomeni
+(function setupPretempAssistedReading(){
+  const reader=document.getElementById('pretempReader');
+  const levelButtons=[...document.querySelectorAll('[data-pretemp-level]')];
+  const phenomenonButtons=[...document.querySelectorAll('[data-pretemp-phenomenon]')];
+  const apply=document.getElementById('applyPretempReading');
+  const reset=document.getElementById('resetPretempReading');
+  const state=document.getElementById('pretempReaderState');
+  const decision=document.getElementById('pretempDecision');
+  const decisionTitle=document.getElementById('pretempDecisionTitle');
+  const decisionText=document.getElementById('pretempDecisionText');
+  const decisionDot=document.getElementById('pretempDecisionDot');
+  const decisionAction=document.getElementById('pretempDecisionAction');
+  const mapButton=document.getElementById('pretempMapButton');
+  if(!reader || !apply) return;
+
+  let level=null;
+  const phenomena=new Set();
+  const labels={rain:'piogge forti',hail:'grandine',wind:'raffiche forti',tornado:'rischio tornadico'};
+  const storageKey='meteoContePretempReadingV61';
+
+  const save=()=>{
+    try{localStorage.setItem(storageKey,JSON.stringify({level,phenomena:[...phenomena],day:new Date().toDateString()}));}catch(_e){}
+  };
+  const paint=()=>{
+    levelButtons.forEach(btn=>btn.classList.toggle('selected',btn.dataset.pretempLevel===String(level)));
+    phenomenonButtons.forEach(btn=>btn.classList.toggle('selected',phenomena.has(btn.dataset.pretempPhenomenon)));
+    if(state) state.textContent=level===null?'da compilare':level==='none'?'fuori area':`livello ${level}`;
+  };
+  const setDecision=(mode,title,text,action)=>{
+    decision?.classList.remove('is-ready','is-warning','is-error','is-alert');
+    decision?.classList.add(mode==='ready'?'is-ready':mode==='error'?'is-error':mode==='alert'?'is-alert':'is-warning');
+    if(decisionTitle) decisionTitle.textContent=title;
+    if(decisionText) decisionText.textContent=text;
+    if(decisionAction) decisionAction.textContent=action;
+    if(decisionDot){
+      decisionDot.classList.remove('green','yellow','red');
+      decisionDot.classList.add(mode==='ready'?'green':mode==='error'||mode==='alert'?'red':'yellow');
+    }
+  };
+  const buildReading=()=>{
+    if(level===null){
+      setDecision('warning','Completa la lettura','Seleziona il livello che vedi sulla Romagna. Aggiungi poi gli eventuali simboli presenti sulla zona.','🗺️ Torna alla mappa');
+      mapButton?.scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
+    const listed=[...phenomena].map(k=>labels[k]);
+    const phenomenaText=listed.length?` Fenomeni indicati: ${listed.join(', ')}.`:' Non hai selezionato simboli specifici.';
+    if(level==='none'){
+      setDecision('ready','Romagna fuori dalle aree','La Romagna non risulta compresa nelle aree colorate della mappa selezionata.'+phenomenaText+' Verifica comunque data e testo ufficiale.','↗ Apri previsione completa');
+    }else if(level==='0'){
+      setDecision('ready','Rischio basso','Sulla Romagna hai individuato un livello 0: temporali severi poco probabili, ma non impossibili.'+phenomenaText,'📖 Controlla la guida');
+    }else if(level==='1'){
+      setDecision('warning','Attenzione moderata','Sulla Romagna hai individuato un livello 1: possibili fenomeni localmente intensi.'+phenomenaText+' Controlla fascia oraria e testo ufficiale.','↗ Leggi previsione completa');
+    }else if(level==='2'){
+      setDecision('alert','Giornata da monitorare','Sulla Romagna hai individuato un livello 2: rischio elevato di fenomeni intensi nelle aree indicate.'+phenomenaText+' Affianca Radar e Allerte ER.','📡 Apri Radar live');
+    }else{
+      setDecision('alert','Alta attenzione','Sulla Romagna hai individuato un livello 3: scenario potenzialmente molto severo.'+phenomenaText+' Consulta subito previsione completa e allerte ufficiali.','🛡️ Apri Allerte ER');
+    }
+    save();
+  };
+
+  levelButtons.forEach(btn=>btn.addEventListener('click',()=>{level=btn.dataset.pretempLevel;paint();}));
+  phenomenonButtons.forEach(btn=>btn.addEventListener('click',()=>{
+    const key=btn.dataset.pretempPhenomenon;
+    phenomena.has(key)?phenomena.delete(key):phenomena.add(key);
+    paint();
+  }));
+  apply.addEventListener('click',buildReading);
+  reset?.addEventListener('click',()=>{
+    level=null;phenomena.clear();paint();
+    try{localStorage.removeItem(storageKey);}catch(_e){}
+    setDecision('warning','Lettura guidata','Prima controlla la data, poi la Romagna, il colore del livello e infine i simboli dei fenomeni.','🗺️ Vai alla mappa');
+  });
+  decisionAction?.addEventListener('click',()=>{
+    const text=decisionAction.textContent||'';
+    if(text.includes('Radar')) document.querySelector('a[href*="radar-meteo"]')?.click();
+    else if(text.includes('Allerte')) document.querySelector('a[href="https://allertameteo.regione.emilia-romagna.it/"]')?.click();
+    else if(text.includes('previsione')) document.getElementById('pretempForecastLink')?.click();
+    else if(text.includes('guida')) document.getElementById('togglePretempGuide')?.click();
+  });
+  try{
+    const saved=JSON.parse(localStorage.getItem(storageKey)||'null');
+    if(saved&&saved.day===new Date().toDateString()){
+      level=saved.level??null;
+      (saved.phenomena||[]).forEach(k=>phenomena.add(k));
+      paint();
+    }
+  }catch(_e){}
+  paint();
 })();
