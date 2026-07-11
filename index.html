@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V55 · Fix Cassetto PRETEMP</title>
-  <link rel="manifest" href="manifest.json?v=52" />
-  <link rel="icon" type="image/png" href="icon.png?v=52" />
-  <link rel="stylesheet" href="style.css?v=55.0.0" />
+  <title>Meteo Conte V56 · PRETEMP grafica interna</title>
+  <link rel="manifest" href="manifest.json?v=56" />
+  <link rel="icon" type="image/png" href="icon.png?v=56" />
+  <link rel="stylesheet" href="style.css?v=56.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=52" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=56" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -206,25 +206,25 @@
 
     <section id="pretempContainer" class="card pretemp-container hidden pretemp-container-openable">
       <div class="container-toolbar pretemp-toolbar">
-        <div><span>CASSETTO PRETEMP</span><b>Previsione completa</b></div>
+        <div><span>CENTRO PRETEMP</span><b>Previsione temporali</b></div>
         <button id="closePretempDrawer" type="button" aria-label="Chiudi contenitore PRETEMP">×</button>
       </div>
       <div class="pretemp-head">
         <div>
-          <span class="label">CONTENITORE 01 · PRETEMP</span>
-          <h2>Previsione temporali</h2>
-          <p>La mappa ufficiale resa comoda da consultare sul telefono.</p>
+          <span class="label">PRETEMP · MAPPA UFFICIALE</span>
+          <h2>Centro PRETEMP</h2>
+          <p>Previsione temporalesca del giorno, ottimizzata per il telefono.</p>
         </div>
         <span id="pretempStatusDot" class="pretemp-state green" aria-label="Stato mappa">LIVE</span>
       </div>
 
       <div class="pretemp-meta">
-        <span><small>Zona di interesse</small><b>Romagna</b></span>
+        <span><small>Area osservata</small><b>Romagna</b></span>
         <span><small>Validità</small><b id="pretempValidity">oggi · 00–24 UTC</b></span>
       </div>
 
       <button id="pretempMapButton" class="pretemp-map-card" type="button" aria-label="Apri la mappa PRETEMP ingrandita">
-        <span class="pretemp-map-badge">Mappa ufficiale · tocca per ingrandire</span>
+        <span class="pretemp-map-badge"><b>Mappa ufficiale</b><small>Tocca per ingrandire</small></span>
         <img id="pretempMap" alt="Mappa ufficiale PRETEMP del giorno" loading="lazy" />
         <span id="pretempMapFallback" class="pretemp-map-fallback hidden">
           <b>Mappa non ancora pubblicata</b>
@@ -233,15 +233,15 @@
       </button>
 
       <div class="pretemp-phenomena" aria-label="Fenomeni PRETEMP da integrare nei prossimi step">
-        <span><i>🌧️</i><b>Piogge forti</b><small>lettura nello step 2</small></span>
-        <span><i>🧊</i><b>Grandine</b><small>lettura nello step 2</small></span>
-        <span><i>💨</i><b>Raffiche</b><small>lettura nello step 2</small></span>
-        <span><i>🌪️</i><b>Tornado</b><small>lettura nello step 2</small></span>
+        <span><i>🌧️</i><b>Piogge forti</b><small>lettura in arrivo</small></span>
+        <span><i>🧊</i><b>Grandine</b><small>lettura in arrivo</small></span>
+        <span><i>💨</i><b>Raffiche</b><small>lettura in arrivo</small></span>
+        <span><i>🌪️</i><b>Tornado</b><small>lettura in arrivo</small></span>
       </div>
 
       <div class="pretemp-note">
-        <b>V1 · obiettivo pratico</b>
-        <p>Per ora non interpretiamo la previsione: testiamo mappa, leggibilità, zoom e navigazione da smartphone.</p>
+        <b>V56 · fase grafica</b>
+        <p>La lettura automatica arriverà nei prossimi step. Ora ottimizziamo struttura, mappa e consultazione da smartphone.</p>
       </div>
 
       <div class="pretemp-actions">
@@ -332,7 +332,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V55 · Fix Cassetto PRETEMP</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V56 · PRETEMP grafica interna</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -345,6 +345,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=55.0.0"></script>
+  <script src="app.js?v=56.0.0"></script>
 </body>
 </html>

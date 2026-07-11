@@ -379,7 +379,7 @@ loadLamoneSensors();
 
 
 
-// V54 - Cassetto PRETEMP: Home compatta, contenuto V1 invariato
+// V56 - Cassetto PRETEMP: grafica interna ottimizzata, logica invariata
 (function(){
   const openBtn=document.getElementById('openPretempDrawer');
   const closeBtn=document.getElementById('closePretempDrawer');

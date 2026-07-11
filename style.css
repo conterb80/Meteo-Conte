@@ -636,3 +636,65 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .pretemp-container-openable.hidden{display:none}
 @media(max-width:430px){.pretemp-drawer{padding:13px 13px 12px}.pretemp-drawer-main{grid-template-columns:40px 1fr;gap:9px}.pretemp-drawer-icon{width:40px;height:40px;border-radius:13px;font-size:21px}.pretemp-drawer h2{font-size:21px}.pretemp-drawer p{font-size:12.3px}.pretemp-drawer-status span{padding:7px 8px}.pretemp-drawer-status b{font-size:12px}.pretemp-drawer-open{min-height:38px;padding:7px 10px;font-size:13.7px}.pretemp-drawer-live{right:13px;top:12px}}
 @media(max-width:360px){.pretemp-drawer-status{grid-template-columns:1fr}.pretemp-drawer p{white-space:normal}.pretemp-drawer-status span{min-height:36px}}
+\n\n/* V56 - PRETEMP: rifinitura grafica del contenitore aperto */
+.pretemp-container-openable{
+  padding:0!important;
+  border-color:rgba(255,205,72,.28)!important;
+  background:linear-gradient(180deg,rgba(10,59,77,.99),rgba(5,37,51,.99))!important;
+  box-shadow:0 16px 38px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+.pretemp-container-openable>.container-toolbar{
+  margin:0!important;
+  padding:13px 16px 12px;
+  border-bottom:1px solid rgba(255,255,255,.09);
+  background:rgba(3,28,40,.34);
+}
+.pretemp-container-openable>.container-toolbar span{font-size:10px;letter-spacing:.24em;color:#b8ccd5}
+.pretemp-container-openable>.container-toolbar b{font-size:15px;margin-top:2px}
+.pretemp-container-openable>.container-toolbar button{width:40px;height:40px;font-size:25px}
+.pretemp-container-openable>.pretemp-head,
+.pretemp-container-openable>.pretemp-meta,
+.pretemp-container-openable>.pretemp-map-card,
+.pretemp-container-openable>.pretemp-phenomena,
+.pretemp-container-openable>.pretemp-note,
+.pretemp-container-openable>.pretemp-actions,
+.pretemp-container-openable>.pretemp-disclaimer{margin-left:16px!important;margin-right:16px!important}
+.pretemp-container-openable>.pretemp-head{padding-top:15px;align-items:center}
+.pretemp-container-openable>.pretemp-head h2{font-size:28px;letter-spacing:-.025em;margin:5px 0 5px}
+.pretemp-container-openable>.pretemp-head p{max-width:430px;font-size:14px;line-height:1.34;color:#d3e3ea}
+.pretemp-container-openable>.pretemp-head .label{font-size:10px;letter-spacing:.24em;color:#ffd965}
+.pretemp-container-openable>.pretemp-state{height:31px;min-width:52px;border:1px solid rgba(125,235,169,.35);box-shadow:0 0 0 6px rgba(111,224,154,.09)}
+.pretemp-container-openable>.pretemp-meta{margin-top:14px!important;margin-bottom:12px!important;gap:9px}
+.pretemp-container-openable>.pretemp-meta span{padding:10px 12px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.pretemp-container-openable>.pretemp-meta small{font-size:11px}
+.pretemp-container-openable>.pretemp-meta b{font-size:15px;margin-top:3px}
+.pretemp-container-openable>.pretemp-map-card{width:calc(100% - 32px)!important;min-height:0!important;border-radius:20px!important;border:1px solid rgba(255,255,255,.22)!important;box-shadow:0 10px 24px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.08)!important}
+.pretemp-container-openable>.pretemp-map-card img{min-height:0!important;width:100%;height:auto;object-fit:contain}
+.pretemp-container-openable .pretemp-map-badge{left:10px;top:10px;display:flex;align-items:center;gap:7px;padding:7px 10px;background:rgba(2,25,35,.88)}
+.pretemp-container-openable .pretemp-map-badge b{font-size:11px}
+.pretemp-container-openable .pretemp-map-badge small{font-size:9.5px;color:#cbdce3}
+.pretemp-container-openable>.pretemp-phenomena{margin-top:12px!important;margin-bottom:12px!important;gap:9px}
+.pretemp-container-openable>.pretemp-phenomena span{position:relative;min-height:63px;padding:10px 11px;border-radius:17px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.026));overflow:hidden}
+.pretemp-container-openable>.pretemp-phenomena span:after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#ffd94d,#ef6c58);opacity:.8}
+.pretemp-container-openable>.pretemp-phenomena i{font-size:24px}
+.pretemp-container-openable>.pretemp-phenomena b{font-size:13.5px}
+.pretemp-container-openable>.pretemp-phenomena small{font-size:10.5px;color:#afc1ca}
+.pretemp-container-openable>.pretemp-note{margin-top:2px!important;margin-bottom:12px!important;padding:11px 12px;border-left-width:3px;background:rgba(255,211,66,.065)}
+.pretemp-container-openable>.pretemp-note b{font-size:12px;letter-spacing:.02em;color:#ffe273}
+.pretemp-container-openable>.pretemp-note p{font-size:12px;line-height:1.34}
+.pretemp-container-openable>.pretemp-actions{margin-bottom:0!important;gap:9px}
+.pretemp-container-openable>.pretemp-actions .btn{min-height:46px;border-radius:15px;font-size:13.5px}
+.pretemp-container-openable>.pretemp-disclaimer{margin-top:10px!important;margin-bottom:15px!important;padding:0 2px}
+@media(max-width:430px){
+  .pretemp-container-openable>.pretemp-head,.pretemp-container-openable>.pretemp-meta,.pretemp-container-openable>.pretemp-map-card,.pretemp-container-openable>.pretemp-phenomena,.pretemp-container-openable>.pretemp-note,.pretemp-container-openable>.pretemp-actions,.pretemp-container-openable>.pretemp-disclaimer{margin-left:13px!important;margin-right:13px!important}
+  .pretemp-container-openable>.pretemp-map-card{width:calc(100% - 26px)!important}
+  .pretemp-container-openable>.pretemp-head h2{font-size:26px}
+  .pretemp-container-openable>.pretemp-head p{font-size:13.5px}
+  .pretemp-container-openable>.pretemp-meta span{padding:9px 10px}
+}
+@media(max-width:360px){
+  .pretemp-container-openable>.pretemp-head{align-items:flex-start}
+  .pretemp-container-openable>.pretemp-state{min-width:46px;height:28px;padding:0 7px}
+  .pretemp-container-openable>.pretemp-phenomena{grid-template-columns:1fr 1fr}
+  .pretemp-container-openable>.pretemp-actions{grid-template-columns:1fr}
+}
