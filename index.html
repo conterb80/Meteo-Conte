@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V62 · PRETEMP Stato del Giorno</title>
-  <link rel="manifest" href="manifest.json?v=61" />
-  <link rel="icon" type="image/png" href="icon.png?v=61" />
-  <link rel="stylesheet" href="style.css?v=61.0.0" />
+  <title>Meteo Conte V63 · PRETEMP Zona e Fascia</title>
+  <link rel="manifest" href="manifest.json?v=63" />
+  <link rel="icon" type="image/png" href="icon.png?v=63" />
+  <link rel="stylesheet" href="style.css?v=63.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=61" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=63" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -287,6 +287,25 @@
             <button type="button" data-pretemp-phenomenon="tornado">🌪️ Tornado</button>
           </div>
         </div>
+        <div class="pretemp-reader-group pretemp-context-group">
+          <small>Zona più interessata</small>
+          <div class="pretemp-context-picker" role="group" aria-label="Seleziona la zona PRETEMP più interessata">
+            <button type="button" data-pretemp-zone="romagna">Romagna</button>
+            <button type="button" data-pretemp-zone="appennino">Appennino</button>
+            <button type="button" data-pretemp-zone="pianura">Pianura</button>
+            <button type="button" data-pretemp-zone="costa">Costa</button>
+          </div>
+        </div>
+        <div class="pretemp-reader-group pretemp-context-group">
+          <small>Fascia più delicata</small>
+          <div class="pretemp-context-picker pretemp-time-picker" role="group" aria-label="Seleziona la fascia oraria PRETEMP">
+            <button type="button" data-pretemp-time="mattina">Mattina</button>
+            <button type="button" data-pretemp-time="pomeriggio">Pomeriggio</button>
+            <button type="button" data-pretemp-time="sera">Sera</button>
+            <button type="button" data-pretemp-time="notte">Notte</button>
+            <button type="button" data-pretemp-time="giornata">Tutta la giornata</button>
+          </div>
+        </div>
         <div class="pretemp-reader-actions">
           <button id="applyPretempReading" type="button">✨ Genera Lettura Conte</button>
           <button id="resetPretempReading" class="secondary" type="button">Azzera</button>
@@ -327,7 +346,7 @@
       </section>
 
       <div class="pretemp-note">
-        <b>V62 · stato del giorno</b>
+        <b>V63 · zona e fascia</b>
         <p>Seleziona livello e fenomeni: il cassetto, le spie e la Decisione Conte si sincronizzano e restano salvati per la giornata.</p>
       </div>
 
@@ -419,7 +438,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V62 · PRETEMP Stato del Giorno</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V63 · PRETEMP Zona e Fascia</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -432,6 +451,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=61.0.0"></script>
+  <script src="app.js?v=63.0.0"></script>
 </body>
 </html>

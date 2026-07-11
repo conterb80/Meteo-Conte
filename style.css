@@ -817,3 +817,12 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .pretemp-phenomena .phenomenon{transition:border-color .18s ease,background .18s ease,transform .18s ease,box-shadow .18s ease;opacity:.72}
 .pretemp-phenomena .phenomenon.is-active{opacity:1;transform:translateY(-1px);border-color:rgba(255,222,94,.52);background:linear-gradient(180deg,rgba(255,222,94,.13),rgba(255,255,255,.035));box-shadow:0 0 0 1px rgba(255,222,94,.08),0 8px 20px rgba(0,0,0,.16)}
 .pretemp-phenomena .phenomenon.is-active small{color:#fff1a6;font-weight:800}
+
+
+/* V63 - PRETEMP zona e fascia */
+.pretemp-context-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pretemp-context-picker button{min-height:35px;padding:6px 5px;border:1px solid rgba(255,255,255,.1);border-radius:11px;background:rgba(255,255,255,.04);color:#d8e7ec;font:inherit;font-size:10.5px;font-weight:800;box-shadow:none}
+.pretemp-context-picker button.selected{border-color:rgba(121,211,255,.55);background:linear-gradient(180deg,rgba(75,176,255,.22),rgba(63,129,184,.13));color:#fff;box-shadow:0 0 0 1px rgba(121,211,255,.09) inset}
+.pretemp-time-picker{grid-template-columns:repeat(4,1fr)}
+.pretemp-time-picker button:last-child{grid-column:1/-1;min-height:32px}
+@media(max-width:380px){.pretemp-context-picker{grid-template-columns:repeat(2,1fr)}.pretemp-time-picker{grid-template-columns:repeat(2,1fr)}.pretemp-time-picker button:last-child{grid-column:1/-1}}

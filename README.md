@@ -1,7 +1,3 @@
-# Meteo Conte V62 - PRETEMP Stato del Giorno
+# Meteo Conte V63 - PRETEMP Zona e Fascia
 
-- Lettura assistita sincronizzata con il cassetto PRETEMP.
-- Livello e numero di fenomeni visibili già dalla Home.
-- Le quattro spie cambiano stato in base alla selezione.
-- La lettura salvata viene ripristinata automaticamente per la giornata.
-- Lamone e resto dell’app invariati.
+Aggiunge alla lettura assistita PRETEMP la zona più interessata e la fascia oraria più delicata, mantenendo invariati Lamone e il resto dell’app.

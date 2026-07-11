@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v62-pretemp-stato-giorno';
+const CACHE_NAME = 'meteo-conte-v63-pretemp-zona-fascia';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
