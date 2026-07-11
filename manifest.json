@@ -1,7 +1,7 @@
 {
-  "name": "Meteo Conte V79",
+  "name": "Meteo Conte V80",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=79-stabilizzazione-ui",
+  "start_url": "index.html?v=80-release-candidate",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
