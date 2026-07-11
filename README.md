@@ -1,10 +1,7 @@
-# Meteo Conte V56 - PRETEMP grafica interna
+# Meteo Conte V57 - PRETEMP lettura rapida
 
-- Rifinito esclusivamente il contenitore PRETEMP aperto.
-- Intestazione più compatta e coerente con i cassetti.
-- Mappa resa ancora più protagonista e pulita su smartphone.
-- Area osservata e validità più leggibili.
-- Schede Piogge forti, Grandine, Raffiche e Tornado ridisegnate.
-- Pulsanti finali e nota di sviluppo resi più ordinati.
-- Nessuna interpretazione automatica aggiunta.
-- Motore Lamone e logica PRETEMP invariati.
+- Aggiunta una legenda mobile chiara sotto la mappa PRETEMP.
+- I quattro fenomeni mostrano ora il simbolo ufficiale da cercare sulla mappa.
+- Aggiunta la scala compatta dei livelli 0–3 con descrizione semplice.
+- Nessuna interpretazione automatica o soglia decisionale ancora.
+- Grafica, motore Lamone e apertura dei cassetti invariati.

@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V56 · PRETEMP grafica interna</title>
-  <link rel="manifest" href="manifest.json?v=56" />
-  <link rel="icon" type="image/png" href="icon.png?v=56" />
-  <link rel="stylesheet" href="style.css?v=56.0.0" />
+  <title>Meteo Conte V57 · PRETEMP lettura rapida</title>
+  <link rel="manifest" href="manifest.json?v=57" />
+  <link rel="icon" type="image/png" href="icon.png?v=57" />
+  <link rel="stylesheet" href="style.css?v=57.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=56" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=57" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -232,16 +232,28 @@
         </span>
       </button>
 
-      <div class="pretemp-phenomena" aria-label="Fenomeni PRETEMP da integrare nei prossimi step">
-        <span><i>🌧️</i><b>Piogge forti</b><small>lettura in arrivo</small></span>
-        <span><i>🧊</i><b>Grandine</b><small>lettura in arrivo</small></span>
-        <span><i>💨</i><b>Raffiche</b><small>lettura in arrivo</small></span>
-        <span><i>🌪️</i><b>Tornado</b><small>lettura in arrivo</small></span>
+      <div class="pretemp-quickread" aria-label="Legenda rapida PRETEMP">
+        <div class="pretemp-quickread-head">
+          <div><span class="label">LETTURA RAPIDA</span><h3>Cosa cercare sulla mappa</h3></div>
+          <small>simboli ufficiali</small>
+        </div>
+        <div class="pretemp-phenomena">
+          <span class="phenomenon rain"><i class="symbol-dot blue"></i><b>Piogge forti</b><small>cerchio blu</small></span>
+          <span class="phenomenon hail"><i class="symbol-triangle green"></i><b>Grandine</b><small>triangolo verde</small></span>
+          <span class="phenomenon wind"><i class="symbol-star">★</i><b>Raffiche forti</b><small>stella gialla</small></span>
+          <span class="phenomenon tornado"><i class="symbol-triangle red down"></i><b>Tornado</b><small>triangolo rosso</small></span>
+        </div>
+        <div class="pretemp-levels" aria-label="Livelli di pericolosità PRETEMP">
+          <span><i class="level l0"></i><b>0</b><small>basso</small></span>
+          <span><i class="level l1"></i><b>1</b><small>moderato</small></span>
+          <span><i class="level l2"></i><b>2</b><small>elevato</small></span>
+          <span><i class="level l3"></i><b>3</b><small>molto elevato</small></span>
+        </div>
       </div>
 
       <div class="pretemp-note">
-        <b>V56 · fase grafica</b>
-        <p>La lettura automatica arriverà nei prossimi step. Ora ottimizziamo struttura, mappa e consultazione da smartphone.</p>
+        <b>V57 · lettura rapida</b>
+        <p>Ora i simboli e i livelli sono leggibili senza ingrandire la legenda della mappa. L'interpretazione automatica arriverà nei prossimi step.</p>
       </div>
 
       <div class="pretemp-actions">
@@ -332,7 +344,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V56 · PRETEMP grafica interna</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V57 · PRETEMP lettura rapida</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -345,6 +357,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=56.0.0"></script>
+  <script src="app.js?v=57.0.0"></script>
 </body>
 </html>
