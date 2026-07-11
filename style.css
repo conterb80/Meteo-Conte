@@ -901,3 +901,14 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .pretemp-reader-compact .pretemp-reader-actions{margin-top:9px}
 .pretemp-disclaimer-compact{margin:4px 18px 8px!important;padding:0!important;font-size:10.5px!important;line-height:1.35!important;color:#9fb3bd!important}
 @media(max-width:430px){.pretemp-compare-tools{margin-left:13px;margin-right:13px;grid-template-columns:1.25fr .85fr;gap:7px}.pretemp-compare-tools a{font-size:11.5px;min-height:44px}.pretemp-reader-compact{padding:12px 11px 13px}.pretemp-reader-head h3{font-size:17px}}
+
+/* V71 · Prossimo segnale quotidiano in Home */
+.next-signal{grid-column:1/-1;margin-top:8px;padding:9px 11px;border:1px solid #ffffff18;border-radius:15px;background:#ffffff08;display:grid;gap:3px}
+.next-signal span{font-size:10px;letter-spacing:.22em;font-weight:850;color:#c9d7df}
+.next-signal b{font-size:16px;line-height:1.18;color:#f5fbff}
+.next-signal small{font-size:12.5px;line-height:1.2;color:#afc1cc}
+.next-signal.storm{border-color:#ff6b6b66;background:#ff6b6b12}
+.next-signal.rain{border-color:#ffd95766;background:#ffd95710}
+.next-signal.wind{border-color:#73c7ff66;background:#73c7ff10}
+.next-signal.quiet{border-color:#6fe09a55;background:#6fe09a0c}
+@media(max-width:430px){.next-signal{padding:8px 10px}.next-signal b{font-size:15px}.next-signal small{font-size:12px}}

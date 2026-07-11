@@ -10,10 +10,10 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V70 · Fix comandi PRETEMP</title>
+  <title>Meteo Conte V71 · Prossimo segnale in Home</title>
   <link rel="manifest" href="manifest.json?v=66" />
   <link rel="icon" type="image/png" href="icon.png?v=66" />
-  <link rel="stylesheet" href="style.css?v=70" />
+  <link rel="stylesheet" href="style.css?v=71" />
 </head>
 <body>
   <main class="app">
@@ -56,6 +56,7 @@
         <span class="label">DECISIONE CONTE</span>
         <h2 id="decisionTitle">Valuto...</h2>
         <p id="decisionText">Sintesi in arrivo.</p>
+        <div id="nextSignal" class="next-signal"><span>PROSSIMO SEGNALE</span><b>Calcolo le prossime ore…</b></div>
       </div>
       <button id="analyzeBtn">🔎 Analizza</button>
     </section>
@@ -392,7 +393,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V70 · Fix comandi PRETEMP</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V71 · Prossimo segnale in Home</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -405,6 +406,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=70"></script>
+  <script src="app.js?v=71"></script>
 </body>
 </html>

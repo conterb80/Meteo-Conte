@@ -1,7 +1,6 @@
-# Meteo Conte V70 - Fix definitivo comandi PRETEMP
+# Meteo Conte V71 - Prossimo segnale in Home
 
-- Ripristinati tutti i pulsanti JavaScript del Centro PRETEMP
-- Aggiunto il riferimento interno mancante alla previsione ufficiale
-- Reso il codice robusto anche se il collegamento interno non fosse disponibile
-- Grafica e funzioni della V68/V69 invariate
-- Lamone invariato
+- Aggiunta in Home una sintesi oraria del prossimo fenomeno rilevante
+- Orario indicativo per temporali, rovesci, pioggia o raffiche
+- Calcoli delle prossime 6 ore corretti rispetto all’orario attuale
+- Nessuna modifica ai cassetti Lamone e PRETEMP

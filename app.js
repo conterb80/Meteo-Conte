@@ -3,10 +3,28 @@ let lastData=null,lastIndex=0,lastLevel=null;
 let basinRainData={lamone:null,marzeno:null};
 const WMO={0:['Sereno','☀️'],1:['Prevalentemente sereno','🌤️'],2:['Parzialmente nuvoloso','⛅'],3:['Nuvoloso','☁️'],45:['Nebbia','🌫️'],48:['Nebbia','🌫️'],51:['Pioviggine','🌦️'],53:['Pioviggine','🌦️'],55:['Pioviggine','🌦️'],61:['Pioggia','🌧️'],63:['Pioggia','🌧️'],65:['Pioggia forte','🌧️'],80:['Rovescio','🌦️'],81:['Rovescio','🌧️'],82:['Rovescio forte','⛈️'],95:['Temporale','⛈️'],96:['Temporale/grandine','⛈️'],99:['Temporale/grandine','⛈️']};
 function dewPoint(t,h){const a=17.27,b=237.7;const alpha=((a*t)/(b+t))+Math.log(Math.max(h,1)/100);return (b*alpha)/(a-alpha)}
-function calcIndex(now,hourly){const rainMax=Math.max(...hourly.precipitation_probability.slice(0,6));const rainSum=hourly.precipitation.slice(0,6).reduce((a,b)=>a+b,0);let idx=0;idx+=rainMax*0.45;idx+=Math.min(25,rainSum*10);idx+=now.relative_humidity_2m>75?15:now.relative_humidity_2m>60?8:0;idx+=now.wind_gusts_10m>45?15:now.wind_gusts_10m>30?8:0;idx+=now.pressure_msl<1008?10:0;return Math.round(Math.min(100,idx))}
+function upcomingSlice(hourly,hours=6){const start=nextStart(hourly.time);return {start,end:Math.min(hourly.time.length,start+hours)}}
+function calcIndex(now,hourly){const {start,end}=upcomingSlice(hourly,6);const probs=hourly.precipitation_probability.slice(start,end);const rains=hourly.precipitation.slice(start,end);const gusts=hourly.wind_gusts_10m.slice(start,end);const rainMax=probs.length?Math.max(...probs):0;const rainSum=rains.reduce((a,b)=>a+(b||0),0);const gustMax=gusts.length?Math.max(...gusts):now.wind_gusts_10m;let idx=0;idx+=rainMax*0.45;idx+=Math.min(25,rainSum*10);idx+=now.relative_humidity_2m>75?15:now.relative_humidity_2m>60?8:0;idx+=gustMax>45?15:gustMax>30?8:0;idx+=now.pressure_msl<1008?10:0;return Math.round(Math.min(100,idx))}
 function level(idx){if(idx>=75)return ['Alta attenzione','rosso','red'];if(idx>=50)return ['Da seguire','arancione','yellow'];if(idx>=25)return ['Da monitorare','giallo','yellow'];return ['Tranquilla','tranquillo','green']}
 function setDot(el,c){el.className='dot '+c} function setBig(c){$('statusDot').className='bigdot '+c}
 function nextStart(times){const now=new Date(); let start=times.findIndex(t=>new Date(t)>now); return start<0?0:start;}
+function formatHour(t){return new Date(t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});}
+function buildNextSignal(h){
+  const {start,end}=upcomingSlice(h,12);
+  if(start>=end) return {kind:'quiet',text:'Nessun dato utile per le prossime ore.'};
+  const rows=[];
+  for(let i=start;i<end;i++) rows.push({i,time:h.time[i],code:h.weather_code[i]||0,prob:h.precipitation_probability[i]||0,rain:h.precipitation[i]||0,gust:h.wind_gusts_10m[i]||0});
+  const storm=rows.find(r=>r.code>=95);
+  if(storm) return {kind:'storm',text:`Possibili temporali verso le ${formatHour(storm.time)} · probabilità ${storm.prob}%`};
+  const shower=rows.find(r=>r.code>=80&&r.code<=82);
+  if(shower) return {kind:'rain',text:`Possibili rovesci verso le ${formatHour(shower.time)} · probabilità ${shower.prob}%`};
+  const wet=rows.reduce((a,b)=>b.prob>a.prob?b:a,rows[0]);
+  if(wet.prob>=40) return {kind:'rain',text:`Pioggia più probabile verso le ${formatHour(wet.time)} · probabilità ${wet.prob}%`};
+  const windy=rows.reduce((a,b)=>b.gust>a.gust?b:a,rows[0]);
+  if(windy.gust>=45) return {kind:'wind',text:`Raffiche fino a ${Math.round(windy.gust)} km/h verso le ${formatHour(windy.time)}`};
+  return {kind:'quiet',text:'Nessun segnale rilevante nelle prossime 12 ore.'};
+}
+function renderNextSignal(h){const box=$('nextSignal');if(!box)return;const s=buildNextSignal(h);box.className='next-signal '+s.kind;const icon=s.kind==='storm'?'⛈️':s.kind==='rain'?'🌧️':s.kind==='wind'?'💨':'☀️';box.innerHTML=`<span>PROSSIMO SEGNALE</span><b>${icon} ${s.text}</b><small>Previsione oraria del modello: verifica con Radar e PRETEMP se la situazione cambia.</small>`;}
 
 function setControlChip(id,color,label){
   const el=$(id); if(!el) return;
@@ -16,11 +34,13 @@ function setControlChip(id,color,label){
 function updateControlBox(data){
   const box=$('controlCard'); if(!box) return;
   const c=data.current, h=data.hourly;
-  const rain6=h.precipitation.slice(0,6).reduce((a,b)=>a+b,0);
-  const rainMax=Math.max(...h.precipitation_probability.slice(0,6));
+  const {start,end}=upcomingSlice(h,6);
+  const rain6=h.precipitation.slice(start,end).reduce((a,b)=>a+(b||0),0);
+  const probs=h.precipitation_probability.slice(start,end);
+  const rainMax=probs.length?Math.max(...probs):0;
   const gust=Math.round(c.wind_gusts_10m||0);
   const code=c.weather_code||0;
-  const storm=code>=95 || h.weather_code.slice(0,6).some(x=>x>=95);
+  const storm=code>=95 || h.weather_code.slice(start,end).some(x=>x>=95);
   let color='green', title='Situazione regolare', msg='Nessun avviso operativo. Se cambia il tempo, controlla prima Allerte ER e Radar live.';
 
   setControlChip('controlAlertChip','green','OK');
@@ -65,7 +85,7 @@ async function load(){
   const res=await fetch(url,{cache:'no-store'}); if(!res.ok) throw new Error('api');
   const data=await res.json(); lastData=data; const c=data.current, h=data.hourly;
   const desc=WMO[c.weather_code]||['Meteo','🌤️']; const idx=calcIndex(c,h); lastIndex=idx; const lv=level(idx); lastLevel=lv;
-  const rain6=h.precipitation.slice(0,6).reduce((a,b)=>a+b,0); const rainMax=Math.max(...h.precipitation_probability.slice(0,6));
+  const {start,end}=upcomingSlice(h,6); const rain6=h.precipitation.slice(start,end).reduce((a,b)=>a+(b||0),0); const probs=h.precipitation_probability.slice(start,end); const rainMax=probs.length?Math.max(...probs):0;
   $('headerIcon').textContent=desc[1]; $('headerTemp').textContent=Math.round(c.temperature_2m*10)/10+'°';
   $('statusTitle').textContent=lv[0];
   $('statusText').textContent=idx<25?'Nessun segnale nelle prossime 6 ore.':idx<50?'Qualche segnale da seguire.':'Controlla radar, allerte e temporali.';
@@ -76,8 +96,8 @@ async function load(){
   $('tempNow').textContent=(Math.round(c.temperature_2m*10)/10)+'°C'; $('nowDesc').textContent=`${desc[0]} · ${rainMax}% pioggia max 6h`;
   $('feels').textContent=Math.round(c.apparent_temperature*10)/10+'°'; $('hum').textContent=Math.round(c.relative_humidity_2m)+'%'; $('dew').textContent=Math.round(dewPoint(c.temperature_2m,c.relative_humidity_2m)*10)/10+'°'; $('wind').textContent=Math.round(c.wind_speed_10m)+' km/h'; $('gust').textContent=Math.round(c.wind_gusts_10m)+' km/h'; $('press').textContent=Math.round(c.pressure_msl)+' hPa'; $('rain6').textContent=rain6.toFixed(1)+' mm';
   $('analysisBox').innerHTML=`<b>Perché ${idx}/100?</b><br>Pioggia max 6h ${rainMax}%, accumulo ${rain6.toFixed(1)} mm. Umidità ${Math.round(c.relative_humidity_2m)}%, raffica ${Math.round(c.wind_gusts_10m)} km/h, pressione ${Math.round(c.pressure_msl)} hPa. Se cambia il cielo, apri Radar ER, Fulmini e Lamone.`;
-  renderRisk(h,idx); renderHours(h); updateControlBox(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
- }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; const cc=$('controlCorner'); if(cc) cc.className='cornerdot yellow'; const ct=$('controlTitle'); if(ct) ct.textContent='Dati da aggiornare'; const cp=$('controlText'); if(cp) cp.textContent='Dati meteo non disponibili: usa i link ufficiali del Centro Controllo Meteo.'; }
+  renderNextSignal(h); renderRisk(h,idx); renderHours(h); updateControlBox(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+ }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; const ns=$('nextSignal'); if(ns) ns.innerHTML='<span>PROSSIMO SEGNALE</span><b>⚠️ Previsione oraria non disponibile.</b>'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; const cc=$('controlCorner'); if(cc) cc.className='cornerdot yellow'; const ct=$('controlTitle'); if(ct) ct.textContent='Dati da aggiornare'; const cp=$('controlText'); if(cp) cp.textContent='Dati meteo non disponibili: usa i link ufficiali del Centro Controllo Meteo.'; }
 }
 function renderRisk(h,base){
  const target=$('riskTimeline'); if(!target) return;
