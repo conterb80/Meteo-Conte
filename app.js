@@ -556,7 +556,7 @@ loadLamoneSensors();
 })();
 
 
-// V65 - PRETEMP Home Smart + lettura assistita rifinita
+// V66 - PRETEMP finale: Home Smart + lettura assistita rifinita
 (function setupPretempAssistedReading(){
   const reader=document.getElementById('pretempReader');
   const levelButtons=[...document.querySelectorAll('[data-pretemp-level]')];
@@ -581,8 +581,8 @@ loadLamoneSensors();
   const labels={rain:'piogge forti',hail:'grandine',wind:'raffiche forti',tornado:'rischio tornadico'};
   const zoneLabels={romagna:'Romagna',appennino:'Appennino romagnolo',pianura:'pianura romagnola',costa:'costa romagnola'};
   const timeLabels={mattina:'in mattinata',pomeriggio:'nel pomeriggio',sera:'in serata',notte:'nella notte',giornata:'durante la giornata'};
-  const storageKey='meteoContePretempReadingV65';
-  const legacyStorageKeys=['meteoContePretempReadingV64','meteoContePretempReadingV63'];
+  const storageKey='meteoContePretempReading';
+  const legacyStorageKeys=['meteoContePretempReadingV65','meteoContePretempReadingV64','meteoContePretempReadingV63'];
   const drawerState=document.getElementById('pretempDrawerState');
   const drawerFocus=document.getElementById('pretempDrawerFocus');
   const drawerContext=document.getElementById('pretempDrawerContext');

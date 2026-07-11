@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v65-pretemp-home-smart';
+const CACHE_NAME = 'meteo-conte-v66-pretemp-finale';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
