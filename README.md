@@ -1,12 +1,12 @@
-# Meteo Conte V77 — Percorso Operativo
+# Meteo Conte V78 — Raffinamento UI
 
-Evoluzione del Centro Analisi senza modificare Home, Lamone, PRETEMP, dati o collegamenti esistenti.
+Versione dedicata alla leggibilità e alla compattezza del Centro Analisi.
 
 ## Novità
-- Nuovo **Percorso Operativo** dinamico in tre passaggi.
-- La sequenza consigliata cambia in base a pioggia, raffiche, rovesci e segnali temporaleschi.
-- Ogni passaggio apre direttamente lo strumento indicato.
-- Analisi Conte e Quadro Rapido restano invariati e alimentano il percorso.
-- Sezioni 1–5 e relativi link lasciati invariati.
+- Analisi Conte ridisegnata con etichette e valori separati.
+- Percorso Operativo trasformato in una timeline compatta 1 → 2 → 3.
+- Quadro Rapido e blocco superiore leggermente ridotti.
+- Spaziature, gerarchia visiva e allineamenti uniformati.
+- Home, Lamone, PRETEMP, sezioni 1–5 e link invariati.
 
-Per forzare l’aggiornamento aprire `reset.html?v=77`.
+Per forzare l’aggiornamento aprire `reset.html?v=78`.

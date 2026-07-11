@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V77 · Percorso Operativo 1.5</title>
-  <link rel="manifest" href="manifest.json?v=76" />
-  <link rel="icon" type="image/png" href="icon.png?v=76" />
-  <link rel="stylesheet" href="style.css?v=76" />
+  <title>Meteo Conte V78 · Raffinamento UI 1.6</title>
+  <link rel="manifest" href="manifest.json?v=78" />
+  <link rel="icon" type="image/png" href="icon.png?v=78" />
+  <link rel="stylesheet" href="style.css?v=78" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=76" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=78" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -328,9 +328,9 @@
       </div>
     </section>
 
-    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v76 analysis-center-v77">
+    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v78 analysis-center-v78">
       <div class="analysis-hero">
-        <span class="label">CENTRO ANALISI · V77</span>
+        <span class="label">CENTRO ANALISI · V78</span>
         <h2>Segui il meteo passo dopo passo</h2>
         <p class="links-intro">Osserva, prevedi, controlla, conferma e segui: gli strumenti sono divisi secondo il tuo percorso operativo.</p>
       </div>
@@ -349,28 +349,30 @@
         <p id="snapshotAdvice">I dati sintetici servono a scegliere il primo strumento da aprire.</p>
       </section>
 
-      <section id="conteAnalysis" class="conte-analysis" aria-label="Analisi Conte">
+      <section id="conteAnalysis" class="conte-analysis conte-analysis-v78" aria-label="Analisi Conte">
         <div class="conte-analysis-head">
-          <div><span>ANALISI CONTE</span><b id="conteState">Valutazione in corso</b></div>
+          <div class="conte-analysis-title"><span>ANALISI CONTE</span><b id="conteState">Valutazione in corso</b></div>
           <i id="conteStateDot" class="green" aria-hidden="true"></i>
         </div>
         <div class="conte-analysis-grid">
-          <div><small>Evoluzione</small><b id="conteEvolution">--</b></div>
-          <div><small>Attenzione</small><b id="conteAttention">--</b></div>
+          <div class="conte-kpi"><small>Evoluzione</small><b id="conteEvolution">--</b></div>
+          <div class="conte-kpi"><small>Attenzione</small><b id="conteAttention">--</b></div>
           <div class="conte-action"><small>Azione consigliata</small><b id="conteAction">Attendi aggiornamento dati</b></div>
         </div>
-        <p id="conteReason">La valutazione combina pioggia, raffiche e segnali temporaleschi delle prossime ore.</p>
+        <div class="conte-reason"><span>Perché</span><p id="conteReason">La valutazione combina pioggia, raffiche e segnali temporaleschi delle prossime ore.</p></div>
       </section>
 
-      <section id="operativeRoute" class="operative-route" aria-label="Percorso operativo consigliato">
+      <section id="operativeRoute" class="operative-route operative-route-v78" aria-label="Percorso operativo consigliato">
         <div class="operative-route-head">
           <div><span>PERCORSO OPERATIVO</span><b id="routeTitle">Controllo essenziale</b></div>
-          <small>tocca uno step</small>
+          <small>tocca per aprire</small>
         </div>
-        <div class="operative-route-steps">
-          <button type="button" data-route-target="toolZoom"><i>1</i><span><small>PRIMA</small><b id="routeStep1">Zoom Earth</b></span></button>
-          <button type="button" data-route-target="toolRadar"><i>2</i><span><small>POI</small><b id="routeStep2">Radar live ER</b></span></button>
-          <button type="button" data-route-target="toolPretemp"><i>3</i><span><small>SE SERVE</small><b id="routeStep3">Centro PRETEMP</b></span></button>
+        <div class="operative-route-steps" role="list">
+          <button type="button" data-route-target="toolZoom" role="listitem"><i>1</i><span><small>PRIMA</small><b id="routeStep1">Zoom Earth</b></span></button>
+          <span class="route-connector" aria-hidden="true">›</span>
+          <button type="button" data-route-target="toolRadar" role="listitem"><i>2</i><span><small>POI</small><b id="routeStep2">Radar live ER</b></span></button>
+          <span class="route-connector" aria-hidden="true">›</span>
+          <button type="button" data-route-target="toolPretemp" role="listitem"><i>3</i><span><small>SE SERVE</small><b id="routeStep3">Centro PRETEMP</b></span></button>
         </div>
         <p id="routeNote">Un percorso breve per verificare la situazione senza aprire strumenti inutili.</p>
       </section>
@@ -427,7 +429,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V77 · Percorso Operativo 1.5</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V78 · Raffinamento UI 1.6</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -440,6 +442,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=77"></script>
+  <script src="app.js?v=78"></script>
 </body>
 </html>
