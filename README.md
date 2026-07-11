@@ -1,6 +1,6 @@
-# Meteo Conte V72 - Centro Analisi 1.0
+# Meteo Conte V73 - Dashboard grafica
 
-- Centro Operativo riorganizzato nel nuovo flusso: Osserva, Prevedi, Controlla, Conferma, Segui
-- Eliminati diversi doppioni e mantenuti gli strumenti più utili
-- Aggiunti accessi interni ai cassetti PRETEMP e Lamone
-- Home, motore Lamone e contenitore PRETEMP invariati
+- Restyling compatto del solo Centro Analisi
+- Zoom Earth aggiunto in evidenza nella sezione Osserva
+- Card con icone, gerarchia visiva e strumenti principali evidenziati
+- Home, Lamone e PRETEMP invariati

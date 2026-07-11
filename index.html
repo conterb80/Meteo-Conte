@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V72 · Centro Analisi 1.0</title>
-  <link rel="manifest" href="manifest.json?v=72" />
-  <link rel="icon" type="image/png" href="icon.png?v=72" />
-  <link rel="stylesheet" href="style.css?v=72" />
+  <title>Meteo Conte V73 · Centro Analisi 1.1</title>
+  <link rel="manifest" href="manifest.json?v=73" />
+  <link rel="icon" type="image/png" href="icon.png?v=73" />
+  <link rel="stylesheet" href="style.css?v=73" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=72" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=73" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -328,63 +328,66 @@
       </div>
     </section>
 
-    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v72">
-      <span class="label">CENTRO ANALISI · V72</span>
-      <h2>Segui il meteo passo dopo passo</h2>
-      <p class="links-intro">Meno doppioni, più percorso: osserva cosa succede, prevedi l’evoluzione, controlla gli effetti, conferma dal vivo e segui gli aggiornamenti.</p>
+    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v73">
+      <div class="analysis-hero">
+        <span class="label">CENTRO ANALISI · V73</span>
+        <h2>Segui il meteo passo dopo passo</h2>
+        <p class="links-intro">Osserva, prevedi, controlla, conferma e segui: gli strumenti sono divisi secondo il tuo percorso operativo.</p>
+      </div>
 
-      <div class="tool-section priority">
-        <div class="tool-title"><span>📡</span><div><b>Osserva</b><small>Cosa sta succedendo adesso</small></div></div>
-        <div class="tool-grid">
-          <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener"><b>Radar live ER</b><small>pioggia osservata in tempo reale</small></a>
-          <a href="https://radar.protezionecivile.it/" target="_blank" rel="noopener"><b>Radar nazionale</b><small>quadro generale italiano</small></a>
-          <a href="https://www.lightningmaps.org/" target="_blank" rel="noopener"><b>Fulmini live</b><small>attività elettrica delle celle</small></a>
-          <a href="https://www.meteoam.it/it/satellite/italia" target="_blank" rel="noopener"><b>Satellite</b><small>nubi e sviluppo convettivo</small></a>
+      <div class="tool-section observe priority">
+        <div class="tool-title"><span>👁️</span><div><b>1. Osserva</b><small>Cosa sta succedendo adesso</small></div></div>
+        <div class="tool-grid analysis-tools five-tools">
+          <a class="featured zoom" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><i>🌍</i><b>Zoom Earth</b><small>radar e satellite animati</small><em>CONSIGLIATO</em></a>
+          <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener"><i>📡</i><b>Radar live ER</b><small>pioggia osservata</small></a>
+          <a href="https://www.lightningmaps.org/" target="_blank" rel="noopener"><i>⚡</i><b>Fulmini live</b><small>scariche in tempo reale</small></a>
+          <a href="https://www.meteoam.it/it/satellite/italia" target="_blank" rel="noopener"><i>🛰️</i><b>Satellite</b><small>nubi e sviluppo</small></a>
+          <a href="https://radar.protezionecivile.it/" target="_blank" rel="noopener"><i>🇮🇹</i><b>Radar nazionale</b><small>quadro italiano</small></a>
         </div>
       </div>
 
-      <div class="tool-section">
-        <div class="tool-title"><span>🌩️</span><div><b>Prevedi</b><small>Cosa potrebbe succedere nelle prossime ore</small></div></div>
-        <div class="tool-grid">
-          <button class="tool-link-button" type="button" data-jump="pretempDrawer"><b>Centro PRETEMP</b><small>rischio temporali e fenomeni intensi</small></button>
-          <a href="https://www.windy.com/?44.42,11.98,8" target="_blank" rel="noopener"><b>Windy mappe</b><small>vento, pioggia e pressione</small></a>
-          <a href="https://www.windy.com/?rain,44.42,11.98,8" target="_blank" rel="noopener"><b>Pioggia prevista</b><small>evoluzione nelle ore successive</small></a>
-          <a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank" rel="noopener"><b>Meteo Arpae</b><small>previsioni regionali ufficiali</small></a>
+      <div class="tool-section forecast-step">
+        <div class="tool-title"><span>🌩️</span><div><b>2. Prevedi</b><small>Cosa potrebbe succedere nelle prossime ore</small></div></div>
+        <div class="tool-grid analysis-tools">
+          <button class="tool-link-button featured" type="button" data-jump="pretempDrawer"><i>⛈️</i><b>Centro PRETEMP</b><small>rischio temporali intensi</small><em>PRINCIPALE</em></button>
+          <a href="https://www.windy.com/?44.42,11.98,8" target="_blank" rel="noopener"><i>🌀</i><b>Windy mappe</b><small>vento e pressione</small></a>
+          <a href="https://www.windy.com/?rain,44.42,11.98,8" target="_blank" rel="noopener"><i>🌧️</i><b>Pioggia prevista</b><small>ore successive</small></a>
+          <a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank" rel="noopener"><i>🏛️</i><b>Meteo Arpae</b><small>previsioni ufficiali</small></a>
         </div>
       </div>
 
-      <div class="tool-section">
-        <div class="tool-title"><span>🌊</span><div><b>Controlla</b><small>Se la pioggia diventa persistente</small></div></div>
-        <div class="tool-grid">
-          <button class="tool-link-button" type="button" data-jump="lamoneDrawer"><b>Centro Lamone</b><small>cassetto completo monte-valle</small></button>
-          <a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener"><b>Sensori Lamone</b><small>livelli lungo il percorso</small></a>
-          <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener"><b>Idrometri ER</b><small>livelli regionali ufficiali</small></a>
-          <a href="https://www.windy.com/?rain,44.16,11.62,8" target="_blank" rel="noopener"><b>Pioggia a monte</b><small>Marradi e Modigliana</small></a>
+      <div class="tool-section river-step">
+        <div class="tool-title"><span>🌊</span><div><b>3. Controlla</b><small>Se la pioggia diventa persistente</small></div></div>
+        <div class="tool-grid analysis-tools">
+          <button class="tool-link-button featured" type="button" data-jump="lamoneDrawer"><i>🌊</i><b>Centro Lamone</b><small>controllo monte-valle</small><em>PRINCIPALE</em></button>
+          <a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener"><i>📡</i><b>Sensori Lamone</b><small>livelli del percorso</small></a>
+          <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener"><i>📈</i><b>Idrometri ER</b><small>livelli ufficiali</small></a>
+          <a href="https://www.windy.com/?rain,44.16,11.62,8" target="_blank" rel="noopener"><i>🏔️</i><b>Pioggia a monte</b><small>Marradi e Modigliana</small></a>
         </div>
       </div>
 
-      <div class="tool-section">
-        <div class="tool-title"><span>📷</span><div><b>Conferma</b><small>Guarda il cielo con le webcam</small></div></div>
-        <div class="tool-grid">
-          <a href="https://www.emiliaromagnameteo.com/rete-stazioni/servizi/mappa-webcam/" target="_blank" rel="noopener"><b>Webcam Romagna</b><small>mappa regionale</small></a>
-          <a href="https://www.arpae.it/it/temi-ambientali/meteo/dati-e-osservazioni/webcam/rete-webcam" target="_blank" rel="noopener"><b>Webcam costa</b><small>rete ufficiale Arpae</small></a>
-          <a href="https://www.appenninoromagnolo.it/pagine/webcam.asp" target="_blank" rel="noopener"><b>Webcam Appennino</b><small>crinali e zone interne</small></a>
-          <a href="https://www.weathercam.it/live-webcam/Emilia-Romagna" target="_blank" rel="noopener"><b>Altre webcam ER</b><small>selezione regionale</small></a>
+      <div class="tool-section webcam-step">
+        <div class="tool-title"><span>📷</span><div><b>4. Conferma</b><small>Guarda il cielo con le webcam</small></div></div>
+        <div class="tool-grid analysis-tools">
+          <a href="https://www.emiliaromagnameteo.com/rete-stazioni/servizi/mappa-webcam/" target="_blank" rel="noopener"><i>🗺️</i><b>Webcam Romagna</b><small>mappa regionale</small></a>
+          <a href="https://www.arpae.it/it/temi-ambientali/meteo/dati-e-osservazioni/webcam/rete-webcam" target="_blank" rel="noopener"><i>🏖️</i><b>Webcam costa</b><small>rete Arpae</small></a>
+          <a href="https://www.appenninoromagnolo.it/pagine/webcam.asp" target="_blank" rel="noopener"><i>⛰️</i><b>Webcam Appennino</b><small>crinali e zone interne</small></a>
+          <a href="https://www.weathercam.it/live-webcam/Emilia-Romagna" target="_blank" rel="noopener"><i>🎥</i><b>Altre webcam ER</b><small>selezione regionale</small></a>
         </div>
       </div>
 
-      <div class="tool-section news">
-        <div class="tool-title"><span>📰</span><div><b>Segui</b><small>Aggiornamenti e fonti affidabili</small></div></div>
-        <div class="tool-grid">
-          <a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener"><b>Allerte ufficiali</b><small>bollettini regionali</small></a>
-          <a href="https://www.arpae.it/it/notizie" target="_blank" rel="noopener"><b>Arpae News</b><small>aggiornamenti ufficiali</small></a>
-          <a href="https://www.regione.emilia-romagna.it/protezione-civile" target="_blank" rel="noopener"><b>Protezione Civile</b><small>comunicazioni regionali</small></a>
-          <a href="https://www.emiliaromagnameteo.com/" target="_blank" rel="noopener"><b>EmiliaRomagnaMeteo</b><small>nowcasting e notizie locali</small></a>
+      <div class="tool-section news follow-step">
+        <div class="tool-title"><span>🔔</span><div><b>5. Segui</b><small>Aggiornamenti e fonti affidabili</small></div></div>
+        <div class="tool-grid analysis-tools">
+          <a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener"><i>⚠️</i><b>Allerte ufficiali</b><small>bollettini regionali</small></a>
+          <a href="https://www.arpae.it/it/notizie" target="_blank" rel="noopener"><i>📰</i><b>Arpae News</b><small>aggiornamenti ufficiali</small></a>
+          <a href="https://www.regione.emilia-romagna.it/protezione-civile" target="_blank" rel="noopener"><i>🛡️</i><b>Protezione Civile</b><small>comunicazioni regionali</small></a>
+          <a href="https://www.emiliaromagnameteo.com/" target="_blank" rel="noopener"><i>☁️</i><b>EmiliaRomagnaMeteo</b><small>nowcasting locale</small></a>
         </div>
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V72 · Centro Analisi 1.0</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V73 · Centro Analisi 1.1</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -397,6 +400,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=72"></script>
+  <script src="app.js?v=73"></script>
 </body>
 </html>
