@@ -725,3 +725,27 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .pretemp-levels .l0{background:#ffef19}.pretemp-levels .l1{background:#ff8a1d}.pretemp-levels .l2{background:#f13b2f}.pretemp-levels .l3{background:#e62dd8}
 @media(max-width:430px){.pretemp-quickread{margin-left:13px;margin-right:13px;padding:11px}.pretemp-quickread-head h3{font-size:16px}.pretemp-quickread .pretemp-phenomena span{padding-left:39px}.pretemp-levels{gap:6px}.pretemp-levels span{padding:7px 6px}}
 @media(max-width:360px){.pretemp-levels{grid-template-columns:repeat(2,1fr)}.pretemp-quickread-head{align-items:flex-start}.pretemp-quickread-head>small{display:none}}
+
+/* V58 - PRETEMP sintesi guidata */
+.pretemp-summary{
+  margin:0 16px 12px;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(111,224,154,.07),rgba(255,255,255,.025));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.pretemp-summary-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.pretemp-summary-head h3{margin:4px 0 0;font-size:18px;line-height:1.12}
+.pretemp-summary-head .dot{flex:none;margin-top:5px}
+.pretemp-summary>p{margin:8px 0 10px;color:#d5e5eb;font-size:13px;line-height:1.36}
+.pretemp-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.pretemp-summary-grid span{min-width:0;padding:8px 9px;border:1px solid rgba(255,255,255,.09);border-radius:13px;background:rgba(0,0,0,.1)}
+.pretemp-summary-grid small{display:block;color:#9fb3bd;font-size:9.8px;line-height:1.05}
+.pretemp-summary-grid b{display:block;margin-top:3px;color:var(--green);font-size:11.5px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pretemp-summary.is-waiting{background:linear-gradient(180deg,rgba(255,211,66,.08),rgba(255,255,255,.025))}
+.pretemp-summary.is-waiting .pretemp-summary-grid b{color:var(--yellow)}
+.pretemp-summary.is-error{background:linear-gradient(180deg,rgba(255,103,103,.08),rgba(255,255,255,.025))}
+.pretemp-summary.is-error .pretemp-summary-grid b{color:#ff9b9b}
+@media(max-width:430px){.pretemp-summary{margin-left:13px;margin-right:13px;padding:11px}.pretemp-summary-head h3{font-size:17px}.pretemp-summary>p{font-size:12.6px}.pretemp-summary-grid{gap:6px}.pretemp-summary-grid span{padding:7px}.pretemp-summary-grid b{font-size:10.8px}}
+@media(max-width:360px){.pretemp-summary-grid{grid-template-columns:1fr}.pretemp-summary-grid b{font-size:11.5px}}

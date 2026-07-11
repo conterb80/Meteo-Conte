@@ -408,7 +408,7 @@ loadLamoneSensors();
   setTimeout(syncValidity,800);
 })();
 
-// V50 - PRETEMP V1: mappa giornaliera e visualizzazione mobile
+// V58 - PRETEMP sintesi guidata + mappa giornaliera
 (function setupPretempV1(){
   const map=document.getElementById('pretempMap');
   const mapLarge=document.getElementById('pretempMapLarge');
@@ -419,7 +419,28 @@ loadLamoneSensors();
   const validity=document.getElementById('pretempValidity');
   const forecastLink=document.getElementById('pretempForecastLink');
   const modalForecastLink=document.getElementById('pretempModalForecastLink');
+  const summary=document.getElementById('pretempSummary');
+  const summaryTitle=document.getElementById('pretempSummaryTitle');
+  const summaryText=document.getElementById('pretempSummaryText');
+  const summaryState=document.getElementById('pretempSummaryState');
+  const summaryAction=document.getElementById('pretempSummaryAction');
+  const summaryDot=document.getElementById('pretempSummaryDot');
   if(!map || !mapButton) return;
+
+  const setSummary=(mode,title,text,state,action)=>{
+    if(!summary) return;
+    summary.classList.remove('is-waiting','is-error');
+    if(mode==='waiting') summary.classList.add('is-waiting');
+    if(mode==='error') summary.classList.add('is-error');
+    if(summaryTitle) summaryTitle.textContent=title;
+    if(summaryText) summaryText.textContent=text;
+    if(summaryState) summaryState.textContent=state;
+    if(summaryAction) summaryAction.textContent=action;
+    if(summaryDot){
+      summaryDot.classList.remove('green','yellow','red');
+      summaryDot.classList.add(mode==='ok'?'green':mode==='error'?'red':'yellow');
+    }
+  };
 
   const months=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
   const pad=n=>String(n).padStart(2,'0');
@@ -446,7 +467,20 @@ loadLamoneSensors();
     if(modalForecastLink) modalForecastLink.href=current.forecast;
     validity.textContent=(attempt===0?'oggi':'ultima disponibile')+' · 00–24 UTC';
   };
-  map.addEventListener('load',()=>{fallback?.classList.add('hidden');map.classList.remove('hidden');});
+  map.addEventListener('load',()=>{
+    fallback?.classList.add('hidden');
+    map.classList.remove('hidden');
+    const isToday=attempt===0;
+    setSummary(
+      isToday?'ok':'waiting',
+      isToday?'Previsione del giorno disponibile':'Ultima previsione disponibile',
+      isToday
+        ?'La mappa ufficiale è caricata. Controlla prima il colore del livello sulla Romagna, poi cerca eventuali simboli di grandine, raffiche, piogge forti o tornado.'
+        :'La mappa odierna non risulta ancora disponibile: viene mostrata l’ultima previsione pubblicata. Verifica sempre data e validità.',
+      isToday?'LIVE':'precedente',
+      'ingrandisci mappa'
+    );
+  });
   map.addEventListener('error',()=>{
     attempt++;
     if(attempt<candidates.length){applyCandidate();return;}
@@ -454,7 +488,9 @@ loadLamoneSensors();
     forecastLink.href='https://www.pretemp.it/';
     if(modalForecastLink) modalForecastLink.href='https://www.pretemp.it/';
     validity.textContent='in attesa di pubblicazione';
+    setSummary('error','Previsione non disponibile','La mappa non è stata trovata. Apri la pagina PRETEMP completa oppure riprova più tardi.','non disponibile','apri fonte');
   });
+  setSummary('waiting','Carico la previsione…','Sto verificando la disponibilità della mappa ufficiale del giorno.','verifica…','attendi');
   applyCandidate();
 
   const openModal=()=>{

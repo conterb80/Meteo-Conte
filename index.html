@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V57 · PRETEMP lettura rapida</title>
-  <link rel="manifest" href="manifest.json?v=57" />
-  <link rel="icon" type="image/png" href="icon.png?v=57" />
-  <link rel="stylesheet" href="style.css?v=57.0.0" />
+  <title>Meteo Conte V58 · PRETEMP sintesi guidata</title>
+  <link rel="manifest" href="manifest.json?v=58" />
+  <link rel="icon" type="image/png" href="icon.png?v=58" />
+  <link rel="stylesheet" href="style.css?v=58.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=57" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=58" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -223,6 +223,22 @@
         <span><small>Validità</small><b id="pretempValidity">oggi · 00–24 UTC</b></span>
       </div>
 
+      <section id="pretempSummary" class="pretemp-summary" aria-live="polite">
+        <div class="pretemp-summary-head">
+          <div>
+            <span class="label">SINTESI PRETEMP</span>
+            <h3 id="pretempSummaryTitle">Carico la previsione…</h3>
+          </div>
+          <span id="pretempSummaryDot" class="dot yellow"></span>
+        </div>
+        <p id="pretempSummaryText">Sto verificando la disponibilità della mappa ufficiale del giorno.</p>
+        <div class="pretemp-summary-grid">
+          <span><small>Zona</small><b>Romagna</b></span>
+          <span><small>Stato</small><b id="pretempSummaryState">verifica…</b></span>
+          <span><small>Azione</small><b id="pretempSummaryAction">attendi</b></span>
+        </div>
+      </section>
+
       <button id="pretempMapButton" class="pretemp-map-card" type="button" aria-label="Apri la mappa PRETEMP ingrandita">
         <span class="pretemp-map-badge"><b>Mappa ufficiale</b><small>Tocca per ingrandire</small></span>
         <img id="pretempMap" alt="Mappa ufficiale PRETEMP del giorno" loading="lazy" />
@@ -252,8 +268,8 @@
       </div>
 
       <div class="pretemp-note">
-        <b>V57 · lettura rapida</b>
-        <p>Ora i simboli e i livelli sono leggibili senza ingrandire la legenda della mappa. L'interpretazione automatica arriverà nei prossimi step.</p>
+        <b>V58 · sintesi guidata</b>
+        <p>Meteo Conte ora ti dice se la previsione ufficiale è disponibile e quale controllo fare per primo. La lettura automatica di livelli e fenomeni arriverà nei prossimi step.</p>
       </div>
 
       <div class="pretemp-actions">
@@ -344,7 +360,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V57 · PRETEMP lettura rapida</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V58 · PRETEMP sintesi guidata</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -357,6 +373,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=57.0.0"></script>
+  <script src="app.js?v=58.0.0"></script>
 </body>
 </html>
