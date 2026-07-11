@@ -31,6 +31,36 @@ function setControlChip(id,color,label){
   const dot=el.querySelector('i'); if(dot) dot.className=color;
   const sm=el.querySelector('small'); if(sm) sm.textContent=label;
 }
+
+function updateAnalysisSnapshot(data){
+  const box=$('analysisSnapshot'); if(!box) return;
+  const c=data.current,h=data.hourly;
+  const {start,end}=upcomingSlice(h,6);
+  const probs=h.precipitation_probability.slice(start,end);
+  const rains=h.precipitation.slice(start,end);
+  const gusts=h.wind_gusts_10m.slice(start,end);
+  const codes=h.weather_code.slice(start,end);
+  const rainMax=probs.length?Math.max(...probs):0;
+  const rainSum=rains.reduce((a,b)=>a+(b||0),0);
+  const gustMax=gusts.length?Math.max(...gusts):c.wind_gusts_10m||0;
+  const storm=c.weather_code>=95||codes.some(x=>x>=95);
+  const showers=codes.some(x=>x>=80&&x<=82);
+  const desc=WMO[c.weather_code]||['Meteo','🌤️'];
+  $('snapshotNow').textContent=`${desc[1]} ${Math.round(c.temperature_2m)}°`;
+  $('snapshotRain').textContent=rainSum>=0.1?`${rainSum.toFixed(1)} mm`:`${rainMax}%`;
+  $('snapshotRainNote').textContent=rainSum>=0.1?`prob. max ${rainMax}%`:'probabilità max';
+  $('snapshotWind').textContent=`${Math.round(gustMax)} km/h`;
+  $('snapshotWindNote').textContent=gustMax>=50?'da controllare':'massima prevista';
+  $('snapshotStorm').textContent=storm?'Possibili':showers?'Rovesci':'Nessun segnale';
+  $('snapshotStormNote').textContent=storm?'verifica PRETEMP':showers?'verifica radar':'nelle prossime 6h';
+  let color='green',title='Quadro regolare',advice='Nessun segnale rilevante dal modello: parti da Zoom Earth per il controllo generale.';
+  if(rainMax>=45||rainSum>=3||gustMax>=40||showers){color='yellow';title='Evoluzione da seguire';advice='Apri PRETEMP e Radar live ER per verificare posizione e sviluppo dei fenomeni.';}
+  if(storm||rainMax>=75||rainSum>=10||gustMax>=65){color=storm||gustMax>=75?'red':'yellow';title='Controllo operativo consigliato';advice='Controlla subito PRETEMP, radar, fulmini e successivamente Lamone se la pioggia persiste.';}
+  $('snapshotTitle').textContent=title;
+  $('snapshotAdvice').textContent=advice;
+  $('snapshotDot').className=color;
+}
+
 function updateControlBox(data){
   const box=$('controlCard'); if(!box) return;
   const c=data.current, h=data.hourly;
@@ -96,7 +126,7 @@ async function load(){
   $('tempNow').textContent=(Math.round(c.temperature_2m*10)/10)+'°C'; $('nowDesc').textContent=`${desc[0]} · ${rainMax}% pioggia max 6h`;
   $('feels').textContent=Math.round(c.apparent_temperature*10)/10+'°'; $('hum').textContent=Math.round(c.relative_humidity_2m)+'%'; $('dew').textContent=Math.round(dewPoint(c.temperature_2m,c.relative_humidity_2m)*10)/10+'°'; $('wind').textContent=Math.round(c.wind_speed_10m)+' km/h'; $('gust').textContent=Math.round(c.wind_gusts_10m)+' km/h'; $('press').textContent=Math.round(c.pressure_msl)+' hPa'; $('rain6').textContent=rain6.toFixed(1)+' mm';
   $('analysisBox').innerHTML=`<b>Perché ${idx}/100?</b><br>Pioggia max 6h ${rainMax}%, accumulo ${rain6.toFixed(1)} mm. Umidità ${Math.round(c.relative_humidity_2m)}%, raffica ${Math.round(c.wind_gusts_10m)} km/h, pressione ${Math.round(c.pressure_msl)} hPa. Se cambia il cielo, apri Radar ER, Fulmini e Lamone.`;
-  renderNextSignal(h); renderRisk(h,idx); renderHours(h); updateControlBox(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  renderNextSignal(h); renderRisk(h,idx); renderHours(h); updateControlBox(data); updateAnalysisSnapshot(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
  }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; const ns=$('nextSignal'); if(ns) ns.innerHTML='<span>PROSSIMO SEGNALE</span><b>⚠️ Previsione oraria non disponibile.</b>'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; const cc=$('controlCorner'); if(cc) cc.className='cornerdot yellow'; const ct=$('controlTitle'); if(ct) ct.textContent='Dati da aggiornare'; const cp=$('controlText'); if(cp) cp.textContent='Dati meteo non disponibili: usa i link ufficiali del Centro Controllo Meteo.'; }
 }
 function renderRisk(h,base){
@@ -366,6 +396,10 @@ function loadLamoneSensors(){
   const label=$('sensorModeLabel'); if(label) label.textContent='sensori smart · tocca';
 }
 
+
+document.querySelectorAll('[data-analysis-jump]').forEach(btn=>btn.addEventListener('click',()=>{
+  const target=$(btn.dataset.analysisJump); if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+}));
 load();
 loadBasinRain();
 loadLamoneSensors();

@@ -1,8 +1,12 @@
-# Meteo Conte V74 - Dashboard professionale
+# Meteo Conte V75 — Quadro Rapido Operativo
 
-- Centro Analisi ulteriormente compattato per smartphone
-- Gerarchia visiva più sobria e professionale
-- Sezioni riconoscibili tramite barra laterale e colore operativo
-- Card più basse, testi più leggibili e badge meno invadenti
-- Zoom Earth, Centro PRETEMP e Centro Lamone restano in evidenza
-- Home, Lamone e PRETEMP invariati
+Aggiornamento del Centro Analisi con primi indicatori sintetici ricavati dai dati meteo già usati dall’app.
+
+## Novità
+- Quadro rapido compatto in testa al Centro Analisi.
+- Stato attuale, pioggia nelle prossime 6 ore, raffica massima e segnale temporalesco del modello.
+- Sintesi operativa che suggerisce il primo strumento da aprire.
+- Indicatori toccabili per raggiungere rapidamente Osserva o Prevedi.
+- Home, Lamone, PRETEMP e link delle sezioni non modificati.
+
+Per forzare l’aggiornamento aprire `reset.html?v=75`.

@@ -1,13 +1,13 @@
 {
-  "name": "Meteo Conte V74",
+  "name": "Meteo Conte V75",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=74-centro-analisi",
+  "start_url": "index.html?v=75-centro-analisi",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
   "icons": [
     {
-      "src": "icon.png?v=74",
+      "src": "icon.png?v=75",
       "sizes": "512x512",
       "type": "image/png"
     }

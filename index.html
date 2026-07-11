@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V74 · Centro Analisi 1.2</title>
-  <link rel="manifest" href="manifest.json?v=74" />
-  <link rel="icon" type="image/png" href="icon.png?v=74" />
-  <link rel="stylesheet" href="style.css?v=74" />
+  <title>Meteo Conte V75 · Centro Analisi 1.3</title>
+  <link rel="manifest" href="manifest.json?v=75" />
+  <link rel="icon" type="image/png" href="icon.png?v=75" />
+  <link rel="stylesheet" href="style.css?v=75" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=74" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=75" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -328,12 +328,26 @@
       </div>
     </section>
 
-    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v74">
+    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v75">
       <div class="analysis-hero">
-        <span class="label">CENTRO ANALISI · V74</span>
+        <span class="label">CENTRO ANALISI · V75</span>
         <h2>Segui il meteo passo dopo passo</h2>
         <p class="links-intro">Osserva, prevedi, controlla, conferma e segui: gli strumenti sono divisi secondo il tuo percorso operativo.</p>
       </div>
+
+      <section id="analysisSnapshot" class="analysis-snapshot" aria-label="Quadro rapido Centro Analisi">
+        <div class="snapshot-head">
+          <div><span>QUADRO RAPIDO</span><b id="snapshotTitle">Aggiornamento in corso</b></div>
+          <i id="snapshotDot" class="green" aria-hidden="true"></i>
+        </div>
+        <div class="snapshot-grid">
+          <button type="button" data-analysis-jump="observeSection"><small>Adesso</small><b id="snapshotNow">--</b><em id="snapshotNowNote">meteo locale</em></button>
+          <button type="button" data-analysis-jump="forecastSection"><small>Pioggia 6h</small><b id="snapshotRain">--</b><em id="snapshotRainNote">modello orario</em></button>
+          <button type="button" data-analysis-jump="forecastSection"><small>Raffica</small><b id="snapshotWind">--</b><em id="snapshotWindNote">massima prevista</em></button>
+          <button type="button" data-analysis-jump="forecastSection"><small>Temporali</small><b id="snapshotStorm">--</b><em id="snapshotStormNote">segnale modello</em></button>
+        </div>
+        <p id="snapshotAdvice">I dati sintetici servono a scegliere il primo strumento da aprire.</p>
+      </section>
 
       <div class="tool-section observe priority">
         <div class="tool-title"><span>👁️</span><div><b>1. Osserva</b><small>Cosa sta succedendo adesso</small></div></div>
@@ -387,7 +401,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V74 · Centro Analisi 1.2</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V75 · Centro Analisi 1.3</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -400,6 +414,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=74"></script>
+  <script src="app.js?v=75"></script>
 </body>
 </html>
