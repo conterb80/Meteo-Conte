@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V58 · PRETEMP sintesi guidata</title>
-  <link rel="manifest" href="manifest.json?v=58" />
-  <link rel="icon" type="image/png" href="icon.png?v=58" />
-  <link rel="stylesheet" href="style.css?v=58.0.0" />
+  <title>Meteo Conte V59 · PRETEMP guida interna</title>
+  <link rel="manifest" href="manifest.json?v=59" />
+  <link rel="icon" type="image/png" href="icon.png?v=59" />
+  <link rel="stylesheet" href="style.css?v=59.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=58" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=59" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -267,14 +267,28 @@
         </div>
       </div>
 
+      <section class="pretemp-guide-card" aria-label="Guida rapida PRETEMP">
+        <button id="togglePretempGuide" class="pretemp-guide-toggle" type="button" aria-expanded="false" aria-controls="pretempGuidePanel">
+          <span><b>📖 Guida rapida interna</b><small>Leggi la mappa in tre passaggi</small></span>
+          <i aria-hidden="true">⌄</i>
+        </button>
+        <div id="pretempGuidePanel" class="pretemp-guide-panel hidden">
+          <div class="pretemp-guide-step"><strong>1</strong><span><b>Trova la Romagna</b><small>Controlla se la tua zona è dentro un’area colorata.</small></span></div>
+          <div class="pretemp-guide-step"><strong>2</strong><span><b>Guarda il colore</b><small>Il livello 0–3 indica quanto possono essere intensi i temporali.</small></span></div>
+          <div class="pretemp-guide-step"><strong>3</strong><span><b>Cerca i simboli</b><small>Pioggia forte, grandine, raffiche e tornado indicano il fenomeno principale.</small></span></div>
+          <div class="pretemp-guide-warning"><b>Importante</b><span>PRETEMP è una previsione probabilistica sperimentale. Le allerte ufficiali restano quelle della Protezione Civile.</span></div>
+          <a class="pretemp-official-guide" href="https://www.pretemp.it/Come_leggere_la_previsione_2022.html" target="_blank" rel="noopener">Apri la guida ufficiale PRETEMP ↗</a>
+        </div>
+      </section>
+
       <div class="pretemp-note">
-        <b>V58 · sintesi guidata</b>
-        <p>Meteo Conte ora ti dice se la previsione ufficiale è disponibile e quale controllo fare per primo. La lettura automatica di livelli e fenomeni arriverà nei prossimi step.</p>
+        <b>V59 · guida interna</b>
+        <p>La pagina ora include una guida rapida interna: prima zona e colore, poi simboli e livello. L’interpretazione automatica arriverà nei prossimi step.</p>
       </div>
 
       <div class="pretemp-actions">
         <a id="pretempForecastLink" class="btn" href="https://www.pretemp.it/" target="_blank" rel="noopener">⛈️ Previsione completa</a>
-        <a class="btn secondary" href="https://www.pretemp.it/Come_leggere_la_previsione_2022.html" target="_blank" rel="noopener">📖 Come si legge</a>
+        <button id="openPretempGuide" class="btn secondary" type="button">📖 Guida rapida</button>
       </div>
       <p class="pretemp-disclaimer">PRETEMP pubblica previsioni sperimentali probabilistiche e non sostituisce le allerte ufficiali.</p>
     </section>
@@ -360,7 +374,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V58 · PRETEMP sintesi guidata</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V59 · PRETEMP guida interna</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -373,6 +387,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=58.0.0"></script>
+  <script src="app.js?v=59.0.0"></script>
 </body>
 </html>

@@ -408,7 +408,7 @@ loadLamoneSensors();
   setTimeout(syncValidity,800);
 })();
 
-// V58 - PRETEMP sintesi guidata + mappa giornaliera
+// V59 - PRETEMP guida interna + mappa giornaliera
 (function setupPretempV1(){
   const map=document.getElementById('pretempMap');
   const mapLarge=document.getElementById('pretempMapLarge');
@@ -504,4 +504,21 @@ loadLamoneSensors();
   close?.addEventListener('click',closeModal);
   modal?.addEventListener('click',e=>{if(e.target===modal) closeModal();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal();});
+})();
+
+
+// V59 - Guida rapida interna PRETEMP
+(function(){
+  const toggle=document.getElementById('togglePretempGuide');
+  const open=document.getElementById('openPretempGuide');
+  const panel=document.getElementById('pretempGuidePanel');
+  if(!panel) return;
+  const setOpen=(value,scroll=false)=>{
+    panel.classList.toggle('hidden',!value);
+    toggle?.setAttribute('aria-expanded',String(value));
+    toggle?.classList.toggle('is-open',value);
+    if(value&&scroll) setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),40);
+  };
+  toggle?.addEventListener('click',()=>setOpen(panel.classList.contains('hidden'),false));
+  open?.addEventListener('click',()=>setOpen(true,true));
 })();

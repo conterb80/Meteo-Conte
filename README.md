@@ -1,7 +1,3 @@
-# Meteo Conte V58 - PRETEMP sintesi guidata
+# Meteo Conte V59 - PRETEMP guida interna
 
-- Aggiunta sintesi PRETEMP sopra la mappa
-- Stato dinamico: previsione del giorno, ultima disponibile o non disponibile
-- Indicazione dell’azione consigliata
-- Nessuna interpretazione automatica dei fenomeni ancora
-- Lamone e resto dell’app invariati
+Aggiunta una guida rapida interna in tre passaggi per leggere zona, colore e simboli della mappa PRETEMP, con collegamento separato alla guida ufficiale.

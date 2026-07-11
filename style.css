@@ -749,3 +749,14 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
 .pretemp-summary.is-error .pretemp-summary-grid b{color:#ff9b9b}
 @media(max-width:430px){.pretemp-summary{margin-left:13px;margin-right:13px;padding:11px}.pretemp-summary-head h3{font-size:17px}.pretemp-summary>p{font-size:12.6px}.pretemp-summary-grid{gap:6px}.pretemp-summary-grid span{padding:7px}.pretemp-summary-grid b{font-size:10.8px}}
 @media(max-width:360px){.pretemp-summary-grid{grid-template-columns:1fr}.pretemp-summary-grid b{font-size:11.5px}}
+
+
+/* V59 - PRETEMP guida rapida interna */
+.pretemp-guide-card{margin:0 16px 12px;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:linear-gradient(180deg,rgba(104,184,255,.06),rgba(255,255,255,.025));overflow:hidden}
+.pretemp-guide-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 13px;border:0;background:transparent;color:#fff;text-align:left}
+.pretemp-guide-toggle span{display:flex;flex-direction:column;gap:3px}.pretemp-guide-toggle b{font-size:14px}.pretemp-guide-toggle small{font-size:10.5px;color:#aebfc7}.pretemp-guide-toggle i{font-style:normal;font-size:22px;color:#ffd965;transition:transform .2s ease}.pretemp-guide-toggle.is-open i{transform:rotate(180deg)}
+.pretemp-guide-panel{padding:0 12px 12px;display:grid;gap:8px}.pretemp-guide-step{display:grid;grid-template-columns:28px 1fr;gap:9px;align-items:center;padding:9px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(0,0,0,.1)}
+.pretemp-guide-step>strong{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(255,217,101,.14);color:#ffd965;font-size:13px}.pretemp-guide-step span{display:flex;flex-direction:column;gap:2px}.pretemp-guide-step b{font-size:12.5px}.pretemp-guide-step small{font-size:10.5px;line-height:1.3;color:#b8cad2}
+.pretemp-guide-warning{display:flex;gap:8px;align-items:flex-start;padding:9px 10px;border-left:3px solid #ffcf45;border-radius:10px;background:rgba(255,207,69,.07)}.pretemp-guide-warning b{font-size:11px;color:#ffe273;white-space:nowrap}.pretemp-guide-warning span{font-size:10.5px;line-height:1.35;color:#cfdee4}
+.pretemp-official-guide{display:flex;justify-content:center;align-items:center;min-height:40px;border-radius:13px;border:1px solid rgba(255,255,255,.12);color:#d9ebf2;text-decoration:none;font-size:11.5px;font-weight:700;background:rgba(255,255,255,.035)}
+@media(max-width:430px){.pretemp-guide-card{margin-left:13px;margin-right:13px}.pretemp-guide-toggle{padding:11px 12px}.pretemp-guide-panel{padding:0 10px 10px}}
