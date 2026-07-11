@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v78-raffinamento-ui';
+const CACHE_NAME = 'meteo-conte-v79-stabilizzazione-ui';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {

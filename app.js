@@ -107,7 +107,7 @@ function updateOperativeRoute({rainMax,rainSum,gustMax,storm,showers}){
     steps:[
       {label:'Zoom Earth',target:'toolZoom'},
       {label:'Radar live ER',target:'toolRadar'},
-      {label:'Centro PRETEMP',target:'toolPretemp'}
+      {label:'Centro PRETEMP',target:'toolPretempMain'}
     ],
     note:'Parti dal quadro generale e approfondisci soltanto se noti segnali in evoluzione.'
   };
@@ -115,7 +115,7 @@ function updateOperativeRoute({rainMax,rainSum,gustMax,storm,showers}){
     config={
       title:'Verifica evoluzione',
       steps:[
-        {label:'Centro PRETEMP',target:'toolPretemp'},
+        {label:'Centro PRETEMP',target:'toolPretempMain'},
         {label:'Radar live ER',target:'toolRadar'},
         {label:showers?'Zoom Earth':'Centro Lamone',target:showers?'toolZoom':'toolLamone'}
       ],
@@ -126,7 +126,7 @@ function updateOperativeRoute({rainMax,rainSum,gustMax,storm,showers}){
     config={
       title:'Sequenza operativa',
       steps:[
-        {label:'Centro PRETEMP',target:'toolPretemp'},
+        {label:'Centro PRETEMP',target:'toolPretempMain'},
         {label:storm?'Fulmini live':'Radar live ER',target:storm?'toolLightning':'toolRadar'},
         {label:rainSum>=8?'Centro Lamone':'Allerte ufficiali',target:rainSum>=8?'toolLamone':'toolAlerts'}
       ],

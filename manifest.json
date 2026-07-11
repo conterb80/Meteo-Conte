@@ -1,9 +1,9 @@
 {
-  "name": "Meteo Conte V78",
+  "name": "Meteo Conte V79",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=78-raffinamento-ui",
+  "start_url": "index.html?v=79-stabilizzazione-ui",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
-  "icons": [{"src":"icon.png?v=78","sizes":"512x512","type":"image/png"}]
+  "icons": [{"src":"icon.png?v=79","sizes":"512x512","type":"image/png"}]
 }
