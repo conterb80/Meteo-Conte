@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V76 · Analisi Conte 1.4</title>
+  <title>Meteo Conte V77 · Percorso Operativo 1.5</title>
   <link rel="manifest" href="manifest.json?v=76" />
   <link rel="icon" type="image/png" href="icon.png?v=76" />
   <link rel="stylesheet" href="style.css?v=76" />
@@ -328,9 +328,9 @@
       </div>
     </section>
 
-    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v76">
+    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v76 analysis-center-v77">
       <div class="analysis-hero">
-        <span class="label">CENTRO ANALISI · V76</span>
+        <span class="label">CENTRO ANALISI · V77</span>
         <h2>Segui il meteo passo dopo passo</h2>
         <p class="links-intro">Osserva, prevedi, controlla, conferma e segui: gli strumenti sono divisi secondo il tuo percorso operativo.</p>
       </div>
@@ -362,12 +362,25 @@
         <p id="conteReason">La valutazione combina pioggia, raffiche e segnali temporaleschi delle prossime ore.</p>
       </section>
 
+      <section id="operativeRoute" class="operative-route" aria-label="Percorso operativo consigliato">
+        <div class="operative-route-head">
+          <div><span>PERCORSO OPERATIVO</span><b id="routeTitle">Controllo essenziale</b></div>
+          <small>tocca uno step</small>
+        </div>
+        <div class="operative-route-steps">
+          <button type="button" data-route-target="toolZoom"><i>1</i><span><small>PRIMA</small><b id="routeStep1">Zoom Earth</b></span></button>
+          <button type="button" data-route-target="toolRadar"><i>2</i><span><small>POI</small><b id="routeStep2">Radar live ER</b></span></button>
+          <button type="button" data-route-target="toolPretemp"><i>3</i><span><small>SE SERVE</small><b id="routeStep3">Centro PRETEMP</b></span></button>
+        </div>
+        <p id="routeNote">Un percorso breve per verificare la situazione senza aprire strumenti inutili.</p>
+      </section>
+
       <div class="tool-section observe priority" id="observeSection">
         <div class="tool-title"><span>👁️</span><div><b>1. Osserva</b><small>Cosa sta succedendo adesso</small></div></div>
         <div class="tool-grid analysis-tools five-tools">
-          <a class="featured zoom" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><i>🌍</i><b>Zoom Earth</b><small>radar e satellite animati</small><em>CONSIGLIATO</em></a>
-          <a href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener"><i>📡</i><b>Radar live ER</b><small>pioggia osservata</small></a>
-          <a href="https://www.lightningmaps.org/" target="_blank" rel="noopener"><i>⚡</i><b>Fulmini live</b><small>scariche in tempo reale</small></a>
+          <a id="toolZoom" class="featured zoom" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><i>🌍</i><b>Zoom Earth</b><small>radar e satellite animati</small><em>CONSIGLIATO</em></a>
+          <a id="toolRadar" href="https://allertameteo.regione.emilia-romagna.it/radar-meteo" target="_blank" rel="noopener"><i>📡</i><b>Radar live ER</b><small>pioggia osservata</small></a>
+          <a id="toolLightning" href="https://www.lightningmaps.org/" target="_blank" rel="noopener"><i>⚡</i><b>Fulmini live</b><small>scariche in tempo reale</small></a>
           <a href="https://www.meteoam.it/it/satellite/italia" target="_blank" rel="noopener"><i>🛰️</i><b>Satellite</b><small>nubi e sviluppo</small></a>
           <a href="https://radar.protezionecivile.it/" target="_blank" rel="noopener"><i>🇮🇹</i><b>Radar nazionale</b><small>quadro italiano</small></a>
         </div>
@@ -376,7 +389,7 @@
       <div class="tool-section forecast-step" id="forecastSection">
         <div class="tool-title"><span>🌩️</span><div><b>2. Prevedi</b><small>Cosa potrebbe succedere nelle prossime ore</small></div></div>
         <div class="tool-grid analysis-tools">
-          <button class="tool-link-button featured" type="button" data-jump="pretempDrawer"><i>⛈️</i><b>Centro PRETEMP</b><small>rischio temporali intensi</small><em>PRINCIPALE</em></button>
+          <button id="toolPretemp" class="tool-link-button featured" type="button" data-jump="pretempDrawer"><i>⛈️</i><b>Centro PRETEMP</b><small>rischio temporali intensi</small><em>PRINCIPALE</em></button>
           <a href="https://www.windy.com/?44.42,11.98,8" target="_blank" rel="noopener"><i>🌀</i><b>Windy mappe</b><small>vento e pressione</small></a>
           <a href="https://www.windy.com/?rain,44.42,11.98,8" target="_blank" rel="noopener"><i>🌧️</i><b>Pioggia prevista</b><small>ore successive</small></a>
           <a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank" rel="noopener"><i>🏛️</i><b>Meteo Arpae</b><small>previsioni ufficiali</small></a>
@@ -386,7 +399,7 @@
       <div class="tool-section river-step">
         <div class="tool-title"><span>🌊</span><div><b>3. Controlla</b><small>Se la pioggia diventa persistente</small></div></div>
         <div class="tool-grid analysis-tools">
-          <button class="tool-link-button featured" type="button" data-jump="lamoneDrawer"><i>🌊</i><b>Centro Lamone</b><small>controllo monte-valle</small><em>PRINCIPALE</em></button>
+          <button id="toolLamone" class="tool-link-button featured" type="button" data-jump="lamoneDrawer"><i>🌊</i><b>Centro Lamone</b><small>controllo monte-valle</small><em>PRINCIPALE</em></button>
           <a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener"><i>📡</i><b>Sensori Lamone</b><small>livelli del percorso</small></a>
           <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener"><i>📈</i><b>Idrometri ER</b><small>livelli ufficiali</small></a>
           <a href="https://www.windy.com/?rain,44.16,11.62,8" target="_blank" rel="noopener"><i>🏔️</i><b>Pioggia a monte</b><small>Marradi e Modigliana</small></a>
@@ -406,7 +419,7 @@
       <div class="tool-section news follow-step">
         <div class="tool-title"><span>🔔</span><div><b>5. Segui</b><small>Aggiornamenti e fonti affidabili</small></div></div>
         <div class="tool-grid analysis-tools">
-          <a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener"><i>⚠️</i><b>Allerte ufficiali</b><small>bollettini regionali</small></a>
+          <a id="toolAlerts" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener"><i>⚠️</i><b>Allerte ufficiali</b><small>bollettini regionali</small></a>
           <a href="https://www.arpae.it/it/notizie" target="_blank" rel="noopener"><i>📰</i><b>Arpae News</b><small>aggiornamenti ufficiali</small></a>
           <a href="https://www.regione.emilia-romagna.it/protezione-civile" target="_blank" rel="noopener"><i>🛡️</i><b>Protezione Civile</b><small>comunicazioni regionali</small></a>
           <a href="https://www.emiliaromagnameteo.com/" target="_blank" rel="noopener"><i>☁️</i><b>EmiliaRomagnaMeteo</b><small>nowcasting locale</small></a>
@@ -414,7 +427,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V76 · Analisi Conte 1.4</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V77 · Percorso Operativo 1.5</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -427,6 +440,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=76"></script>
+  <script src="app.js?v=77"></script>
 </body>
 </html>

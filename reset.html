@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Meteo Conte V76 · Aggiornamento</title>
+  <title>Meteo Conte V77 · Aggiornamento</title>
   <style>
     body{margin:0;background:#062533;color:white;font-family:system-ui;display:grid;place-items:center;min-height:100vh;text-align:center;padding:24px;box-sizing:border-box}
     button{font-size:20px;font-weight:800;border:0;border-radius:999px;padding:18px 28px;background:#85f27a;color:#062533;cursor:pointer}
@@ -15,9 +15,9 @@
 </head>
 <body>
   <div>
-    <h1>Meteo Conte V76</h1>
-    <p>Pulizia della cache e apertura del Centro Analisi con Analisi Conte.<br>Premi il pulsante se l’app non riparte automaticamente.</p>
-    <button onclick="go()">Aggiorna alla V76</button>
+    <h1>Meteo Conte V77</h1>
+    <p>Pulizia della cache e apertura del Centro Analisi con Percorso Operativo.<br>Premi il pulsante se l’app non riparte automaticamente.</p>
+    <button onclick="go()">Aggiorna alla V77</button>
   </div>
   <script>
     async function go(){
@@ -31,7 +31,7 @@
           await Promise.all(keys.map(k=>caches.delete(k)));
         }
       }catch(e){}
-      location.replace('./index.html?v=76-analisi-conte&t='+Date.now());
+      location.replace('./index.html?v=77-percorso-operativo&t='+Date.now());
     }
     go();
   </script>

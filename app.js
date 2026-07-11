@@ -85,6 +85,55 @@ function updateAnalysisSnapshot(data){
   if(conteAttention) conteAttention.textContent=attention;
   if(conteAction) conteAction.textContent=action;
   if(conteReason) conteReason.textContent=reason;
+  updateOperativeRoute({rainMax,rainSum,gustMax,storm,showers});
+}
+
+
+function setOperativeRoute(config){
+  const box=$('operativeRoute'); if(!box) return;
+  const title=$('routeTitle'), note=$('routeNote');
+  if(title) title.textContent=config.title;
+  if(note) note.textContent=config.note;
+  const ids=['routeStep1','routeStep2','routeStep3'];
+  const buttons=[...box.querySelectorAll('[data-route-target]')];
+  config.steps.forEach((step,i)=>{
+    const label=$(ids[i]); if(label) label.textContent=step.label;
+    if(buttons[i]) buttons[i].dataset.routeTarget=step.target;
+  });
+}
+function updateOperativeRoute({rainMax,rainSum,gustMax,storm,showers}){
+  let config={
+    title:'Controllo essenziale',
+    steps:[
+      {label:'Zoom Earth',target:'toolZoom'},
+      {label:'Radar live ER',target:'toolRadar'},
+      {label:'Centro PRETEMP',target:'toolPretemp'}
+    ],
+    note:'Parti dal quadro generale e approfondisci soltanto se noti segnali in evoluzione.'
+  };
+  if(rainMax>=35 || rainSum>=1 || gustMax>=35 || showers){
+    config={
+      title:'Verifica evoluzione',
+      steps:[
+        {label:'Centro PRETEMP',target:'toolPretemp'},
+        {label:'Radar live ER',target:'toolRadar'},
+        {label:showers?'Zoom Earth':'Centro Lamone',target:showers?'toolZoom':'toolLamone'}
+      ],
+      note:showers?'Confronta previsione e osservazione; controlla Zoom Earth per direzione e sviluppo.':'Se la pioggia persiste, passa al controllo monte-valle del Lamone.'
+    };
+  }
+  if(storm || rainMax>=70 || rainSum>=8 || gustMax>=60){
+    config={
+      title:'Sequenza operativa',
+      steps:[
+        {label:'Centro PRETEMP',target:'toolPretemp'},
+        {label:storm?'Fulmini live':'Radar live ER',target:storm?'toolLightning':'toolRadar'},
+        {label:rainSum>=8?'Centro Lamone':'Allerte ufficiali',target:rainSum>=8?'toolLamone':'toolAlerts'}
+      ],
+      note:storm?'Verifica subito sviluppo, attività elettrica e comunicazioni ufficiali.':'Segui il fenomeno e passa al Lamone se le precipitazioni diventano persistenti.'
+    };
+  }
+  setOperativeRoute(config);
 }
 
 function updateControlBox(data){
@@ -425,6 +474,12 @@ function loadLamoneSensors(){
 
 document.querySelectorAll('[data-analysis-jump]').forEach(btn=>btn.addEventListener('click',()=>{
   const target=$(btn.dataset.analysisJump); if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+}));
+document.querySelectorAll('[data-route-target]').forEach(btn=>btn.addEventListener('click',()=>{
+  const target=$(btn.dataset.routeTarget);
+  if(!target) return;
+  target.scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(()=>target.click(),320);
 }));
 load();
 loadBasinRain();

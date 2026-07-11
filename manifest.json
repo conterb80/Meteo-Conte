@@ -1,9 +1,9 @@
 {
-  "name": "Meteo Conte V76",
+  "name": "Meteo Conte V77",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=76-analisi-conte",
+  "start_url": "index.html?v=77-percorso-operativo",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
-  "icons": [{"src":"icon.png?v=76","sizes":"512x512","type":"image/png"}]
+  "icons": [{"src":"icon.png?v=77","sizes":"512x512","type":"image/png"}]
 }

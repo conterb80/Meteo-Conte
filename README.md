@@ -1,12 +1,12 @@
-# Meteo Conte V76 — Analisi Conte
+# Meteo Conte V77 — Percorso Operativo
 
-Evoluzione del Centro Analisi senza modificare Home, Lamone, PRETEMP o i link già presenti.
+Evoluzione del Centro Analisi senza modificare Home, Lamone, PRETEMP, dati o collegamenti esistenti.
 
 ## Novità
-- Nuovo pannello compatto **Analisi Conte**.
-- Valutazione sintetica di stato, evoluzione e livello di attenzione.
-- Azione consigliata basata su pioggia, raffiche e segnali temporaleschi delle prossime 6 ore.
-- Quadro Rapido ulteriormente compattato.
-- Sezioni 1–5 e relativi collegamenti lasciati invariati.
+- Nuovo **Percorso Operativo** dinamico in tre passaggi.
+- La sequenza consigliata cambia in base a pioggia, raffiche, rovesci e segnali temporaleschi.
+- Ogni passaggio apre direttamente lo strumento indicato.
+- Analisi Conte e Quadro Rapido restano invariati e alimentano il percorso.
+- Sezioni 1–5 e relativi link lasciati invariati.
 
-Per forzare l’aggiornamento aprire `reset.html?v=76`.
+Per forzare l’aggiornamento aprire `reset.html?v=77`.
