@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v73-dashboard-grafica';
+const CACHE_NAME = 'meteo-conte-v74-dashboard-professionale';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
