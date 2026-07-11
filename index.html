@@ -10,16 +10,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V59 · PRETEMP guida interna</title>
-  <link rel="manifest" href="manifest.json?v=59" />
-  <link rel="icon" type="image/png" href="icon.png?v=59" />
-  <link rel="stylesheet" href="style.css?v=59.0.0" />
+  <title>Meteo Conte V60 · Decisione PRETEMP Beta</title>
+  <link rel="manifest" href="manifest.json?v=60" />
+  <link rel="icon" type="image/png" href="icon.png?v=60" />
+  <link rel="stylesheet" href="style.css?v=60.0.0" />
 </head>
 <body>
   <main class="app">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=59" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=60" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -223,6 +223,20 @@
         <span><small>Validità</small><b id="pretempValidity">oggi · 00–24 UTC</b></span>
       </div>
 
+
+      <section id="pretempDecision" class="pretemp-decision-beta" aria-live="polite">
+        <div class="pretemp-decision-head">
+          <div>
+            <span class="label">DECISIONE CONTE · PRETEMP BETA</span>
+            <h3 id="pretempDecisionTitle">Lettura guidata</h3>
+          </div>
+          <span id="pretempDecisionDot" class="bigdot yellow" aria-label="Stato decisione"></span>
+        </div>
+        <p id="pretempDecisionText">Prima controlla la data, poi la Romagna, il colore del livello e infine i simboli dei fenomeni.</p>
+        <button id="pretempDecisionAction" type="button">🗺️ Vai alla mappa</button>
+        <small class="pretemp-decision-note">Beta: in questa fase guida la consultazione, ma non interpreta ancora automaticamente il rischio.</small>
+      </section>
+
       <section id="pretempSummary" class="pretemp-summary" aria-live="polite">
         <div class="pretemp-summary-head">
           <div>
@@ -374,7 +388,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V59 · PRETEMP guida interna</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V60 · Decisione PRETEMP Beta</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>

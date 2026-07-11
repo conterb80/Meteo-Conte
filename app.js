@@ -408,7 +408,7 @@ loadLamoneSensors();
   setTimeout(syncValidity,800);
 })();
 
-// V59 - PRETEMP guida interna + mappa giornaliera
+// V60 - PRETEMP decisione beta + guida interna + mappa giornaliera
 (function setupPretempV1(){
   const map=document.getElementById('pretempMap');
   const mapLarge=document.getElementById('pretempMapLarge');
@@ -425,7 +425,25 @@ loadLamoneSensors();
   const summaryState=document.getElementById('pretempSummaryState');
   const summaryAction=document.getElementById('pretempSummaryAction');
   const summaryDot=document.getElementById('pretempSummaryDot');
+  const decision=document.getElementById('pretempDecision');
+  const decisionTitle=document.getElementById('pretempDecisionTitle');
+  const decisionText=document.getElementById('pretempDecisionText');
+  const decisionDot=document.getElementById('pretempDecisionDot');
+  const decisionAction=document.getElementById('pretempDecisionAction');
   if(!map || !mapButton) return;
+
+  const setDecision=(mode,title,text,actionText)=>{
+    if(!decision) return;
+    decision.classList.remove('is-ready','is-warning','is-error');
+    decision.classList.add(mode==='ready'?'is-ready':mode==='error'?'is-error':'is-warning');
+    if(decisionTitle) decisionTitle.textContent=title;
+    if(decisionText) decisionText.textContent=text;
+    if(decisionAction) decisionAction.textContent=actionText;
+    if(decisionDot){
+      decisionDot.classList.remove('green','yellow','red');
+      decisionDot.classList.add(mode==='ready'?'green':mode==='error'?'red':'yellow');
+    }
+  };
 
   const setSummary=(mode,title,text,state,action)=>{
     if(!summary) return;
@@ -471,6 +489,14 @@ loadLamoneSensors();
     fallback?.classList.add('hidden');
     map.classList.remove('hidden');
     const isToday=attempt===0;
+    setDecision(
+      isToday?'ready':'warning',
+      isToday?'Previsione pronta':'Controlla la data',
+      isToday
+        ?'La mappa di oggi è disponibile. Concentrati sulla Romagna: prima il livello, poi i simboli di grandine, raffiche, piogge forti o tornado.'
+        :'È disponibile una previsione precedente. Prima di usarla, verifica attentamente data e validità.',
+      isToday?'🗺️ Leggi la mappa':'📅 Verifica validità'
+    );
     setSummary(
       isToday?'ok':'waiting',
       isToday?'Previsione del giorno disponibile':'Ultima previsione disponibile',
@@ -488,8 +514,10 @@ loadLamoneSensors();
     forecastLink.href='https://www.pretemp.it/';
     if(modalForecastLink) modalForecastLink.href='https://www.pretemp.it/';
     validity.textContent='in attesa di pubblicazione';
+    setDecision('error','Fonte da aprire','La mappa non è disponibile nell’app. Apri PRETEMP completo per controllare la previsione ufficiale.','↗ Apri PRETEMP');
     setSummary('error','Previsione non disponibile','La mappa non è stata trovata. Apri la pagina PRETEMP completa oppure riprova più tardi.','non disponibile','apri fonte');
   });
+  setDecision('warning','Verifica in corso','Sto cercando la mappa ufficiale più recente.','⏳ Attendi');
   setSummary('waiting','Carico la previsione…','Sto verificando la disponibilità della mappa ufficiale del giorno.','verifica…','attendi');
   applyCandidate();
 
@@ -501,6 +529,10 @@ loadLamoneSensors();
   };
   const closeModal=()=>{modal?.classList.add('hidden');document.body.classList.remove('pretemp-modal-open');};
   mapButton.addEventListener('click',openModal);
+  decisionAction?.addEventListener('click',()=>{
+    if(map.classList.contains('hidden')) window.open(forecastLink.href,'_blank','noopener');
+    else openModal();
+  });
   close?.addEventListener('click',closeModal);
   modal?.addEventListener('click',e=>{if(e.target===modal) closeModal();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal();});
