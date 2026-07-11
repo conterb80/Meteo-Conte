@@ -1,14 +1,11 @@
-# Meteo Conte V82 — Ottimizzazione Grafica
+# Meteo Conte V83 — Centro Operativo
 
-Versione dedicata esclusivamente alla resa su smartphone.
+Aggiornamento grafico dedicato al Centro Analisi:
+- nuova intestazione Centro Operativo;
+- eliminato il titolo descrittivo ridondante;
+- Quadro Rapido più ampio, leggibile e visuale;
+- Analisi Conte e Percorso Operativo rifiniti;
+- sezioni a fisarmonica e link invariati;
+- nessuna modifica a Home, Lamone e PRETEMP.
 
-## Modifiche
-- fisarmonica corretta: resta aperta una sola sezione;
-- sezioni chiuse ridotte a una sola riga;
-- card strumenti più basse e disposte orizzontalmente;
-- testi principali più grandi;
-- icone ridotte e affiancate al testo;
-- Quadro Rapido, Analisi Conte e Percorso Operativo compattati;
-- nessuna modifica a dati, funzioni, Home, Lamone, PRETEMP o collegamenti.
-
-Dopo il caricamento aprire `reset.html?v=82`.
+Dopo il caricamento aprire: `reset.html?v=83`

@@ -1,9 +1,9 @@
 {
-  "name": "Meteo Conte V82",
+  "name": "Meteo Conte V83",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=80-release-candidate",
+  "start_url": "index.html?v=83-centro-operativo",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
-  "icons": [{"src":"icon.png?v=79","sizes":"512x512","type":"image/png"}]
+  "icons": [{"src":"icon.png?v=83","sizes":"512x512","type":"image/png"}]
 }
