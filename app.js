@@ -54,8 +54,8 @@ function updateAnalysisSnapshot(data){
   $('snapshotStorm').textContent=storm?'Possibili':showers?'Rovesci':'Nessun segnale';
   $('snapshotStormNote').textContent=storm?'verifica PRETEMP':showers?'verifica radar':'nelle prossime 6h';
   let color='green',title='Quadro regolare',advice='Nessun segnale rilevante dal modello: parti da Zoom Earth per il controllo generale.';
-  if(rainMax>=45||rainSum>=3||gustMax>=40||showers){color='yellow';title='Evoluzione da seguire';advice='Apri PRETEMP e Radar live ER per verificare posizione e sviluppo dei fenomeni.';}
-  if(storm||rainMax>=75||rainSum>=10||gustMax>=65){color=storm||gustMax>=75?'red':'yellow';title='Controllo operativo consigliato';advice='Controlla subito PRETEMP, radar, fulmini e successivamente Lamone se la pioggia persiste.';}
+  if(rainMax>=45||rainSum>=3||gustMax>=40||showers){color='yellow';title='Evoluzione da seguire';advice='Apri PRETEMP e Radar evoluzione ER per verificare posizione e sviluppo dei fenomeni.';}
+  if(storm||rainMax>=75||rainSum>=10||gustMax>=65){color=storm||gustMax>=75?'red':'yellow';title='Controllo operativo consigliato';advice='Controlla subito PRETEMP, radar evoluzione, fulmini e successivamente Lamone se la pioggia persiste.';}
   $('snapshotTitle').textContent=title;
   $('snapshotAdvice').textContent=advice;
   $('snapshotDot').className=color;
@@ -69,7 +69,7 @@ function updateAnalysisSnapshot(data){
   let conteColor='green';
   if(rainMax>=35 || rainSum>=1 || gustMax>=35 || showers){
     state='Situazione da seguire'; evolution=showers?'Rovesci possibili':'Possibile cambiamento'; attention='Moderata';
-    action='Apri PRETEMP e Radar live ER';
+    action='Apri PRETEMP e Radar evoluzione ER';
     reason=`Pioggia max ${rainMax}%, accumulo ${rainSum.toFixed(1)} mm, raffiche fino a ${Math.round(gustMax)} km/h.`;
     conteColor='yellow';
   }
@@ -106,7 +106,7 @@ function updateOperativeRoute({rainMax,rainSum,gustMax,storm,showers}){
     title:'Controllo essenziale',
     steps:[
       {label:'Zoom Earth',target:'toolZoom'},
-      {label:'Radar live ER',target:'toolRadar'},
+      {label:'Radar evoluzione ER',target:'toolRadar'},
       {label:'Centro PRETEMP',target:'toolPretempMain'}
     ],
     note:'Parti dal quadro generale e approfondisci soltanto se noti segnali in evoluzione.'
@@ -116,7 +116,7 @@ function updateOperativeRoute({rainMax,rainSum,gustMax,storm,showers}){
       title:'Verifica evoluzione',
       steps:[
         {label:'Centro PRETEMP',target:'toolPretempMain'},
-        {label:'Radar live ER',target:'toolRadar'},
+        {label:'Radar evoluzione ER',target:'toolRadar'},
         {label:showers?'Zoom Earth':'Centro Lamone',target:showers?'toolZoom':'toolLamone'}
       ],
       note:showers?'Confronta previsione e osservazione; controlla Zoom Earth per direzione e sviluppo.':'Se la pioggia persiste, passa al controllo monte-valle del Lamone.'
@@ -127,7 +127,7 @@ function updateOperativeRoute({rainMax,rainSum,gustMax,storm,showers}){
       title:'Sequenza operativa',
       steps:[
         {label:'Centro PRETEMP',target:'toolPretempMain'},
-        {label:storm?'Fulmini live':'Radar live ER',target:storm?'toolLightning':'toolRadar'},
+        {label:storm?'Fulmini live':'Radar evoluzione ER',target:storm?'toolLightning':'toolRadar'},
         {label:rainSum>=8?'Centro Lamone':'Allerte ufficiali',target:rainSum>=8?'toolLamone':'toolAlerts'}
       ],
       note:storm?'Verifica subito sviluppo, attività elettrica e comunicazioni ufficiali.':'Segui il fenomeno e passa al Lamone se le precipitazioni diventano persistenti.'
@@ -600,7 +600,7 @@ loadLamoneSensors();
   const makeUrls=date=>{
     const y=date.getFullYear(), m=date.getMonth(), d=date.getDate();
     const stamp=`${pad(d)}_${pad(m+1)}_${y}`;
-    const officialStamp=`${pad(d)}_${pad(m+1)}-${y}`;
+    const officialStamp=`${pad(d)}_${pad(m+1)}_${y}`;
     const base=`https://pretemp.altervista.org/archivio/${y}/${months[m]}`;
     const officialBase=`https://www.pretemp.it/archivio/${y}/${months[m]}`;
     return {
@@ -695,7 +695,7 @@ loadLamoneSensors();
 
 // V68 - PRETEMP ottimizzato: lettura essenziale
 
-// V68 - Bollettino PRETEMP pulito e confronto radar
+// V84 - Bollettino PRETEMP: URL ufficiale corretto + proxy HTTPS robusto
 (function setupPretempBulletin(){
   const toggle=document.getElementById('togglePretempBulletin');
   const panel=document.getElementById('pretempBulletinPanel');
@@ -712,7 +712,7 @@ loadLamoneSensors();
     if(!forecast?.href) return;
     load.disabled=true;load.textContent='Carico…';status.textContent='Recupero il testo ufficiale PRETEMP.';
     try{
-      const proxy='https://r.jina.ai/http://'+forecast.href.replace(/^https?:\/\//,'');
+      const proxy='https://r.jina.ai/https://'+forecast.href.replace(/^https?:\/\//,'')+'?v='+Date.now();
       const res=await fetch(proxy,{cache:'no-store'});
       if(!res.ok) throw new Error('HTTP '+res.status);
       const raw=await res.text();
@@ -732,7 +732,7 @@ loadLamoneSensors();
       text.classList.remove('hidden');status.textContent='Bollettino ufficiale del giorno, ripulito per la lettura da telefono.';
       load.textContent='Ricarica testo';
     }catch(_e){
-      status.textContent='Il testo pulito non è disponibile in questo momento. Usa “Apri pagina ufficiale”.';
+      status.textContent='Caricamento automatico non riuscito. La pagina ufficiale resta disponibile qui sotto.';
       load.textContent='Riprova';
     }finally{load.disabled=false;}
   });
