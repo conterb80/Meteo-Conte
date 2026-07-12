@@ -266,10 +266,41 @@ function renderRisk(h,base){
  target.innerHTML='';
  for(let i=1;i<=4;i++){const p=h.precipitation_probability[i]||0;const risk=Math.max(base,p);const c=risk>=50?'yellow':'green'; const text=risk>=50?'attenzione':risk>=25?'monitorare':'tranquillo'; target.insertAdjacentHTML('beforeend',`<div class="riskitem"><span class="rball ${c}"></span><small>+${i}h</small><b>${text}</b></div>`)}
 }
+function timelineState(h,k){
+ const code=h.weather_code[k]||0;
+ const prob=h.precipitation_probability[k]||0;
+ const rain=h.precipitation[k]||0;
+ const gust=h.wind_gusts_10m[k]||0;
+ if(code>=95 || gust>=70 || rain>=8 || prob>=85) return {level:'red',label:code>=95?'Temporali':'Criticità'};
+ if((code>=80&&code<=82) || gust>=50 || rain>=3 || prob>=60) return {level:'orange',label:code>=80&&code<=82?'Rovesci':'Da seguire'};
+ if(code>=51 || gust>=35 || rain>=.2 || prob>=30) return {level:'yellow',label:code>=51?'Pioggia possibile':'Variabile'};
+ if(code>=2&&code<=3) return {level:'green',label:'Nuvolosità'};
+ return {level:'green',label:'Stabile'};
+}
+function renderOperationalTimeline(h){
+ const target=$('operationalTimeline'); if(!target) return;
+ const start=nextStart(h.time);
+ const count=Math.min(6,h.time.length-start);
+ const states=[];
+ target.innerHTML='';
+ for(let i=0;i<count;i++){
+   const k=start+i, state=timelineState(h,k), time=formatHour(h.time[k]);
+   states.push(state);
+   target.insertAdjacentHTML('beforeend',`<div class="timeline-point ${state.level}"><span class="timeline-dot"></span><time>${time}</time><b>${state.label}</b><small>${Math.round(h.temperature_2m[k])}° · ${h.precipitation_probability[k]||0}%</small></div>`);
+ }
+ const rank={green:0,yellow:1,orange:2,red:3};
+ const max=states.reduce((a,b)=>rank[b.level]>rank[a.level]?b:a,states[0]||{level:'green',label:'Stabile'});
+ const summary=$('timelineSummary');
+ if(summary){
+   summary.className='timeline-summary '+max.level;
+   summary.textContent=max.level==='green'?'Evoluzione regolare: nessun passaggio operativo aggiuntivo richiesto.':max.level==='yellow'?'Possibile cambiamento: osserva l’evoluzione nelle prossime ore.':max.level==='orange'?'Fenomeni da seguire: confronta previsione, radar e PRETEMP.':'Segnale importante: attiva subito il percorso operativo consigliato.';
+ }
+}
 function renderHours(h){
  const target=$('hours'); if(!target) return;
  target.innerHTML=''; const start=nextStart(h.time);
  h.time.slice(start,start+6).forEach((t,i)=>{const k=start+i;const d=new Date(t); const code=h.weather_code[k]; const icon=(WMO[code]||['','☀️'])[1]; target.insertAdjacentHTML('beforeend',`<div class="hour"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><b>${Math.round(h.temperature_2m[k])}°</b><span>${icon}</span><small>${h.precipitation_probability[k]}% · ${h.precipitation[k].toFixed(1)}mm</small></div>`)});
+ renderOperationalTimeline(h);
 }
 function makeChart(vals,times,unit,type){
  const w=320,h=104,padX=18,padY=18;
@@ -317,7 +348,12 @@ document.querySelectorAll('[data-trend]').forEach(el=>{
   el.addEventListener('click',()=>openTrend(el.dataset.trend));
   el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend(el.dataset.trend)}});
 });
-document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>$(el.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'})));
+document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>{
+ const id=el.dataset.jump;
+ if(id==='lamoneDrawer'){document.getElementById('openLamoneDrawer')?.click();return;}
+ if(id==='pretempDrawer'){document.getElementById('openPretempDrawer')?.click();return;}
+ $(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+}));
 
 $('riverChartBtn')?.addEventListener('click',()=>{
   const t=$('riverDetailText'); if(t) delete t.dataset.manualSensor;

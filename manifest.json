@@ -1,13 +1,13 @@
 {
-  "name": "Meteo Conte V89 Monitor Live",
+  "name": "Meteo Conte V90 Trend Operativo",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=89-monitor-live",
+  "start_url": "index.html?v=90-trend-operativo",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
   "icons": [
     {
-      "src": "icon.png?v=89",
+      "src": "icon.png?v=90",
       "sizes": "512x512",
       "type": "image/png"
     }

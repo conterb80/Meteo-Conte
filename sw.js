@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-v89-monitor-live';
+const CACHE_NAME = 'meteo-conte-v90-trend-operativo';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {

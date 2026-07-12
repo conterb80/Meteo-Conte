@@ -10,10 +10,10 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V89 · Monitor live</title>
-  <link rel="manifest" href="manifest.json?v=89" />
-  <link rel="icon" type="image/png" href="icon.png?v=89" />
-  <link rel="stylesheet" href="style.css?v=89" />
+  <title>Meteo Conte V90 · Trend operativo</title>
+  <link rel="manifest" href="manifest.json?v=90" />
+  <link rel="icon" type="image/png" href="icon.png?v=90" />
+  <link rel="stylesheet" href="style.css?v=90" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 </head>
 <body>
@@ -22,7 +22,7 @@
     <header id="headerWeather" class="topbar logo-head weather-hero weather-clear" aria-label="Meteo attuale Borgo Viazza">
       <div class="weather-hero-main">
         <div class="brand-block">
-          <img class="app-logo" src="icon.png?v=89" alt="Meteo Conte" />
+          <img class="app-logo" src="icon.png?v=90" alt="Meteo Conte" />
           <div class="hero-location">
             <span class="hero-kicker">METEO CONTE</span>
             <h1>Borgo Viazza</h1>
@@ -98,9 +98,20 @@
         </div>
         <div id="hours" class="home-hourly-strip" aria-label="Previsioni orarie"></div>
       </article>
+
+      <article class="card operational-timeline-card" aria-label="Trend operativo delle prossime sei ore">
+        <div class="monitor-head">
+          <div><span class="label">TREND OPERATIVO · 6 ORE</span><b>Evoluzione a colpo d’occhio</b></div>
+          <small>automatico</small>
+        </div>
+        <div id="operationalTimeline" class="operational-timeline">
+          <div class="timeline-loading">Calcolo dell’evoluzione…</div>
+        </div>
+        <p id="timelineSummary" class="timeline-summary">La timeline usa previsione oraria, pioggia, vento e segnali temporaleschi.</p>
+      </article>
     </section>
 
-    <div class="quick-drawers-grid" aria-label="Accessi operativi rapidi">
+    <div class="quick-drawers-grid home-hidden-tools" aria-label="Accessi operativi rapidi">
 <section id="lamoneDrawer" class="card lamone-drawer" aria-label="Cassetto Lamone">
       <span class="label">CASSETTO 01</span>
       <span id="lamoneDrawerCorner" class="cornerdot green"></span>
@@ -429,7 +440,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V89 · Monitor live</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V90 · Trend operativo</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -443,6 +454,6 @@
 
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="app.js?v=89"></script>
+  <script src="app.js?v=90"></script>
 </body>
 </html>

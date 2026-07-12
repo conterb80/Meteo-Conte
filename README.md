@@ -1,10 +1,13 @@
-# Meteo Conte V89 — Monitor Live
+# Meteo Conte V90 — Trend Operativo
+
+Versione finale della roadmap Home.
 
 ## Novità
-- Mini radar animato nella Home, centrato su Borgo Viazza.
-- Fascia oraria scorrevole con temperatura, icona, probabilità e quantità di pioggia.
-- Tocco su “Apri completo” per accedere al Radar Evoluzione ER ufficiale.
-- Tutta la logica operativa, Lamone, PRETEMP e Centro Operativo restano invariati.
+- timeline automatica delle prossime 6 ore;
+- stato verde, giallo, arancione o rosso per ogni passaggio orario;
+- sintesi operativa sotto la timeline;
+- cassetti Lamone e PRETEMP rimossi dalla Home e mantenuti negli strumenti del Centro Operativo;
+- header V88, radar V89, fascia oraria, logiche e collegamenti invariati.
 
 ## Installazione
-Sostituire tutti i file nel repository GitHub Pages e aprire `reset.html?v=89`.
+Sostituire tutti i file nel repository GitHub Pages e aprire `reset.html?v=90`.
