@@ -1,13 +1,11 @@
-# Meteo Conte V90 — Trend Operativo
+# Meteo Conte 1.0 RC1 — Beta Finale
 
-Versione finale della roadmap Home.
+Release Candidate per il test quotidiano prolungato.
 
-## Novità
-- timeline automatica delle prossime 6 ore;
-- stato verde, giallo, arancione o rosso per ogni passaggio orario;
-- sintesi operativa sotto la timeline;
-- cassetti Lamone e PRETEMP rimossi dalla Home e mantenuti negli strumenti del Centro Operativo;
-- header V88, radar V89, fascia oraria, logiche e collegamenti invariati.
-
-## Installazione
-Sostituire tutti i file nel repository GitHub Pages e aprire `reset.html?v=90`.
+- Radar Zoom Earth in prova nella Home
+- Selettore immediato per tornare al radar leggero RainViewer
+- Indicatore LIVE con aggiornamento
+- Timeline operativa rifinita
+- Microanimazioni meteo leggere
+- Messaggio automatico più naturale
+- Nessuna modifica alla logica operativa, agli strumenti o ai collegamenti

@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V90 · Trend operativo</title>
+  <title>Meteo Conte 1.0 RC1 · Beta finale</title>
   <link rel="manifest" href="manifest.json?v=90" />
   <link rel="icon" type="image/png" href="icon.png?v=90" />
   <link rel="stylesheet" href="style.css?v=90" />
@@ -80,15 +80,28 @@
     </section>
 
     <section class="home-live-monitor" aria-label="Monitor meteo live">
-      <article class="card radar-monitor-card">
-        <div class="monitor-head">
-          <div><span class="label">RADAR LIVE</span><b>Precipitazioni attorno a Borgo Viazza</b></div>
-          <a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">Apri completo ↗</a>
+      <article class="card radar-monitor-card radar-rc1">
+        <div class="monitor-head radar-head-rc1">
+          <div><span class="label">RADAR LIVE · ZOOM EARTH</span><b>Precipitazioni attorno a Borgo Viazza</b></div>
+          <div class="radar-head-actions">
+            <span class="live-badge"><i></i>LIVE</span>
+            <a href="https://zoom.earth/maps/radar/#view=44.418,11.977,8z" target="_blank" rel="noopener">Apri completo ↗</a>
+          </div>
         </div>
-        <div id="homeRadarMap" class="home-radar-map" aria-label="Mappa radar meteo live">
-          <div class="radar-loading"><span>📡</span><b>Caricamento radar…</b></div>
+        <div class="radar-mode-switch" role="group" aria-label="Seleziona radar">
+          <button id="useZoomRadar" class="active" type="button">Zoom Earth</button>
+          <button id="useLiteRadar" type="button">Radar leggero</button>
         </div>
-        <div class="radar-foot"><span id="radarFrameTime">Ultimo aggiornamento disponibile</span><span>debole <i></i> intenso</span></div>
+        <div id="zoomRadarPanel" class="zoom-radar-panel">
+          <iframe id="zoomRadarFrame" title="Radar Zoom Earth su Borgo Viazza" loading="lazy" referrerpolicy="no-referrer" src="https://zoom.earth/maps/radar/#view=44.418,11.977,8z"></iframe>
+          <div class="zoom-radar-note"><span>Monitor Zoom Earth in prova</span><small>Se risulta lento o non si carica, usa “Radar leggero”.</small></div>
+        </div>
+        <div id="liteRadarPanel" class="lite-radar-panel hidden">
+          <div id="homeRadarMap" class="home-radar-map" aria-label="Mappa radar meteo live">
+            <div class="radar-loading"><span>📡</span><b>Caricamento radar…</b></div>
+          </div>
+        </div>
+        <div class="radar-foot"><span id="radarFrameTime">LIVE · aggiornamento in corso</span><span>debole <i></i> intenso</span></div>
       </article>
 
       <article class="card hourly-monitor-card">
@@ -343,7 +356,7 @@
           <span class="operation-icon">⛈️</span>
           <div><h2>CENTRO OPERATIVO</h2><p>Meteo Conte · Sala operativa personale</p></div>
         </div>
-        <span class="operation-version">V88</span>
+        <span class="operation-version">RC1</span>
       </div>
 
       <section id="analysisSnapshot" class="analysis-snapshot" aria-label="Quadro rapido Centro Analisi">
@@ -440,7 +453,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V90 · Trend operativo</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC1 · Beta finale</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>

@@ -41,8 +41,8 @@ function buildHomeBriefing(c,h,idx){
   const strongWind=gustMax>=60;
   const lowPressure=(c.pressure_msl||1015)<1008;
   const signals=[storm,heavyRain,strongWind].filter(Boolean).length;
-  let main='Nessun fenomeno significativo previsto nelle prossime 6 ore.';
-  let detail='Controllo ordinario sufficiente: pioggia assente o debole, vento regolare e nessun segnale temporalesco dal modello.';
+  let main='Nessun fenomeno rilevante previsto nelle prossime 6 ore.';
+  let detail='Situazione stabile. Non sono necessari controlli aggiuntivi.';
   let color='green';
   if(idx>=25 || rainMax>=35 || rainSum>=1 || gustMax>=35 || showers){
     color='yellow';
@@ -961,6 +961,36 @@ loadLamoneSensors();
 })();
 
 
+/* RC1 — Radar Zoom Earth in prova con fallback leggero */
+(function initRadarMode(){
+  const zoomBtn=document.getElementById('useZoomRadar');
+  const liteBtn=document.getElementById('useLiteRadar');
+  const zoomPanel=document.getElementById('zoomRadarPanel');
+  const litePanel=document.getElementById('liteRadarPanel');
+  if(!zoomBtn||!liteBtn||!zoomPanel||!litePanel) return;
+  const apply=(mode)=>{
+    const zoom=mode!=='lite';
+    zoomPanel.classList.toggle('hidden',!zoom);
+    litePanel.classList.toggle('hidden',zoom);
+    zoomBtn.classList.toggle('active',zoom);
+    liteBtn.classList.toggle('active',!zoom);
+    try{localStorage.setItem('meteoConteRadarMode',zoom?'zoom':'lite')}catch(_e){}
+    if(!zoom) setTimeout(()=>window.dispatchEvent(new Event('resize')),80);
+  };
+  let saved='zoom';try{saved=localStorage.getItem('meteoConteRadarMode')||'zoom'}catch(_e){}
+  apply(saved);
+  zoomBtn.addEventListener('click',()=>apply('zoom'));
+  liteBtn.addEventListener('click',()=>apply('lite'));
+})();
+
+(function updateLiveAge(){
+  const el=document.getElementById('radarFrameTime');
+  if(!el) return;
+  const start=Date.now();
+  const paint=()=>{const m=Math.max(0,Math.floor((Date.now()-start)/60000));el.textContent=m<1?'LIVE · aggiornato adesso':`LIVE · aggiornato ${m} min fa`;};
+  paint();setInterval(paint,60000);
+})();
+
 /* V89 — Mini radar RainViewer nella Home */
 (function initHomeRadar(){
   const el=document.getElementById('homeRadarMap');
@@ -987,7 +1017,7 @@ loadLamoneSensors();
           const host=data.host||'https://tilecache.rainviewer.com';
           layer=L.tileLayer(`${host}${frame.path}/256/{z}/{x}/{y}/2/1_1.png`,{pane:'radarOverlay',opacity:.72,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'}).addTo(map);
           const stamp=document.getElementById('radarFrameTime');
-          if(stamp) stamp.textContent='Radar '+new Date(frame.time*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+          if(stamp) stamp.textContent='LIVE · radar '+new Date(frame.time*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
         };
         show(index);
         let timer=setInterval(()=>{index=(index+1)%chosen.length;show(index)},1300);

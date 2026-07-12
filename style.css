@@ -1978,3 +1978,34 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
 .timeline-summary.yellow{border-left-color:#d9de58}.timeline-summary.orange{border-left-color:#f3a533}.timeline-summary.red{border-left-color:#ef5360}
 .timeline-loading{grid-column:1/-1;text-align:center;color:#91abb6;padding:14px 0;font-size:10px}
 @media(max-width:420px){.operational-timeline{margin-left:-2px;margin-right:-2px}.timeline-point b{font-size:8px;max-width:52px}.timeline-point small{font-size:6.5px}.timeline-dot{width:12px;height:12px}}
+
+
+/* =========================================================
+   METEO CONTE 1.0 RC1 · BETA FINALE
+   Zoom Earth in prova, fallback leggero, microanimazioni.
+   ========================================================= */
+.radar-rc1{overflow:hidden}
+.radar-head-rc1{align-items:center}
+.radar-head-actions{display:flex;align-items:center;gap:7px}
+.live-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;background:rgba(255,70,77,.10);border:1px solid rgba(255,88,94,.28);font-size:8px;font-weight:900;letter-spacing:.12em;color:#ff8589}
+.live-badge i{width:7px;height:7px;border-radius:50%;background:#ff4d55;box-shadow:0 0 0 0 rgba(255,77,85,.55);animation:livePulse 1.7s infinite}
+@keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(255,77,85,.58)}70%{box-shadow:0 0 0 8px rgba(255,77,85,0)}100%{box-shadow:0 0 0 0 rgba(255,77,85,0)}}
+.radar-mode-switch{display:flex;gap:5px;margin:0 0 7px;padding:3px;border-radius:999px;background:rgba(2,24,35,.62);border:1px solid rgba(114,200,223,.14);width:max-content}
+.radar-mode-switch button{border:0;border-radius:999px;padding:5px 9px;background:transparent;color:#8faeba;font:700 9px/1 system-ui;cursor:pointer}
+.radar-mode-switch button.active{background:linear-gradient(135deg,rgba(36,147,179,.54),rgba(38,208,170,.28));color:#effcff;box-shadow:inset 0 0 0 1px rgba(114,223,238,.22)}
+.zoom-radar-panel{position:relative;height:174px;border-radius:16px;overflow:hidden;border:1px solid rgba(106,205,229,.28);background:#071c27}
+.zoom-radar-panel iframe{width:100%;height:100%;border:0;display:block;background:#071c27}
+.zoom-radar-note{position:absolute;left:8px;right:8px;bottom:7px;display:flex;justify-content:space-between;gap:8px;padding:5px 8px;border-radius:9px;background:rgba(2,20,31,.78);backdrop-filter:blur(8px);color:#dff7fb;pointer-events:none}
+.zoom-radar-note span{font-size:8px;font-weight:800}.zoom-radar-note small{font-size:7px;color:#94b2bd;text-align:right}
+.lite-radar-panel.hidden,.zoom-radar-panel.hidden{display:none!important}
+.weather-hero.weather-clear .head-weather span{animation:sunBreath 4.8s ease-in-out infinite}
+@keyframes sunBreath{0%,100%{transform:scale(1);filter:drop-shadow(0 0 0 rgba(255,207,65,0))}50%{transform:scale(1.045);filter:drop-shadow(0 0 9px rgba(255,207,65,.35))}}
+.weather-hero.weather-rain .weather-ambient:after,.weather-hero.weather-storm .weather-ambient:after{content:"";position:absolute;inset:-20% 0;background:repeating-linear-gradient(105deg,transparent 0 18px,rgba(154,224,255,.15) 19px 20px,transparent 21px 38px);animation:rainMove .8s linear infinite}
+@keyframes rainMove{to{transform:translateY(38px)}}
+.operational-timeline:before{height:3px;top:15px;opacity:.92;background:linear-gradient(90deg,#68dfa5 0 34%,#dce258 50%,#f5a437 72%,#ef4d5c 100%);box-shadow:0 0 10px rgba(103,222,165,.16)}
+.timeline-dot{background:#082d3d!important;border-width:3px!important;box-shadow:0 0 0 2px currentColor,0 0 12px currentColor!important}
+.timeline-summary{background:linear-gradient(90deg,rgba(100,222,162,.10),rgba(255,255,255,.015))}
+@media(max-width:430px){
+ .radar-head-actions{gap:4px}.live-badge{padding:4px 6px;font-size:7px}.radar-head-actions a{padding:5px 7px!important}
+ .zoom-radar-panel{height:158px}.zoom-radar-note small{display:none}
+}
