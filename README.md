@@ -1,13 +1,14 @@
-# Meteo Conte V85 — Beta Grafica
+# Meteo Conte V86 — Beta Candidate Home
 
-Prima beta ufficiale dedicata all’uniformazione visiva dell’intera app.
+Ultima rifinitura grafica prima della Beta ufficiale.
 
 ## Modifiche
-- stesso stile per Home, cassetti Lamone/PRETEMP, Centro Controllo e Centro Operativo;
-- raggi, bordi, ombre, spaziature e superfici uniformati;
-- pulsanti resi coerenti per forma, altezza e tipografia;
-- colori semantici mantenuti come accenti discreti;
-- gerarchia di titoli, etichette e riquadri resa uniforme;
-- nessuna modifica a dati, logica, funzioni o collegamenti della V84.
+- Nuovo pannello Home unico in stile app meteo professionale.
+- Testata con località, condizione e temperatura.
+- Situazione, Indice Conte e Decisione Conte visivamente coordinati.
+- Pulsante Analizza mantenuto e messo in evidenza.
+- Blocco Adesso ridisegnato con gerarchia più chiara.
+- Semafori e dati integrati nel medesimo cruscotto.
 
-Dopo il caricamento aprire: `reset.html?v=85`
+## Invariato
+Nessuna modifica a logica, dati, avvisi, collegamenti, Lamone, PRETEMP, Centro Controllo o Centro Operativo.

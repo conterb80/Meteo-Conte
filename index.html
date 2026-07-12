@@ -10,16 +10,17 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V85 · Beta Grafica</title>
-  <link rel="manifest" href="manifest.json?v=85" />
-  <link rel="icon" type="image/png" href="icon.png?v=85" />
-  <link rel="stylesheet" href="style.css?v=85" />
+  <title>Meteo Conte V86 · Beta Candidate</title>
+  <link rel="manifest" href="manifest.json?v=86" />
+  <link rel="icon" type="image/png" href="icon.png?v=86" />
+  <link rel="stylesheet" href="style.css?v=86" />
 </head>
 <body>
   <main class="app">
+    <section class="home-cockpit" aria-label="Pannello meteo principale">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=85" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=86" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -84,6 +85,7 @@
     </section>
 
     <section id="trendBox" class="card trendbox hidden"></section>
+    </section>
 
     <section id="lamoneDrawer" class="card lamone-drawer" aria-label="Cassetto Lamone">
       <span class="label">CASSETTO 01</span>
@@ -334,7 +336,7 @@
           <span class="operation-icon">⛈️</span>
           <div><h2>CENTRO OPERATIVO</h2><p>Meteo Conte · Sala operativa personale</p></div>
         </div>
-        <span class="operation-version">V85</span>
+        <span class="operation-version">V86</span>
       </div>
 
       <section id="analysisSnapshot" class="analysis-snapshot" aria-label="Quadro rapido Centro Analisi">
@@ -431,7 +433,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V85 · Beta Grafica</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V86 · Beta Candidate</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -444,6 +446,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=85"></script>
+  <script src="app.js?v=86"></script>
 </body>
 </html>
