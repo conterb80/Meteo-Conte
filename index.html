@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte 1.0 RC3 · Beta finale</title>
+  <title>Meteo Conte 1.0 RC4 · Home finale</title>
   <link rel="manifest" href="manifest.json?v=1.0-rc3" />
   <link rel="icon" type="image/png" href="icon.png?v=1.0-rc3" />
   <link rel="stylesheet" href="style.css?v=1.0-rc3" />
@@ -54,18 +54,17 @@
 
     <section class="top-status card status-v16 auto-briefing" aria-live="polite">
       <div class="briefing-main">
-        <span id="statusDot" class="bigdot green"></span>
+        <button class="indice-mini signal-index" id="indiceCard" type="button" data-trend="indice" aria-label="Apri spiegazione Indice Conte">
+          <span id="statusDot" class="bigdot green"></span>
+          <span class="signal-index-copy"><small>IND. CNT</small><b><span id="indiceVal">--</span><em>/100</em></b></span>
+          <span id="indiceLabel" class="sr-only">--</span>
+        </button>
         <div class="briefing-copy">
           <span class="label">SITUAZIONE · ANALISI AUTOMATICA</span>
           <p id="statusText">Aggiornamento dati in corso.</p>
           <div id="nextSignal" class="next-signal"><span>PROSSIMO SEGNALE</span><b>Calcolo le prossime ore…</b></div>
         </div>
       </div>
-      <button class="indice-mini" id="indiceCard" type="button" data-trend="indice" aria-label="Apri spiegazione Indice Conte">
-        <span>IND. CNT</span>
-        <b><span id="indiceVal">--</span><small>/100</small></b>
-        <em id="indiceLabel">--</em>
-      </button>
       <span id="statusTitle" class="sr-only">Valutazione in corso</span>
       <span id="decisionTitle" class="sr-only">Valutazione in corso</span>
       <span id="decisionText" class="sr-only">Sintesi automatica in arrivo</span>
@@ -364,7 +363,7 @@
           <span class="operation-icon">⛈️</span>
           <div><h2>CENTRO OPERATIVO</h2><p>Meteo Conte · Sala operativa personale</p></div>
         </div>
-        <span class="operation-version">RC3</span>
+        <span class="operation-version">RC4</span>
       </div>
 
       <section id="analysisSnapshot" class="analysis-snapshot" aria-label="Quadro rapido Centro Analisi">
@@ -461,7 +460,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC3 · Beta finale</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC4 · Home finale</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>

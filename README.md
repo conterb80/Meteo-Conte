@@ -1,4 +1,4 @@
-# Meteo Conte 1.0 RC3 – Beta finale
+# Meteo Conte 1.0 RC4 – Home finale
 
 Finitura conclusiva esclusivamente grafica della Home.
 
