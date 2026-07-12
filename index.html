@@ -10,17 +10,17 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V86 · Beta Candidate</title>
-  <link rel="manifest" href="manifest.json?v=86" />
-  <link rel="icon" type="image/png" href="icon.png?v=86" />
-  <link rel="stylesheet" href="style.css?v=86" />
+  <title>Meteo Conte V87 · Home ottimizzata</title>
+  <link rel="manifest" href="manifest.json?v=87" />
+  <link rel="icon" type="image/png" href="icon.png?v=87" />
+  <link rel="stylesheet" href="style.css?v=87" />
 </head>
 <body>
   <main class="app">
     <section class="home-cockpit" aria-label="Pannello meteo principale">
     <header class="topbar logo-head">
       <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=86" alt="Meteo Conte" />
+        <img class="app-logo" src="icon.png?v=87" alt="Meteo Conte" />
         <div>
           <h1>Meteo Conte</h1>
           <p>Villanova di Bagnacavallo</p>
@@ -36,13 +36,13 @@
       <button class="sem" data-jump="pretempDrawer"><span id="dotTemporali" class="dot green"></span><small>PRETEMP</small></button>
     </section>
 
-    <section class="top-status card status-v16">
-      <div class="status-mini">
+    <section class="top-status card status-v16 auto-briefing" aria-live="polite">
+      <div class="briefing-main">
         <span id="statusDot" class="bigdot green"></span>
-        <div>
-          <span class="label">SITUAZIONE</span>
-          <strong id="statusTitle">Valuto...</strong>
+        <div class="briefing-copy">
+          <span class="label">SITUAZIONE · ANALISI AUTOMATICA</span>
           <p id="statusText">Aggiornamento dati in corso.</p>
+          <div id="nextSignal" class="next-signal"><span>PROSSIMO SEGNALE</span><b>Calcolo le prossime ore…</b></div>
         </div>
       </div>
       <button class="indice-mini" id="indiceCard" type="button" data-trend="indice" aria-label="Apri spiegazione Indice Conte">
@@ -50,19 +50,11 @@
         <b><span id="indiceVal">--</span><small>/100</small></b>
         <em id="indiceLabel">--</em>
       </button>
+      <span id="statusTitle" class="sr-only">Valutazione in corso</span>
+      <span id="decisionTitle" class="sr-only">Valutazione in corso</span>
+      <span id="decisionText" class="sr-only">Sintesi automatica in arrivo</span>
+      <section id="analysisBox" class="analysis-auto" aria-label="Dettaglio automatico"></section>
     </section>
-
-    <section class="card decisione decisione-v16">
-      <div>
-        <span class="label">DECISIONE CONTE</span>
-        <h2 id="decisionTitle">Valuto...</h2>
-        <p id="decisionText">Sintesi in arrivo.</p>
-        <div id="nextSignal" class="next-signal"><span>PROSSIMO SEGNALE</span><b>Calcolo le prossime ore…</b></div>
-      </div>
-      <button id="analyzeBtn">🔎 Analizza</button>
-    </section>
-
-    <section id="analysisBox" class="card analysis hidden"></section>
 
     <section id="meteoNow" class="card meteo-now">
       <div class="now-head">
@@ -87,24 +79,42 @@
     <section id="trendBox" class="card trendbox hidden"></section>
     </section>
 
-    <section id="lamoneDrawer" class="card lamone-drawer" aria-label="Cassetto Lamone">
+    <div class="quick-drawers-grid" aria-label="Accessi operativi rapidi">
+<section id="lamoneDrawer" class="card lamone-drawer" aria-label="Cassetto Lamone">
       <span class="label">CASSETTO 01</span>
       <span id="lamoneDrawerCorner" class="cornerdot green"></span>
       <div class="lamone-drawer-main">
         <div class="lamone-drawer-icon">🌊</div>
         <div>
           <h2 id="lamoneDrawerTitle">Lamone</h2>
-          <p id="lamoneDrawerText">Sensori, pioggia a monte e onda di piena.</p>
+          <p id="lamoneDrawerText">Sensori e controllo della piena.</p>
         </div>
       </div>
       <div class="lamone-drawer-status">
         <span><small>Stato</small><b id="lamoneDrawerState">regolare</b></span>
         <span><small>Pioggia a monte</small><b id="lamoneDrawerRain">in lettura…</b></span>
       </div>
-      <button id="openLamoneDrawer" class="btn lamone-drawer-open" type="button">🌊 Apri Centro Lamone →</button>
+      <button id="openLamoneDrawer" class="btn lamone-drawer-open" type="button">🌊 Apri Lamone</button>
     </section>
+<section id="pretempDrawer" class="card pretemp-drawer" aria-label="Cassetto PRETEMP">
+      <span class="label">CASSETTO 02</span>
+      <span class="pretemp-drawer-live">LIVE</span>
+      <div class="pretemp-drawer-main">
+        <div class="pretemp-drawer-icon">⛈️</div>
+        <div>
+          <h2>PRETEMP</h2>
+          <p>Temporali e fenomeni intensi.</p>
+        </div>
+      </div>
+      <div class="pretemp-drawer-status">
+        <span><small>Zona</small><b>Romagna</b></span>
+        <span><small>Lettura</small><b id="pretempDrawerReading">da compilare</b></span>
+      </div>
+      <button id="openPretempDrawer" class="btn pretemp-drawer-open" type="button">⛈️ Apri PRETEMP</button>
+    </section>
+    </div>
 
-    <section id="lamoneCard" class="card river river-v20 river-emergency hidden lamone-container-openable">
+<section id="lamoneCard" class="card river river-v20 river-emergency hidden lamone-container-openable">
       <div class="container-toolbar">
         <div><span>CASSETTO LAMONE</span><b>Centro controllo completo</b></div>
         <button id="closeLamoneDrawer" type="button" aria-label="Chiudi contenitore Lamone">×</button>
@@ -186,25 +196,6 @@
         <a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📈 Dettagli Lamone</a>
         <a class="btn secondary" href="https://www.windy.com/?rain,44.16,11.62,8" target="_blank" rel="noopener">🌧️ Pioggia a monte</a>
       </div>
-    </section>
-
-
-
-    <section id="pretempDrawer" class="card pretemp-drawer" aria-label="Cassetto PRETEMP">
-      <span class="label">CASSETTO 02</span>
-      <span class="pretemp-drawer-live">LIVE</span>
-      <div class="pretemp-drawer-main">
-        <div class="pretemp-drawer-icon">⛈️</div>
-        <div>
-          <h2>PRETEMP</h2>
-          <p>Previsione temporali e fenomeni intensi.</p>
-        </div>
-      </div>
-      <div class="pretemp-drawer-status">
-        <span><small>Zona</small><b>Romagna</b></span>
-        <span><small>Lettura</small><b id="pretempDrawerReading">da compilare</b></span>
-      </div>
-      <button id="openPretempDrawer" class="btn pretemp-drawer-open" type="button">⛈️ Apri Centro PRETEMP →</button>
     </section>
 
     <section id="pretempContainer" class="card pretemp-container hidden pretemp-container-openable">
@@ -314,29 +305,13 @@
       <p class="pretemp-disclaimer pretemp-disclaimer-compact">PRETEMP è una previsione sperimentale probabilistica e non sostituisce le allerte ufficiali.</p>
     </section>
 
-    <section id="controlCard" class="card meteo-control control-premium">
-      <span class="label">CENTRO CONTROLLO METEO</span><span id="controlCorner" class="cornerdot green"></span>
-      <h2 id="controlTitle">Situazione regolare</h2>
-      <p id="controlText">Nessun avviso operativo. Se cambia il tempo, controlla prima Allerte ER e Radar live.</p>
-      <div class="control-status-grid control-status-grid-v48">
-        <span id="controlAlertChip" class="control-pill"><i class="green"></i><b>Allerte</b><small>OK</small></span>
-        <span id="controlRainChip" class="control-pill"><i class="green"></i><b>Pioggia</b><small>assente</small></span>
-        <span id="controlWindChip" class="control-pill"><i class="green"></i><b>Vento</b><small>regolare</small></span>
-        <span id="controlStormChip" class="control-pill"><i class="green"></i><b>Temporali</b><small>assenti</small></span>
-      </div>
-      <div class="control-actions">
-        <a class="btn" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener">🛡️ Allerte ER</a>
-        <a class="btn secondary" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">📡 Radar evoluzione</a>
-      </div>
-    </section>
-
     <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v78 analysis-center-v80 analysis-center-v83">
       <div class="analysis-hero operation-hero">
         <div class="operation-brand">
           <span class="operation-icon">⛈️</span>
           <div><h2>CENTRO OPERATIVO</h2><p>Meteo Conte · Sala operativa personale</p></div>
         </div>
-        <span class="operation-version">V86</span>
+        <span class="operation-version">V87</span>
       </div>
 
       <section id="analysisSnapshot" class="analysis-snapshot" aria-label="Quadro rapido Centro Analisi">
@@ -433,7 +408,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V86 · Beta Candidate</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V87 · Home ottimizzata</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -446,6 +421,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=86"></script>
+  <script src="app.js?v=87"></script>
 </body>
 </html>

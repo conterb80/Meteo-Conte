@@ -26,6 +26,44 @@ function buildNextSignal(h){
 }
 function renderNextSignal(h){const box=$('nextSignal');if(!box)return;const s=buildNextSignal(h);box.className='next-signal '+s.kind;const icon=s.kind==='storm'?'⛈️':s.kind==='rain'?'🌧️':s.kind==='wind'?'💨':'☀️';box.innerHTML=`<span>PROSSIMO SEGNALE</span><b>${icon} ${s.text}</b><small>Previsione oraria del modello: verifica con Radar e PRETEMP se la situazione cambia.</small>`;}
 
+function buildHomeBriefing(c,h,idx){
+  const {start,end}=upcomingSlice(h,6);
+  const probs=h.precipitation_probability.slice(start,end);
+  const rains=h.precipitation.slice(start,end);
+  const gusts=h.wind_gusts_10m.slice(start,end);
+  const codes=h.weather_code.slice(start,end);
+  const rainMax=probs.length?Math.max(...probs):0;
+  const rainSum=rains.reduce((a,b)=>a+(b||0),0);
+  const gustMax=gusts.length?Math.max(...gusts):c.wind_gusts_10m||0;
+  const storm=c.weather_code>=95||codes.some(x=>x>=95);
+  const showers=codes.some(x=>x>=80&&x<=82);
+  const heavyRain=rainSum>=8||rainMax>=70;
+  const strongWind=gustMax>=60;
+  const lowPressure=(c.pressure_msl||1015)<1008;
+  const signals=[storm,heavyRain,strongWind].filter(Boolean).length;
+  let main='Nessun fenomeno significativo previsto nelle prossime 6 ore.';
+  let detail='Controllo ordinario sufficiente: pioggia assente o debole, vento regolare e nessun segnale temporalesco dal modello.';
+  let color='green';
+  if(idx>=25 || rainMax>=35 || rainSum>=1 || gustMax>=35 || showers){
+    color='yellow';
+    main=showers?'Possibili rovesci nelle prossime ore.':'Evoluzione meteo da seguire nelle prossime ore.';
+    detail=`Pioggia massima ${rainMax}%, accumulo ${rainSum.toFixed(1)} mm e raffiche fino a ${Math.round(gustMax)} km/h. Verifica PRETEMP e Radar evoluzione se il cielo cambia.`;
+  }
+  if(storm || heavyRain || strongWind || idx>=50){
+    color=(storm&&strongWind)||(signals>=2)||idx>=75?'red':'yellow';
+    const events=[];
+    if(storm) events.push('temporali');
+    if(heavyRain) events.push('piogge intense');
+    if(strongWind) events.push('raffiche forti');
+    main=`Attenzione: ${events.length?events.join(', '):'più segnali meteo'} ${events.length>1?'sono possibili':'è possibile'} nelle prossime ore.`;
+    const actions=['PRETEMP','Radar evoluzione'];
+    if(storm) actions.push('Fulmini live');
+    if(heavyRain) actions.push('Lamone');
+    detail=`Probabilità pioggia ${rainMax}%, accumulo ${rainSum.toFixed(1)} mm, raffiche fino a ${Math.round(gustMax)} km/h${lowPressure?', pressione in calo':''}. Controlla ${actions.join(', ')}.`;
+  }
+  return {main,detail,color,signals};
+}
+
 function setControlChip(id,color,label){
   const el=$(id); if(!el) return;
   const dot=el.querySelector('i'); if(dot) dot.className=color;
@@ -192,15 +230,20 @@ async function load(){
   const desc=WMO[c.weather_code]||['Meteo','🌤️']; const idx=calcIndex(c,h); lastIndex=idx; const lv=level(idx); lastLevel=lv;
   const {start,end}=upcomingSlice(h,6); const rain6=h.precipitation.slice(start,end).reduce((a,b)=>a+(b||0),0); const probs=h.precipitation_probability.slice(start,end); const rainMax=probs.length?Math.max(...probs):0;
   $('headerIcon').textContent=desc[1]; $('headerTemp').textContent=Math.round(c.temperature_2m*10)/10+'°';
+  const briefing=buildHomeBriefing(c,h,idx);
   $('statusTitle').textContent=lv[0];
-  $('statusText').textContent=idx<25?'Nessun segnale nelle prossime 6 ore.':idx<50?'Qualche segnale da seguire.':'Controlla radar, allerte e temporali.';
-  setBig(lv[2]); setDot($('dotMeteo'),lv[2]); setDot($('dotTemporali'),idx>=40?'yellow':'green'); setDot($('dotLamone'),'green'); setDot($('dotAllerte'),'green'); $('lamoneCorner').className='cornerdot green';
+  $('statusText').textContent=briefing.main;
+  setBig(briefing.color); setDot($('dotMeteo'),briefing.color); setDot($('dotTemporali'),idx>=40?'yellow':'green'); setDot($('dotLamone'),'green'); setDot($('dotAllerte'),'green'); $('lamoneCorner').className='cornerdot green';
   $('indiceVal').textContent=idx; $('indiceLabel').textContent=lv[1];
   $('decisionTitle').textContent=idx<25?'Situazione gestibile':idx<50?'Da tenere d’occhio':'Controlla subito';
-  $('decisionText').textContent=`Pioggia ${rainMax}% · raffica ${Math.round(c.wind_gusts_10m)} km/h · ${idx<25?'nessun rischio rilevante':'monitora evoluzione'}.`;
+  $('decisionText').textContent=briefing.detail;
   $('tempNow').textContent=(Math.round(c.temperature_2m*10)/10)+'°C'; $('nowDesc').textContent=`${desc[0]} · ${rainMax}% pioggia max 6h`;
   $('feels').textContent=Math.round(c.apparent_temperature*10)/10+'°'; $('hum').textContent=Math.round(c.relative_humidity_2m)+'%'; $('dew').textContent=Math.round(dewPoint(c.temperature_2m,c.relative_humidity_2m)*10)/10+'°'; $('wind').textContent=Math.round(c.wind_speed_10m)+' km/h'; $('gust').textContent=Math.round(c.wind_gusts_10m)+' km/h'; $('press').textContent=Math.round(c.pressure_msl)+' hPa'; $('rain6').textContent=rain6.toFixed(1)+' mm';
-  $('analysisBox').innerHTML=`<b>Perché ${idx}/100?</b><br>Pioggia max 6h ${rainMax}%, accumulo ${rain6.toFixed(1)} mm. Umidità ${Math.round(c.relative_humidity_2m)}%, raffica ${Math.round(c.wind_gusts_10m)} km/h, pressione ${Math.round(c.pressure_msl)} hPa. Se cambia il cielo, apri Radar ER, Fulmini e Lamone.`;
+  const autoBox=$('analysisBox');
+  if(autoBox){
+    autoBox.textContent=briefing.detail;
+    autoBox.className='analysis-auto '+briefing.color+(idx<25?' compact':' expanded');
+  }
   renderNextSignal(h); renderRisk(h,idx); renderHours(h); updateControlBox(data); updateAnalysisSnapshot(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
  }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; const ns=$('nextSignal'); if(ns) ns.innerHTML='<span>PROSSIMO SEGNALE</span><b>⚠️ Previsione oraria non disponibile.</b>'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; const cc=$('controlCorner'); if(cc) cc.className='cornerdot yellow'; const ct=$('controlTitle'); if(ct) ct.textContent='Dati da aggiornare'; const cp=$('controlText'); if(cp) cp.textContent='Dati meteo non disponibili: usa i link ufficiali del Centro Controllo Meteo.'; }
 }
@@ -255,7 +298,7 @@ function openTrend(type){
  box.classList.remove('hidden'); box.scrollIntoView({behavior:'smooth',block:'start'});
  box.querySelector('.closeTrend')?.addEventListener('click',()=>box.classList.add('hidden'));
 }
-$('analyzeBtn')?.addEventListener('click',()=>{$('analysisBox').classList.toggle('hidden');}); $('refreshBtn')?.addEventListener('click',load);
+$('refreshBtn')?.addEventListener('click',load);
 document.querySelectorAll('[data-trend]').forEach(el=>{
   el.addEventListener('click',()=>openTrend(el.dataset.trend));
   el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend(el.dataset.trend)}});

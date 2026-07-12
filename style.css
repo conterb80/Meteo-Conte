@@ -1571,7 +1571,7 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
 }
 
 /* =========================================================
-   V86 BETA CANDIDATE — HOME COCKPIT
+   V87 HOME OTTIMIZZATA — HOME COCKPIT
    Solo grafica Home. Logica, dati, avvisi e funzioni invariati.
    ========================================================= */
 .home-cockpit{
@@ -1743,4 +1743,82 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
   .home-cockpit .indice-mini{min-width:92px}
   .home-cockpit .decisione{display:block!important}
   .home-cockpit #analyzeBtn{width:100%;margin-top:9px}
+}
+
+/* =========================================================
+   V87 · HOME OTTIMIZZATA
+   Solo presentazione: briefing automatico + compattazione.
+   ========================================================= */
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+.home-cockpit{padding-bottom:9px!important}
+.home-cockpit .topbar.logo-head{min-height:78px!important;padding:6px 9px!important}
+.home-cockpit .app-logo{width:58px!important;height:58px!important;border-radius:16px!important}
+.home-cockpit .logo-head p{font-size:17px!important;line-height:1.08!important}
+.home-cockpit .head-weather span{font-size:29px!important}
+.home-cockpit .head-weather b{font-size:33px!important}
+.home-cockpit .semafori.smartbar{margin:4px 0 7px!important;padding:5px!important}
+
+.home-cockpit .auto-briefing{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 94px!important;
+  gap:9px!important;
+  align-items:start!important;
+  padding:12px!important;
+  border-color:rgba(111,224,154,.26)!important;
+  background:linear-gradient(145deg,rgba(12,61,69,.94),rgba(6,37,48,.96))!important;
+}
+.auto-briefing .briefing-main{display:flex;gap:11px;min-width:0;align-items:flex-start}
+.auto-briefing .briefing-copy{min-width:0;flex:1}
+.auto-briefing .bigdot{width:42px!important;height:42px!important;flex:0 0 42px!important;margin-top:2px}
+.auto-briefing .label{font-size:9.5px!important;letter-spacing:.12em!important}
+.auto-briefing #statusText{font-size:17px!important;line-height:1.24!important;font-weight:800!important;color:#f1fbff!important;margin:4px 0 8px!important}
+.auto-briefing .indice-mini{min-width:0!important;width:94px!important;padding:8px!important;border-radius:14px!important;align-self:stretch!important}
+.auto-briefing .indice-mini>span{font-size:10px!important}
+.auto-briefing .indice-mini b{font-size:23px!important}
+.auto-briefing .indice-mini em{font-size:9px!important}
+.auto-briefing .next-signal{margin:0!important;padding:8px 10px!important;border-radius:11px!important;background:rgba(0,0,0,.14)!important}
+.auto-briefing .next-signal span{font-size:8px!important}
+.auto-briefing .next-signal b{font-size:13px!important;line-height:1.18!important}
+.auto-briefing .next-signal small{display:none!important}
+.auto-briefing .analysis-auto{grid-column:1/-1;border-top:1px solid rgba(160,215,232,.12);padding:8px 1px 0;font-size:12px;line-height:1.35;color:#b9d1da}
+.auto-briefing .analysis-auto.compact{display:none}
+.auto-briefing .analysis-auto.yellow{color:#ffe8a1}
+.auto-briefing .analysis-auto.red{color:#ffd0d0;font-weight:650}
+
+/* Accessi Lamone e PRETEMP affiancati: stessa funzione, meno scroll */
+.quick-drawers-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:9px 0}
+.quick-drawers-grid>.card{margin:0!important;min-width:0!important;padding:11px!important;border-radius:18px!important}
+.quick-drawers-grid .label{font-size:8px!important}
+.quick-drawers-grid .cornerdot{right:10px!important;top:10px!important}
+.quick-drawers-grid .pretemp-drawer-live{right:9px!important;top:9px!important;font-size:7px!important}
+.quick-drawers-grid .lamone-drawer-main,
+.quick-drawers-grid .pretemp-drawer-main{display:block!important;margin:6px 0!important;text-align:left!important}
+.quick-drawers-grid .lamone-drawer-icon,
+.quick-drawers-grid .pretemp-drawer-icon{width:34px!important;height:34px!important;font-size:21px!important;margin-bottom:5px!important;border-radius:11px!important}
+.quick-drawers-grid h2{font-size:18px!important;line-height:1!important;margin:0 0 3px!important}
+.quick-drawers-grid .lamone-drawer-main p,
+.quick-drawers-grid .pretemp-drawer-main p{font-size:10.5px!important;line-height:1.18!important;margin:0!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.quick-drawers-grid .lamone-drawer-status,
+.quick-drawers-grid .pretemp-drawer-status{grid-template-columns:1fr!important;gap:4px!important;margin:7px 0!important}
+.quick-drawers-grid .lamone-drawer-status span,
+.quick-drawers-grid .pretemp-drawer-status span{min-height:37px!important;padding:6px 7px!important}
+.quick-drawers-grid .lamone-drawer-status small,
+.quick-drawers-grid .pretemp-drawer-status small{font-size:8px!important}
+.quick-drawers-grid .lamone-drawer-status b,
+.quick-drawers-grid .pretemp-drawer-status b{font-size:11px!important;white-space:normal!important}
+.quick-drawers-grid .btn{width:100%!important;min-height:38px!important;padding:7px 6px!important;font-size:10.5px!important;line-height:1.1!important;border-radius:11px!important}
+
+/* Il vecchio Centro Controllo era ridondante: gli stessi accessi restano nel Centro Operativo */
+#controlCard{display:none!important}
+#operativeLinks{margin-top:8px!important}
+
+@media(max-width:380px){
+  .home-cockpit .auto-briefing{grid-template-columns:minmax(0,1fr) 82px!important;padding:10px!important}
+  .auto-briefing #statusText{font-size:15px!important}
+  .auto-briefing .indice-mini{width:82px!important}
+  .quick-drawers-grid{gap:6px}
+  .quick-drawers-grid>.card{padding:9px!important}
+  .quick-drawers-grid h2{font-size:16px!important}
+  .quick-drawers-grid .btn{font-size:9.5px!important}
 }

@@ -1,14 +1,15 @@
-# Meteo Conte V86 — Beta Candidate Home
+# Meteo Conte V87 — Home ottimizzata
 
-Ultima rifinitura grafica prima della Beta ufficiale.
+Aggiornamento dedicato alla riduzione dello scorrimento e al briefing automatico della Home.
 
 ## Modifiche
-- Nuovo pannello Home unico in stile app meteo professionale.
-- Testata con località, condizione e temperatura.
-- Situazione, Indice Conte e Decisione Conte visivamente coordinati.
-- Pulsante Analizza mantenuto e messo in evidenza.
-- Blocco Adesso ridisegnato con gerarchia più chiara.
-- Semafori e dati integrati nel medesimo cruscotto.
+- Eliminata la parola di stato ridondante dalla vista principale.
+- Eliminato il pulsante Analizza: la sintesi viene prodotta automaticamente al caricamento.
+- Messaggio operativo breve in condizioni normali e più dettagliato con uno o più segnali di attenzione.
+- Situazione, prossimo segnale e Indice Conte riuniti in un unico pannello.
+- Lamone e PRETEMP affiancati in due accessi compatti.
+- Rimosso dalla Home il Centro Controllo separato, già coperto dagli strumenti del Centro Operativo.
+- Ridotti spazi e altezza della parte iniziale.
 
 ## Invariato
-Nessuna modifica a logica, dati, avvisi, collegamenti, Lamone, PRETEMP, Centro Controllo o Centro Operativo.
+Nessuna modifica ai collegamenti, ai cassetti completi Lamone e PRETEMP, al Centro Operativo o alle logiche di coordinamento esistenti.

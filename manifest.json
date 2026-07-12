@@ -1,9 +1,9 @@
 {
-  "name": "Meteo Conte V86 Beta Candidate Home",
+  "name": "Meteo Conte V87 Home Ottimizzata",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=86-beta-home",
+  "start_url": "index.html?v=87-home-optimized",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
-  "icons": [{"src":"icon.png?v=86","sizes":"512x512","type":"image/png"}]
+  "icons": [{"src":"icon.png?v=87","sizes":"512x512","type":"image/png"}]
 }
