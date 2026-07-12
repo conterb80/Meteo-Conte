@@ -1,9 +1,9 @@
 {
-  "name": "Meteo Conte V84 Test Operativo",
+  "name": "Meteo Conte V85 Beta Grafica",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=84-test-operativo",
+  "start_url": "index.html?v=85-beta-grafica",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
-  "icons": [{"src":"icon.png?v=84","sizes":"512x512","type":"image/png"}]
+  "icons": [{"src":"icon.png?v=85","sizes":"512x512","type":"image/png"}]
 }

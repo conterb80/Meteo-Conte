@@ -1391,3 +1391,181 @@ button.river-info.river-link{width:100%;font-family:inherit;box-shadow:none}
  .analysis-center-v83 .operation-brand h2{font-size:19px!important}
  .analysis-center-v83 .operation-brand p{font-size:9.5px!important}
 }
+
+/* =========================================================
+   V85 BETA — UNIFORMAZIONE GRAFICA
+   Un solo linguaggio visivo per Home, cassetti e Centro Operativo.
+   Nessuna modifica funzionale.
+   ========================================================= */
+:root{
+  --mc-surface:linear-gradient(180deg,rgba(13,55,72,.96),rgba(6,35,49,.97));
+  --mc-surface-soft:linear-gradient(180deg,rgba(20,67,85,.72),rgba(10,43,58,.80));
+  --mc-border:rgba(119,205,231,.22);
+  --mc-border-strong:rgba(102,214,239,.40);
+  --mc-cyan:#6edcf2;
+  --mc-green:#6fe09a;
+  --mc-yellow:#ffd35a;
+  --mc-radius:22px;
+  --mc-radius-inner:16px;
+  --mc-shadow:0 13px 28px rgba(0,10,18,.28),inset 0 1px 0 rgba(255,255,255,.055);
+}
+
+body{background:radial-gradient(circle at 50% -8%,#17647d 0,#0a3446 27%,#061c28 67%,#051722 100%)}
+.app{padding-left:10px;padding-right:10px}
+
+/* Contenitore base unico */
+.card,
+.tool-section,
+.analysis-snapshot,
+.conte-analysis,
+.operative-route{
+  background:var(--mc-surface)!important;
+  border:1px solid var(--mc-border)!important;
+  border-radius:var(--mc-radius)!important;
+  box-shadow:var(--mc-shadow)!important;
+}
+.card{padding:14px;margin-bottom:10px}
+
+/* Testata app trattata come la testata del Centro Operativo */
+.topbar.logo-head{
+  background:var(--mc-surface);
+  border:1px solid var(--mc-border);
+  border-radius:var(--mc-radius);
+  box-shadow:var(--mc-shadow);
+  padding:12px 14px;
+  margin-bottom:10px;
+}
+.app-logo{border-radius:18px;border-color:rgba(110,220,242,.32);box-shadow:0 0 0 3px rgba(110,220,242,.06),0 10px 24px rgba(0,0,0,.30)}
+.logo-head p{font-size:19px;font-weight:720;letter-spacing:-.01em}
+.head-weather b{font-weight:720;letter-spacing:-.025em}
+
+/* Barre e micro-intestazioni */
+.semafori.smartbar{background:rgba(6,34,48,.82)!important;border-color:var(--mc-border)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important}
+.label,
+.snapshot-head span,
+.conte-analysis-title span,
+.operative-route-head span,
+.operation-brand p,
+.container-toolbar span{
+  color:#9ddcf0!important;
+  letter-spacing:.22em;
+  font-weight:800;
+}
+
+/* Titoli coerenti */
+.status-mini strong,.decisione h2,.meteo-control h2,.lamone-drawer h2,.pretemp-drawer h2,
+.snapshot-head b,.conte-analysis-title b,.operative-route-head b{
+  letter-spacing:-.025em;
+  font-weight:700;
+}
+
+/* Riquadri interni unificati */
+.metric,
+.indice-mini,
+.next-signal,
+.lamone-drawer-status span,
+.pretemp-drawer-status span,
+.control-status-grid span,
+.control-pill,
+.snapshot-grid button,
+.conte-kpi,
+.conte-action,
+.operative-route-steps button,
+.analysis-tools>a,
+.analysis-tools>.tool-link-button{
+  background:var(--mc-surface-soft)!important;
+  border:1px solid rgba(160,215,232,.17)!important;
+  border-radius:var(--mc-radius-inner)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+.metric:active,.snapshot-grid button:active,.analysis-tools>a:active,.analysis-tools>.tool-link-button:active{transform:scale(.985)}
+
+/* Pulsanti: stessa forma e tipografia, colore semantico solo come accento */
+.button,button.btn,.btn,
+#analyzeBtn,
+.lamone-drawer-open,
+.pretemp-drawer-open,
+.control-actions .btn{
+  min-height:50px;
+  border-radius:16px!important;
+  border:1px solid rgba(110,220,242,.38)!important;
+  background:linear-gradient(180deg,rgba(39,112,136,.92),rgba(16,72,94,.95))!important;
+  color:#f4fbff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 8px 18px rgba(0,12,20,.20)!important;
+  font-weight:800;
+}
+#analyzeBtn{color:#052838!important;background:linear-gradient(90deg,#74e5d0,#a4f16f)!important;border-color:rgba(167,243,107,.45)!important}
+.lamone-drawer-open{border-color:rgba(111,224,154,.42)!important;box-shadow:inset 4px 0 0 rgba(111,224,154,.9),inset 0 1px 0 rgba(255,255,255,.12)!important}
+.pretemp-drawer-open{border-color:rgba(255,211,90,.42)!important;box-shadow:inset 4px 0 0 rgba(255,211,90,.95),inset 0 1px 0 rgba(255,255,255,.12)!important}
+.control-actions .btn:first-child{box-shadow:inset 4px 0 0 rgba(111,224,154,.95),inset 0 1px 0 rgba(255,255,255,.12)!important}
+.control-actions .btn.secondary{box-shadow:inset 4px 0 0 rgba(110,220,242,.95),inset 0 1px 0 rgba(255,255,255,.12)!important}
+
+/* Cassetti: identica struttura, accento semantico discreto */
+.lamone-drawer,.pretemp-drawer,#controlCard.control-premium,.operative-center{
+  padding:16px!important;
+  overflow:hidden;
+}
+.lamone-drawer:before,.pretemp-drawer:before,#controlCard.control-premium:before,.operative-center:before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:3px;
+  opacity:.9;
+}
+.lamone-drawer:before{background:linear-gradient(90deg,var(--mc-green),transparent 82%)}
+.pretemp-drawer:before{background:linear-gradient(90deg,var(--mc-yellow),#e552b6 58%,transparent 92%)}
+#controlCard.control-premium:before{background:linear-gradient(90deg,var(--mc-cyan),transparent 82%)}
+.operative-center:before{background:linear-gradient(90deg,var(--mc-cyan),#6fe09a 58%,transparent 92%)}
+.lamone-drawer-main,.pretemp-drawer-main{margin-top:9px}
+.lamone-drawer-icon,.pretemp-drawer-icon,.operation-icon{
+  background:rgba(110,220,242,.09)!important;
+  border:1px solid rgba(110,220,242,.20)!important;
+  border-radius:15px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+
+/* Centro controllo meteo allineato al Centro Operativo */
+#controlCard.control-premium{background:var(--mc-surface)!important;border-color:var(--mc-border)!important;box-shadow:var(--mc-shadow)!important}
+#controlCard .control-status-grid-v48 .control-pill{background:var(--mc-surface-soft)!important;border-color:rgba(160,215,232,.17)!important}
+
+/* Centro operativo: stessa larghezza, stessi raggi, stessi spazi */
+.operative-center{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;overflow:visible}
+.operation-hero{
+  background:var(--mc-surface);
+  border:1px solid var(--mc-border);
+  border-radius:var(--mc-radius);
+  box-shadow:var(--mc-shadow);
+  padding:14px 16px;
+  margin-bottom:10px;
+}
+.analysis-snapshot,.conte-analysis,.operative-route{padding:16px!important;margin:0 0 10px!important}
+.operation-version{background:rgba(14,67,88,.72)!important;border-color:rgba(110,220,242,.26)!important;color:#94e4f5!important}
+
+/* Sezioni operative coerenti con i cassetti */
+.tool-section{padding:0!important;margin:0 0 10px!important;overflow:hidden}
+.tool-title{min-height:84px;border-radius:0!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:13px 16px!important}
+.tool-title>span{width:54px;height:54px;border-radius:16px!important;background:rgba(110,220,242,.09)!important;border:1px solid rgba(110,220,242,.15)!important}
+.tool-title div b{font-weight:720;letter-spacing:-.02em}
+.tool-title div small{color:#b8ccd7!important}
+.accordion-section.open{border-color:rgba(111,224,154,.33)!important}
+.accordion-content{padding:0 14px 14px!important}
+.analysis-tools>a.featured,.analysis-tools>.featured{border-color:rgba(111,224,154,.36)!important;background:linear-gradient(180deg,rgba(23,88,82,.66),rgba(11,55,65,.78))!important}
+.analysis-tools em{background:rgba(21,90,75,.75)!important;border-color:rgba(111,224,154,.35)!important;color:#b8f7d2!important}
+
+/* Stati: colore solo nei punti informativi, non su interi pulsanti */
+.bigdot,.cornerdot,.snapshot-head i,.conte-analysis-head i,.dot{box-shadow:0 0 0 5px rgba(255,255,255,.035),0 0 18px currentColor}
+
+/* Footer minimale e coerente */
+footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
+
+@media(max-width:430px){
+  .app{padding:8px 8px 20px}
+  .card{padding:13px;border-radius:20px!important}
+  .topbar.logo-head{padding:10px 12px;border-radius:20px}
+  .logo-head p{font-size:17.5px}
+  .lamone-drawer,.pretemp-drawer,#controlCard.control-premium{padding:14px!important}
+  .analysis-snapshot,.conte-analysis,.operative-route{padding:14px!important}
+  .tool-title{min-height:78px;padding:11px 13px!important}
+  .tool-title>span{width:49px;height:49px;border-radius:14px!important}
+  .accordion-content{padding:0 12px 12px!important}
+}
