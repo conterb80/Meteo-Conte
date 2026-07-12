@@ -2058,3 +2058,71 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
  .home-radar-map{height:126px!important}.home-hourly-strip .hour{flex-basis:62px!important;min-height:82px!important}
  .home-astro-grid{grid-template-columns:1fr 1fr 1fr;gap:5px}.home-astro-grid .card{padding:7px!important;min-height:84px}.astro-main{gap:5px}.astro-main b{font-size:11px}.astro-main small{font-size:7px}.astro-icon{width:28px;height:28px;font-size:17px}.moon-icon{font-size:25px}.sun-arc{font-size:10px}.sun-arc i{font-size:21px}
 }
+
+
+/* =========================================================
+   METEO CONTE 1.0 RC3 · FINITURA FINALE HOME
+   Solo grafica: briefing compatto, trend leggibile, astro chiaro.
+   ========================================================= */
+/* Evita che la classe semaforica globale .green riempia le colonne del trend */
+.operational-timeline .timeline-point,
+.operational-timeline .timeline-point.green,
+.operational-timeline .timeline-point.yellow,
+.operational-timeline .timeline-point.orange,
+.operational-timeline .timeline-point.red{
+  background:transparent!important;
+}
+.operational-timeline{min-height:92px!important;align-items:start!important;padding:0 3px 2px!important}
+.operational-timeline:before{top:24px!important;left:7%!important;right:7%!important;height:2px!important}
+.timeline-point time{font-size:7px!important;line-height:1!important;color:#8fc9aa!important;white-space:nowrap!important}
+.timeline-dot{margin:7px 0 4px!important;width:10px!important;height:10px!important}
+.timeline-weather{font-size:20px!important;line-height:1!important;margin:1px 0!important}
+.timeline-point b{font-size:14px!important;line-height:1!important;color:#f4fbff!important}
+.timeline-point small{font-size:7px!important;line-height:1.12!important;color:#b4c8d0!important;min-height:16px!important}
+
+/* Briefing più basso senza togliere informazioni */
+.auto-briefing{grid-template-columns:minmax(0,1fr) 78px!important;padding:8px 10px!important;min-height:0!important}
+.auto-briefing .briefing-main{gap:7px!important;align-items:flex-start!important}
+.auto-briefing .bigdot{width:31px!important;height:31px!important;margin-top:2px!important}
+.auto-briefing .briefing-copy .label{font-size:8px!important;letter-spacing:.19em!important}
+.auto-briefing #statusText{font-size:17px!important;line-height:1.08!important;max-width:100%!important}
+.auto-briefing .next-signal{margin-top:5px!important;padding:6px 8px!important}
+.auto-briefing .next-signal span{font-size:7px!important}
+.auto-briefing .next-signal b{font-size:12px!important;line-height:1.15!important}
+.auto-briefing .indice-mini{width:78px!important;padding:5px 3px 5px 7px!important}
+.auto-briefing .indice-mini>span{font-size:7px!important;letter-spacing:.12em!important;white-space:nowrap!important}
+.auto-briefing .indice-mini b{font-size:25px!important;line-height:.95!important}
+.auto-briefing .indice-mini small{font-size:13px!important}
+.auto-briefing .indice-mini em{display:none!important}
+.auto-briefing .analysis-auto{display:none!important}
+
+/* Sole e Luna: dati più leggibili, stessa impronta */
+.home-astro-grid .card{min-height:86px!important;padding:8px!important}
+.astro-card .label{font-size:8px!important;margin-bottom:5px!important}
+.astro-main b{font-size:13px!important}
+.astro-main small{font-size:8px!important;line-height:1.2!important}
+.sun-arc{font-size:13px!important;font-weight:700!important}
+.sun-arc i{font-size:27px!important}
+.sun-card>small{font-size:8px!important}
+.moon-icon{font-size:29px!important}
+.moon-card .astro-main b{font-size:14px!important}
+.moon-card .astro-main small{font-size:8px!important}
+
+@media(max-width:430px){
+  .auto-briefing{grid-template-columns:minmax(0,1fr) 72px!important;padding:7px 9px!important}
+  .auto-briefing .bigdot{width:28px!important;height:28px!important}
+  .auto-briefing #statusText{font-size:16px!important}
+  .auto-briefing .next-signal b{font-size:11.5px!important}
+  .auto-briefing .indice-mini{width:72px!important}
+  .auto-briefing .indice-mini b{font-size:23px!important}
+  .home-hourly-strip .hour time{font-size:8px!important}
+  .operational-timeline{min-height:88px!important}
+  .timeline-point time{font-size:6.5px!important}
+  .timeline-weather{font-size:18px!important}
+  .timeline-point b{font-size:13px!important}
+  .timeline-point small{font-size:6.5px!important}
+  .home-astro-grid .card{min-height:82px!important;padding:7px!important}
+  .sun-arc{font-size:12px!important}.sun-arc i{font-size:24px!important}
+  .astro-main b{font-size:12px!important}.astro-main small{font-size:7.5px!important}
+  .moon-card .astro-main b{font-size:13px!important}
+}

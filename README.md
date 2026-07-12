@@ -1,7 +1,13 @@
-# Meteo Conte 1.0 RC2 – Beta finale
+# Meteo Conte 1.0 RC3 – Beta finale
 
-- Radar leggero fisso nella Home; Zoom Earth resta disponibile con un tocco.
-- Trend operativo ridisegnato e leggibile.
-- Pannello Situazione/Indice compattato.
-- Aggiunti alba, tramonto e fase lunare.
-- Nessuna modifica alla logica operativa, agli avvisi o agli strumenti.
+Finitura conclusiva esclusivamente grafica della Home.
+
+- pannello Situazione/Analisi automatica più compatto;
+- Indice Conte abbreviato in IND. CNT;
+- eliminata la scritta ridondante “tranquillo”;
+- Trend operativo con sfondo scuro e testi leggibili;
+- orari della fascia “Prossime ore” leggermente ridotti;
+- dati Sole e Luna più grandi e leggibili;
+- nessuna modifica a logiche, dati, avvisi, link o strumenti.
+
+Aggiornamento: `reset.html?v=1.0-rc3`
