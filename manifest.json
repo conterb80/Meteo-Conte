@@ -1,13 +1,13 @@
 {
-  "name": "Meteo Conte V88 Header Meteo",
+  "name": "Meteo Conte V89 Monitor Live",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=88-weather-header",
+  "start_url": "index.html?v=89-monitor-live",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
   "icons": [
     {
-      "src": "icon.png?v=88",
+      "src": "icon.png?v=89",
       "sizes": "512x512",
       "type": "image/png"
     }

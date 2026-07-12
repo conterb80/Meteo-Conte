@@ -1915,3 +1915,49 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
   .hero-metrics small{font-size:6.4px}
   .hero-metrics b{font-size:9px}
 }
+
+
+/* =========================================================
+   V89 · MONITOR LIVE HOME
+   Mini radar + fascia oraria. Logica operativa invariata.
+   ========================================================= */
+.home-live-monitor{display:grid;gap:10px;margin:0 0 10px}
+.home-live-monitor>.card{margin:0!important}
+.monitor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:9px}
+.monitor-head>div{display:flex;flex-direction:column;min-width:0}
+.monitor-head .label{margin:0 0 4px!important;color:#73dff3!important}
+.monitor-head b{font-size:16px;line-height:1.16}
+.monitor-head a,.monitor-head>small{font-size:10px;color:#9cb8c4;white-space:nowrap;text-decoration:none;padding-top:3px}
+.monitor-head a{color:#8de9fb;border:1px solid rgba(91,209,239,.24);border-radius:999px;padding:5px 8px;background:rgba(6,42,58,.46)}
+.radar-monitor-card{padding:11px!important;border-color:rgba(54,192,224,.42)!important;background:linear-gradient(160deg,rgba(8,54,72,.97),rgba(4,29,43,.99))!important}
+.home-radar-map{height:168px;border-radius:16px;overflow:hidden;border:1px solid rgba(106,205,229,.28);background:#071c27;position:relative;isolation:isolate}
+.home-radar-map .leaflet-control-attribution{font-size:7px!important;background:rgba(3,22,31,.72)!important;color:#aec4cc!important}
+.home-radar-map .leaflet-control-attribution a{color:#bfe8f2!important}
+.home-radar-map .leaflet-control-zoom{display:none}
+.home-radar-map .leaflet-tile-pane{filter:saturate(.88) brightness(.82) contrast(1.08)}
+.home-radar-map .radar-overlay-pane{filter:saturate(1.28) contrast(1.12)}
+.radar-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;color:#b9d3dc;z-index:1;background:radial-gradient(circle at 50% 45%,rgba(27,91,111,.42),rgba(3,25,36,.95))}
+.radar-loading span{font-size:25px}.radar-loading b{font-size:13px}
+.radar-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:7px;color:#91aeba;font-size:9px}
+.radar-foot>span:last-child{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.radar-foot i{display:inline-block;width:74px;height:5px;border-radius:99px;background:linear-gradient(90deg,#2a78dd,#43d9b2,#f3e44f,#f78032,#e33a76)}
+.hourly-monitor-card{padding:11px!important;background:linear-gradient(160deg,rgba(9,49,66,.98),rgba(4,28,41,.99))!important}
+.home-hourly-strip{display:flex!important;gap:7px!important;overflow-x:auto!important;scroll-snap-type:x mandatory;padding:1px 1px 4px!important;scrollbar-width:none}
+.home-hourly-strip::-webkit-scrollbar{display:none}
+.home-hourly-strip .hour{flex:0 0 76px!important;min-height:104px!important;padding:8px 5px!important;border-radius:14px!important;border:1px solid rgba(131,190,207,.2)!important;background:linear-gradient(155deg,rgba(23,70,88,.84),rgba(10,42,57,.9))!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;scroll-snap-align:start;text-align:center}
+.home-hourly-strip .hour time{font-size:10px!important;color:#a7c1cb!important;order:0}
+.home-hourly-strip .hour span{font-size:25px!important;line-height:1!important;order:1}
+.home-hourly-strip .hour b{font-size:19px!important;line-height:1!important;order:2}
+.home-hourly-strip .hour small{font-size:8px!important;line-height:1.2!important;color:#94b0bb!important;order:3;white-space:nowrap}
+@media(min-width:760px){.home-live-monitor{grid-template-columns:1.35fr 1fr}.home-radar-map{height:190px}}
+@media(max-width:430px){
+ .home-live-monitor{gap:8px;margin-bottom:8px}
+ .radar-monitor-card,.hourly-monitor-card{padding:10px!important}
+ .home-radar-map{height:154px}
+ .monitor-head b{font-size:14px}
+ .home-hourly-strip .hour{flex-basis:70px!important;min-height:98px!important}
+ .home-hourly-strip .hour span{font-size:23px!important}
+ .home-hourly-strip .hour b{font-size:18px!important}
+}
+
+.radar-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;text-decoration:none;color:#d8edf3;background:radial-gradient(circle at 50% 45%,rgba(24,91,112,.48),rgba(3,24,35,.96));padding:16px}.radar-fallback span{font-size:30px}.radar-fallback b{font-size:13px}.radar-fallback small{font-size:10px;color:#7de2f4}

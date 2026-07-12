@@ -923,3 +923,40 @@ loadLamoneSensors();
     });
   });
 })();
+
+
+/* V89 — Mini radar RainViewer nella Home */
+(function initHomeRadar(){
+  const el=document.getElementById('homeRadarMap');
+  if(!el) return;
+  const fallback=()=>{
+    el.innerHTML='<a class="radar-fallback" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><span>📡</span><b>Radar momentaneamente non disponibile</b><small>Apri Radar Evoluzione ER ↗</small></a>';
+  };
+  if(typeof L==='undefined'){fallback();return;}
+  try{
+    const map=L.map(el,{center:[44.418,11.977],zoom:7,zoomControl:false,attributionControl:true,dragging:true,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,tap:false});
+    map.createPane('radarOverlay');map.getPane('radarOverlay').classList.add('radar-overlay-pane');map.getPane('radarOverlay').style.zIndex=420;
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,minZoom:5,attribution:'© OpenStreetMap'}).addTo(map);
+    L.circleMarker([44.418,11.977],{radius:5,color:'#8af2ff',weight:2,fillColor:'#072b3b',fillOpacity:.9}).bindTooltip('Borgo Viazza',{direction:'top',offset:[0,-5]}).addTo(map);
+    fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'})
+      .then(r=>{if(!r.ok)throw new Error('radar api');return r.json();})
+      .then(data=>{
+        const frames=(data.radar&&data.radar.past)||[];
+        if(!frames.length) throw new Error('no frames');
+        el.querySelector('.radar-loading')?.remove();
+        const chosen=frames.slice(-5);let layer=null,index=chosen.length-1;
+        const show=(i)=>{
+          const frame=chosen[i];
+          if(layer) map.removeLayer(layer);
+          const host=data.host||'https://tilecache.rainviewer.com';
+          layer=L.tileLayer(`${host}${frame.path}/256/{z}/{x}/{y}/2/1_1.png`,{pane:'radarOverlay',opacity:.72,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'}).addTo(map);
+          const stamp=document.getElementById('radarFrameTime');
+          if(stamp) stamp.textContent='Radar '+new Date(frame.time*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+        };
+        show(index);
+        let timer=setInterval(()=>{index=(index+1)%chosen.length;show(index)},1300);
+        document.addEventListener('visibilitychange',()=>{if(document.hidden){clearInterval(timer)}else{clearInterval(timer);timer=setInterval(()=>{index=(index+1)%chosen.length;show(index)},1300)}});
+        setTimeout(()=>map.invalidateSize(),120);
+      }).catch(fallback);
+  }catch(_e){fallback();}
+})();

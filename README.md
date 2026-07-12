@@ -1,14 +1,10 @@
-# Meteo Conte V88 — Header meteo definitivo
+# Meteo Conte V89 — Monitor Live
 
-Primo step della nuova Home: il pannello “Adesso” è stato integrato nella testata meteo.
+## Novità
+- Mini radar animato nella Home, centrato su Borgo Viazza.
+- Fascia oraria scorrevole con temperatura, icona, probabilità e quantità di pioggia.
+- Tocco su “Apri completo” per accedere al Radar Evoluzione ER ufficiale.
+- Tutta la logica operativa, Lamone, PRETEMP e Centro Operativo restano invariati.
 
-## Modifiche
-- Località abbreviata in **Borgo Viazza**.
-- Temperatura, condizione e icona meteo riunite nella testata.
-- Percepita, umidità, vento, raffica e pressione disponibili subito nell’header.
-- Ogni dato resta toccabile per aprire il relativo trend.
-- Eliminato dalla vista il vecchio riquadro “Adesso”, senza perdere dati o funzioni.
-- Atmosfera grafica dinamica e discreta per sereno, notte, nuvole, pioggia, temporale e nebbia.
-
-## Invariato
-Briefing automatico, semafori, Indice Conte, Lamone, PRETEMP, Centro Operativo, collegamenti e logiche esistenti non sono stati modificati.
+## Installazione
+Sostituire tutti i file nel repository GitHub Pages e aprire `reset.html?v=89`.

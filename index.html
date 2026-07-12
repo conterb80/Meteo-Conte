@@ -10,10 +10,11 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V88 · Header meteo</title>
-  <link rel="manifest" href="manifest.json?v=88" />
-  <link rel="icon" type="image/png" href="icon.png?v=88" />
-  <link rel="stylesheet" href="style.css?v=88" />
+  <title>Meteo Conte V89 · Monitor live</title>
+  <link rel="manifest" href="manifest.json?v=89" />
+  <link rel="icon" type="image/png" href="icon.png?v=89" />
+  <link rel="stylesheet" href="style.css?v=89" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 </head>
 <body>
   <main class="app">
@@ -21,7 +22,7 @@
     <header id="headerWeather" class="topbar logo-head weather-hero weather-clear" aria-label="Meteo attuale Borgo Viazza">
       <div class="weather-hero-main">
         <div class="brand-block">
-          <img class="app-logo" src="icon.png?v=88" alt="Meteo Conte" />
+          <img class="app-logo" src="icon.png?v=89" alt="Meteo Conte" />
           <div class="hero-location">
             <span class="hero-kicker">METEO CONTE</span>
             <h1>Borgo Viazza</h1>
@@ -76,6 +77,27 @@
     </div>
 
     <section id="trendBox" class="card trendbox hidden"></section>
+    </section>
+
+    <section class="home-live-monitor" aria-label="Monitor meteo live">
+      <article class="card radar-monitor-card">
+        <div class="monitor-head">
+          <div><span class="label">RADAR LIVE</span><b>Precipitazioni attorno a Borgo Viazza</b></div>
+          <a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">Apri completo ↗</a>
+        </div>
+        <div id="homeRadarMap" class="home-radar-map" aria-label="Mappa radar meteo live">
+          <div class="radar-loading"><span>📡</span><b>Caricamento radar…</b></div>
+        </div>
+        <div class="radar-foot"><span id="radarFrameTime">Ultimo aggiornamento disponibile</span><span>debole <i></i> intenso</span></div>
+      </article>
+
+      <article class="card hourly-monitor-card">
+        <div class="monitor-head">
+          <div><span class="label">PROSSIME ORE</span><b>Temperatura e precipitazioni</b></div>
+          <small>scorri →</small>
+        </div>
+        <div id="hours" class="home-hourly-strip" aria-label="Previsioni orarie"></div>
+      </article>
     </section>
 
     <div class="quick-drawers-grid" aria-label="Accessi operativi rapidi">
@@ -407,7 +429,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V88 · Header meteo</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V89 · Monitor live</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -420,6 +442,7 @@
     </div>
 
   </main>
-  <script src="app.js?v=88"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="app.js?v=89"></script>
 </body>
 </html>
