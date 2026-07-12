@@ -2009,3 +2009,52 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
  .radar-head-actions{gap:4px}.live-badge{padding:4px 6px;font-size:7px}.radar-head-actions a{padding:5px 7px!important}
  .zoom-radar-panel{height:158px}.zoom-radar-note small{display:none}
 }
+
+
+/* =========================================================
+   METEO CONTE 1.0 RC2 · BETA FINALE
+   Home compatta, radar leggero, trend leggibile, sole e luna.
+   ========================================================= */
+.radar-mode-switch,.zoom-radar-panel{display:none!important}
+.radar-rc2 .home-radar-map{height:148px}
+.auto-briefing{grid-template-columns:minmax(0,1fr) 104px!important;padding:10px 11px!important}
+.auto-briefing .briefing-main{gap:9px!important}
+.auto-briefing .bigdot{width:34px!important;height:34px!important}
+.auto-briefing .briefing-copy .label{font-size:9px!important;margin-bottom:2px!important}
+.auto-briefing #statusText{font-size:20px!important;line-height:1.1!important;margin:0!important}
+.auto-briefing .next-signal{margin-top:7px!important;padding:7px 9px!important;min-height:0!important}
+.auto-briefing .next-signal span{font-size:8px!important}.auto-briefing .next-signal b{font-size:13px!important;line-height:1.18!important}.auto-briefing .next-signal small{display:none!important}
+.auto-briefing .indice-mini{padding-left:7px!important}.auto-briefing .indice-mini>span{font-size:9px!important}.auto-briefing .indice-mini b{font-size:29px!important}.auto-briefing .indice-mini small{font-size:16px!important}.auto-briefing .indice-mini em{font-size:12px!important}
+.auto-briefing .analysis-auto{font-size:11px!important;line-height:1.25!important;padding:6px 0 0!important;margin:6px 0 0 43px!important;grid-column:1/-1!important}
+.home-live-monitor{gap:7px!important;margin-bottom:7px!important}
+.radar-monitor-card,.hourly-monitor-card,.operational-timeline-card{padding:9px!important}
+.monitor-head{margin-bottom:6px!important}.monitor-head b{font-size:14px!important}.monitor-head .label{font-size:9px!important}
+.home-radar-map{height:142px!important;border-radius:14px!important}
+.radar-foot{margin-top:5px!important}
+.home-hourly-strip .hour{flex-basis:68px!important;min-height:88px!important;padding:6px 4px!important}
+.home-hourly-strip .hour span{font-size:21px!important}.home-hourly-strip .hour b{font-size:17px!important}.home-hourly-strip .hour small{font-size:7px!important}
+.operational-timeline{margin:4px 1px 3px!important;padding-top:0!important;gap:1px!important}
+.operational-timeline:before{top:27px!important;height:2px!important;left:6%!important;right:6%!important;background:#66dfa1!important}
+.timeline-point{gap:1px!important;padding:0 1px!important}
+.timeline-point time{font-size:8px!important;color:#7de4a9!important;order:0}
+.timeline-dot{order:1;width:10px!important;height:10px!important;margin:5px 0 2px!important;border-width:2px!important}
+.timeline-weather{order:2;font-size:18px;line-height:1;margin-top:2px}
+.timeline-point b{order:3;font-size:13px!important;line-height:1!important;max-width:none!important}
+.timeline-point small{order:4;font-size:6.5px!important;white-space:normal!important;line-height:1.1!important;color:#9bb4bd!important;min-height:14px}
+.timeline-summary{margin-top:5px!important;padding:7px 9px!important;font-size:8.5px!important}
+.home-astro-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:7px;margin:0 0 8px}
+.home-astro-grid .card{margin:0!important;padding:9px!important;border-radius:17px!important;min-height:92px}
+.astro-card .label{font-size:8px!important;margin-bottom:6px!important;color:#76e5a1!important}
+.astro-main{display:flex;align-items:center;gap:8px}.astro-main>div{display:flex;flex-direction:column;min-width:0}.astro-main b{font-size:13px;line-height:1.15}.astro-main small{font-size:8px;color:#9db7c1;line-height:1.2;margin-top:3px}
+.astro-icon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:21px;flex:none}.astro-icon.shield{background:rgba(101,222,155,.16);border:1px solid rgba(101,222,155,.34);color:#73e2a2;box-shadow:0 0 15px rgba(101,222,155,.18)}
+.sun-arc{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:12px}.sun-arc i{font-style:normal;font-size:25px;filter:drop-shadow(0 0 7px rgba(255,204,55,.34))}.sun-card>small{display:flex;justify-content:space-between;color:#819eaa;font-size:7px;margin-top:2px}
+.moon-icon{font-size:30px;line-height:1;flex:none;filter:drop-shadow(0 0 7px rgba(191,214,255,.22))}
+.operation-header{margin-top:0!important}
+@media(max-width:430px){
+ .weather-hero{padding:9px!important}.app-logo{width:58px!important;height:58px!important}.hero-location h1{font-size:25px!important}.head-weather b{font-size:29px!important}.head-weather span{font-size:34px!important}
+ .hero-metrics{gap:4px!important}.hero-metrics button{padding:6px 4px!important}.hero-metrics i{font-size:17px!important}.hero-metrics small{font-size:7px!important}.hero-metrics b{font-size:11px!important}
+ .semafori{padding:5px 6px!important}.sem small{font-size:12px!important}.dot{width:11px!important;height:11px!important}
+ .auto-briefing{grid-template-columns:minmax(0,1fr) 86px!important}.auto-briefing #statusText{font-size:18px!important}.auto-briefing .analysis-auto{display:none!important}
+ .home-radar-map{height:126px!important}.home-hourly-strip .hour{flex-basis:62px!important;min-height:82px!important}
+ .home-astro-grid{grid-template-columns:1fr 1fr 1fr;gap:5px}.home-astro-grid .card{padding:7px!important;min-height:84px}.astro-main{gap:5px}.astro-main b{font-size:11px}.astro-main small{font-size:7px}.astro-icon{width:28px;height:28px;font-size:17px}.moon-icon{font-size:25px}.sun-arc{font-size:10px}.sun-arc i{font-size:21px}
+}

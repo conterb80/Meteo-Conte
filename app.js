@@ -236,7 +236,7 @@ function updateWeatherHero(code,isDay){
 async function load(){
  try{
   await navigator.serviceWorker?.getRegistrations?.().then(rs=>rs.forEach(r=>r.unregister()));
-  const url='https://api.open-meteo.com/v1/forecast?latitude=44.418&longitude=11.977&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&timezone=Europe%2FRome&forecast_days=1';
+  const url='https://api.open-meteo.com/v1/forecast?latitude=44.418&longitude=11.977&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&daily=sunrise,sunset&timezone=Europe%2FRome&forecast_days=2';
   const res=await fetch(url,{cache:'no-store'}); if(!res.ok) throw new Error('api');
   const data=await res.json(); lastData=data; const c=data.current, h=data.hourly;
   const desc=WMO[c.weather_code]||['Meteo','🌤️']; const idx=calcIndex(c,h); lastIndex=idx; const lv=level(idx); lastLevel=lv;
@@ -258,7 +258,7 @@ async function load(){
     autoBox.textContent=briefing.detail;
     autoBox.className='analysis-auto '+briefing.color+(idx<25?' compact':' expanded');
   }
-  renderNextSignal(h); renderRisk(h,idx); renderHours(h); updateControlBox(data); updateAnalysisSnapshot(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  renderNextSignal(h); renderRisk(h,idx); renderHours(h); renderAstro(data,briefing,idx); updateControlBox(data); updateAnalysisSnapshot(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
  }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; const ns=$('nextSignal'); if(ns) ns.innerHTML='<span>PROSSIMO SEGNALE</span><b>⚠️ Previsione oraria non disponibile.</b>'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; const cc=$('controlCorner'); if(cc) cc.className='cornerdot yellow'; const ct=$('controlTitle'); if(ct) ct.textContent='Dati da aggiornare'; const cp=$('controlText'); if(cp) cp.textContent='Dati meteo non disponibili: usa i link ufficiali del Centro Controllo Meteo.'; }
 }
 function renderRisk(h,base){
@@ -285,8 +285,11 @@ function renderOperationalTimeline(h){
  target.innerHTML='';
  for(let i=0;i<count;i++){
    const k=start+i, state=timelineState(h,k), time=formatHour(h.time[k]);
+   const icon=(WMO[h.weather_code[k]]||['','☀️'])[1];
+   const temp=Math.round(h.temperature_2m[k]);
+   const prob=h.precipitation_probability[k]||0;
    states.push(state);
-   target.insertAdjacentHTML('beforeend',`<div class="timeline-point ${state.level}"><span class="timeline-dot"></span><time>${time}</time><b>${state.label}</b><small>${Math.round(h.temperature_2m[k])}° · ${h.precipitation_probability[k]||0}%</small></div>`);
+   target.insertAdjacentHTML('beforeend',`<div class="timeline-point ${state.level}"><time>${time}</time><span class="timeline-dot"></span><span class="timeline-weather">${icon}</span><b>${temp}°</b><small>${state.label} · ${prob}%</small></div>`);
  }
  const rank={green:0,yellow:1,orange:2,red:3};
  const max=states.reduce((a,b)=>rank[b.level]>rank[a.level]?b:a,states[0]||{level:'green',label:'Stabile'});
@@ -296,6 +299,39 @@ function renderOperationalTimeline(h){
    summary.textContent=max.level==='green'?'Evoluzione regolare: nessun passaggio operativo aggiuntivo richiesto.':max.level==='yellow'?'Possibile cambiamento: osserva l’evoluzione nelle prossime ore.':max.level==='orange'?'Fenomeni da seguire: confronta previsione, radar e PRETEMP.':'Segnale importante: attiva subito il percorso operativo consigliato.';
  }
 }
+function moonPhaseInfo(date=new Date()){
+ const synodic=29.53058867;
+ const knownNew=Date.UTC(2000,0,6,18,14,0);
+ const age=(((date.getTime()-knownNew)/86400000)%synodic+synodic)%synodic;
+ const fraction=age/synodic;
+ if(fraction<0.0625||fraction>=0.9375)return {icon:'🌑',name:'Luna nuova',vis:Math.round((1-Math.cos(2*Math.PI*fraction))*50)+'%'};
+ if(fraction<0.1875)return {icon:'🌒',name:'Crescente',vis:Math.round((1-Math.cos(2*Math.PI*fraction))*50)+'%'};
+ if(fraction<0.3125)return {icon:'🌓',name:'Primo quarto',vis:'50%'};
+ if(fraction<0.4375)return {icon:'🌔',name:'Gibbosa crescente',vis:Math.round((1-Math.cos(2*Math.PI*fraction))*50)+'%'};
+ if(fraction<0.5625)return {icon:'🌕',name:'Luna piena',vis:'100%'};
+ if(fraction<0.6875)return {icon:'🌖',name:'Gibbosa calante',vis:Math.round((1-Math.cos(2*Math.PI*fraction))*50)+'%'};
+ if(fraction<0.8125)return {icon:'🌗',name:'Ultimo quarto',vis:'50%'};
+ return {icon:'🌘',name:'Calante',vis:Math.round((1-Math.cos(2*Math.PI*fraction))*50)+'%'};
+}
+function renderAstro(data,briefing,idx){
+ const daily=data.daily||{};
+ const fmt=v=>v?new Date(v).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'--:--';
+ const rise=$('sunriseTime'),set=$('sunsetTime');
+ if(rise)rise.textContent=fmt(daily.sunrise&&daily.sunrise[0]);
+ if(set)set.textContent=fmt(daily.sunset&&daily.sunset[0]);
+ const moon=moonPhaseInfo();
+ if($('moonIcon'))$('moonIcon').textContent=moon.icon;
+ if($('moonPhase'))$('moonPhase').textContent=moon.name;
+ if($('moonVisibility'))$('moonVisibility').textContent=moon.vis+' illuminata';
+ const alertTitle=$('homeAlertTitle'),alertText=$('homeAlertText');
+ if(alertTitle&&alertText){
+   if(idx>=75){alertTitle.textContent='Controllo immediato';alertText.textContent='Più segnali richiedono monitoraggio continuo.';}
+   else if(idx>=45){alertTitle.textContent='Situazione da seguire';alertText.textContent='Apri radar e percorso operativo per verificare.';}
+   else if(idx>=25){alertTitle.textContent='Possibile evoluzione';alertText.textContent='Controllo periodico consigliato nelle prossime ore.';}
+   else {alertTitle.textContent='Nessun segnale attivo';alertText.textContent='Situazione regolare sul territorio.';}
+ }
+}
+
 function renderHours(h){
  const target=$('hours'); if(!target) return;
  target.innerHTML=''; const start=nextStart(h.time);
@@ -961,7 +997,7 @@ loadLamoneSensors();
 })();
 
 
-/* RC1 — Radar Zoom Earth in prova con fallback leggero */
+/* RC2 — Compatibilità: selettore radar rimosso dalla Home */
 (function initRadarMode(){
   const zoomBtn=document.getElementById('useZoomRadar');
   const liteBtn=document.getElementById('useLiteRadar');

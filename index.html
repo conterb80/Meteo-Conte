@@ -10,10 +10,10 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte 1.0 RC1 · Beta finale</title>
-  <link rel="manifest" href="manifest.json?v=90" />
-  <link rel="icon" type="image/png" href="icon.png?v=90" />
-  <link rel="stylesheet" href="style.css?v=90" />
+  <title>Meteo Conte 1.0 RC2 · Beta finale</title>
+  <link rel="manifest" href="manifest.json?v=1.0-rc2" />
+  <link rel="icon" type="image/png" href="icon.png?v=1.0-rc2" />
+  <link rel="stylesheet" href="style.css?v=1.0-rc2" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 </head>
 <body>
@@ -22,7 +22,7 @@
     <header id="headerWeather" class="topbar logo-head weather-hero weather-clear" aria-label="Meteo attuale Borgo Viazza">
       <div class="weather-hero-main">
         <div class="brand-block">
-          <img class="app-logo" src="icon.png?v=90" alt="Meteo Conte" />
+          <img class="app-logo" src="icon.png?v=1.0-rc2" alt="Meteo Conte" />
           <div class="hero-location">
             <span class="hero-kicker">METEO CONTE</span>
             <h1>Borgo Viazza</h1>
@@ -80,23 +80,15 @@
     </section>
 
     <section class="home-live-monitor" aria-label="Monitor meteo live">
-      <article class="card radar-monitor-card radar-rc1">
+      <article class="card radar-monitor-card radar-rc2">
         <div class="monitor-head radar-head-rc1">
-          <div><span class="label">RADAR LIVE · ZOOM EARTH</span><b>Precipitazioni attorno a Borgo Viazza</b></div>
+          <div><span class="label">RADAR LIVE · RADAR LEGGERO</span><b>Precipitazioni attorno a Borgo Viazza</b></div>
           <div class="radar-head-actions">
             <span class="live-badge"><i></i>LIVE</span>
-            <a href="https://zoom.earth/maps/radar/#view=44.418,11.977,8z" target="_blank" rel="noopener">Apri completo ↗</a>
+            <a href="https://zoom.earth/maps/radar/#view=44.418,11.977,8z" target="_blank" rel="noopener">Zoom Earth ↗</a>
           </div>
         </div>
-        <div class="radar-mode-switch" role="group" aria-label="Seleziona radar">
-          <button id="useZoomRadar" class="active" type="button">Zoom Earth</button>
-          <button id="useLiteRadar" type="button">Radar leggero</button>
-        </div>
-        <div id="zoomRadarPanel" class="zoom-radar-panel">
-          <iframe id="zoomRadarFrame" title="Radar Zoom Earth su Borgo Viazza" loading="lazy" referrerpolicy="no-referrer" src="https://zoom.earth/maps/radar/#view=44.418,11.977,8z"></iframe>
-          <div class="zoom-radar-note"><span>Monitor Zoom Earth in prova</span><small>Se risulta lento o non si carica, usa “Radar leggero”.</small></div>
-        </div>
-        <div id="liteRadarPanel" class="lite-radar-panel hidden">
+        <div id="liteRadarPanel" class="lite-radar-panel">
           <div id="homeRadarMap" class="home-radar-map" aria-label="Mappa radar meteo live">
             <div class="radar-loading"><span>📡</span><b>Caricamento radar…</b></div>
           </div>
@@ -121,6 +113,22 @@
           <div class="timeline-loading">Calcolo dell’evoluzione…</div>
         </div>
         <p id="timelineSummary" class="timeline-summary">La timeline usa previsione oraria, pioggia, vento e segnali temporaleschi.</p>
+      </article>
+    </section>
+
+    <section class="home-astro-grid" aria-label="Informazioni astronomiche e stato operativo">
+      <article class="card astro-card alert-status-card">
+        <span class="label">STATO OPERATIVO</span>
+        <div class="astro-main"><span class="astro-icon shield">✓</span><div><b id="homeAlertTitle">Nessun segnale attivo</b><small id="homeAlertText">Situazione regolare sul territorio.</small></div></div>
+      </article>
+      <article class="card astro-card sun-card">
+        <span class="label">SOLE</span>
+        <div class="sun-arc"><span id="sunriseTime">--:--</span><i>☀️</i><span id="sunsetTime">--:--</span></div>
+        <small><span>Alba</span><span>Tramonto</span></small>
+      </article>
+      <article class="card astro-card moon-card">
+        <span class="label">LUNA</span>
+        <div class="astro-main"><span id="moonIcon" class="moon-icon">🌙</span><div><b id="moonPhase">--</b><small id="moonVisibility">fase lunare</small></div></div>
       </article>
     </section>
 
@@ -356,7 +364,7 @@
           <span class="operation-icon">⛈️</span>
           <div><h2>CENTRO OPERATIVO</h2><p>Meteo Conte · Sala operativa personale</p></div>
         </div>
-        <span class="operation-version">RC1</span>
+        <span class="operation-version">RC2</span>
       </div>
 
       <section id="analysisSnapshot" class="analysis-snapshot" aria-label="Quadro rapido Centro Analisi">
@@ -453,7 +461,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC1 · Beta finale</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC2 · Beta finale</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -467,6 +475,6 @@
 
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="app.js?v=90"></script>
+  <script src="app.js?v=1.0-rc2"></script>
 </body>
 </html>
