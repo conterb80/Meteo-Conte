@@ -10,27 +10,42 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte V87 · Home ottimizzata</title>
-  <link rel="manifest" href="manifest.json?v=87" />
-  <link rel="icon" type="image/png" href="icon.png?v=87" />
-  <link rel="stylesheet" href="style.css?v=87" />
+  <title>Meteo Conte V88 · Header meteo</title>
+  <link rel="manifest" href="manifest.json?v=88" />
+  <link rel="icon" type="image/png" href="icon.png?v=88" />
+  <link rel="stylesheet" href="style.css?v=88" />
 </head>
 <body>
   <main class="app">
     <section class="home-cockpit" aria-label="Pannello meteo principale">
-    <header class="topbar logo-head">
-      <div class="brand-block">
-        <img class="app-logo" src="icon.png?v=87" alt="Meteo Conte" />
-        <div>
-          <h1>Meteo Conte</h1>
-          <p>Villanova di Bagnacavallo</p>
+    <header id="headerWeather" class="topbar logo-head weather-hero weather-clear" aria-label="Meteo attuale Borgo Viazza">
+      <div class="weather-hero-main">
+        <div class="brand-block">
+          <img class="app-logo" src="icon.png?v=88" alt="Meteo Conte" />
+          <div class="hero-location">
+            <span class="hero-kicker">METEO CONTE</span>
+            <h1>Borgo Viazza</h1>
+            <p id="headerDesc">Aggiornamento meteo in corso</p>
+          </div>
         </div>
+        <button class="head-weather" type="button" data-trend="temperatura" aria-label="Apri trend temperatura">
+          <span id="headerIcon">☀️</span>
+          <b id="headerTemp">--°</b>
+          <i>›</i>
+        </button>
       </div>
-      <div class="head-weather"><span id="headerIcon">☀️</span><b id="headerTemp">--°</b></div>
+      <div class="hero-metrics" aria-label="Dati meteo attuali">
+        <button type="button" data-trend="temperatura"><i>🌡️</i><span><small>Percepita</small><b id="feels">--°</b></span></button>
+        <button type="button" data-trend="umidita"><i>💧</i><span><small>Umidità</small><b id="hum">--%</b></span></button>
+        <button type="button" data-trend="vento"><i>🌬️</i><span><small>Vento</small><b id="wind">-- km/h</b></span></button>
+        <button type="button" data-trend="vento"><i>💨</i><span><small>Raffica</small><b id="gust">-- km/h</b></span></button>
+        <button type="button" data-trend="pressione"><i>📈</i><span><small>Pressione</small><b id="press">-- hPa</b></span></button>
+      </div>
+      <div class="weather-ambient" aria-hidden="true"><span></span><span></span><span></span></div>
     </header>
 
     <section class="semafori card slim smartbar" aria-label="Semafori operativi">
-      <button class="sem" data-jump="meteoNow"><span id="dotMeteo" class="dot green"></span><small>Meteo</small></button>
+      <button class="sem" data-jump="headerWeather"><span id="dotMeteo" class="dot green"></span><small>Meteo</small></button>
       <button class="sem" data-jump="lamoneDrawer"><span id="dotLamone" class="dot green"></span><small>Lamone</small></button>
       <button class="sem" data-jump="alertsCard"><span id="dotAllerte" class="dot green"></span><small>Allerte</small></button>
       <button class="sem" data-jump="pretempDrawer"><span id="dotTemporali" class="dot green"></span><small>PRETEMP</small></button>
@@ -56,25 +71,9 @@
       <section id="analysisBox" class="analysis-auto" aria-label="Dettaglio automatico"></section>
     </section>
 
-    <section id="meteoNow" class="card meteo-now">
-      <div class="now-head">
-        <span class="label">ADESSO</span>
-        <button class="main-temp-btn" type="button" data-trend="temperatura" aria-label="Apri trend temperatura">
-          <strong id="tempNow">--°</strong><span class="now-arrow">›</span>
-        </button>
-        <p id="nowDesc">--</p>
-      </div>
-      <p class="tap-hint">Tocca un riquadro per aprire il trend rapido.</p>
-      <div class="metrics">
-        <button class="metric" data-trend="temperatura">🥵 <b id="feels">--°</b><span>Percepita</span></button>
-        <button class="metric" data-trend="umidita">💧 <b id="hum">--%</b><span>Umidità</span></button>
-        <button class="metric" data-trend="umidita">💦 <b id="dew">--°</b><span>Rugiada</span></button>
-        <button class="metric" data-trend="vento">🌬️ <b id="wind">-- km/h</b><span>Vento</span></button>
-        <button class="metric" data-trend="vento">💨 <b id="gust">-- km/h</b><span>Raffica</span></button>
-        <button class="metric" data-trend="pressione">📈 <b id="press">-- hPa</b><span>Pressione →</span></button>
-        <button class="metric" data-trend="pioggia">☔ <b id="rain6">-- mm</b><span>Pioggia 6h</span></button>
-      </div>
-    </section>
+    <div class="legacy-weather-data sr-only" aria-hidden="true">
+      <span id="tempNow">--°C</span><span id="nowDesc">--</span><span id="dew">--°</span><span id="rain6">-- mm</span>
+    </div>
 
     <section id="trendBox" class="card trendbox hidden"></section>
     </section>
@@ -311,7 +310,7 @@
           <span class="operation-icon">⛈️</span>
           <div><h2>CENTRO OPERATIVO</h2><p>Meteo Conte · Sala operativa personale</p></div>
         </div>
-        <span class="operation-version">V87</span>
+        <span class="operation-version">V88</span>
       </div>
 
       <section id="analysisSnapshot" class="analysis-snapshot" aria-label="Quadro rapido Centro Analisi">
@@ -408,7 +407,7 @@
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V87 · Home ottimizzata</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte V88 · Header meteo</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -421,6 +420,6 @@
     </div>
 
   </main>
-  <script src="app.js?v=87"></script>
+  <script src="app.js?v=88"></script>
 </body>
 </html>

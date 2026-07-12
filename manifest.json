@@ -1,9 +1,15 @@
 {
-  "name": "Meteo Conte V87 Home Ottimizzata",
+  "name": "Meteo Conte V88 Header Meteo",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=87-home-optimized",
+  "start_url": "index.html?v=88-weather-header",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
-  "icons": [{"src":"icon.png?v=87","sizes":"512x512","type":"image/png"}]
+  "icons": [
+    {
+      "src": "icon.png?v=88",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }

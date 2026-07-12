@@ -221,15 +221,29 @@ function updateControlBoxLamone(lam,mar,state){
   setControlChip('controlAlertChip',state.color,'verifica');
 }
 
+function updateWeatherHero(code,isDay){
+  const hero=$('headerWeather'); if(!hero) return;
+  let mood='weather-clear';
+  if(code===45||code===48) mood='weather-fog';
+  else if(code>=95) mood='weather-storm';
+  else if((code>=51&&code<=82)||(code>=61&&code<=67)) mood='weather-rain';
+  else if(code>=2&&code<=3) mood='weather-cloudy';
+  if(isDay===0 && mood==='weather-clear') mood='weather-night';
+  hero.classList.remove('weather-clear','weather-night','weather-cloudy','weather-rain','weather-storm','weather-fog');
+  hero.classList.add(mood);
+}
+
 async function load(){
  try{
   await navigator.serviceWorker?.getRegistrations?.().then(rs=>rs.forEach(r=>r.unregister()));
-  const url='https://api.open-meteo.com/v1/forecast?latitude=44.418&longitude=11.977&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&timezone=Europe%2FRome&forecast_days=1';
+  const url='https://api.open-meteo.com/v1/forecast?latitude=44.418&longitude=11.977&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&timezone=Europe%2FRome&forecast_days=1';
   const res=await fetch(url,{cache:'no-store'}); if(!res.ok) throw new Error('api');
   const data=await res.json(); lastData=data; const c=data.current, h=data.hourly;
   const desc=WMO[c.weather_code]||['Meteo','🌤️']; const idx=calcIndex(c,h); lastIndex=idx; const lv=level(idx); lastLevel=lv;
   const {start,end}=upcomingSlice(h,6); const rain6=h.precipitation.slice(start,end).reduce((a,b)=>a+(b||0),0); const probs=h.precipitation_probability.slice(start,end); const rainMax=probs.length?Math.max(...probs):0;
   $('headerIcon').textContent=desc[1]; $('headerTemp').textContent=Math.round(c.temperature_2m*10)/10+'°';
+  const headerDesc=$('headerDesc'); if(headerDesc) headerDesc.textContent=desc[0];
+  updateWeatherHero(c.weather_code, c.is_day);
   const briefing=buildHomeBriefing(c,h,idx);
   $('statusTitle').textContent=lv[0];
   $('statusText').textContent=briefing.main;

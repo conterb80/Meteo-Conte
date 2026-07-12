@@ -1822,3 +1822,96 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
   .quick-drawers-grid h2{font-size:16px!important}
   .quick-drawers-grid .btn{font-size:9.5px!important}
 }
+
+/* =========================================================
+   V88 · HEADER METEO DEFINITIVO
+   Dati "Adesso" integrati nella testata. Nessuna logica modificata.
+   ========================================================= */
+.home-cockpit .weather-hero{
+  position:relative;
+  display:block!important;
+  min-height:0!important;
+  margin:0 0 8px!important;
+  padding:12px!important;
+  overflow:hidden;
+  border:1px solid rgba(130,218,239,.25)!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 82% 15%,rgba(255,218,87,.18),transparent 28%),
+    radial-gradient(circle at 10% 0%,rgba(74,190,227,.24),transparent 38%),
+    linear-gradient(145deg,rgba(20,91,119,.94),rgba(5,39,55,.98))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 12px 28px rgba(0,12,22,.24)!important;
+  isolation:isolate;
+  transition:background .45s ease,border-color .45s ease;
+}
+.weather-hero:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(115deg,transparent 18%,rgba(255,255,255,.045) 48%,transparent 72%);
+  transform:translateX(-65%);
+  animation:heroSheen 11s ease-in-out infinite;
+  z-index:-1;
+}
+@keyframes heroSheen{0%,72%,100%{transform:translateX(-65%)}84%{transform:translateX(65%)}}
+.weather-hero-main{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative;z-index:2}
+.weather-hero .brand-block{gap:10px;min-width:0;flex:1}
+.weather-hero .app-logo{width:54px!important;height:54px!important;border-radius:15px!important;box-shadow:0 8px 18px rgba(0,0,0,.34)!important}
+.hero-location{min-width:0}
+.hero-kicker{display:block;font-size:8px;letter-spacing:.22em;font-weight:900;color:#a9d8e7;margin-bottom:3px}
+.weather-hero .hero-location h1{display:block!important;margin:0;font-size:22px;line-height:1;font-weight:850;color:#fff;white-space:nowrap}
+.weather-hero .hero-location p{margin:5px 0 0!important;max-width:190px!important;font-size:12px!important;line-height:1.15!important;font-weight:580!important;color:#d5e9f0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.weather-hero .head-weather{display:flex!important;align-items:center;gap:4px;border:0;background:transparent;color:#fff;padding:2px 0 2px 8px;box-shadow:none;min-width:0}
+.weather-hero .head-weather span{font-size:35px!important;line-height:1;filter:drop-shadow(0 7px 12px rgba(0,0,0,.28))}
+.weather-hero .head-weather b{font-size:36px!important;line-height:1!important;letter-spacing:-.05em}
+.weather-hero .head-weather i{font-style:normal;font-size:22px;color:#b8d2dc;opacity:.75}
+.hero-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-top:10px;position:relative;z-index:2}
+.hero-metrics button{min-width:0;min-height:51px;padding:6px 4px;border:1px solid rgba(158,218,235,.14);border-radius:13px;background:rgba(0,15,25,.22);color:#fff;box-shadow:none;display:flex;align-items:center;justify-content:center;gap:4px;text-align:left}
+.hero-metrics button:active{transform:scale(.975);background:rgba(255,255,255,.08)}
+.hero-metrics button>i{font-style:normal;font-size:16px;line-height:1;flex:none}
+.hero-metrics button>span{display:flex;flex-direction:column;min-width:0}
+.hero-metrics small{font-size:7.5px;line-height:1;text-transform:uppercase;letter-spacing:.04em;color:#a9c4cf;white-space:nowrap}
+.hero-metrics b{font-size:11px;line-height:1.15;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.weather-ambient{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;opacity:.36}
+.weather-ambient span{position:absolute;width:74px;height:22px;border-radius:999px;background:rgba(255,255,255,.09);filter:blur(.2px);animation:cloudDrift 19s linear infinite}
+.weather-ambient span:before,.weather-ambient span:after{content:"";position:absolute;border-radius:50%;background:inherit}
+.weather-ambient span:before{width:28px;height:28px;left:12px;top:-11px}.weather-ambient span:after{width:38px;height:38px;right:10px;top:-17px}
+.weather-ambient span:nth-child(1){top:13px;left:-85px}.weather-ambient span:nth-child(2){top:44px;left:-125px;animation-delay:-7s;transform:scale(.72)}.weather-ambient span:nth-child(3){top:74px;left:-95px;animation-delay:-13s;transform:scale(.55)}
+@keyframes cloudDrift{to{left:115%}}
+.weather-hero.weather-night{background:radial-gradient(circle at 84% 10%,rgba(176,206,255,.18),transparent 24%),linear-gradient(145deg,rgba(19,46,83,.96),rgba(4,20,39,.99))!important}
+.weather-hero.weather-cloudy{background:radial-gradient(circle at 80% 12%,rgba(202,224,234,.12),transparent 26%),linear-gradient(145deg,rgba(45,83,99,.96),rgba(12,40,54,.99))!important}
+.weather-hero.weather-rain{background:radial-gradient(circle at 80% 10%,rgba(104,184,222,.18),transparent 26%),linear-gradient(145deg,rgba(25,72,97,.98),rgba(6,29,46,.99))!important}
+.weather-hero.weather-storm{border-color:rgba(255,217,87,.38)!important;background:radial-gradient(circle at 82% 14%,rgba(255,217,87,.18),transparent 23%),linear-gradient(145deg,rgba(51,53,83,.98),rgba(17,24,48,.99))!important}
+.weather-hero.weather-fog{background:linear-gradient(145deg,rgba(69,94,104,.96),rgba(24,48,58,.99))!important}
+.weather-hero.weather-clear .weather-ambient{opacity:.16}
+.weather-hero.weather-storm .weather-ambient{opacity:.48}
+.weather-hero.weather-storm:before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.2);opacity:0;animation:softLightning 9s infinite;pointer-events:none;z-index:1}
+@keyframes softLightning{0%,82%,86%,100%{opacity:0}83%{opacity:.16}84%{opacity:0}85%{opacity:.09}}
+.legacy-weather-data{display:none!important}
+
+@media(max-width:430px){
+  .home-cockpit .weather-hero{padding:10px!important;border-radius:19px!important}
+  .weather-hero .app-logo{width:48px!important;height:48px!important;border-radius:13px!important}
+  .weather-hero .hero-location h1{font-size:20px}
+  .weather-hero .hero-location p{font-size:11px!important;max-width:145px!important}
+  .weather-hero .head-weather span{font-size:30px!important}
+  .weather-hero .head-weather b{font-size:32px!important}
+  .hero-metrics{gap:4px;margin-top:8px}
+  .hero-metrics button{min-height:47px;padding:5px 2px;gap:2px;border-radius:11px}
+  .hero-metrics button>i{font-size:14px}
+  .hero-metrics small{font-size:6.8px}
+  .hero-metrics b{font-size:9.7px}
+}
+@media(max-width:370px){
+  .weather-hero .app-logo{width:44px!important;height:44px!important}
+  .weather-hero .hero-location h1{font-size:18px}
+  .weather-hero .hero-location p{max-width:118px!important}
+  .weather-hero .head-weather span{font-size:27px!important}
+  .weather-hero .head-weather b{font-size:29px!important}
+  .hero-metrics{grid-template-columns:repeat(5,minmax(0,1fr));gap:3px}
+  .hero-metrics button{min-height:45px}
+  .hero-metrics button>i{display:none}
+  .hero-metrics small{font-size:6.4px}
+  .hero-metrics b{font-size:9px}
+}
