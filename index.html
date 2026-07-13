@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte 1.0 RC4 · Home finale</title>
+  <title>Meteo Conte 1.0 RC5 · Meteo Live</title>
   <link rel="manifest" href="manifest.json?v=1.0-rc3" />
   <link rel="icon" type="image/png" href="icon.png?v=1.0-rc3" />
   <link rel="stylesheet" href="style.css?v=1.0-rc3" />
@@ -363,7 +363,7 @@
           <span class="operation-icon">⛈️</span>
           <div><h2>CENTRO OPERATIVO</h2><p>Meteo Conte · Sala operativa personale</p></div>
         </div>
-        <span class="operation-version">RC4</span>
+        <span class="operation-version">RC5</span>
       </div>
 
       <section id="analysisSnapshot" class="analysis-snapshot" aria-label="Quadro rapido Centro Analisi">
@@ -450,17 +450,24 @@
       </div>
 
       <div class="tool-section accordion-section news follow-step" id="followSection">
-        <button class="tool-title accordion-toggle" type="button" aria-expanded="false"><span>🔔</span><div><b>5. Segui</b><small>Aggiornamenti e fonti affidabili</small></div><i>›</i></button>
-        <div class="tool-grid analysis-tools accordion-content">
-          <a id="toolAlerts" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener"><i>⚠️</i><b>Allerte ufficiali</b><small>bollettini regionali</small></a>
+        <button class="tool-title accordion-toggle" type="button" aria-expanded="false"><span>📡</span><div><b>5. Meteo Live</b><small>Esperti, video e fonti ufficiali</small></div><i>›</i></button>
+        <div class="tool-grid analysis-tools live-info-grid accordion-content">
+          <div class="live-group-title"><span>🔴</span><div><b>METEOROLOGI LIVE</b><small>Aggiornamenti rapidi, dirette e video</small></div></div>
+          <a class="featured social-card instagram-card" href="https://www.instagram.com/giuliobetti18?igsh=MTJma255ZmdlY2l3Yg==" target="_blank" rel="noopener"><i>📸</i><b>Giulio Betti</b><small>Instagram · analisi e video live</small><em>LIVE</em></a>
+          <a class="social-card facebook-card" href="https://www.facebook.com/share/1EfJXot9FS/" target="_blank" rel="noopener"><i>📘</i><b>Meteo Facebook 1</b><small>aggiornamenti e contenuti video</small></a>
+          <a class="social-card facebook-card" href="https://www.facebook.com/share/188WRVWpvJ/" target="_blank" rel="noopener"><i>📘</i><b>Meteo Facebook 2</b><small>aggiornamenti e contenuti video</small></a>
+          <a class="social-card facebook-card" href="https://www.facebook.com/share/1Cjp97cRVn/" target="_blank" rel="noopener"><i>📘</i><b>Meteo Facebook 3</b><small>aggiornamenti e contenuti video</small></a>
+
+          <div class="live-group-title official-title"><span>🛡️</span><div><b>FONTI UFFICIALI</b><small>Verifica allerte e comunicazioni regionali</small></div></div>
+          <a id="toolAlerts" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener"><i>⚠️</i><b>Allerte ufficiali</b><small>bollettini Emilia-Romagna</small></a>
           <a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><i>📡</i><b>Nowcasting ER</b><small>evoluzione radar +1h · +2h · +3h</small></a>
           <a href="https://allertameteo.regione.emilia-romagna.it/previsioni-regionali" target="_blank" rel="noopener"><i>🗺️</i><b>Previsioni regionali</b><small>testo ufficiale Emilia-Romagna</small></a>
-          <a href="https://www.emiliaromagnameteo.com/" target="_blank" rel="noopener"><i>☁️</i><b>EmiliaRomagnaMeteo</b><small>aggiornamenti locali</small></a>
+          <a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank" rel="noopener"><i>🏛️</i><b>Meteo ARPAE</b><small>previsioni e dati regionali</small></a>
         </div>
       </div>
     </section>
 
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC4 · Home finale</footer>
+    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC5 · Meteo Live</footer>
     <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
       <div class="pretemp-modal-head">
         <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -474,6 +481,6 @@
 
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="app.js?v=1.0-rc3"></script>
+  <script src="app.js?v=1.0-rc5"></script>
 </body>
 </html>

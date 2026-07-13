@@ -1,13 +1,12 @@
-# Meteo Conte 1.0 RC4 – Home finale
+# Meteo Conte 1.0 RC5 – Meteo Live
 
-Finitura conclusiva esclusivamente grafica della Home.
+Aggiornamento mirato del Centro Operativo.
 
-- pannello Situazione/Analisi automatica più compatto;
-- Indice Conte abbreviato in IND. CNT;
-- eliminata la scritta ridondante “tranquillo”;
-- Trend operativo con sfondo scuro e testi leggibili;
-- orari della fascia “Prossime ore” leggermente ridotti;
-- dati Sole e Luna più grandi e leggibili;
-- nessuna modifica a logiche, dati, avvisi, link o strumenti.
+- la vecchia sezione “5. Segui” diventa “5. Meteo Live”;
+- i profili social meteo vengono messi in primo piano;
+- Giulio Betti è evidenziato come accesso principale Instagram;
+- inseriti i tre collegamenti Facebook condivisi;
+- fonti ufficiali mantenute, ma separate e visivamente secondarie;
+- nessuna modifica ai motori meteo, alla Home, a Lamone o a PRETEMP.
 
-Aggiornamento: `reset.html?v=1.0-rc3`
+Nota: i tre collegamenti Facebook usano etichette provvisorie perché i link di condivisione non espongono pubblicamente il nome della pagina fuori da Facebook.

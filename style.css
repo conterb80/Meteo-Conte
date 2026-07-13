@@ -2234,3 +2234,20 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
   .auto-briefing #statusText{font-size:16px!important}
   .auto-briefing .next-signal b{font-size:11px!important}
 }
+
+
+/* RC5 — Meteo Live: social prioritari e fonti ufficiali separate */
+#operativeLinks .live-info-grid .live-group-title{
+  grid-column:1/-1;display:flex;align-items:center;gap:9px;min-height:42px;padding:7px 9px;
+  border-radius:12px;background:linear-gradient(90deg,rgba(255,90,90,.10),rgba(255,255,255,.018));
+  border:1px solid rgba(255,125,125,.16);color:#f4fbff
+}
+#operativeLinks .live-info-grid .live-group-title>span{font-size:18px;line-height:1}
+#operativeLinks .live-info-grid .live-group-title div{display:flex;flex-direction:column;min-width:0}
+#operativeLinks .live-info-grid .live-group-title b{font-size:10.5px!important;letter-spacing:.13em;line-height:1.1;color:#fff!important}
+#operativeLinks .live-info-grid .live-group-title small{font-size:8.8px!important;line-height:1.15;margin-top:3px!important;color:#aebfc7!important}
+#operativeLinks .live-info-grid .live-group-title.official-title{margin-top:3px;background:linear-gradient(90deg,rgba(85,190,255,.10),rgba(255,255,255,.018));border-color:rgba(99,198,255,.16)}
+#operativeLinks .live-info-grid .social-card{border-color:rgba(255,255,255,.15)!important}
+#operativeLinks .live-info-grid .instagram-card{background:linear-gradient(145deg,rgba(153,65,159,.20),rgba(11,55,65,.78))!important;border-color:rgba(229,105,195,.28)!important}
+#operativeLinks .live-info-grid .facebook-card{background:linear-gradient(145deg,rgba(50,105,190,.16),rgba(11,55,65,.78))!important;border-color:rgba(91,151,230,.23)!important}
+@media(max-width:380px){#operativeLinks .live-info-grid .live-group-title{padding:6px 7px}.live-info-grid .live-group-title small{font-size:8px!important}}
