@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.0 RC6 · Home Operativa</title>
-<link href="manifest.json?v=1.0-rc6" rel="manifest"/>
-<link href="icon.png?v=1.0-rc6" rel="icon" type="image/png"/>
-<link href="style.css?v=1.0-rc6" rel="stylesheet"/>
+<title>Meteo Conte 1.0 RC8 · Home Finale</title>
+<link href="manifest.json?v=1.0-rc8" rel="manifest"/>
+<link href="icon.png?v=1.0-rc8" rel="icon" type="image/png"/>
+<link href="style.css?v=1.0-rc8" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -64,7 +64,8 @@
 </div>
 </div>
 <div class="radar-foot"><span id="radarFrameTime">LIVE · aggiornamento in corso</span><span>debole <i></i> intenso</span></div>
-</article><section aria-live="polite" class="top-status card status-v16 auto-briefing">
+</article><section aria-live="polite" class="top-status card status-v16 auto-briefing compact-control-room">
+<span class="label briefing-section-label">4 · BOLLETTINO CONTE</span>
 <div class="briefing-main">
 <button aria-label="Apri spiegazione Indice Conte" class="indice-mini signal-index" data-trend="indice" id="indiceCard" type="button">
 <span class="bigdot green" id="statusDot"></span>
@@ -72,13 +73,15 @@
 <span class="sr-only" id="indiceLabel">--</span>
 </button>
 <div class="briefing-copy">
-<span class="label">4 · BOLLETTINO CONTE</span>
-<p class="briefing-headline" id="statusText">Aggiornamento dati in corso.</p>
 <div class="briefing-dashboard" id="briefingSignals" aria-label="Stato e accessi rapidi del Bollettino Conte">
-  <button class="briefing-tile" data-jump="headerWeather" id="briefWeather" type="button"><span>☁️</span><strong>Meteo</strong><i class="dot green" id="dotMeteo"></i><b>Analisi in corso…</b></button>
-  <button class="briefing-tile" data-jump="lamoneDrawer" id="briefLamone" type="button"><span>🌊</span><strong>Lamone</strong><i class="dot green" id="dotLamone"></i><b>Apri sensori</b></button>
-  <button class="briefing-tile-wrap" id="openOfficialAlerts" type="button"><span class="briefing-tile" id="briefAlert"><span>🛡️</span><strong>Allerte</strong><i class="dot green" id="dotAllerte"></i><b>Verifica in corso…</b></span></button>
-  <button class="briefing-tile" data-jump="pretempDrawer" id="briefPretemp" type="button"><span>⛈️</span><strong>PRETEMP</strong><i class="dot green" id="dotTemporali"></i><b>Bollettino e mappa</b></button>
+  <button class="briefing-tile-wrap" id="openOfficialAlerts" type="button"><span class="briefing-tile" id="briefAlert"><span>🛡️</span><strong>Allerte</strong><i class="dot green" id="dotAllerte"></i><b>Verifica…</b></span></button>
+  <button class="briefing-tile" data-jump="headerWeather" id="briefWeather" type="button"><span>☁️</span><strong>Meteo</strong><i class="dot green" id="dotMeteo"></i><b>Stabile</b></button>
+  <button class="briefing-tile" data-jump="lamoneDrawer" id="briefLamone" type="button"><span>🌊</span><strong>Lamone</strong><i class="dot green" id="dotLamone"></i><b>Sensori</b></button>
+  <button class="briefing-tile" data-jump="pretempDrawer" id="briefPretemp" type="button"><span>⛈️</span><strong>PRETEMP</strong><i class="dot green" id="dotTemporali"></i><b>Mappa</b></button>
+</div>
+<div class="operational-message" aria-label="Messaggio operativo prioritario">
+<small>MESSAGGIO OPERATIVO</small>
+<p class="briefing-headline" id="statusText">Aggiornamento dati in corso.</p>
 </div>
 </div>
 </div>
@@ -426,7 +429,7 @@
 </div>
 </div>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC6 · Home Operativa</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC8 · Home Finale</footer>
 <div aria-label="Mappa PRETEMP ingrandita" aria-modal="true" class="pretemp-modal hidden" id="pretempModal" role="dialog">
 <div class="pretemp-modal-head">
 <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -439,6 +442,6 @@
 </div>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=1.0-rc6"></script>
+<script src="app.js?v=1.0-rc8"></script>
 </body>
 </html>

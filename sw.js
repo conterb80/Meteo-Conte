@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meteo-conte-1-0-rc7-bollettino-integrato';
+const CACHE_NAME = 'meteo-conte-1-0-rc8-bollettino-integrato';
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {

@@ -1,10 +1,11 @@
-# Meteo Conte 1.0 RC7 · Bollettino integrato
+# Meteo Conte 1.0 RC8 · Home Finale
 
-Aggiornamento grafico della Home basato sulla RC6.
+Aggiornamento mirato del Bollettino Conte:
+- Indice Conte compatto a sinistra.
+- Allerte come primo semaforo, accanto all’indice.
+- Meteo, Lamone e PRETEMP allineati sulla stessa riga.
+- Un solo messaggio operativo prioritario sotto le spie.
+- Nessuna modifica ai motori, al radar, alle previsioni o agli strumenti.
 
-- Accessi Meteo, Lamone, Allerte e PRETEMP integrati nel Bollettino Conte.
-- Eliminata la sezione Accesso rapido separata.
-- Eliminato il riquadro Prossimo segnale ridondante.
-- Indice Conte più piccolo e discreto.
-- Stati sintetici e pulsanti cliccabili.
-- Nessuna modifica agli altri strumenti e motori della RC6.
+Caricare tutti i file nella root di GitHub Pages sostituendo quelli presenti.
+Primo test: aggiungere `?v=rc8` all’indirizzo dell’app.

@@ -2310,3 +2310,115 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
  .briefing-tile-wrap{padding:0}
  .briefing-tile>span{font-size:17px}.briefing-tile>strong{font-size:10px}.briefing-tile>b{font-size:10.7px}
 }
+
+/* RC8 · Bollettino Conte compatto: spie in alto, unico messaggio operativo sotto */
+.compact-control-room{
+  display:block!important;
+  padding:10px 11px 11px!important;
+  min-height:0!important;
+  border-color:rgba(96,214,157,.28)!important;
+}
+.compact-control-room .briefing-section-label{
+  display:block;
+  margin:0 0 7px 2px!important;
+  font-size:9px!important;
+  letter-spacing:.21em!important;
+}
+.compact-control-room .briefing-main{
+  display:grid!important;
+  grid-template-columns:58px minmax(0,1fr)!important;
+  gap:8px!important;
+  align-items:stretch!important;
+}
+.compact-control-room .signal-index{
+  width:58px!important;
+  min-width:58px!important;
+  min-height:112px!important;
+  padding:7px 3px!important;
+  border-radius:15px!important;
+  align-self:stretch!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+}
+.compact-control-room .signal-index .bigdot{
+  width:31px!important;
+  height:31px!important;
+  flex:0 0 31px!important;
+  margin:0 0 5px!important;
+}
+.compact-control-room .signal-index-copy>small{font-size:7px!important;letter-spacing:.11em!important;white-space:nowrap}
+.compact-control-room .signal-index-copy>b,
+.compact-control-room .signal-index-copy b span{font-size:19px!important;line-height:1!important}
+.compact-control-room .signal-index-copy b em{font-size:8px!important;display:inline!important}
+.compact-control-room .briefing-copy{display:flex!important;flex-direction:column!important;min-width:0!important}
+.compact-control-room .briefing-dashboard{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:4px!important;
+  margin:0 0 7px!important;
+}
+.compact-control-room .briefing-tile,
+.compact-control-room .briefing-tile-wrap{
+  min-width:0!important;
+  min-height:48px!important;
+  border-radius:11px!important;
+  padding:5px 3px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 8px!important;
+  grid-template-rows:19px auto!important;
+  column-gap:2px!important;
+  row-gap:1px!important;
+  text-align:center!important;
+  align-items:center!important;
+}
+.compact-control-room .briefing-tile-wrap{padding:0!important;display:block!important}
+.compact-control-room .briefing-tile-wrap>.briefing-tile{width:100%!important;height:100%!important;border:0!important}
+.compact-control-room .briefing-tile>span{display:none!important}
+.compact-control-room .briefing-tile>strong{
+  grid-column:1!important;grid-row:1!important;
+  font-size:8px!important;letter-spacing:.08em!important;line-height:1!important;
+  overflow:hidden;text-overflow:ellipsis;
+}
+.compact-control-room .briefing-tile>.dot{
+  grid-column:2!important;grid-row:1!important;
+  width:8px!important;height:8px!important;justify-self:end!important;
+}
+.compact-control-room .briefing-tile>b{
+  grid-column:1/3!important;grid-row:2!important;
+  font-size:8.5px!important;line-height:1.08!important;font-weight:560!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  text-align:center!important;
+}
+.compact-control-room .operational-message{
+  flex:1;
+  min-height:55px;
+  border-left:3px solid #63d7e8;
+  border-radius:10px;
+  background:rgba(0,0,0,.12);
+  padding:7px 9px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.compact-control-room .operational-message>small{
+  display:block;font-size:7px;letter-spacing:.18em;color:#9dc5d2;margin-bottom:3px
+}
+.compact-control-room #statusText{
+  margin:0!important;
+  font-size:15px!important;
+  line-height:1.16!important;
+  font-weight:750!important;
+  color:#f2fbff!important;
+}
+.compact-control-room .analysis-auto{display:none!important}
+@media(max-width:370px){
+ .compact-control-room{padding:9px!important}
+ .compact-control-room .briefing-main{grid-template-columns:53px minmax(0,1fr)!important;gap:6px!important}
+ .compact-control-room .signal-index{width:53px!important;min-width:53px!important}
+ .compact-control-room .briefing-dashboard{gap:3px!important}
+ .compact-control-room .briefing-tile>strong{font-size:7.3px!important}
+ .compact-control-room .briefing-tile>b{font-size:7.8px!important}
+ .compact-control-room #statusText{font-size:14px!important}
+}
