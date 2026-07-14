@@ -1,11 +1,8 @@
-# Meteo Conte 1.0 RC8 · Home Finale
+# Meteo Conte 1.0 RC8 Fix 1
 
-Aggiornamento mirato del Bollettino Conte:
-- Indice Conte compatto a sinistra.
-- Allerte come primo semaforo, accanto all’indice.
-- Meteo, Lamone e PRETEMP allineati sulla stessa riga.
-- Un solo messaggio operativo prioritario sotto le spie.
-- Nessuna modifica ai motori, al radar, alle previsioni o agli strumenti.
+Correzione del layout Bollettino Conte su smartphone.
 
-Caricare tutti i file nella root di GitHub Pages sostituendo quelli presenti.
-Primo test: aggiungere `?v=rc8` all’indirizzo dell’app.
+- Indice Conte a sinistra
+- Allerte, Meteo, Lamone e PRETEMP allineati senza uscire dalla card
+- Messaggio operativo sotto, a larghezza piena
+- Nessuna modifica ai motori o agli altri strumenti

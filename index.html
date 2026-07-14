@@ -64,31 +64,29 @@
 </div>
 </div>
 <div class="radar-foot"><span id="radarFrameTime">LIVE · aggiornamento in corso</span><span>debole <i></i> intenso</span></div>
-</article><section aria-live="polite" class="top-status card status-v16 auto-briefing compact-control-room">
-<span class="label briefing-section-label">4 · BOLLETTINO CONTE</span>
-<div class="briefing-main">
-<button aria-label="Apri spiegazione Indice Conte" class="indice-mini signal-index" data-trend="indice" id="indiceCard" type="button">
-<span class="bigdot green" id="statusDot"></span>
-<span class="signal-index-copy"><small>IND. CNT</small><b><span id="indiceVal">--</span><em>/100</em></b></span>
-<span class="sr-only" id="indiceLabel">--</span>
-</button>
-<div class="briefing-copy">
-<div class="briefing-dashboard" id="briefingSignals" aria-label="Stato e accessi rapidi del Bollettino Conte">
-  <button class="briefing-tile-wrap" id="openOfficialAlerts" type="button"><span class="briefing-tile" id="briefAlert"><span>🛡️</span><strong>Allerte</strong><i class="dot green" id="dotAllerte"></i><b>Verifica…</b></span></button>
-  <button class="briefing-tile" data-jump="headerWeather" id="briefWeather" type="button"><span>☁️</span><strong>Meteo</strong><i class="dot green" id="dotMeteo"></i><b>Stabile</b></button>
-  <button class="briefing-tile" data-jump="lamoneDrawer" id="briefLamone" type="button"><span>🌊</span><strong>Lamone</strong><i class="dot green" id="dotLamone"></i><b>Sensori</b></button>
-  <button class="briefing-tile" data-jump="pretempDrawer" id="briefPretemp" type="button"><span>⛈️</span><strong>PRETEMP</strong><i class="dot green" id="dotTemporali"></i><b>Mappa</b></button>
-</div>
-<div class="operational-message" aria-label="Messaggio operativo prioritario">
-<small>MESSAGGIO OPERATIVO</small>
-<p class="briefing-headline" id="statusText">Aggiornamento dati in corso.</p>
-</div>
-</div>
-</div>
-<span class="sr-only" id="statusTitle">Valutazione in corso</span>
-<span class="sr-only" id="decisionTitle">Valutazione in corso</span>
-<span class="sr-only" id="decisionText">Sintesi automatica in arrivo</span>
-<section aria-label="Dettaglio automatico" class="analysis-auto" id="analysisBox"></section>
+</article><section aria-live="polite" class="top-status card status-v16 auto-briefing rc8-fixed-briefing">
+  <span class="label rc8-briefing-label">4 · BOLLETTINO CONTE</span>
+  <div class="rc8-status-row">
+    <button aria-label="Apri spiegazione Indice Conte" class="indice-mini signal-index" data-trend="indice" id="indiceCard" type="button">
+      <span class="bigdot green" id="statusDot"></span>
+      <span class="signal-index-copy"><small>IND. CNT</small><b><span id="indiceVal">--</span><em>/100</em></b></span>
+      <span class="sr-only" id="indiceLabel">--</span>
+    </button>
+    <div class="briefing-dashboard" id="briefingSignals" aria-label="Stato e accessi rapidi del Bollettino Conte">
+      <button class="briefing-tile-wrap" id="openOfficialAlerts" type="button"><span class="briefing-tile" id="briefAlert"><span>🛡️</span><strong>Allerte</strong><i class="dot green" id="dotAllerte"></i><b>Verifica…</b></span></button>
+      <button class="briefing-tile" data-jump="headerWeather" id="briefWeather" type="button"><span>☁️</span><strong>Meteo</strong><i class="dot green" id="dotMeteo"></i><b>Analisi…</b></button>
+      <button class="briefing-tile" data-jump="lamoneDrawer" id="briefLamone" type="button"><span>🌊</span><strong>Lamone</strong><i class="dot green" id="dotLamone"></i><b>Sensori</b></button>
+      <button class="briefing-tile" data-jump="pretempDrawer" id="briefPretemp" type="button"><span>⛈️</span><strong>PRETEMP</strong><i class="dot green" id="dotTemporali"></i><b>Mappa</b></button>
+    </div>
+  </div>
+  <div class="operational-message" aria-label="Messaggio operativo prioritario">
+    <small>MESSAGGIO OPERATIVO</small>
+    <p id="statusText">Aggiornamento dati in corso.</p>
+  </div>
+  <span class="sr-only" id="statusTitle">Valutazione in corso</span>
+  <span class="sr-only" id="decisionTitle">Valutazione in corso</span>
+  <span class="sr-only" id="decisionText">Sintesi automatica in arrivo</span>
+  <section aria-label="Dettaglio automatico" class="analysis-auto" id="analysisBox"></section>
 </section><article aria-label="Trend operativo delle prossime sei ore" class="card operational-timeline-card">
 <div class="monitor-head">
 <div><span class="label">5 · TREND OPERATIVO · 6 ORE</span><b>Evoluzione a colpo d’occhio</b></div>
