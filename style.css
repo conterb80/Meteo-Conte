@@ -2281,3 +2281,32 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
  .briefing-signals li{font-size:12.5px}
  .semafori.smartbar .sem{min-height:45px}.semafori.smartbar .sem small{font-size:11.8px}
 }
+
+/* RC7 · Bollettino Conte compatto con accessi integrati */
+.auto-briefing{padding:11px!important}
+.auto-briefing .briefing-main{grid-template-columns:62px minmax(0,1fr)!important;gap:10px!important}
+.auto-briefing .signal-index{min-height:112px!important;border-radius:16px!important;padding:7px 3px!important}
+.auto-briefing .signal-index .bigdot{width:31px!important;height:31px!important;margin-bottom:5px!important}
+.auto-briefing .signal-index-copy small{font-size:7.5px!important}
+.auto-briefing .signal-index-copy b{font-size:20px!important}
+.auto-briefing .signal-index-copy em{font-size:10px!important}
+.briefing-headline{font-size:21px!important;margin:1px 0 9px!important}
+.briefing-dashboard{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0}
+.briefing-tile,.briefing-tile-wrap{position:relative;min-width:0;min-height:64px;border:1px solid rgba(148,211,231,.16);border-radius:14px;background:rgba(255,255,255,.026);color:#edf7fb;box-shadow:none;padding:8px 9px;text-align:left;display:grid;grid-template-columns:23px minmax(0,1fr) 11px;grid-template-rows:auto auto;column-gap:6px;row-gap:2px;align-items:center;white-space:normal}
+.briefing-tile-wrap{padding:0;display:block;background:transparent}
+.briefing-tile-wrap>.briefing-tile{border:0;width:100%;height:100%;min-height:62px}
+.briefing-tile>span{grid-row:1/3;font-size:18px;line-height:1}
+.briefing-tile>strong{font-size:11px;letter-spacing:.08em;text-transform:uppercase;line-height:1.1}
+.briefing-tile>.dot{grid-column:3;grid-row:1;width:10px!important;height:10px!important;justify-self:end}
+.briefing-tile>b{grid-column:2/4;grid-row:2;font-size:11.5px;line-height:1.18;font-weight:590;color:#cfe0e8;overflow:hidden;text-overflow:ellipsis}
+.briefing-tile.alert-green b{color:#85e9aa}.briefing-tile.alert-yellow b{color:#ffe36f}.briefing-tile.alert-orange b{color:#ffb267}.briefing-tile.alert-red b{color:#ff7e78}
+.briefing-tile:active,.briefing-tile-wrap:active{transform:scale(.985);background:rgba(255,255,255,.055)}
+@media(max-width:430px){
+ .auto-briefing .briefing-main{grid-template-columns:56px minmax(0,1fr)!important;gap:8px!important}
+ .auto-briefing .signal-index{min-height:108px!important}
+ .briefing-headline{font-size:20px!important}
+ .briefing-dashboard{gap:6px}
+ .briefing-tile,.briefing-tile-wrap{min-height:60px;padding:7px;grid-template-columns:21px minmax(0,1fr) 10px}
+ .briefing-tile-wrap{padding:0}
+ .briefing-tile>span{font-size:17px}.briefing-tile>strong{font-size:10px}.briefing-tile>b{font-size:10.7px}
+}

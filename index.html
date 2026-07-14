@@ -73,8 +73,13 @@
 </button>
 <div class="briefing-copy">
 <span class="label">4 · BOLLETTINO CONTE</span>
-<p class="briefing-headline" id="statusText">Aggiornamento dati in corso.</p><ul class="briefing-signals" id="briefingSignals"><li id="briefAlert"><span>🛡️</span><b>Verifica allerta ufficiale in corso…</b></li><li id="briefWeather"><span>☁️</span><b>Analisi delle prossime ore in corso…</b></li><li id="briefLamone"><span>🌊</span><b>Lamone: accesso rapido ai sensori</b></li><li id="briefPretemp"><span>⛈️</span><b>PRETEMP: bollettino e mappa disponibili</b></li></ul>
-<div class="next-signal" id="nextSignal"><span>PROSSIMO SEGNALE</span><b>Calcolo le prossime ore…</b></div>
+<p class="briefing-headline" id="statusText">Aggiornamento dati in corso.</p>
+<div class="briefing-dashboard" id="briefingSignals" aria-label="Stato e accessi rapidi del Bollettino Conte">
+  <button class="briefing-tile" data-jump="headerWeather" id="briefWeather" type="button"><span>☁️</span><strong>Meteo</strong><i class="dot green" id="dotMeteo"></i><b>Analisi in corso…</b></button>
+  <button class="briefing-tile" data-jump="lamoneDrawer" id="briefLamone" type="button"><span>🌊</span><strong>Lamone</strong><i class="dot green" id="dotLamone"></i><b>Apri sensori</b></button>
+  <button class="briefing-tile-wrap" id="openOfficialAlerts" type="button"><span class="briefing-tile" id="briefAlert"><span>🛡️</span><strong>Allerte</strong><i class="dot green" id="dotAllerte"></i><b>Verifica in corso…</b></span></button>
+  <button class="briefing-tile" data-jump="pretempDrawer" id="briefPretemp" type="button"><span>⛈️</span><strong>PRETEMP</strong><i class="dot green" id="dotTemporali"></i><b>Bollettino e mappa</b></button>
+</div>
 </div>
 </div>
 <span class="sr-only" id="statusTitle">Valutazione in corso</span>
@@ -90,12 +95,7 @@
 <div class="timeline-loading">Calcolo dell’evoluzione…</div>
 </div>
 <p class="timeline-summary" id="timelineSummary">La timeline usa previsione oraria, pioggia, vento e segnali temporaleschi.</p>
-</article><section aria-label="6 · Accesso rapido" class="semafori card slim smartbar"><span class="quick-title">6 · ACCESSO RAPIDO</span>
-<button class="sem" data-jump="headerWeather"><span class="dot green" id="dotMeteo"></span><small>Meteo</small></button>
-<button class="sem" data-jump="lamoneDrawer"><span class="dot green" id="dotLamone"></span><small>Lamone</small></button>
-<button class="sem" id="openOfficialAlerts" type="button"><span class="dot green" id="dotAllerte"></span><small>Allerte</small></button>
-<button class="sem" data-jump="pretempDrawer"><span class="dot green" id="dotTemporali"></span><small>PRETEMP</small></button>
-</section><section class="card trendbox hidden" id="trendBox"></section>
+</article><section class="card trendbox hidden" id="trendBox"></section>
 
 
 <div aria-hidden="true" class="legacy-weather-data sr-only">

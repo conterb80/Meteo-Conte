@@ -254,7 +254,7 @@ function renderOfficialAlert(state){
  if(dot) setDot(dot,color);
  if(line){
    line.className=state.color==='unknown'?'alert-yellow':'alert-'+state.color;
-   const txt=state.color==='unknown'?'Allerte ufficiali: verifica non disponibile, apri la fonte ARPAE':state.color==='green'?'Nessuna allerta attiva per Bagnacavallo (zona D1)':`ALLERTA ${alertColorLabel(state.color)}: ${state.phenomena.map(x=>x.label).join(', ')||'fenomeni segnalati'}`;
+   const txt=state.color==='unknown'?'Verifica fonte ufficiale':state.color==='green'?'Nessuna attiva':`Allerta ${alertColorLabel(state.color).toLowerCase()}: ${state.phenomena.map(x=>x.label).join(', ')||'fenomeni segnalati'}`;
    line.querySelector('b').textContent=txt;
  }
  const title=$('homeAlertTitle'),text=$('homeAlertText');
@@ -272,7 +272,8 @@ async function loadOfficialAlert(){
 function updateBriefWeather(c,h){
  const line=$('briefWeather');if(!line)return;
  const s=buildNextSignal(h);const icon=s.kind==='storm'?'⛈️':s.kind==='rain'?'🌧️':s.kind==='wind'?'💨':'☁️';
- line.querySelector('span').textContent=icon;line.querySelector('b').textContent=s.text;
+ const short=s.kind==='storm'?'Temporali possibili':s.kind==='rain'?'Pioggia possibile':s.kind==='wind'?'Vento da monitorare':'Situazione stabile';
+ line.querySelector('span').textContent=icon;line.querySelector('b').textContent=short;
 }
 async function load(){
  const alertPromise=loadOfficialAlert();
