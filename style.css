@@ -2464,3 +2464,27 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
   .briefing-final .briefing-index>b,.briefing-final .briefing-index b span{font-size:15px!important}
   .briefing-final #statusText{font-size:15px!important}
 }
+
+
+/* Meteo Conte 1.1 · Modulo Trend Operativi — intervento isolato */
+.trend-launcher{cursor:pointer;transition:transform .16s ease,border-color .16s ease}
+.trend-launcher:active{transform:scale(.995)}
+.trend-launcher:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+body.trend-open{overflow:hidden}
+.trend-page{position:fixed!important;inset:0!important;z-index:9999!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;max-width:none!important;overflow-y:auto!important;background:radial-gradient(circle at top,#155e78 0,#092b3b 30%,#061b27 100%)!important;animation:trendPageIn .2s ease-out}
+@keyframes trendPageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.trend-page-shell{width:min(100%,720px);min-height:100%;margin:0 auto;padding:14px 10px calc(28px + env(safe-area-inset-bottom))}
+.trend-page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.trend-page-head .label{margin-bottom:4px}.trend-page-head h2{margin:0;font-size:29px;line-height:1.05}.trend-page-head p{margin:5px 0 0;color:var(--muted);font-size:15px}
+.trend-page-head .closeTrend{flex:none;width:44px;height:44px;border-radius:50%;padding:0;background:#ffffff10;color:var(--txt);border:1px solid var(--line);box-shadow:none;font-size:28px}
+.trend-tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px;scrollbar-width:none}.trend-tabs::-webkit-scrollbar{display:none}
+.trend-tab{flex:0 0 auto;padding:9px 12px;border-radius:14px;background:#ffffff0a;color:var(--muted);border:1px solid var(--line);box-shadow:none;font-size:14px}.trend-tab span{margin-right:5px}.trend-tab.active{background:#6fe09a1c;color:var(--txt);border-color:#6fe09a75}
+.trend-periods{display:flex;align-items:center;gap:7px;margin-bottom:9px}.trend-periods>span{color:var(--muted);font-size:13px;margin-right:auto}.trend-periods button{padding:6px 11px;background:#ffffff0a;color:var(--muted);border:1px solid var(--line);box-shadow:none;font-size:13px}.trend-periods button.active{background:linear-gradient(90deg,var(--green),var(--lime));color:#062515}
+.dcs-panel,.trend-diagnosis{background:linear-gradient(180deg,var(--panel2),#082638e8);border:1px solid var(--line);border-radius:22px;box-shadow:0 14px 35px #0004,inset 0 1px 0 #fff1;padding:13px;margin-bottom:10px}
+.dcs-title{display:flex;align-items:center;justify-content:space-between;gap:10px}.dcs-title>div{display:flex;align-items:center;gap:8px}.dcs-title>div>span{font-size:27px}.dcs-title h3{font-size:23px;margin:0}.trend-state{font-size:13px;font-weight:850;border-radius:999px;padding:6px 9px;background:#ffffff0c}.trend-state.green{color:var(--green)}.trend-state.yellow{color:var(--yellow)}.trend-state.orange{color:#ffae57}
+.dcs-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:11px 0}.dcs-kpis>div{background:#ffffff08;border:1px solid var(--line);border-radius:15px;padding:8px 9px;min-width:0}.dcs-kpis small{display:block;color:var(--muted);font-size:10px;letter-spacing:.12em;margin-bottom:3px}.dcs-kpis b{font-size:17px;white-space:nowrap}
+.dcs-chart-wrap{background:#041c29a8;border:1px solid var(--line);border-radius:17px;padding:7px 5px 4px;overflow:hidden}.dcs-chart{display:block;width:100%;height:auto;max-height:245px}.dcs-grid line{stroke:#ffffff16;stroke-width:1}.dcs-grid text,.dcs-chart .xlab{fill:#aebfca;font-size:10px}.dcs-area{fill:#6fe09a12}.dcs-line{fill:none;stroke:var(--lime);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}.dcs-line.secondary{stroke:#68b8ff;stroke-width:2.2;stroke-dasharray:5 4}.dcs-dots circle{fill:var(--green);stroke:#eafff2;stroke-width:1}.dcs-legend{display:flex;gap:14px;padding:2px 10px 5px;color:var(--muted);font-size:11px}.dcs-legend span{display:flex;align-items:center;gap:5px}.dcs-legend i{width:15px;height:3px;background:var(--lime);border-radius:9px}.dcs-legend .legend-secondary{background:#68b8ff}
+.trend-reading{margin-top:9px;border-left:4px solid var(--green);background:#ffffff08;border-radius:12px;padding:9px 10px}.trend-reading.yellow{border-left-color:var(--yellow)}.trend-reading.orange{border-left-color:#ffae57}.trend-reading small,.trend-diagnosis small{display:block;color:var(--muted);font-size:10px;letter-spacing:.13em;margin-bottom:4px}.trend-reading b{font-size:15px;line-height:1.3}
+.trend-diagnosis{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:flex-start}.diagnosis-dot{width:16px;height:16px;border-radius:50%;background:var(--green);margin-top:3px}.trend-diagnosis.yellow .diagnosis-dot{background:var(--yellow)}.trend-diagnosis.orange .diagnosis-dot{background:#ffae57}.trend-diagnosis h3{margin:0 0 4px;font-size:20px}.trend-diagnosis p{margin:0;color:#e1edf3;font-size:14.5px;line-height:1.35}.trend-disclaimer{color:#aebfca;font-size:12px;line-height:1.35;margin:8px 4px 0;text-align:center}
+@media(max-width:430px){.trend-page-shell{padding:11px 8px 24px}.trend-page-head h2{font-size:26px}.trend-tab{padding:8px 10px;font-size:13px}.dcs-panel,.trend-diagnosis{border-radius:19px;padding:11px}.dcs-title h3{font-size:21px}.dcs-kpis b{font-size:16px}.dcs-chart{max-height:215px}}
+@media(max-width:360px){.dcs-kpis{grid-template-columns:1fr}.dcs-kpis b{white-space:normal}.trend-page-head p{font-size:13px}}

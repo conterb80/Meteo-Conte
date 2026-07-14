@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.0 RC6 · Home Operativa</title>
-<link href="manifest.json?v=1.0-rc6" rel="manifest"/>
-<link href="icon.png?v=1.0-rc6" rel="icon" type="image/png"/>
-<link href="style.css?v=1.0-rc6" rel="stylesheet"/>
+<title>Meteo Conte 1.1 · Trend Operativi</title>
+<link href="manifest.json?v=1.1-trend1" rel="manifest"/>
+<link href="icon.png?v=1.1-trend1" rel="icon" type="image/png"/>
+<link href="style.css?v=1.1-trend1" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -98,16 +98,16 @@
   <span class="sr-only" id="decisionTitle">Valutazione in corso</span>
   <span class="sr-only" id="decisionText">Sintesi automatica in arrivo</span>
   <section aria-label="Dettaglio automatico" class="analysis-auto" id="analysisBox"></section>
-</section><article aria-label="Trend operativo delle prossime sei ore" class="card operational-timeline-card">
+</section><article aria-label="Apri la pagina Trend Operativi" class="card operational-timeline-card trend-launcher" id="openTrendPage" role="button" tabindex="0">
 <div class="monitor-head">
 <div><span class="label">5 · TREND OPERATIVO · 6 ORE</span><b>Evoluzione a colpo d’occhio</b></div>
-<small>automatico</small>
+<small>apri analisi ›</small>
 </div>
 <div class="operational-timeline" id="operationalTimeline">
 <div class="timeline-loading">Calcolo dell’evoluzione…</div>
 </div>
 <p class="timeline-summary" id="timelineSummary">La timeline usa previsione oraria, pioggia, vento e segnali temporaleschi.</p>
-</article><section class="card trendbox hidden" id="trendBox"></section>
+</article><section aria-label="Pagina Trend Operativi" aria-modal="true" class="trendbox trend-page hidden" id="trendBox" role="dialog"></section>
 
 
 <div aria-hidden="true" class="legacy-weather-data sr-only">
@@ -438,7 +438,7 @@
 </div>
 </div>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC6 · Home Operativa</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Trend Operativi</footer>
 <div aria-label="Mappa PRETEMP ingrandita" aria-modal="true" class="pretemp-modal hidden" id="pretempModal" role="dialog">
 <div class="pretemp-modal-head">
 <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -451,6 +451,6 @@
 </div>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=1.0-rc6"></script>
+<script src="app.js?v=1.1-trend1"></script>
 </body>
 </html>

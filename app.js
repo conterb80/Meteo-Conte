@@ -381,52 +381,109 @@ function renderHours(h){
  h.time.slice(start,start+6).forEach((t,i)=>{const k=start+i;const d=new Date(t); const code=h.weather_code[k]; const icon=(WMO[code]||['','☀️'])[1]; target.insertAdjacentHTML('beforeend',`<div class="hour"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><b>${Math.round(h.temperature_2m[k])}°</b><span>${icon}</span><small>${h.precipitation_probability[k]}% · ${h.precipitation[k].toFixed(1)}mm</small></div>`)});
  renderOperationalTimeline(h);
 }
-function makeChart(vals,times,unit,type){
- const w=320,h=104,padX=18,padY=18;
- const min=Math.min(...vals), max=Math.max(...vals), span=(max-min)||1;
- const pts=vals.map((v,i)=>{
-   const x=padX + i*((w-padX*2)/(Math.max(vals.length-1,1)));
-   const y=h-padY - ((v-min)/span)*(h-padY*2);
-   return {x,y,v,i};
- });
- const line=pts.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
- const area=line + ` L ${pts[pts.length-1].x.toFixed(1)} ${h-padY} L ${pts[0].x.toFixed(1)} ${h-padY} Z`;
- const lab=pts.map((p,idx)=>{
-   const d=new Date(times[idx]);
-   const t=d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
-   const val=(type==='pressione'||type==='vento'||type==='umidita'||type==='pioggia')?Math.round(p.v):Math.round(p.v*10)/10;
-   return `<g><circle cx="${p.x}" cy="${p.y}" r="4"></circle><text x="${p.x}" y="${Math.max(12,p.y-9)}" text-anchor="middle">${val}${unit}</text><text x="${p.x}" y="${h-4}" text-anchor="middle" class="time">${t}</text></g>`;
- }).join('');
- return `<div class="spark-card"><svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Grafico trend"><path class="area" d="${area}"></path><path class="line" d="${line}"></path>${lab}</svg></div>`;
+function trendConfig(type){
+ return {
+  temperatura:{label:'Temperatura',icon:'🌡️',key:'temperature_2m',unit:'°C',decimals:1,rateUnit:'°C/h'},
+  umidita:{label:'Umidità',icon:'💧',key:'relative_humidity_2m',unit:'%',decimals:0,rateUnit:'%/h'},
+  pressione:{label:'Pressione',icon:'📉',key:'pressure_msl',unit:' hPa',decimals:0,rateUnit:'hPa/h'},
+  vento:{label:'Vento e raffiche',icon:'💨',key:'wind_gusts_10m',secondary:'wind_speed_10m',unit:' km/h',decimals:0,rateUnit:'km/h'},
+  pioggia:{label:'Pioggia',icon:'🌧️',key:'precipitation_probability',secondary:'precipitation',unit:'%',decimals:0,rateUnit:'%/h'},
+  indice:{label:'Indice Conte',icon:'🧠',key:null,unit:'/100',decimals:0,rateUnit:'punti/h'}
+ }[type]||null;
 }
-function openTrend(type){
- if(!lastData) return; const h=lastData.hourly; const start=nextStart(h.time); const box=$('trendBox');
- const labels={temperatura:'Trend temperatura',pioggia:'Trend pioggia',vento:'Trend vento e raffiche',pressione:'Trend pressione',umidita:'Umidità e rugiada',indice:'Indice Conte'};
- let rows='', intro='', graph='';
- if(type==='indice'){
-  intro=`Indice ${lastIndex}/100: ${lastLevel?.[1]||'--'}. Sintesi dei fattori principali.`;
-  rows=[['Pioggia 6h',$('rain6').textContent],['Vento',$('wind').textContent],['Raffica',$('gust').textContent],['Pressione',$('press').textContent]].map(x=>`<div class="trend-row"><time>${x[0]}</time><div class="bar"><i style="width:25%"></i></div><b>${x[1]}</b></div>`).join('');
- } else {
-  const cfg={
-   temperatura:['temperature_2m','°','Temperatura prevista nelle prossime ore. Utile per capire calo serale, notte e picchi.'],
-   pioggia:['precipitation_probability','%','Probabilità di pioggia nelle prossime ore.'],
-   vento:['wind_gusts_10m',' km/h','Raffiche previste nelle prossime ore.'],
-   pressione:['pressure_msl',' hPa','Pressione prevista nelle prossime ore.'],
-   umidita:['relative_humidity_2m','%','Umidità prevista nelle prossime ore.']
-  }[type] || ['temperature_2m','°','Trend rapido.'];
-  const vals=h[cfg[0]].slice(start,start+6); const times=h.time.slice(start,start+6); const min=Math.min(...vals), max=Math.max(...vals); intro=cfg[2];
-  graph=makeChart(vals,times,cfg[1],type);
-  rows='';
+function fmtTrendValue(v,cfg){
+ if(v==null||Number.isNaN(v)) return '--';
+ return Number(v).toFixed(cfg.decimals)+(cfg.unit||'');
+}
+function linearRate(vals){
+ if(!vals||vals.length<2) return 0;
+ const n=vals.length, xm=(n-1)/2, ym=vals.reduce((a,b)=>a+b,0)/n;
+ let num=0,den=0;
+ vals.forEach((y,x)=>{num+=(x-xm)*(y-ym);den+=(x-xm)*(x-xm)});
+ return den?num/den:0;
+}
+function classifyTrend(type,rate,vals){
+ const abs=Math.abs(rate);
+ const thresholds={temperatura:[.15,.55],umidita:[.8,2.5],pressione:[.18,.65],vento:[1.2,3.5],pioggia:[2,7],indice:[2,6]}[type]||[.5,2];
+ const dir=rate>thresholds[0]?'in aumento':rate<-thresholds[0]?'in calo':'stabile';
+ const speed=abs>=thresholds[1]?'rapido':abs>=thresholds[0]?'graduale':'quasi stabile';
+ let color=abs>=thresholds[1]?'orange':abs>=thresholds[0]?'yellow':'green';
+ let text=`Andamento ${speed}${dir==='stabile'?'':` e ${dir}`}.`;
+ if(type==='pressione'&&rate<=-thresholds[1]) text='Pressione in rapido calo: segnale da confrontare con vento, umidità, radar e PRETEMP.';
+ if(type==='umidita'&&rate>=thresholds[1]) text='Umidità in rapido aumento: aria sempre più satura, da leggere insieme agli altri segnali.';
+ if(type==='vento'&&rate>=thresholds[1]) text='Raffiche in crescita rapida: possibile intensificazione della ventilazione.';
+ if(type==='pioggia'&&Math.max(...vals)>=60) text='Probabilità di pioggia in aumento: controlla radar e orari previsti.';
+ if(type==='temperatura'&&rate<=-thresholds[1]) text='Temperatura in rapido calo: verifica se coincide con pioggia, vento o passaggio temporalesco.';
+ return {dir,speed,color,text};
+}
+function buildTrendSvg(vals,times,cfg,secondary){
+ const w=360,h=190,pL=30,pR=15,pT=24,pB=34;
+ const all=secondary?[...vals,...secondary]:vals;
+ let min=Math.min(...all),max=Math.max(...all); if(max===min){max+=1;min-=1}
+ const pad=(max-min)*.12; min-=pad;max+=pad;
+ const pt=(v,i)=>({x:pL+i*((w-pL-pR)/Math.max(vals.length-1,1)),y:pT+(max-v)/(max-min)*(h-pT-pB)});
+ const pts=vals.map(pt), path=pts.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
+ const secPts=secondary?secondary.map(pt):[], secPath=secPts.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
+ const grid=[0,.25,.5,.75,1].map(q=>{const y=pT+q*(h-pT-pB);const val=max-q*(max-min);return `<line x1="${pL}" y1="${y}" x2="${w-pR}" y2="${y}"/><text x="${pL-5}" y="${y+4}" text-anchor="end">${Math.round(val*10)/10}</text>`}).join('');
+ const step=Math.max(1,Math.ceil(times.length/6));
+ const labels=times.map((t,i)=>i%step?'':`<text class="xlab" x="${pts[i].x}" y="${h-10}" text-anchor="middle">${new Date(t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</text>`).join('');
+ const dots=pts.map((p,i)=>`<circle cx="${p.x}" cy="${p.y}" r="${i===pts.length-1?4.5:2.5}"/>`).join('');
+ return `<svg class="dcs-chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Trend ${cfg.label}"><g class="dcs-grid">${grid}</g><path class="dcs-area" d="${path} L ${pts.at(-1).x} ${h-pB} L ${pts[0].x} ${h-pB} Z"/><path class="dcs-line" d="${path}"/>${secondary?`<path class="dcs-line secondary" d="${secPath}"/>`:''}<g class="dcs-dots">${dots}</g>${labels}</svg>`;
+}
+function trendDiagnosis(h,start,count){
+ const slice=k=>h[k].slice(start,start+count);
+ const p=linearRate(slice('pressure_msl')), u=linearRate(slice('relative_humidity_2m')), g=linearRate(slice('wind_gusts_10m'));
+ const rain=Math.max(...slice('precipitation_probability'));
+ let score=0,parts=[];
+ if(p<-.45){score+=2;parts.push('pressione in calo')}
+ if(u>1.8){score+=1;parts.push('umidità in aumento')}
+ if(g>2.5){score+=2;parts.push('raffiche in crescita')}
+ if(rain>=60){score+=2;parts.push('pioggia probabile')}
+ if(score>=5)return {color:'orange',title:'Evoluzione da seguire',text:`Segnali combinati: ${parts.join(', ')}. Apri radar, PRETEMP e allerte per la verifica operativa.`};
+ if(score>=2)return {color:'yellow',title:'Variazioni presenti',text:`Si osservano ${parts.join(', ')}. Nessuna conclusione automatica: controlla l’evoluzione.`};
+ return {color:'green',title:'Andamento regolare',text:'Le variabili non mostrano al momento una combinazione operativa significativa.'};
+}
+let activeTrendType='temperatura',activeTrendHours=12;
+function renderTrendPage(){
+ if(!lastData)return;
+ const h=lastData.hourly,start=nextStart(h.time),cfg=trendConfig(activeTrendType);
+ const count=Math.min(activeTrendHours,h.time.length-start),times=h.time.slice(start,start+count);
+ let vals,secondary=null;
+ if(activeTrendType==='indice'){
+   vals=times.map((_,i)=>{
+    const k=start+i;
+    return Math.min(100,Math.round((h.precipitation_probability[k]||0)*.45+Math.min(25,(h.precipitation[k]||0)*10)+((h.relative_humidity_2m[k]||0)>75?15:0)+((h.wind_gusts_10m[k]||0)>45?15:(h.wind_gusts_10m[k]||0)>30?8:0)+((h.pressure_msl[k]||1015)<1008?10:0)));
+   });
+ }else{
+   vals=h[cfg.key].slice(start,start+count);
+   if(cfg.secondary)secondary=h[cfg.secondary].slice(start,start+count);
  }
- box.innerHTML=`<div class="trend-head"><h2>${labels[type]||'Trend'}</h2><button class="closeTrend" type="button" aria-label="Chiudi trend">×</button></div><p>${intro}</p>${graph}<div class="trend-list ${graph?'mini':''}">${rows}</div>`;
- box.classList.remove('hidden'); box.scrollIntoView({behavior:'smooth',block:'start'});
- box.querySelector('.closeTrend')?.addEventListener('click',()=>box.classList.add('hidden'));
+ const rate=linearRate(vals),state=classifyTrend(activeTrendType,rate,vals),min=Math.min(...vals),max=Math.max(...vals),current=vals[0],end=vals.at(-1);
+ const diagnosis=trendDiagnosis(h,start,count);
+ const tabs=['temperatura','pressione','umidita','vento','pioggia','indice'].map(t=>{const c=trendConfig(t);return `<button class="trend-tab ${t===activeTrendType?'active':''}" data-trend-tab="${t}" type="button"><span>${c.icon}</span>${c.label}</button>`}).join('');
+ const rateSign=rate>0?'+':'';
+ const secLegend=activeTrendType==='vento'?'<span><i class="legend-secondary"></i>Vento medio</span>':activeTrendType==='pioggia'?'<span><i class="legend-secondary"></i>Accumulo</span>':'';
+ const box=$('trendBox');
+ box.innerHTML=`<div class="trend-page-shell"><header class="trend-page-head"><div><span class="label">SALA QUADRI METEO</span><h2>📈 Trend Operativi</h2><p>Valore, direzione e velocità di variazione.</p></div><button class="closeTrend" type="button" aria-label="Chiudi Trend Operativi">×</button></header><nav class="trend-tabs" aria-label="Variabili trend">${tabs}</nav><div class="trend-periods"><span>Intervallo</span>${[6,12,24].map(n=>`<button class="${n===activeTrendHours?'active':''}" data-trend-hours="${n}" type="button">${n} h</button>`).join('')}</div><section class="dcs-panel"><div class="dcs-title"><div><span>${cfg.icon}</span><h3>${cfg.label}</h3></div><span class="trend-state ${state.color}">${state.dir}</span></div><div class="dcs-kpis"><div><small>ATTUALE</small><b>${fmtTrendValue(current,cfg)}</b></div><div><small>MIN / MAX</small><b>${fmtTrendValue(min,cfg)} · ${fmtTrendValue(max,cfg)}</b></div><div><small>VARIAZIONE</small><b>${rateSign}${rate.toFixed(cfg.decimals?1:1)} ${cfg.rateUnit}</b></div><div><small>A FINE PERIODO</small><b>${fmtTrendValue(end,cfg)}</b></div></div><div class="dcs-chart-wrap">${buildTrendSvg(vals,times,cfg,secondary)}<div class="dcs-legend"><span><i></i>${cfg.label}</span>${secLegend}</div></div><div class="trend-reading ${state.color}"><small>INTERPRETAZIONE OPERATIVA</small><b>${state.text}</b></div></section><section class="trend-diagnosis ${diagnosis.color}"><div class="diagnosis-dot"></div><div><small>DIAGNOSI COMBINATA</small><h3>${diagnosis.title}</h3><p>${diagnosis.text}</p></div></section><p class="trend-disclaimer">Lettura orientativa basata sui dati previsionali. Radar, PRETEMP e allerte ufficiali restano gli strumenti di conferma.</p></div>`;
+ box.querySelector('.closeTrend')?.addEventListener('click',closeTrendPage);
+ box.querySelectorAll('[data-trend-tab]').forEach(b=>b.addEventListener('click',()=>{activeTrendType=b.dataset.trendTab;renderTrendPage()}));
+ box.querySelectorAll('[data-trend-hours]').forEach(b=>b.addEventListener('click',()=>{activeTrendHours=Number(b.dataset.trendHours);renderTrendPage()}));
 }
+function openTrend(type='temperatura'){
+ if(!lastData)return;
+ activeTrendType=trendConfig(type)?type:'temperatura';
+ const box=$('trendBox'); box.classList.remove('hidden'); document.body.classList.add('trend-open'); renderTrendPage();
+ box.scrollTop=0;
+}
+function closeTrendPage(){ $('trendBox')?.classList.add('hidden');document.body.classList.remove('trend-open'); }
 $('refreshBtn')?.addEventListener('click',load);
 document.querySelectorAll('[data-trend]').forEach(el=>{
   el.addEventListener('click',()=>openTrend(el.dataset.trend));
   el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend(el.dataset.trend)}});
 });
+$('openTrendPage')?.addEventListener('click',()=>openTrend('temperatura'));
+$('openTrendPage')?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend('temperatura')}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('trendBox')?.classList.contains('hidden'))closeTrendPage()});
 $('openOfficialAlerts')?.addEventListener('click',()=>window.open(OFFICIAL_ALERT_PAGE,'_blank','noopener'));
 document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>{
  const id=el.dataset.jump;

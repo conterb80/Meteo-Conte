@@ -1,14 +1,12 @@
-# Meteo Conte 1.0 RC7 · Bollettino integrato
+# Meteo Conte 1.1 · Trend Operativi
 
-Aggiornamento grafico della Home basato sulla RC6.
+Base: RC7.1 stabile.
 
-- Accessi Meteo, Lamone, Allerte e PRETEMP integrati nel Bollettino Conte.
-- Eliminata la sezione Accesso rapido separata.
-- Eliminato il riquadro Prossimo segnale ridondante.
-- Indice Conte più piccolo e discreto.
-- Stati sintetici e pulsanti cliccabili.
-- Nessuna modifica agli altri strumenti e motori della RC6.
-
-
-## RC7.1 Fix chirurgico Bollettino Conte
-Modificato esclusivamente il riquadro Bollettino Conte: Indice, Allerte, Meteo, Lamone e PRETEMP su una riga robusta; messaggio operativo sotto. Nessun altro elemento o motore modificato.
+Intervento isolato esclusivamente sul modulo Trend:
+- pagina Trend Operativi a schermo intero;
+- temperatura, pressione, umidità, vento/raffiche, pioggia e Indice Conte;
+- intervalli 6, 12 e 24 ore;
+- valore attuale, minimo/massimo, velocità di variazione e valore finale;
+- interpretazione della singola variabile;
+- diagnosi combinata orientativa;
+- nessuna modifica a Home, Bollettino Conte, Radar, Lamone, PRETEMP o Centro Operativo.
