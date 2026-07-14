@@ -1,486 +1,444 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="it">
 <head>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#062231" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Meteo Conte 1.0 RC5 · Meteo Live</title>
-  <link rel="manifest" href="manifest.json?v=1.0-rc3" />
-  <link rel="icon" type="image/png" href="icon.png?v=1.0-rc3" />
-  <link rel="stylesheet" href="style.css?v=1.0-rc3" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
+<meta content="no-cache" http-equiv="Pragma"/>
+<meta content="0" http-equiv="Expires"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta content="#062231" name="theme-color"/>
+<meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
+<meta content="no-cache" http-equiv="Pragma"/>
+<meta content="0" http-equiv="Expires"/>
+<title>Meteo Conte 1.0 RC6 · Home Operativa</title>
+<link href="manifest.json?v=1.0-rc6" rel="manifest"/>
+<link href="icon.png?v=1.0-rc6" rel="icon" type="image/png"/>
+<link href="style.css?v=1.0-rc6" rel="stylesheet"/>
+<link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
-  <main class="app">
-    <section class="home-cockpit" aria-label="Pannello meteo principale">
-    <header id="headerWeather" class="topbar logo-head weather-hero weather-clear" aria-label="Meteo attuale Borgo Viazza">
-      <div class="weather-hero-main">
-        <div class="brand-block">
-          <img class="app-logo" src="icon.png?v=1.0-rc3" alt="Meteo Conte" />
-          <div class="hero-location">
-            <span class="hero-kicker">METEO CONTE</span>
-            <h1>Borgo Viazza</h1>
-            <p id="headerDesc">Aggiornamento meteo in corso</p>
-          </div>
-        </div>
-        <button class="head-weather" type="button" data-trend="temperatura" aria-label="Apri trend temperatura">
-          <span id="headerIcon">☀️</span>
-          <b id="headerTemp">--°</b>
-          <i>›</i>
-        </button>
-      </div>
-      <div class="hero-metrics" aria-label="Dati meteo attuali">
-        <button type="button" data-trend="temperatura"><i>🌡️</i><span><small>Percepita</small><b id="feels">--°</b></span></button>
-        <button type="button" data-trend="umidita"><i>💧</i><span><small>Umidità</small><b id="hum">--%</b></span></button>
-        <button type="button" data-trend="vento"><i>🌬️</i><span><small>Vento</small><b id="wind">-- km/h</b></span></button>
-        <button type="button" data-trend="vento"><i>💨</i><span><small>Raffica</small><b id="gust">-- km/h</b></span></button>
-        <button type="button" data-trend="pressione"><i>📈</i><span><small>Pressione</small><b id="press">-- hPa</b></span></button>
-      </div>
-      <div class="weather-ambient" aria-hidden="true"><span></span><span></span><span></span></div>
-    </header>
-
-    <section class="semafori card slim smartbar" aria-label="Semafori operativi">
-      <button class="sem" data-jump="headerWeather"><span id="dotMeteo" class="dot green"></span><small>Meteo</small></button>
-      <button class="sem" data-jump="lamoneDrawer"><span id="dotLamone" class="dot green"></span><small>Lamone</small></button>
-      <button class="sem" data-jump="alertsCard"><span id="dotAllerte" class="dot green"></span><small>Allerte</small></button>
-      <button class="sem" data-jump="pretempDrawer"><span id="dotTemporali" class="dot green"></span><small>PRETEMP</small></button>
-    </section>
-
-    <section class="top-status card status-v16 auto-briefing" aria-live="polite">
-      <div class="briefing-main">
-        <button class="indice-mini signal-index" id="indiceCard" type="button" data-trend="indice" aria-label="Apri spiegazione Indice Conte">
-          <span id="statusDot" class="bigdot green"></span>
-          <span class="signal-index-copy"><small>IND. CNT</small><b><span id="indiceVal">--</span><em>/100</em></b></span>
-          <span id="indiceLabel" class="sr-only">--</span>
-        </button>
-        <div class="briefing-copy">
-          <span class="label">SITUAZIONE · ANALISI AUTOMATICA</span>
-          <p id="statusText">Aggiornamento dati in corso.</p>
-          <div id="nextSignal" class="next-signal"><span>PROSSIMO SEGNALE</span><b>Calcolo le prossime ore…</b></div>
-        </div>
-      </div>
-      <span id="statusTitle" class="sr-only">Valutazione in corso</span>
-      <span id="decisionTitle" class="sr-only">Valutazione in corso</span>
-      <span id="decisionText" class="sr-only">Sintesi automatica in arrivo</span>
-      <section id="analysisBox" class="analysis-auto" aria-label="Dettaglio automatico"></section>
-    </section>
-
-    <div class="legacy-weather-data sr-only" aria-hidden="true">
-      <span id="tempNow">--°C</span><span id="nowDesc">--</span><span id="dew">--°</span><span id="rain6">-- mm</span>
-    </div>
-
-    <section id="trendBox" class="card trendbox hidden"></section>
-    </section>
-
-    <section class="home-live-monitor" aria-label="Monitor meteo live">
-      <article class="card radar-monitor-card radar-rc2">
-        <div class="monitor-head radar-head-rc1">
-          <div><span class="label">RADAR LIVE · RADAR LEGGERO</span><b>Precipitazioni attorno a Borgo Viazza</b></div>
-          <div class="radar-head-actions">
-            <span class="live-badge"><i></i>LIVE</span>
-            <a href="https://zoom.earth/maps/radar/#view=44.418,11.977,8z" target="_blank" rel="noopener">Zoom Earth ↗</a>
-          </div>
-        </div>
-        <div id="liteRadarPanel" class="lite-radar-panel">
-          <div id="homeRadarMap" class="home-radar-map" aria-label="Mappa radar meteo live">
-            <div class="radar-loading"><span>📡</span><b>Caricamento radar…</b></div>
-          </div>
-        </div>
-        <div class="radar-foot"><span id="radarFrameTime">LIVE · aggiornamento in corso</span><span>debole <i></i> intenso</span></div>
-      </article>
-
-      <article class="card hourly-monitor-card">
-        <div class="monitor-head">
-          <div><span class="label">PROSSIME ORE</span><b>Temperatura e precipitazioni</b></div>
-          <small>scorri →</small>
-        </div>
-        <div id="hours" class="home-hourly-strip" aria-label="Previsioni orarie"></div>
-      </article>
-
-      <article class="card operational-timeline-card" aria-label="Trend operativo delle prossime sei ore">
-        <div class="monitor-head">
-          <div><span class="label">TREND OPERATIVO · 6 ORE</span><b>Evoluzione a colpo d’occhio</b></div>
-          <small>automatico</small>
-        </div>
-        <div id="operationalTimeline" class="operational-timeline">
-          <div class="timeline-loading">Calcolo dell’evoluzione…</div>
-        </div>
-        <p id="timelineSummary" class="timeline-summary">La timeline usa previsione oraria, pioggia, vento e segnali temporaleschi.</p>
-      </article>
-    </section>
-
-    <section class="home-astro-grid" aria-label="Informazioni astronomiche e stato operativo">
-      <article class="card astro-card alert-status-card">
-        <span class="label">STATO OPERATIVO</span>
-        <div class="astro-main"><span class="astro-icon shield">✓</span><div><b id="homeAlertTitle">Nessun segnale attivo</b><small id="homeAlertText">Situazione regolare sul territorio.</small></div></div>
-      </article>
-      <article class="card astro-card sun-card">
-        <span class="label">SOLE</span>
-        <div class="sun-arc"><span id="sunriseTime">--:--</span><i>☀️</i><span id="sunsetTime">--:--</span></div>
-        <small><span>Alba</span><span>Tramonto</span></small>
-      </article>
-      <article class="card astro-card moon-card">
-        <span class="label">LUNA</span>
-        <div class="astro-main"><span id="moonIcon" class="moon-icon">🌙</span><div><b id="moonPhase">--</b><small id="moonVisibility">fase lunare</small></div></div>
-      </article>
-    </section>
-
-    <div class="quick-drawers-grid home-hidden-tools" aria-label="Accessi operativi rapidi">
-<section id="lamoneDrawer" class="card lamone-drawer" aria-label="Cassetto Lamone">
-      <span class="label">CASSETTO 01</span>
-      <span id="lamoneDrawerCorner" class="cornerdot green"></span>
-      <div class="lamone-drawer-main">
-        <div class="lamone-drawer-icon">🌊</div>
-        <div>
-          <h2 id="lamoneDrawerTitle">Lamone</h2>
-          <p id="lamoneDrawerText">Sensori e controllo della piena.</p>
-        </div>
-      </div>
-      <div class="lamone-drawer-status">
-        <span><small>Stato</small><b id="lamoneDrawerState">regolare</b></span>
-        <span><small>Pioggia a monte</small><b id="lamoneDrawerRain">in lettura…</b></span>
-      </div>
-      <button id="openLamoneDrawer" class="btn lamone-drawer-open" type="button">🌊 Apri Lamone</button>
-    </section>
-<section id="pretempDrawer" class="card pretemp-drawer" aria-label="Cassetto PRETEMP">
-      <span class="label">CASSETTO 02</span>
-      <span class="pretemp-drawer-live">LIVE</span>
-      <div class="pretemp-drawer-main">
-        <div class="pretemp-drawer-icon">⛈️</div>
-        <div>
-          <h2>PRETEMP</h2>
-          <p>Temporali e fenomeni intensi.</p>
-        </div>
-      </div>
-      <div class="pretemp-drawer-status">
-        <span><small>Zona</small><b>Romagna</b></span>
-        <span><small>Lettura</small><b id="pretempDrawerReading">da compilare</b></span>
-      </div>
-      <button id="openPretempDrawer" class="btn pretemp-drawer-open" type="button">⛈️ Apri PRETEMP</button>
-    </section>
-    </div>
-
-<section id="lamoneCard" class="card river river-v20 river-emergency hidden lamone-container-openable">
-      <div class="container-toolbar">
-        <div><span>CASSETTO LAMONE</span><b>Centro controllo completo</b></div>
-        <button id="closeLamoneDrawer" type="button" aria-label="Chiudi contenitore Lamone">×</button>
-      </div>
-      <span class="label">FIUMI · LAMONE</span><span id="lamoneCorner" class="cornerdot green"></span>
-
-      <div class="river-status emergency-status">
-        <span class="river-dot green"></span>
-        <div>
-          <h2>Lamone sotto controllo</h2>
-          <p>Bacini, Marzeno, sensori e onda verso valle in un solo colpo d’occhio.</p>
-        </div>
-      </div>
-
-      <div class="river-decision compact-decision">
-        <span class="label">DECISIONE CONTE · LAMONE</span>
-        <strong>Monitoraggio pronto</strong>
-        <p id="lamoneDecisionText">Pioggia a monte e sensori pronti: prima guardi monte, poi segui la piena verso valle.</p>
-      </div>
-
-      <div class="basin-block">
-        <div class="river-chart-head"><b>Bacini a monte</b><span>pioggia · dati reali</span></div>
-        <div class="basin-grid">
-          <button class="basin-card" type="button" data-basin="lamone">
-            <span>🏔️ Lamone</span>
-            <b>Marradi</b>
-            <em id="basinLamoneSummary">lettura…</em>
-          </button>
-          <button class="basin-card" type="button" data-basin="marzeno">
-            <span>🏔️ Marzeno</span>
-            <b>Modigliana</b>
-            <em id="basinMarzenoSummary">lettura…</em>
-          </button>
-        </div>
-      </div>
-
-      <div id="basinDetail" class="river-detail hidden">
-        <div class="river-detail-head"><b id="basinTitle">Bacino</b><button id="closeBasinDetail" type="button" aria-label="Chiudi dettaglio bacino">×</button></div>
-        <p id="basinText">Qui trovi gli accumuli stimati dal modello meteo per la zona a monte selezionata.</p>
-        <div class="river-values"><span>1h <b id="basin1h">-- mm</b></span><span>3h <b id="basin3h">-- mm</b></span><span>6h <b id="basin6h">-- mm</b></span></div>
-      </div>
-
-      <button id="riverChartBtn" class="river-chart interactive" type="button" aria-label="Apri andamento Lamone">
-        <div class="river-chart-head"><b>Onda di piena</b><span id="sensorModeLabel">sensori smart · tocca</span></div>
-        <div class="flood-route sensor-route" aria-hidden="true">
-          <span data-sensor="Marradi"><i class="green"></i><b>Marradi</b><small>lettura…</small></span>
-          <span data-sensor="Strada Casale"><i class="green"></i><b>Strada Casale</b><small>lettura…</small></span>
-          <span data-sensor="Sarna"><i class="green"></i><b>Sarna</b><small>lettura…</small></span>
-          <span data-sensor="Faenza"><i class="green"></i><b>Faenza</b><small>lettura…</small></span>
-          <span data-sensor="Reda"><i class="green"></i><b>Reda</b><small>lettura…</small></span>
-          <span data-sensor="Pieve Cesato"><i class="green"></i><b>Pieve Cesato</b><small>lettura…</small></span>
-          <span data-sensor="Mezzano"><i class="green"></i><b>Mezzano</b><small>lettura…</small></span>
-        </div>
-        <svg viewBox="0 0 320 82" aria-hidden="true">
-          <path class="river-area" d="M18 55 C60 55 95 54 132 53 C165 52 198 51 232 50 C258 49 282 48 302 47 L302 73 L18 73 Z"></path>
-          <path class="river-line" d="M18 55 C60 55 95 54 132 53 C165 52 198 51 232 50 C258 49 282 48 302 47"></path>
-          <circle cx="18" cy="55" r="3.8"></circle><circle cx="62" cy="54" r="3.8"></circle><circle cx="106" cy="54" r="3.8"></circle><circle cx="150" cy="53" r="3.8"></circle><circle cx="194" cy="51.5" r="3.8"></circle><circle cx="242" cy="49.5" r="3.8"></circle><circle cx="302" cy="47" r="3.8"></circle>
-          <text x="18" y="79" text-anchor="middle">monte</text><text x="160" y="79" text-anchor="middle">Faenza</text><text x="302" y="79" text-anchor="middle">valle</text>
-        </svg>
-        <div class="propagation-mini" aria-label="Tempi indicativi onda di piena">
-          <span><small>Stato onda</small><b id="waveStatusLabel">nessuna anomalia</b></span>
-          <span><small>Punto attivo</small><b id="activeSensorLabel">nessuno</b></span>
-          <span><small>Villanova</small><b id="villanovaStatusLabel">tranquilla</b></span>
-        </div>
-      </button>
-
-      <div id="riverDetail" class="river-detail hidden">
-        <div class="river-detail-head"><b>Dettaglio percorso</b><button id="closeRiverDetail" type="button" aria-label="Chiudi dettaglio Lamone">×</button></div>
-        <p id="riverDetailText">Sintesi operativa del percorso Lamone: prima controlla monte, poi Faenza, poi valle. Tocca un sensore per capire ruolo e posizione nel transito della piena.</p>
-        <div class="river-values propagation-values"><span>Monte <b>Marradi</b></span><span>Confluenza <b>Faenza</b></span><span>Valle <b>Mezzano</b></span></div><div class="river-values propagation-values"><span>Onda <b id="detailWaveState">nessuna anomalia</b></span><span>Punto <b id="detailActiveState">nessuno</b></span><span>Villanova <b id="detailVillaState">tranquilla</b></span></div>
-      </div>
-
-      <div class="mini-grid compact-mini river-mini">
-        <a class="river-info river-link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener"><span>📡 Sensori</span><b>Lamone</b><em>apri ↗</em></a>
-        <a class="river-info river-link" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener"><span>🌊 Mappa</span><b>Fiumi ER</b><em>apri ↗</em></a>
-      </div>
-
-      <div class="river-actions">
-        <a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📈 Dettagli Lamone</a>
-        <a class="btn secondary" href="https://www.windy.com/?rain,44.16,11.62,8" target="_blank" rel="noopener">🌧️ Pioggia a monte</a>
-      </div>
-    </section>
-
-    <section id="pretempContainer" class="card pretemp-container hidden pretemp-container-openable">
-      <div class="container-toolbar pretemp-toolbar">
-        <div><span>CENTRO PRETEMP</span><b>Previsione temporali</b></div>
-        <button id="closePretempDrawer" type="button" aria-label="Chiudi contenitore PRETEMP">×</button>
-      </div>
-      <div class="pretemp-head">
-        <div>
-          <span class="label">PRETEMP · MAPPA UFFICIALE</span>
-          <h2>Centro PRETEMP</h2>
-          <p>Previsione temporalesca del giorno, ottimizzata per il telefono.</p>
-        </div>
-        <span id="pretempStatusDot" class="pretemp-state green" aria-label="Stato mappa">LIVE</span>
-      </div>
-
-      <div class="pretemp-meta">
-        <span><small>Area osservata</small><b>Romagna</b></span>
-        <span><small>Validità</small><b id="pretempValidity">oggi · 00–24 UTC</b></span>
-      </div>
+<main class="app">
+<section aria-label="Pannello meteo principale" class="home-cockpit">
+<header aria-label="Meteo attuale Borgo Viazza" class="topbar logo-head weather-hero weather-clear" id="headerWeather">
+<div class="weather-hero-main">
+<div class="brand-block">
+<img alt="Meteo Conte" class="app-logo" src="icon.png?v=1.0-rc3"/>
+<div class="hero-location">
+<span class="hero-kicker">METEO CONTE</span>
+<h1>Borgo Viazza</h1>
+<p id="headerDesc">Aggiornamento meteo in corso</p>
+</div>
+</div>
+<button aria-label="Apri trend temperatura" class="head-weather" data-trend="temperatura" type="button">
+<span id="headerIcon">☀️</span>
+<b id="headerTemp">--°</b>
+<i>›</i>
+</button>
+</div>
+<div aria-label="Dati meteo attuali" class="hero-metrics">
+<button data-trend="temperatura" type="button"><i>🌡️</i><span><small>Percepita</small><b id="feels">--°</b></span></button>
+<button data-trend="umidita" type="button"><i>💧</i><span><small>Umidità</small><b id="hum">--%</b></span></button>
+<button data-trend="vento" type="button"><i>🌬️</i><span><small>Vento</small><b id="wind">-- km/h</b></span></button>
+<button data-trend="vento" type="button"><i>💨</i><span><small>Raffica</small><b id="gust">-- km/h</b></span></button>
+<button data-trend="pressione" type="button"><i>📈</i><span><small>Pressione</small><b id="press">-- hPa</b></span></button>
+</div>
+<div aria-hidden="true" class="weather-ambient"><span></span><span></span><span></span></div>
+</header><article class="card hourly-monitor-card">
+<div class="monitor-head">
+<div><span class="label">2 · PROSSIME ORE</span><b>Temperatura e precipitazioni</b></div>
+<small>scorri →</small>
+</div>
+<div aria-label="Previsioni orarie" class="home-hourly-strip" id="hours"></div>
+</article><article class="card radar-monitor-card radar-rc2">
+<div class="monitor-head radar-head-rc1">
+<div><span class="label">3 · RADAR LIVE · RADAR LEGGERO</span><b>Precipitazioni attorno a Borgo Viazza</b></div>
+<div class="radar-head-actions">
+<span class="live-badge"><i></i>LIVE</span>
+<a href="https://zoom.earth/maps/radar/#view=44.418,11.977,8z" rel="noopener" target="_blank">Zoom Earth ↗</a>
+</div>
+</div>
+<div class="lite-radar-panel" id="liteRadarPanel">
+<div aria-label="Mappa radar meteo live" class="home-radar-map" id="homeRadarMap">
+<div class="radar-loading"><span>📡</span><b>Caricamento radar…</b></div>
+</div>
+</div>
+<div class="radar-foot"><span id="radarFrameTime">LIVE · aggiornamento in corso</span><span>debole <i></i> intenso</span></div>
+</article><section aria-live="polite" class="top-status card status-v16 auto-briefing">
+<div class="briefing-main">
+<button aria-label="Apri spiegazione Indice Conte" class="indice-mini signal-index" data-trend="indice" id="indiceCard" type="button">
+<span class="bigdot green" id="statusDot"></span>
+<span class="signal-index-copy"><small>IND. CNT</small><b><span id="indiceVal">--</span><em>/100</em></b></span>
+<span class="sr-only" id="indiceLabel">--</span>
+</button>
+<div class="briefing-copy">
+<span class="label">4 · BOLLETTINO CONTE</span>
+<p class="briefing-headline" id="statusText">Aggiornamento dati in corso.</p><ul class="briefing-signals" id="briefingSignals"><li id="briefAlert"><span>🛡️</span><b>Verifica allerta ufficiale in corso…</b></li><li id="briefWeather"><span>☁️</span><b>Analisi delle prossime ore in corso…</b></li><li id="briefLamone"><span>🌊</span><b>Lamone: accesso rapido ai sensori</b></li><li id="briefPretemp"><span>⛈️</span><b>PRETEMP: bollettino e mappa disponibili</b></li></ul>
+<div class="next-signal" id="nextSignal"><span>PROSSIMO SEGNALE</span><b>Calcolo le prossime ore…</b></div>
+</div>
+</div>
+<span class="sr-only" id="statusTitle">Valutazione in corso</span>
+<span class="sr-only" id="decisionTitle">Valutazione in corso</span>
+<span class="sr-only" id="decisionText">Sintesi automatica in arrivo</span>
+<section aria-label="Dettaglio automatico" class="analysis-auto" id="analysisBox"></section>
+</section><article aria-label="Trend operativo delle prossime sei ore" class="card operational-timeline-card">
+<div class="monitor-head">
+<div><span class="label">5 · TREND OPERATIVO · 6 ORE</span><b>Evoluzione a colpo d’occhio</b></div>
+<small>automatico</small>
+</div>
+<div class="operational-timeline" id="operationalTimeline">
+<div class="timeline-loading">Calcolo dell’evoluzione…</div>
+</div>
+<p class="timeline-summary" id="timelineSummary">La timeline usa previsione oraria, pioggia, vento e segnali temporaleschi.</p>
+</article><section aria-label="6 · Accesso rapido" class="semafori card slim smartbar"><span class="quick-title">6 · ACCESSO RAPIDO</span>
+<button class="sem" data-jump="headerWeather"><span class="dot green" id="dotMeteo"></span><small>Meteo</small></button>
+<button class="sem" data-jump="lamoneDrawer"><span class="dot green" id="dotLamone"></span><small>Lamone</small></button>
+<button class="sem" id="openOfficialAlerts" type="button"><span class="dot green" id="dotAllerte"></span><small>Allerte</small></button>
+<button class="sem" data-jump="pretempDrawer"><span class="dot green" id="dotTemporali"></span><small>PRETEMP</small></button>
+</section><section class="card trendbox hidden" id="trendBox"></section>
 
 
-      <section id="pretempDecision" class="pretemp-decision-beta pretemp-decision-compact" aria-live="polite">
-        <div class="pretemp-decision-head">
-          <div><span class="label">SINTESI CONTE · PRETEMP</span><h3 id="pretempDecisionTitle">Da leggere</h3></div>
-          <span id="pretempDecisionDot" class="bigdot yellow" aria-label="Stato decisione"></span>
-        </div>
-        <p id="pretempDecisionText">Guarda il livello sulla tua zona e gli eventuali simboli. L’orario va cercato nel bollettino testuale, non nella mappa.</p>
-        <button id="pretempDecisionAction" type="button">🗺️ Apri mappa</button>
-      </section>
+<div aria-hidden="true" class="legacy-weather-data sr-only">
+<span id="tempNow">--°C</span><span id="nowDesc">--</span><span id="dew">--°</span><span id="rain6">-- mm</span>
+</div>
 
-      <a id="pretempForecastLink" class="hidden" href="https://www.pretemp.it/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1"></a>
-      <button id="pretempMapButton" class="pretemp-map-card" type="button" aria-label="Apri la mappa PRETEMP ingrandita">
-        <span class="pretemp-map-badge"><b>Mappa ufficiale</b><small>Tocca per ingrandire</small></span>
-        <img id="pretempMap" alt="Mappa ufficiale PRETEMP del giorno" loading="lazy" />
-        <span id="pretempMapFallback" class="pretemp-map-fallback hidden">
-          <b>Mappa non ancora pubblicata</b>
-          <small>Apri il sito PRETEMP oppure riprova più tardi.</small>
-        </span>
-      </button>
+</section>
 
-      <section class="pretemp-bulletin" aria-label="Bollettino testuale PRETEMP">
-        <button id="togglePretempBulletin" class="pretemp-bulletin-toggle" type="button" aria-expanded="false">
-          <span><b>📝 Bollettino PRETEMP</b><small>Testo ufficiale pulito e leggibile</small></span><i>⌄</i>
-        </button>
-        <div id="pretempBulletinPanel" class="pretemp-bulletin-panel hidden">
-          <p id="pretempBulletinStatus">Tocca “Carica bollettino” per leggere il testo del previsore senza uscire dall’app.</p>
-          <div id="pretempBulletinText" class="pretemp-bulletin-text hidden"></div>
-          <div class="pretemp-bulletin-actions">
-            <button id="loadPretempBulletin" type="button">Carica bollettino</button>
-            <a id="pretempOfficialForecastLink" href="https://www.pretemp.it/" target="_blank" rel="noopener">Apri pagina ufficiale ↗</a>
-          </div>
-        </div>
-      </section>
-
-      <div class="pretemp-compare-tools" aria-label="Confronta e approfondisci PRETEMP">
-        <a class="pretemp-radar-link" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">📡 Radar meteo 24h</a>
-        <a class="pretemp-guide-link" href="https://www.pretemp.it/Come_leggere_la_previsione_2022.html" target="_blank" rel="noopener">📖 Guida ufficiale</a>
-      </div>
-
-      <section id="pretempReader" class="pretemp-reader pretemp-reader-compact" aria-label="Lettura assistita PRETEMP">
-        <div class="pretemp-reader-head">
-          <div><span class="label">LETTURA ESSENZIALE</span><h3>La tua lettura</h3></div>
-          <span id="pretempReaderState">da compilare</span>
-        </div>
-        <p class="pretemp-reader-intro">Seleziona solo livello, simboli visibili e area.</p>
-        <div class="pretemp-selection-summary" aria-live="polite">
-          <span><small>Livello</small><b id="pretempSelectedLevel">—</b></span>
-          <span><small>Simboli</small><b id="pretempSelectedPhenomena">0</b></span>
-          <span><small>Area</small><b id="pretempSelectedZone">Bassa Romagna</b></span>
-        </div>
-        <div class="pretemp-reader-group">
-          <small>Livello sulla tua zona</small>
-          <div class="pretemp-level-picker" role="group" aria-label="Seleziona livello PRETEMP">
-            <button type="button" data-pretemp-level="none">Fuori area</button>
-            <button type="button" data-pretemp-level="0"><i class="l0"></i>0</button>
-            <button type="button" data-pretemp-level="1"><i class="l1"></i>1</button>
-            <button type="button" data-pretemp-level="2"><i class="l2"></i>2</button>
-            <button type="button" data-pretemp-level="3"><i class="l3"></i>3</button>
-          </div>
-        </div>
-        <div class="pretemp-reader-group">
-          <small>Simboli presenti sulla zona <em>(facoltativo)</em></small>
-          <div class="pretemp-phenomena-picker" role="group" aria-label="Seleziona fenomeni PRETEMP">
-            <button type="button" data-pretemp-phenomenon="none">✓ Nessun simbolo</button>
-            <button type="button" data-pretemp-phenomenon="rain">🌧️ Pioggia forte</button>
-            <button type="button" data-pretemp-phenomenon="hail">🧊 Grandine</button>
-            <button type="button" data-pretemp-phenomenon="wind">💨 Raffiche</button>
-            <button type="button" data-pretemp-phenomenon="tornado">🌪️ Tornado</button>
-          </div>
-        </div>
-        <div class="pretemp-reader-group pretemp-context-group">
-          <small>Area osservata</small>
-          <div class="pretemp-context-picker" role="group" aria-label="Seleziona area osservata">
-            <button type="button" data-pretemp-zone="bassa">Bassa Romagna</button>
-            <button type="button" data-pretemp-zone="appennino">Appennino</button>
-            <button type="button" data-pretemp-zone="pianura">Pianura</button>
-            <button type="button" data-pretemp-zone="costa">Costa</button>
-          </div>
-        </div>
-        <div class="pretemp-reader-actions">
-          <button id="applyPretempReading" type="button">💾 Salva lettura del giorno</button>
-          <button id="resetPretempReading" class="secondary reset-reading" type="button">↺ Azzera</button>
-        </div>
-      </section>
-
-      <p class="pretemp-disclaimer pretemp-disclaimer-compact">PRETEMP è una previsione sperimentale probabilistica e non sostituisce le allerte ufficiali.</p>
-    </section>
-
-    <section id="operativeLinks" class="card links operative-center operative-beta analysis-center-v78 analysis-center-v80 analysis-center-v83">
-      <div class="analysis-hero operation-hero">
-        <div class="operation-brand">
-          <span class="operation-icon">⛈️</span>
-          <div><h2>CENTRO OPERATIVO</h2><p>Meteo Conte · Sala operativa personale</p></div>
-        </div>
-        <span class="operation-version">RC5</span>
-      </div>
-
-      <section id="analysisSnapshot" class="analysis-snapshot" aria-label="Quadro rapido Centro Analisi">
-        <div class="snapshot-head">
-          <div><span>QUADRO RAPIDO</span><b id="snapshotTitle">Aggiornamento in corso</b></div>
-          <i id="snapshotDot" class="green" aria-hidden="true"></i>
-        </div>
-        <div class="snapshot-grid">
-          <button type="button" data-analysis-jump="observeSection"><small>Adesso</small><b id="snapshotNow">--</b><em id="snapshotNowNote">meteo locale</em></button>
-          <button type="button" data-analysis-jump="forecastSection"><small>Pioggia 6h</small><b id="snapshotRain">--</b><em id="snapshotRainNote">modello orario</em></button>
-          <button type="button" data-analysis-jump="forecastSection"><small>Raffica</small><b id="snapshotWind">--</b><em id="snapshotWindNote">massima prevista</em></button>
-          <button type="button" data-analysis-jump="forecastSection"><small>Temporali</small><b id="snapshotStorm">--</b><em id="snapshotStormNote">segnale modello</em></button>
-        </div>
-        <p id="snapshotAdvice">I dati sintetici servono a scegliere il primo strumento da aprire.</p>
-      </section>
-
-      <section id="conteAnalysis" class="conte-analysis conte-analysis-v78" aria-label="Analisi Conte">
-        <div class="conte-analysis-head">
-          <div class="conte-analysis-title"><span>ANALISI CONTE</span><b id="conteState">Valutazione in corso</b></div>
-          <i id="conteStateDot" class="green" aria-hidden="true"></i>
-        </div>
-        <div class="conte-analysis-grid">
-          <div class="conte-kpi"><small>Evoluzione</small><b id="conteEvolution">--</b></div>
-          <div class="conte-kpi"><small>Attenzione</small><b id="conteAttention">--</b></div>
-          <div class="conte-action"><small>Azione consigliata</small><b id="conteAction">Attendi aggiornamento dati</b></div>
-        </div>
-        <div class="conte-reason"><span>Perché</span><p id="conteReason">La valutazione combina pioggia, raffiche e segnali temporaleschi delle prossime ore.</p></div>
-      </section>
-
-      <section id="operativeRoute" class="operative-route operative-route-v78" aria-label="Percorso operativo consigliato">
-        <div class="operative-route-head">
-          <div><span>PERCORSO OPERATIVO</span><b id="routeTitle">Controllo essenziale</b></div>
-          <small>tocca per aprire</small>
-        </div>
-        <div class="operative-route-steps" role="list">
-          <button type="button" data-route-target="toolZoom" role="listitem"><i>1</i><span><small>PRIMA</small><b id="routeStep1">Zoom Earth</b></span></button>
-          <span class="route-connector" aria-hidden="true">›</span>
-          <button type="button" data-route-target="toolRadar" role="listitem"><i>2</i><span><small>POI</small><b id="routeStep2">Radar live ER</b></span></button>
-          <span class="route-connector" aria-hidden="true">›</span>
-          <button type="button" data-route-target="toolPretemp" role="listitem"><i>3</i><span><small>SE SERVE</small><b id="routeStep3">Centro PRETEMP</b></span></button>
-        </div>
-        <p id="routeNote">Un percorso breve per verificare la situazione senza aprire strumenti inutili.</p>
-      </section>
-
-      <div class="tool-section accordion-section observe priority open" id="observeSection">
-        <button class="tool-title accordion-toggle" type="button" aria-expanded="true"><span>👁️</span><div><b>1. Osserva</b><small>Cosa sta succedendo adesso</small></div><i>⌄</i></button>
-        <div class="tool-grid analysis-tools five-tools accordion-content">
-          <a id="toolZoom" class="featured zoom" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><i>🌍</i><b>Zoom Earth</b><small>radar e satellite animati</small><em>CONSIGLIATO</em></a>
-          <a id="toolRadar" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><i>📡</i><b>Radar evoluzione ER</b><small>spostamento +1h · +2h · +3h</small></a>
-          <a id="toolLightning" href="https://www.lightningmaps.org/" target="_blank" rel="noopener"><i>⚡</i><b>Fulmini live</b><small>scariche in tempo reale</small></a>
-          <a href="https://www.meteoam.it/it/satellite/italia" target="_blank" rel="noopener"><i>🛰️</i><b>Satellite</b><small>nubi e sviluppo</small></a>
-          <a href="https://radar.protezionecivile.it/" target="_blank" rel="noopener"><i>🇮🇹</i><b>Radar nazionale</b><small>quadro italiano</small></a>
-        </div>
-      </div>
-
-      <div class="tool-section accordion-section forecast-step" id="forecastSection">
-        <button class="tool-title accordion-toggle" type="button" aria-expanded="false"><span>🌩️</span><div><b>2. Prevedi</b><small>Cosa potrebbe succedere nelle prossime ore</small></div><i>›</i></button>
-        <div class="tool-grid analysis-tools accordion-content">
-          <button id="toolPretempMain" class="tool-link-button featured" type="button" data-jump="pretempDrawer"><i>⛈️</i><b>Centro PRETEMP</b><small>rischio temporali intensi</small><em>PRINCIPALE</em></button>
-          <a href="https://www.windy.com/?44.42,11.98,8" target="_blank" rel="noopener"><i>🌀</i><b>Windy mappe</b><small>vento e pressione</small></a>
-          <a href="https://www.windy.com/?rain,44.42,11.98,8" target="_blank" rel="noopener"><i>🌧️</i><b>Pioggia prevista</b><small>ore successive</small></a>
-          <a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank" rel="noopener"><i>🏛️</i><b>Meteo Arpae</b><small>previsioni ufficiali</small></a>
-        </div>
-      </div>
-
-      <div class="tool-section accordion-section river-step" id="riverSection">
-        <button class="tool-title accordion-toggle" type="button" aria-expanded="false"><span>🌊</span><div><b>3. Controlla</b><small>Se la pioggia diventa persistente</small></div><i>›</i></button>
-        <div class="tool-grid analysis-tools accordion-content">
-          <button id="toolLamone" class="tool-link-button featured" type="button" data-jump="lamoneDrawer"><i>🌊</i><b>Centro Lamone</b><small>controllo monte-valle</small><em>PRINCIPALE</em></button>
-          <a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener"><i>📡</i><b>Sensori Lamone</b><small>livelli del percorso</small></a>
-          <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener"><i>📈</i><b>Idrometri ER</b><small>livelli ufficiali</small></a>
-          <a href="https://www.windy.com/?rain,44.16,11.62,8" target="_blank" rel="noopener"><i>🏔️</i><b>Pioggia a monte</b><small>Marradi e Modigliana</small></a>
-        </div>
-      </div>
-
-      <div class="tool-section accordion-section webcam-step" id="webcamSection">
-        <button class="tool-title accordion-toggle" type="button" aria-expanded="false"><span>📷</span><div><b>4. Conferma</b><small>Guarda il cielo con le webcam</small></div><i>›</i></button>
-        <div class="tool-grid analysis-tools accordion-content">
-          <a href="https://www.guardcostaus-ravenna.it/MeteoPagine/webcam.html" target="_blank" rel="noopener"><i>⚓</i><b>Porto Ravenna</b><small>immagini aggiornate ogni minuto</small></a>
-          <a href="https://www.lidinordravenna.it/meteo-webcam" target="_blank" rel="noopener"><i>🏖️</i><b>Costa Ravenna</b><small>webcam litorale nord</small></a>
-          <a href="https://www.ridracoli.it/webcam-ridracoli/" target="_blank" rel="noopener"><i>🏞️</i><b>Ridracoli live</b><small>diga e lago in diretta</small></a>
-          <a href="https://www.weathercam.it/live-webcam/Emilia-Romagna" target="_blank" rel="noopener"><i>🎥</i><b>Altre webcam ER</b><small>selezione regionale</small></a>
-        </div>
-      </div>
-
-      <div class="tool-section accordion-section news follow-step" id="followSection">
-        <button class="tool-title accordion-toggle" type="button" aria-expanded="false"><span>📡</span><div><b>5. Meteo Live</b><small>Esperti, video e fonti ufficiali</small></div><i>›</i></button>
-        <div class="tool-grid analysis-tools live-info-grid accordion-content">
-          <div class="live-group-title"><span>🔴</span><div><b>METEOROLOGI LIVE</b><small>Aggiornamenti rapidi, dirette e video</small></div></div>
-          <a class="featured social-card instagram-card" href="https://www.instagram.com/giuliobetti18?igsh=MTJma255ZmdlY2l3Yg==" target="_blank" rel="noopener"><i>📸</i><b>Giulio Betti</b><small>Instagram · analisi e video live</small><em>LIVE</em></a>
-          <a class="social-card facebook-card" href="https://www.facebook.com/share/1EfJXot9FS/" target="_blank" rel="noopener"><i>📘</i><b>Meteo Facebook 1</b><small>aggiornamenti e contenuti video</small></a>
-          <a class="social-card facebook-card" href="https://www.facebook.com/share/188WRVWpvJ/" target="_blank" rel="noopener"><i>📘</i><b>Meteo Facebook 2</b><small>aggiornamenti e contenuti video</small></a>
-          <a class="social-card facebook-card" href="https://www.facebook.com/share/1Cjp97cRVn/" target="_blank" rel="noopener"><i>📘</i><b>Meteo Facebook 3</b><small>aggiornamenti e contenuti video</small></a>
-
-          <div class="live-group-title official-title"><span>🛡️</span><div><b>FONTI UFFICIALI</b><small>Verifica allerte e comunicazioni regionali</small></div></div>
-          <a id="toolAlerts" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener"><i>⚠️</i><b>Allerte ufficiali</b><small>bollettini Emilia-Romagna</small></a>
-          <a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><i>📡</i><b>Nowcasting ER</b><small>evoluzione radar +1h · +2h · +3h</small></a>
-          <a href="https://allertameteo.regione.emilia-romagna.it/previsioni-regionali" target="_blank" rel="noopener"><i>🗺️</i><b>Previsioni regionali</b><small>testo ufficiale Emilia-Romagna</small></a>
-          <a href="https://www.arpae.it/it/temi-ambientali/meteo" target="_blank" rel="noopener"><i>🏛️</i><b>Meteo ARPAE</b><small>previsioni e dati regionali</small></a>
-        </div>
-      </div>
-    </section>
-
-    <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC5 · Meteo Live</footer>
-    <div id="pretempModal" class="pretemp-modal hidden" role="dialog" aria-modal="true" aria-label="Mappa PRETEMP ingrandita">
-      <div class="pretemp-modal-head">
-        <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
-        <button id="closePretempModal" type="button" aria-label="Chiudi mappa">×</button>
-      </div>
-      <div class="pretemp-modal-scroll">
-        <img id="pretempMapLarge" alt="Mappa PRETEMP ingrandita" />
-      </div>
-      <a id="pretempModalForecastLink" class="btn" href="https://www.pretemp.it/" target="_blank" rel="noopener">Apri previsione completa ↗</a>
-    </div>
-
-  </main>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="app.js?v=1.0-rc5"></script>
+<section aria-label="Informazioni astronomiche e stato operativo" class="home-astro-grid">
+<article class="card astro-card alert-status-card">
+<span class="label">STATO OPERATIVO</span>
+<div class="astro-main"><span class="astro-icon shield">✓</span><div><b id="homeAlertTitle">Nessun segnale attivo</b><small id="homeAlertText">Situazione regolare sul territorio.</small></div></div>
+</article>
+<article class="card astro-card sun-card">
+<span class="label">SOLE</span>
+<div class="sun-arc"><span id="sunriseTime">--:--</span><i>☀️</i><span id="sunsetTime">--:--</span></div>
+<small><span>Alba</span><span>Tramonto</span></small>
+</article>
+<article class="card astro-card moon-card">
+<span class="label">LUNA</span>
+<div class="astro-main"><span class="moon-icon" id="moonIcon">🌙</span><div><b id="moonPhase">--</b><small id="moonVisibility">fase lunare</small></div></div>
+</article>
+</section>
+<div aria-label="Accessi operativi rapidi" class="quick-drawers-grid home-hidden-tools">
+<section aria-label="Cassetto Lamone" class="card lamone-drawer" id="lamoneDrawer">
+<span class="label">CASSETTO 01</span>
+<span class="cornerdot green" id="lamoneDrawerCorner"></span>
+<div class="lamone-drawer-main">
+<div class="lamone-drawer-icon">🌊</div>
+<div>
+<h2 id="lamoneDrawerTitle">Lamone</h2>
+<p id="lamoneDrawerText">Sensori e controllo della piena.</p>
+</div>
+</div>
+<div class="lamone-drawer-status">
+<span><small>Stato</small><b id="lamoneDrawerState">regolare</b></span>
+<span><small>Pioggia a monte</small><b id="lamoneDrawerRain">in lettura…</b></span>
+</div>
+<button class="btn lamone-drawer-open" id="openLamoneDrawer" type="button">🌊 Apri Lamone</button>
+</section>
+<section aria-label="Cassetto PRETEMP" class="card pretemp-drawer" id="pretempDrawer">
+<span class="label">CASSETTO 02</span>
+<span class="pretemp-drawer-live">LIVE</span>
+<div class="pretemp-drawer-main">
+<div class="pretemp-drawer-icon">⛈️</div>
+<div>
+<h2>PRETEMP</h2>
+<p>Temporali e fenomeni intensi.</p>
+</div>
+</div>
+<div class="pretemp-drawer-status">
+<span><small>Zona</small><b>Romagna</b></span>
+<span><small>Lettura</small><b id="pretempDrawerReading">da compilare</b></span>
+</div>
+<button class="btn pretemp-drawer-open" id="openPretempDrawer" type="button">⛈️ Apri PRETEMP</button>
+</section>
+</div>
+<section class="card river river-v20 river-emergency hidden lamone-container-openable" id="lamoneCard">
+<div class="container-toolbar">
+<div><span>CASSETTO LAMONE</span><b>Centro controllo completo</b></div>
+<button aria-label="Chiudi contenitore Lamone" id="closeLamoneDrawer" type="button">×</button>
+</div>
+<span class="label">FIUMI · LAMONE</span><span class="cornerdot green" id="lamoneCorner"></span>
+<div class="river-status emergency-status">
+<span class="river-dot green"></span>
+<div>
+<h2>Lamone sotto controllo</h2>
+<p>Bacini, Marzeno, sensori e onda verso valle in un solo colpo d’occhio.</p>
+</div>
+</div>
+<div class="river-decision compact-decision">
+<span class="label">DECISIONE CONTE · LAMONE</span>
+<strong>Monitoraggio pronto</strong>
+<p id="lamoneDecisionText">Pioggia a monte e sensori pronti: prima guardi monte, poi segui la piena verso valle.</p>
+</div>
+<div class="basin-block">
+<div class="river-chart-head"><b>Bacini a monte</b><span>pioggia · dati reali</span></div>
+<div class="basin-grid">
+<button class="basin-card" data-basin="lamone" type="button">
+<span>🏔️ Lamone</span>
+<b>Marradi</b>
+<em id="basinLamoneSummary">lettura…</em>
+</button>
+<button class="basin-card" data-basin="marzeno" type="button">
+<span>🏔️ Marzeno</span>
+<b>Modigliana</b>
+<em id="basinMarzenoSummary">lettura…</em>
+</button>
+</div>
+</div>
+<div class="river-detail hidden" id="basinDetail">
+<div class="river-detail-head"><b id="basinTitle">Bacino</b><button aria-label="Chiudi dettaglio bacino" id="closeBasinDetail" type="button">×</button></div>
+<p id="basinText">Qui trovi gli accumuli stimati dal modello meteo per la zona a monte selezionata.</p>
+<div class="river-values"><span>1h <b id="basin1h">-- mm</b></span><span>3h <b id="basin3h">-- mm</b></span><span>6h <b id="basin6h">-- mm</b></span></div>
+</div>
+<button aria-label="Apri andamento Lamone" class="river-chart interactive" id="riverChartBtn" type="button">
+<div class="river-chart-head"><b>Onda di piena</b><span id="sensorModeLabel">sensori smart · tocca</span></div>
+<div aria-hidden="true" class="flood-route sensor-route">
+<span data-sensor="Marradi"><i class="green"></i><b>Marradi</b><small>lettura…</small></span>
+<span data-sensor="Strada Casale"><i class="green"></i><b>Strada Casale</b><small>lettura…</small></span>
+<span data-sensor="Sarna"><i class="green"></i><b>Sarna</b><small>lettura…</small></span>
+<span data-sensor="Faenza"><i class="green"></i><b>Faenza</b><small>lettura…</small></span>
+<span data-sensor="Reda"><i class="green"></i><b>Reda</b><small>lettura…</small></span>
+<span data-sensor="Pieve Cesato"><i class="green"></i><b>Pieve Cesato</b><small>lettura…</small></span>
+<span data-sensor="Mezzano"><i class="green"></i><b>Mezzano</b><small>lettura…</small></span>
+</div>
+<svg aria-hidden="true" viewbox="0 0 320 82">
+<path class="river-area" d="M18 55 C60 55 95 54 132 53 C165 52 198 51 232 50 C258 49 282 48 302 47 L302 73 L18 73 Z"></path>
+<path class="river-line" d="M18 55 C60 55 95 54 132 53 C165 52 198 51 232 50 C258 49 282 48 302 47"></path>
+<circle cx="18" cy="55" r="3.8"></circle><circle cx="62" cy="54" r="3.8"></circle><circle cx="106" cy="54" r="3.8"></circle><circle cx="150" cy="53" r="3.8"></circle><circle cx="194" cy="51.5" r="3.8"></circle><circle cx="242" cy="49.5" r="3.8"></circle><circle cx="302" cy="47" r="3.8"></circle>
+<text text-anchor="middle" x="18" y="79">monte</text><text text-anchor="middle" x="160" y="79">Faenza</text><text text-anchor="middle" x="302" y="79">valle</text>
+</svg>
+<div aria-label="Tempi indicativi onda di piena" class="propagation-mini">
+<span><small>Stato onda</small><b id="waveStatusLabel">nessuna anomalia</b></span>
+<span><small>Punto attivo</small><b id="activeSensorLabel">nessuno</b></span>
+<span><small>Villanova</small><b id="villanovaStatusLabel">tranquilla</b></span>
+</div>
+</button>
+<div class="river-detail hidden" id="riverDetail">
+<div class="river-detail-head"><b>Dettaglio percorso</b><button aria-label="Chiudi dettaglio Lamone" id="closeRiverDetail" type="button">×</button></div>
+<p id="riverDetailText">Sintesi operativa del percorso Lamone: prima controlla monte, poi Faenza, poi valle. Tocca un sensore per capire ruolo e posizione nel transito della piena.</p>
+<div class="river-values propagation-values"><span>Monte <b>Marradi</b></span><span>Confluenza <b>Faenza</b></span><span>Valle <b>Mezzano</b></span></div><div class="river-values propagation-values"><span>Onda <b id="detailWaveState">nessuna anomalia</b></span><span>Punto <b id="detailActiveState">nessuno</b></span><span>Villanova <b id="detailVillaState">tranquilla</b></span></div>
+</div>
+<div class="mini-grid compact-mini river-mini">
+<a class="river-info river-link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" rel="noopener" target="_blank"><span>📡 Sensori</span><b>Lamone</b><em>apri ↗</em></a>
+<a class="river-info river-link" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" rel="noopener" target="_blank"><span>🌊 Mappa</span><b>Fiumi ER</b><em>apri ↗</em></a>
+</div>
+<div class="river-actions">
+<a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" rel="noopener" target="_blank">📈 Dettagli Lamone</a>
+<a class="btn secondary" href="https://www.windy.com/?rain,44.16,11.62,8" rel="noopener" target="_blank">🌧️ Pioggia a monte</a>
+</div>
+</section>
+<section class="card pretemp-container hidden pretemp-container-openable" id="pretempContainer">
+<div class="container-toolbar pretemp-toolbar">
+<div><span>CENTRO PRETEMP</span><b>Previsione temporali</b></div>
+<button aria-label="Chiudi contenitore PRETEMP" id="closePretempDrawer" type="button">×</button>
+</div>
+<div class="pretemp-head">
+<div>
+<span class="label">PRETEMP · MAPPA UFFICIALE</span>
+<h2>Centro PRETEMP</h2>
+<p>Previsione temporalesca del giorno, ottimizzata per il telefono.</p>
+</div>
+<span aria-label="Stato mappa" class="pretemp-state green" id="pretempStatusDot">LIVE</span>
+</div>
+<div class="pretemp-meta">
+<span><small>Area osservata</small><b>Romagna</b></span>
+<span><small>Validità</small><b id="pretempValidity">oggi · 00–24 UTC</b></span>
+</div>
+<section aria-live="polite" class="pretemp-decision-beta pretemp-decision-compact" id="pretempDecision">
+<div class="pretemp-decision-head">
+<div><span class="label">SINTESI CONTE · PRETEMP</span><h3 id="pretempDecisionTitle">Da leggere</h3></div>
+<span aria-label="Stato decisione" class="bigdot yellow" id="pretempDecisionDot"></span>
+</div>
+<p id="pretempDecisionText">Guarda il livello sulla tua zona e gli eventuali simboli. L’orario va cercato nel bollettino testuale, non nella mappa.</p>
+<button id="pretempDecisionAction" type="button">🗺️ Apri mappa</button>
+</section>
+<a aria-hidden="true" class="hidden" href="https://www.pretemp.it/" id="pretempForecastLink" rel="noopener" tabindex="-1" target="_blank"></a>
+<button aria-label="Apri la mappa PRETEMP ingrandita" class="pretemp-map-card" id="pretempMapButton" type="button">
+<span class="pretemp-map-badge"><b>Mappa ufficiale</b><small>Tocca per ingrandire</small></span>
+<img alt="Mappa ufficiale PRETEMP del giorno" id="pretempMap" loading="lazy"/>
+<span class="pretemp-map-fallback hidden" id="pretempMapFallback">
+<b>Mappa non ancora pubblicata</b>
+<small>Apri il sito PRETEMP oppure riprova più tardi.</small>
+</span>
+</button>
+<section aria-label="Bollettino testuale PRETEMP" class="pretemp-bulletin">
+<button aria-expanded="false" class="pretemp-bulletin-toggle" id="togglePretempBulletin" type="button">
+<span><b>📝 Bollettino PRETEMP</b><small>Testo ufficiale pulito e leggibile</small></span><i>⌄</i>
+</button>
+<div class="pretemp-bulletin-panel hidden" id="pretempBulletinPanel">
+<p id="pretempBulletinStatus">Tocca “Carica bollettino” per leggere il testo del previsore senza uscire dall’app.</p>
+<div class="pretemp-bulletin-text hidden" id="pretempBulletinText"></div>
+<div class="pretemp-bulletin-actions">
+<button id="loadPretempBulletin" type="button">Carica bollettino</button>
+<a href="https://www.pretemp.it/" id="pretempOfficialForecastLink" rel="noopener" target="_blank">Apri pagina ufficiale ↗</a>
+</div>
+</div>
+</section>
+<div aria-label="Confronta e approfondisci PRETEMP" class="pretemp-compare-tools">
+<a class="pretemp-radar-link" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" rel="noopener" target="_blank">📡 Radar meteo 24h</a>
+<a class="pretemp-guide-link" href="https://www.pretemp.it/Come_leggere_la_previsione_2022.html" rel="noopener" target="_blank">📖 Guida ufficiale</a>
+</div>
+<section aria-label="Lettura assistita PRETEMP" class="pretemp-reader pretemp-reader-compact" id="pretempReader">
+<div class="pretemp-reader-head">
+<div><span class="label">LETTURA ESSENZIALE</span><h3>La tua lettura</h3></div>
+<span id="pretempReaderState">da compilare</span>
+</div>
+<p class="pretemp-reader-intro">Seleziona solo livello, simboli visibili e area.</p>
+<div aria-live="polite" class="pretemp-selection-summary">
+<span><small>Livello</small><b id="pretempSelectedLevel">—</b></span>
+<span><small>Simboli</small><b id="pretempSelectedPhenomena">0</b></span>
+<span><small>Area</small><b id="pretempSelectedZone">Bassa Romagna</b></span>
+</div>
+<div class="pretemp-reader-group">
+<small>Livello sulla tua zona</small>
+<div aria-label="Seleziona livello PRETEMP" class="pretemp-level-picker" role="group">
+<button data-pretemp-level="none" type="button">Fuori area</button>
+<button data-pretemp-level="0" type="button"><i class="l0"></i>0</button>
+<button data-pretemp-level="1" type="button"><i class="l1"></i>1</button>
+<button data-pretemp-level="2" type="button"><i class="l2"></i>2</button>
+<button data-pretemp-level="3" type="button"><i class="l3"></i>3</button>
+</div>
+</div>
+<div class="pretemp-reader-group">
+<small>Simboli presenti sulla zona <em>(facoltativo)</em></small>
+<div aria-label="Seleziona fenomeni PRETEMP" class="pretemp-phenomena-picker" role="group">
+<button data-pretemp-phenomenon="none" type="button">✓ Nessun simbolo</button>
+<button data-pretemp-phenomenon="rain" type="button">🌧️ Pioggia forte</button>
+<button data-pretemp-phenomenon="hail" type="button">🧊 Grandine</button>
+<button data-pretemp-phenomenon="wind" type="button">💨 Raffiche</button>
+<button data-pretemp-phenomenon="tornado" type="button">🌪️ Tornado</button>
+</div>
+</div>
+<div class="pretemp-reader-group pretemp-context-group">
+<small>Area osservata</small>
+<div aria-label="Seleziona area osservata" class="pretemp-context-picker" role="group">
+<button data-pretemp-zone="bassa" type="button">Bassa Romagna</button>
+<button data-pretemp-zone="appennino" type="button">Appennino</button>
+<button data-pretemp-zone="pianura" type="button">Pianura</button>
+<button data-pretemp-zone="costa" type="button">Costa</button>
+</div>
+</div>
+<div class="pretemp-reader-actions">
+<button id="applyPretempReading" type="button">💾 Salva lettura del giorno</button>
+<button class="secondary reset-reading" id="resetPretempReading" type="button">↺ Azzera</button>
+</div>
+</section>
+<p class="pretemp-disclaimer pretemp-disclaimer-compact">PRETEMP è una previsione sperimentale probabilistica e non sostituisce le allerte ufficiali.</p>
+</section>
+<section class="card links operative-center operative-beta analysis-center-v78 analysis-center-v80 analysis-center-v83" id="operativeLinks">
+<div class="analysis-hero operation-hero">
+<div class="operation-brand">
+<span class="operation-icon">⛈️</span>
+<div><h2>CENTRO OPERATIVO</h2><p>Meteo Conte · Sala operativa personale</p></div>
+</div>
+<span class="operation-version">RC5</span>
+</div>
+<section aria-label="Quadro rapido Centro Analisi" class="analysis-snapshot" id="analysisSnapshot">
+<div class="snapshot-head">
+<div><span>QUADRO RAPIDO</span><b id="snapshotTitle">Aggiornamento in corso</b></div>
+<i aria-hidden="true" class="green" id="snapshotDot"></i>
+</div>
+<div class="snapshot-grid">
+<button data-analysis-jump="observeSection" type="button"><small>Adesso</small><b id="snapshotNow">--</b><em id="snapshotNowNote">meteo locale</em></button>
+<button data-analysis-jump="forecastSection" type="button"><small>Pioggia 6h</small><b id="snapshotRain">--</b><em id="snapshotRainNote">modello orario</em></button>
+<button data-analysis-jump="forecastSection" type="button"><small>Raffica</small><b id="snapshotWind">--</b><em id="snapshotWindNote">massima prevista</em></button>
+<button data-analysis-jump="forecastSection" type="button"><small>Temporali</small><b id="snapshotStorm">--</b><em id="snapshotStormNote">segnale modello</em></button>
+</div>
+<p id="snapshotAdvice">I dati sintetici servono a scegliere il primo strumento da aprire.</p>
+</section>
+<section aria-label="Analisi Conte" class="conte-analysis conte-analysis-v78" id="conteAnalysis">
+<div class="conte-analysis-head">
+<div class="conte-analysis-title"><span>ANALISI CONTE</span><b id="conteState">Valutazione in corso</b></div>
+<i aria-hidden="true" class="green" id="conteStateDot"></i>
+</div>
+<div class="conte-analysis-grid">
+<div class="conte-kpi"><small>Evoluzione</small><b id="conteEvolution">--</b></div>
+<div class="conte-kpi"><small>Attenzione</small><b id="conteAttention">--</b></div>
+<div class="conte-action"><small>Azione consigliata</small><b id="conteAction">Attendi aggiornamento dati</b></div>
+</div>
+<div class="conte-reason"><span>Perché</span><p id="conteReason">La valutazione combina pioggia, raffiche e segnali temporaleschi delle prossime ore.</p></div>
+</section>
+<section aria-label="Percorso operativo consigliato" class="operative-route operative-route-v78" id="operativeRoute">
+<div class="operative-route-head">
+<div><span>PERCORSO OPERATIVO</span><b id="routeTitle">Controllo essenziale</b></div>
+<small>tocca per aprire</small>
+</div>
+<div class="operative-route-steps" role="list">
+<button data-route-target="toolZoom" role="listitem" type="button"><i>1</i><span><small>PRIMA</small><b id="routeStep1">Zoom Earth</b></span></button>
+<span aria-hidden="true" class="route-connector">›</span>
+<button data-route-target="toolRadar" role="listitem" type="button"><i>2</i><span><small>POI</small><b id="routeStep2">Radar live ER</b></span></button>
+<span aria-hidden="true" class="route-connector">›</span>
+<button data-route-target="toolPretemp" role="listitem" type="button"><i>3</i><span><small>SE SERVE</small><b id="routeStep3">Centro PRETEMP</b></span></button>
+</div>
+<p id="routeNote">Un percorso breve per verificare la situazione senza aprire strumenti inutili.</p>
+</section>
+<div class="tool-section accordion-section observe priority open" id="observeSection">
+<button aria-expanded="true" class="tool-title accordion-toggle" type="button"><span>👁️</span><div><b>1. Osserva</b><small>Cosa sta succedendo adesso</small></div><i>⌄</i></button>
+<div class="tool-grid analysis-tools five-tools accordion-content">
+<a class="featured zoom" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" id="toolZoom" rel="noopener" target="_blank"><i>🌍</i><b>Zoom Earth</b><small>radar e satellite animati</small><em>CONSIGLIATO</em></a>
+<a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" id="toolRadar" rel="noopener" target="_blank"><i>📡</i><b>Radar evoluzione ER</b><small>spostamento +1h · +2h · +3h</small></a>
+<a href="https://www.lightningmaps.org/" id="toolLightning" rel="noopener" target="_blank"><i>⚡</i><b>Fulmini live</b><small>scariche in tempo reale</small></a>
+<a href="https://www.meteoam.it/it/satellite/italia" rel="noopener" target="_blank"><i>🛰️</i><b>Satellite</b><small>nubi e sviluppo</small></a>
+<a href="https://radar.protezionecivile.it/" rel="noopener" target="_blank"><i>🇮🇹</i><b>Radar nazionale</b><small>quadro italiano</small></a>
+</div>
+</div>
+<div class="tool-section accordion-section forecast-step" id="forecastSection">
+<button aria-expanded="false" class="tool-title accordion-toggle" type="button"><span>🌩️</span><div><b>2. Prevedi</b><small>Cosa potrebbe succedere nelle prossime ore</small></div><i>›</i></button>
+<div class="tool-grid analysis-tools accordion-content">
+<button class="tool-link-button featured" data-jump="pretempDrawer" id="toolPretempMain" type="button"><i>⛈️</i><b>Centro PRETEMP</b><small>rischio temporali intensi</small><em>PRINCIPALE</em></button>
+<a href="https://www.windy.com/?44.42,11.98,8" rel="noopener" target="_blank"><i>🌀</i><b>Windy mappe</b><small>vento e pressione</small></a>
+<a href="https://www.windy.com/?rain,44.42,11.98,8" rel="noopener" target="_blank"><i>🌧️</i><b>Pioggia prevista</b><small>ore successive</small></a>
+<a href="https://www.arpae.it/it/temi-ambientali/meteo" rel="noopener" target="_blank"><i>🏛️</i><b>Meteo Arpae</b><small>previsioni ufficiali</small></a>
+</div>
+</div>
+<div class="tool-section accordion-section river-step" id="riverSection">
+<button aria-expanded="false" class="tool-title accordion-toggle" type="button"><span>🌊</span><div><b>3. Controlla</b><small>Se la pioggia diventa persistente</small></div><i>›</i></button>
+<div class="tool-grid analysis-tools accordion-content">
+<button class="tool-link-button featured" data-jump="lamoneDrawer" id="toolLamone" type="button"><i>🌊</i><b>Centro Lamone</b><small>controllo monte-valle</small><em>PRINCIPALE</em></button>
+<a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" rel="noopener" target="_blank"><i>📡</i><b>Sensori Lamone</b><small>livelli del percorso</small></a>
+<a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" rel="noopener" target="_blank"><i>📈</i><b>Idrometri ER</b><small>livelli ufficiali</small></a>
+<a href="https://www.windy.com/?rain,44.16,11.62,8" rel="noopener" target="_blank"><i>🏔️</i><b>Pioggia a monte</b><small>Marradi e Modigliana</small></a>
+</div>
+</div>
+<div class="tool-section accordion-section webcam-step" id="webcamSection">
+<button aria-expanded="false" class="tool-title accordion-toggle" type="button"><span>📷</span><div><b>4. Conferma</b><small>Guarda il cielo con le webcam</small></div><i>›</i></button>
+<div class="tool-grid analysis-tools accordion-content">
+<a href="https://www.guardcostaus-ravenna.it/MeteoPagine/webcam.html" rel="noopener" target="_blank"><i>⚓</i><b>Porto Ravenna</b><small>immagini aggiornate ogni minuto</small></a>
+<a href="https://www.lidinordravenna.it/meteo-webcam" rel="noopener" target="_blank"><i>🏖️</i><b>Costa Ravenna</b><small>webcam litorale nord</small></a>
+<a href="https://www.ridracoli.it/webcam-ridracoli/" rel="noopener" target="_blank"><i>🏞️</i><b>Ridracoli live</b><small>diga e lago in diretta</small></a>
+<a href="https://www.weathercam.it/live-webcam/Emilia-Romagna" rel="noopener" target="_blank"><i>🎥</i><b>Altre webcam ER</b><small>selezione regionale</small></a>
+</div>
+</div>
+<div class="tool-section accordion-section news follow-step" id="followSection">
+<button aria-expanded="false" class="tool-title accordion-toggle" type="button"><span>📡</span><div><b>5. Meteo Live</b><small>Esperti, video e fonti ufficiali</small></div><i>›</i></button>
+<div class="tool-grid analysis-tools live-info-grid accordion-content">
+<div class="live-group-title"><span>🔴</span><div><b>METEOROLOGI LIVE</b><small>Aggiornamenti rapidi, dirette e video</small></div></div>
+<a class="featured social-card instagram-card" href="https://www.instagram.com/giuliobetti18?igsh=MTJma255ZmdlY2l3Yg==" rel="noopener" target="_blank"><i>📸</i><b>Giulio Betti</b><small>Instagram · analisi e video live</small><em>LIVE</em></a>
+<a class="social-card facebook-card" href="https://www.facebook.com/share/1EfJXot9FS/" rel="noopener" target="_blank"><i>📘</i><b>Meteo Facebook 1</b><small>aggiornamenti e contenuti video</small></a>
+<a class="social-card facebook-card" href="https://www.facebook.com/share/188WRVWpvJ/" rel="noopener" target="_blank"><i>📘</i><b>Meteo Facebook 2</b><small>aggiornamenti e contenuti video</small></a>
+<a class="social-card facebook-card" href="https://www.facebook.com/share/1Cjp97cRVn/" rel="noopener" target="_blank"><i>📘</i><b>Meteo Facebook 3</b><small>aggiornamenti e contenuti video</small></a>
+<div class="live-group-title official-title"><span>🛡️</span><div><b>FONTI UFFICIALI</b><small>Verifica allerte e comunicazioni regionali</small></div></div>
+<a href="https://allertameteo.regione.emilia-romagna.it/" id="toolAlerts" rel="noopener" target="_blank"><i>⚠️</i><b>Allerte ufficiali</b><small>bollettini Emilia-Romagna</small></a>
+<a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" rel="noopener" target="_blank"><i>📡</i><b>Nowcasting ER</b><small>evoluzione radar +1h · +2h · +3h</small></a>
+<a href="https://allertameteo.regione.emilia-romagna.it/previsioni-regionali" rel="noopener" target="_blank"><i>🗺️</i><b>Previsioni regionali</b><small>testo ufficiale Emilia-Romagna</small></a>
+<a href="https://www.arpae.it/it/temi-ambientali/meteo" rel="noopener" target="_blank"><i>🏛️</i><b>Meteo ARPAE</b><small>previsioni e dati regionali</small></a>
+</div>
+</div>
+</section>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.0 RC6 · Home Operativa</footer>
+<div aria-label="Mappa PRETEMP ingrandita" aria-modal="true" class="pretemp-modal hidden" id="pretempModal" role="dialog">
+<div class="pretemp-modal-head">
+<div><span>PRETEMP</span><b>Mappa del giorno</b></div>
+<button aria-label="Chiudi mappa" id="closePretempModal" type="button">×</button>
+</div>
+<div class="pretemp-modal-scroll">
+<img alt="Mappa PRETEMP ingrandita" id="pretempMapLarge"/>
+</div>
+<a class="btn" href="https://www.pretemp.it/" id="pretempModalForecastLink" rel="noopener" target="_blank">Apri previsione completa ↗</a>
+</div>
+</main>
+<script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js?v=1.0-rc6"></script>
 </body>
 </html>

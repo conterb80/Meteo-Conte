@@ -1,12 +1,11 @@
-# Meteo Conte 1.0 RC5 – Meteo Live
+# Meteo Conte 1.0 RC6 · Home Operativa
 
-Aggiornamento mirato del Centro Operativo.
+Aggiornamento di consolidamento della home:
+- prossime ore subito sotto il meteo attuale;
+- radar live in seconda posizione;
+- Bollettino Conte che correla previsione, allerta ufficiale, Lamone e PRETEMP;
+- integrazione del webservice ufficiale Allerta Meteo Emilia-Romagna per Bagnacavallo, zona D1;
+- accessi rapidi spostati dopo il bollettino e il trend;
+- nessuna rimozione degli strumenti già presenti nella RC5.
 
-- la vecchia sezione “5. Segui” diventa “5. Meteo Live”;
-- i profili social meteo vengono messi in primo piano;
-- Giulio Betti è evidenziato come accesso principale Instagram;
-- inseriti i tre collegamenti Facebook condivisi;
-- fonti ufficiali mantenute, ma separate e visivamente secondarie;
-- nessuna modifica ai motori meteo, alla Home, a Lamone o a PRETEMP.
-
-Nota: i tre collegamenti Facebook usano etichette provvisorie perché i link di condivisione non espongono pubblicamente il nome della pagina fuori da Facebook.
+Caricare tutti i file nella root del repository GitHub Pages, sostituendo quelli esistenti.

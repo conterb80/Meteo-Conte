@@ -233,7 +233,49 @@ function updateWeatherHero(code,isDay){
   hero.classList.add(mood);
 }
 
+
+const OFFICIAL_ALERT_URL='https://allertameteo.regione.emilia-romagna.it/o/get-stato-allerta';
+const OFFICIAL_ALERT_PAGE='https://allertameteo.regione.emilia-romagna.it/web/bagnacavallo';
+let officialAlertState={color:'unknown',title:'Verifica ufficiale in corso',phenomena:[],data:null};
+function alertRank(c){return ({green:0,yellow:1,orange:2,red:3})[c]??-1}
+function alertColorLabel(c){return ({green:'VERDE',yellow:'GIALLA',orange:'ARANCIONE',red:'ROSSA'})[c]||'DA VERIFICARE'}
+function parseOfficialAlert(data){
+ const zone=data&&data.D1;
+ if(!zone) return {color:'unknown',title:'Zona D1 non disponibile',phenomena:[],data};
+ const labels={idraulica:'piene dei fiumi',idrogeologica:'frane e corsi minori',temporali:'temporali',vento:'vento',temperature_estreme:'temperature estreme',neve:'neve',ghiaccio_pioggia_gela:'ghiaccio/pioggia che gela',stato_mare:'stato del mare',mareggiate:'mareggiate'};
+ let color='green', phenomena=[];
+ Object.entries(labels).forEach(([key,label])=>{const c=zone[key];if(c&&alertRank(c)>0) phenomena.push({label,color:c});if(alertRank(c)>alertRank(color)) color=c;});
+ return {color,title:data.titolo||'Documento ufficiale disponibile',phenomena,data};
+}
+function renderOfficialAlert(state){
+ officialAlertState=state;
+ const dot=$('dotAllerte'), line=$('briefAlert');
+ const color=state.color==='unknown'?'yellow':state.color;
+ if(dot) setDot(dot,color);
+ if(line){
+   line.className=state.color==='unknown'?'alert-yellow':'alert-'+state.color;
+   const txt=state.color==='unknown'?'Allerte ufficiali: verifica non disponibile, apri la fonte ARPAE':state.color==='green'?'Nessuna allerta attiva per Bagnacavallo (zona D1)':`ALLERTA ${alertColorLabel(state.color)}: ${state.phenomena.map(x=>x.label).join(', ')||'fenomeni segnalati'}`;
+   line.querySelector('b').textContent=txt;
+ }
+ const title=$('homeAlertTitle'),text=$('homeAlertText');
+ if(title&&text&&state.color!=='unknown'){
+   title.textContent=state.color==='green'?'Nessuna allerta ufficiale':`Allerta ${alertColorLabel(state.color).toLowerCase()} attiva`;
+   text.textContent=state.color==='green'?'Zona D1 regolare.':state.phenomena.map(x=>x.label).join(', ');
+ }
+}
+async function loadOfficialAlert(){
+ try{
+   const res=await fetch(OFFICIAL_ALERT_URL,{cache:'no-store'}); if(!res.ok) throw new Error('alert api');
+   renderOfficialAlert(parseOfficialAlert(await res.json()));
+ }catch(e){renderOfficialAlert({color:'unknown',title:'Verifica non disponibile',phenomena:[],data:null});}
+}
+function updateBriefWeather(c,h){
+ const line=$('briefWeather');if(!line)return;
+ const s=buildNextSignal(h);const icon=s.kind==='storm'?'⛈️':s.kind==='rain'?'🌧️':s.kind==='wind'?'💨':'☁️';
+ line.querySelector('span').textContent=icon;line.querySelector('b').textContent=s.text;
+}
 async function load(){
+ const alertPromise=loadOfficialAlert();
  try{
   await navigator.serviceWorker?.getRegistrations?.().then(rs=>rs.forEach(r=>r.unregister()));
   const url='https://api.open-meteo.com/v1/forecast?latitude=44.418&longitude=11.977&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&daily=sunrise,sunset&timezone=Europe%2FRome&forecast_days=2';
@@ -247,7 +289,7 @@ async function load(){
   const briefing=buildHomeBriefing(c,h,idx);
   $('statusTitle').textContent=lv[0];
   $('statusText').textContent=briefing.main;
-  setBig(briefing.color); setDot($('dotMeteo'),briefing.color); setDot($('dotTemporali'),idx>=40?'yellow':'green'); setDot($('dotLamone'),'green'); setDot($('dotAllerte'),'green'); $('lamoneCorner').className='cornerdot green';
+  setBig(briefing.color); setDot($('dotMeteo'),briefing.color); setDot($('dotTemporali'),idx>=40?'yellow':'green'); setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green';
   $('indiceVal').textContent=idx; $('indiceLabel').textContent=lv[1];
   $('decisionTitle').textContent=idx<25?'Situazione gestibile':idx<50?'Da tenere d’occhio':'Controlla subito';
   $('decisionText').textContent=briefing.detail;
@@ -258,7 +300,7 @@ async function load(){
     autoBox.textContent=briefing.detail;
     autoBox.className='analysis-auto '+briefing.color+(idx<25?' compact':' expanded');
   }
-  renderNextSignal(h); renderRisk(h,idx); renderHours(h); renderAstro(data,briefing,idx); updateControlBox(data); updateAnalysisSnapshot(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  renderNextSignal(h); updateBriefWeather(c,h); renderRisk(h,idx); renderHours(h); renderAstro(data,briefing,idx); await alertPromise; updateControlBox(data); updateAnalysisSnapshot(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
  }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; const ns=$('nextSignal'); if(ns) ns.innerHTML='<span>PROSSIMO SEGNALE</span><b>⚠️ Previsione oraria non disponibile.</b>'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; const cc=$('controlCorner'); if(cc) cc.className='cornerdot yellow'; const ct=$('controlTitle'); if(ct) ct.textContent='Dati da aggiornare'; const cp=$('controlText'); if(cp) cp.textContent='Dati meteo non disponibili: usa i link ufficiali del Centro Controllo Meteo.'; }
 }
 function renderRisk(h,base){
@@ -384,6 +426,7 @@ document.querySelectorAll('[data-trend]').forEach(el=>{
   el.addEventListener('click',()=>openTrend(el.dataset.trend));
   el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend(el.dataset.trend)}});
 });
+$('openOfficialAlerts')?.addEventListener('click',()=>window.open(OFFICIAL_ALERT_PAGE,'_blank','noopener'));
 document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>{
  const id=el.dataset.jump;
  if(id==='lamoneDrawer'){document.getElementById('openLamoneDrawer')?.click();return;}

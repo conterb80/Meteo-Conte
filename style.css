@@ -2251,3 +2251,33 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
 #operativeLinks .live-info-grid .instagram-card{background:linear-gradient(145deg,rgba(153,65,159,.20),rgba(11,55,65,.78))!important;border-color:rgba(229,105,195,.28)!important}
 #operativeLinks .live-info-grid .facebook-card{background:linear-gradient(145deg,rgba(50,105,190,.16),rgba(11,55,65,.78))!important;border-color:rgba(91,151,230,.23)!important}
 @media(max-width:380px){#operativeLinks .live-info-grid .live-group-title{padding:6px 7px}.live-info-grid .live-group-title small{font-size:8px!important}}
+
+/* RC6 · Home Operativa */
+.home-cockpit{display:contents}
+.hourly-monitor-card{margin-top:0}
+.quick-title{grid-column:1/-1;display:block;padding:1px 8px 7px;color:#63dcff;font-size:11px;font-weight:850;letter-spacing:.22em;text-align:left}
+.semafori.smartbar{padding:10px 8px 9px;grid-template-columns:repeat(4,1fr);margin-bottom:9px}
+.semafori.smartbar .sem{border:1px solid rgba(148,211,231,.17);background:rgba(255,255,255,.025);border-radius:15px;min-height:48px;flex-direction:column;gap:4px;padding:6px 2px}
+.semafori.smartbar .sem small{font-size:12.5px;color:#e2edf3}
+.auto-briefing{padding:12px!important;border-color:rgba(96,214,157,.25)!important}
+.auto-briefing .briefing-main{display:grid;grid-template-columns:86px minmax(0,1fr);gap:12px;align-items:start}
+.auto-briefing .signal-index{border:1px solid rgba(120,220,170,.22)!important;background:rgba(91,224,144,.055)!important;border-radius:18px!important;padding:10px 5px!important;min-height:142px;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important}
+.auto-briefing .signal-index .bigdot{width:42px!important;height:42px!important;margin-bottom:7px;box-shadow:0 0 24px currentColor}
+.auto-briefing .signal-index-copy small{font-size:9px!important;letter-spacing:.14em}
+.auto-briefing .signal-index-copy b{font-size:25px!important;display:block;line-height:1.05}
+.auto-briefing .signal-index-copy em{font-size:12px!important}
+.briefing-headline{font-size:24px!important;line-height:1.08!important;font-weight:800!important;margin:2px 0 8px!important;color:#f7fbff!important}
+.briefing-signals{list-style:none;padding:0;margin:0 0 8px;display:grid;gap:5px}
+.briefing-signals li{display:grid;grid-template-columns:22px 1fr;gap:5px;align-items:start;color:#dce8ef;font-size:13px;line-height:1.25}
+.briefing-signals li span{font-size:15px}.briefing-signals li b{font-weight:580}
+.briefing-signals li.alert-yellow b{color:#ffe36f}.briefing-signals li.alert-orange b{color:#ffb267}.briefing-signals li.alert-red b{color:#ff7e78}.briefing-signals li.alert-green b{color:#85e9aa}
+.auto-briefing .next-signal{margin-top:7px!important;padding:8px 10px!important;border-radius:13px!important}
+.auto-briefing .next-signal small{display:none!important}
+.home-astro-grid{margin-top:0}
+@media(max-width:430px){
+ .auto-briefing .briefing-main{grid-template-columns:76px minmax(0,1fr);gap:10px}
+ .auto-briefing .signal-index{min-height:138px;padding:8px 3px!important}
+ .briefing-headline{font-size:22px!important}
+ .briefing-signals li{font-size:12.5px}
+ .semafori.smartbar .sem{min-height:45px}.semafori.smartbar .sem small{font-size:11.8px}
+}
