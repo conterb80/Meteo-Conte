@@ -2311,231 +2311,156 @@ footer{font-size:14px;color:#8fa9b7;margin:14px 0 5px;line-height:1.35}
  .briefing-tile>span{font-size:17px}.briefing-tile>strong{font-size:10px}.briefing-tile>b{font-size:10.7px}
 }
 
-/* RC8 · Bollettino Conte compatto: spie in alto, unico messaggio operativo sotto */
-.compact-control-room{
-  display:block!important;
-  padding:10px 11px 11px!important;
-  min-height:0!important;
-  border-color:rgba(96,214,157,.28)!important;
-}
-.compact-control-room .briefing-section-label{
-  display:block;
-  margin:0 0 7px 2px!important;
-  font-size:9px!important;
-  letter-spacing:.21em!important;
-}
-.compact-control-room .briefing-main{
-  display:grid!important;
-  grid-template-columns:58px minmax(0,1fr)!important;
-  gap:8px!important;
-  align-items:stretch!important;
-}
-.compact-control-room .signal-index{
-  width:58px!important;
-  min-width:58px!important;
-  min-height:112px!important;
-  padding:7px 3px!important;
-  border-radius:15px!important;
-  align-self:stretch!important;
-  display:flex!important;
-  flex-direction:column!important;
-  justify-content:center!important;
-  align-items:center!important;
-}
-.compact-control-room .signal-index .bigdot{
-  width:31px!important;
-  height:31px!important;
-  flex:0 0 31px!important;
-  margin:0 0 5px!important;
-}
-.compact-control-room .signal-index-copy>small{font-size:7px!important;letter-spacing:.11em!important;white-space:nowrap}
-.compact-control-room .signal-index-copy>b,
-.compact-control-room .signal-index-copy b span{font-size:19px!important;line-height:1!important}
-.compact-control-room .signal-index-copy b em{font-size:8px!important;display:inline!important}
-.compact-control-room .briefing-copy{display:flex!important;flex-direction:column!important;min-width:0!important}
-.compact-control-room .briefing-dashboard{
-  display:grid!important;
-  grid-template-columns:repeat(4,minmax(0,1fr))!important;
-  gap:4px!important;
-  margin:0 0 7px!important;
-}
-.compact-control-room .briefing-tile,
-.compact-control-room .briefing-tile-wrap{
-  min-width:0!important;
-  min-height:48px!important;
-  border-radius:11px!important;
-  padding:5px 3px!important;
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) 8px!important;
-  grid-template-rows:19px auto!important;
-  column-gap:2px!important;
-  row-gap:1px!important;
-  text-align:center!important;
-  align-items:center!important;
-}
-.compact-control-room .briefing-tile-wrap{padding:0!important;display:block!important}
-.compact-control-room .briefing-tile-wrap>.briefing-tile{width:100%!important;height:100%!important;border:0!important}
-.compact-control-room .briefing-tile>span{display:none!important}
-.compact-control-room .briefing-tile>strong{
-  grid-column:1!important;grid-row:1!important;
-  font-size:8px!important;letter-spacing:.08em!important;line-height:1!important;
-  overflow:hidden;text-overflow:ellipsis;
-}
-.compact-control-room .briefing-tile>.dot{
-  grid-column:2!important;grid-row:1!important;
-  width:8px!important;height:8px!important;justify-self:end!important;
-}
-.compact-control-room .briefing-tile>b{
-  grid-column:1/3!important;grid-row:2!important;
-  font-size:8.5px!important;line-height:1.08!important;font-weight:560!important;
-  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
-  text-align:center!important;
-}
-.compact-control-room .operational-message{
-  flex:1;
-  min-height:55px;
-  border-left:3px solid #63d7e8;
-  border-radius:10px;
-  background:rgba(0,0,0,.12);
-  padding:7px 9px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-.compact-control-room .operational-message>small{
-  display:block;font-size:7px;letter-spacing:.18em;color:#9dc5d2;margin-bottom:3px
-}
-.compact-control-room #statusText{
-  margin:0!important;
-  font-size:15px!important;
-  line-height:1.16!important;
-  font-weight:750!important;
-  color:#f2fbff!important;
-}
-.compact-control-room .analysis-auto{display:none!important}
-@media(max-width:370px){
- .compact-control-room{padding:9px!important}
- .compact-control-room .briefing-main{grid-template-columns:53px minmax(0,1fr)!important;gap:6px!important}
- .compact-control-room .signal-index{width:53px!important;min-width:53px!important}
- .compact-control-room .briefing-dashboard{gap:3px!important}
- .compact-control-room .briefing-tile>strong{font-size:7.3px!important}
- .compact-control-room .briefing-tile>b{font-size:7.8px!important}
- .compact-control-room #statusText{font-size:14px!important}
-}
 
-/* RC8 FIX 1 · Bollettino Conte stabile su smartphone */
-.rc8-fixed-briefing{
+/* RC7.1 · SOLO RIQUADRO BOLLETTINO CONTE — layout robusto mobile */
+.auto-briefing.briefing-final{
   display:block!important;
-  width:100%!important;
-  min-width:0!important;
-  box-sizing:border-box!important;
-  padding:11px 12px 12px!important;
+  padding:11px!important;
+  min-height:0!important;
   overflow:hidden!important;
-  border-color:rgba(96,214,157,.28)!important;
+  border-color:rgba(101,218,159,.24)!important;
+  background:linear-gradient(180deg,rgba(8,57,62,.93),rgba(7,43,51,.95))!important;
 }
-.rc8-fixed-briefing .rc8-briefing-label{
-  display:block!important;
-  margin:0 0 8px 2px!important;
+.briefing-final .briefing-title{
+  margin:0 0 8px!important;
   font-size:9px!important;
-  letter-spacing:.21em!important;
+  letter-spacing:.24em!important;
+  color:#9edbea!important;
 }
-.rc8-fixed-briefing .rc8-status-row{
+.briefing-final .briefing-status-row{
   display:grid!important;
-  grid-template-columns:58px minmax(0,1fr)!important;
-  gap:8px!important;
+  grid-template-columns:58px repeat(4,minmax(0,1fr))!important;
+  gap:5px!important;
   width:100%!important;
   min-width:0!important;
   align-items:stretch!important;
 }
-.rc8-fixed-briefing .signal-index{
-  position:static!important;
-  width:58px!important;
-  min-width:58px!important;
-  max-width:58px!important;
-  height:auto!important;
+.briefing-final .briefing-status{
+  position:relative!important;
+  min-width:0!important;
+  width:100%!important;
   min-height:72px!important;
   margin:0!important;
-  padding:6px 3px!important;
+  padding:7px 3px!important;
+  border:1px solid rgba(151,213,230,.15)!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.025)!important;
+  color:#edf8fc!important;
+  box-shadow:none!important;
   display:flex!important;
   flex-direction:column!important;
-  justify-content:center!important;
   align-items:center!important;
-  border-radius:14px!important;
-  box-sizing:border-box!important;
-}
-.rc8-fixed-briefing .signal-index .bigdot{
-  width:28px!important;height:28px!important;min-width:28px!important;min-height:28px!important;
-  margin:0 0 4px!important;flex:0 0 28px!important;
-}
-.rc8-fixed-briefing .signal-index-copy{display:block!important;text-align:center!important;min-width:0!important}
-.rc8-fixed-briefing .signal-index-copy>small{display:block!important;font-size:6.8px!important;letter-spacing:.09em!important;white-space:nowrap!important}
-.rc8-fixed-briefing .signal-index-copy>b{display:block!important;font-size:18px!important;line-height:1!important;white-space:nowrap!important}
-.rc8-fixed-briefing .signal-index-copy b span{font-size:18px!important}
-.rc8-fixed-briefing .signal-index-copy b em{display:inline!important;font-size:8px!important}
-.rc8-fixed-briefing .briefing-dashboard{
-  display:grid!important;
-  grid-template-columns:repeat(4,minmax(0,1fr))!important;
-  gap:4px!important;
-  width:100%!important;
-  min-width:0!important;
-  margin:0!important;
-  padding:0!important;
-  overflow:visible!important;
-}
-.rc8-fixed-briefing .briefing-tile,
-.rc8-fixed-briefing .briefing-tile-wrap{
-  position:static!important;
-  width:100%!important;
-  min-width:0!important;
-  max-width:none!important;
-  min-height:72px!important;
-  height:auto!important;
-  margin:0!important;
-  padding:5px 3px!important;
-  box-sizing:border-box!important;
-  border-radius:12px!important;
-  display:flex!important;
-  flex-direction:column!important;
   justify-content:center!important;
-  align-items:center!important;
   gap:3px!important;
+  white-space:normal!important;
   text-align:center!important;
   overflow:hidden!important;
-  white-space:normal!important;
 }
-.rc8-fixed-briefing .briefing-tile-wrap{padding:0!important}
-.rc8-fixed-briefing .briefing-tile-wrap>.briefing-tile{border:0!important;min-height:70px!important}
-.rc8-fixed-briefing .briefing-tile>span{display:none!important}
-.rc8-fixed-briefing .briefing-tile>strong{
-  display:block!important;font-size:7.8px!important;line-height:1!important;letter-spacing:.07em!important;
-  max-width:100%!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+.briefing-final .briefing-status:active{transform:scale(.98)!important;background:rgba(255,255,255,.055)!important}
+.briefing-final .briefing-icon{font-size:18px!important;line-height:1!important}
+.briefing-final .briefing-status>.dot{
+  position:absolute!important;
+  top:7px!important;
+  right:7px!important;
+  width:9px!important;
+  height:9px!important;
+  flex:none!important;
 }
-.rc8-fixed-briefing .briefing-tile>.dot{
-  position:static!important;display:block!important;width:9px!important;height:9px!important;min-width:9px!important;min-height:9px!important;margin:0!important;
+.briefing-final .briefing-status>strong{
+  display:block!important;
+  max-width:100%!important;
+  font-size:8.5px!important;
+  line-height:1.05!important;
+  letter-spacing:.04em!important;
+  text-transform:uppercase!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
 }
-.rc8-fixed-briefing .briefing-tile>b{
-  display:block!important;width:100%!important;font-size:8.2px!important;line-height:1.08!important;font-weight:570!important;
-  white-space:normal!important;overflow:hidden!important;text-overflow:clip!important;overflow-wrap:anywhere!important;
+.briefing-final .briefing-status>b{
+  display:block!important;
+  max-width:100%!important;
+  font-size:8px!important;
+  line-height:1.12!important;
+  font-weight:560!important;
+  color:#bed1d9!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
 }
-.rc8-fixed-briefing .operational-message{
-  width:100%!important;min-width:0!important;min-height:58px!important;box-sizing:border-box!important;
-  margin:8px 0 0!important;padding:8px 10px!important;
-  border-left:3px solid #63d7e8!important;border-radius:11px!important;background:rgba(0,0,0,.12)!important;
-  display:flex!important;flex-direction:column!important;justify-content:center!important;overflow:hidden!important;
+.briefing-final .briefing-index{
+  padding:6px 2px!important;
+  border-color:rgba(116,224,164,.21)!important;
+  background:rgba(92,225,145,.055)!important;
 }
-.rc8-fixed-briefing .operational-message>small{display:block!important;font-size:7px!important;letter-spacing:.18em!important;color:#9dc5d2!important;margin-bottom:3px!important}
-.rc8-fixed-briefing #statusText{
-  display:block!important;width:auto!important;max-width:100%!important;margin:0!important;padding:0!important;
-  font-size:15px!important;line-height:1.18!important;font-weight:750!important;color:#f2fbff!important;
-  white-space:normal!important;overflow-wrap:anywhere!important;word-break:normal!important;
+.briefing-final .briefing-index .bigdot{
+  display:block!important;
+  position:static!important;
+  width:27px!important;
+  height:27px!important;
+  flex:0 0 27px!important;
+  margin:0 0 1px!important;
+  box-shadow:0 0 15px currentColor!important;
 }
-.rc8-fixed-briefing .analysis-auto{display:none!important}
-@media(max-width:370px){
-  .rc8-fixed-briefing{padding:10px 9px!important}
-  .rc8-fixed-briefing .rc8-status-row{grid-template-columns:53px minmax(0,1fr)!important;gap:5px!important}
-  .rc8-fixed-briefing .signal-index{width:53px!important;min-width:53px!important;max-width:53px!important}
-  .rc8-fixed-briefing .briefing-dashboard{gap:3px!important}
-  .rc8-fixed-briefing .briefing-tile>strong{font-size:7px!important}
-  .rc8-fixed-briefing .briefing-tile>b{font-size:7.4px!important}
-  .rc8-fixed-briefing #statusText{font-size:14px!important}
+.briefing-final .briefing-index>small{
+  font-size:6.5px!important;
+  line-height:1!important;
+  letter-spacing:.08em!important;
+  color:#9bb2bc!important;
+  white-space:nowrap!important;
+}
+.briefing-final .briefing-index>b{
+  display:flex!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  gap:1px!important;
+  color:#f1fbff!important;
+  font-size:17px!important;
+  line-height:1!important;
+}
+.briefing-final .briefing-index b span{font-size:17px!important;color:#f1fbff!important}
+.briefing-final .briefing-index em{font-size:7px!important;font-style:normal!important;color:#91a8b2!important;font-weight:500!important}
+.briefing-final .briefing-message{
+  margin-top:8px!important;
+  padding:8px 10px!important;
+  width:100%!important;
+  min-height:58px!important;
+  border-left:3px solid #69d9ec!important;
+  border-radius:12px!important;
+  background:rgba(0,0,0,.13)!important;
+  overflow:hidden!important;
+}
+.briefing-final .briefing-message>small{
+  display:block!important;
+  margin:0 0 3px!important;
+  color:#a7c2cc!important;
+  font-size:7px!important;
+  line-height:1!important;
+  letter-spacing:.20em!important;
+  font-weight:800!important;
+}
+.briefing-final #statusText{
+  display:block!important;
+  margin:0!important;
+  max-width:100%!important;
+  color:#f5fbff!important;
+  font-size:16px!important;
+  line-height:1.18!important;
+  font-weight:760!important;
+  overflow-wrap:anywhere!important;
+}
+.briefing-final .analysis-auto{display:none!important}
+.briefing-final #briefAlert.alert-green{color:#85e9aa!important}
+.briefing-final #briefAlert.alert-yellow{color:#ffe36f!important}
+.briefing-final #briefAlert.alert-orange{color:#ffb267!important}
+.briefing-final #briefAlert.alert-red{color:#ff7e78!important}
+
+@media(max-width:380px){
+  .briefing-final .briefing-status-row{grid-template-columns:52px repeat(4,minmax(0,1fr))!important;gap:4px!important}
+  .briefing-final .briefing-status{min-height:68px!important;padding:6px 2px!important}
+  .briefing-final .briefing-icon{font-size:16px!important}
+  .briefing-final .briefing-status>strong{font-size:7.7px!important}
+  .briefing-final .briefing-status>b{font-size:7.2px!important}
+  .briefing-final .briefing-status>.dot{top:6px!important;right:5px!important;width:8px!important;height:8px!important}
+  .briefing-final .briefing-index .bigdot{width:24px!important;height:24px!important;flex-basis:24px!important}
+  .briefing-final .briefing-index>b,.briefing-final .briefing-index b span{font-size:15px!important}
+  .briefing-final #statusText{font-size:15px!important}
 }

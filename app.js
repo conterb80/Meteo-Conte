@@ -255,7 +255,7 @@ function renderOfficialAlert(state){
  if(line){
    line.className=state.color==='unknown'?'alert-yellow':'alert-'+state.color;
    const txt=state.color==='unknown'?'Verifica fonte ufficiale':state.color==='green'?'Nessuna attiva':`Allerta ${alertColorLabel(state.color).toLowerCase()}: ${state.phenomena.map(x=>x.label).join(', ')||'fenomeni segnalati'}`;
-   line.querySelector('b').textContent=txt;
+   line.textContent=txt;
  }
  const title=$('homeAlertTitle'),text=$('homeAlertText');
  if(title&&text&&state.color!=='unknown'){

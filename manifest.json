@@ -1,6 +1,6 @@
 {
-  "name": "Meteo Conte 1.0 RC8 · Home Finale",
-  "short_name": "Meteo Conte RC8",
+  "name": "Meteo Conte 1.0 RC7 Bollettino Integrato",
+  "short_name": "Meteo Conte",
   "start_url": "index.html?v=1.0-rc7",
   "display": "standalone",
   "background_color": "#061b27",
