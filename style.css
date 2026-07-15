@@ -2562,3 +2562,38 @@ body.trend-open{overflow:hidden}
 .signal-board{margin-top:10px;padding:12px;border-radius:17px;border:1px solid rgba(255,255,255,.1);background:rgba(7,31,43,.82)}.signal-board>small{display:block;font-size:9px;letter-spacing:.15em;color:#85d4ef;margin-bottom:8px}.signal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.signal-chip{display:grid;grid-template-columns:auto 1fr auto;gap:7px;align-items:center;min-width:0;padding:8px;border:1px solid rgba(111,224,154,.16);border-radius:12px;background:rgba(255,255,255,.035)}.signal-chip>span{font-size:18px}.signal-chip b{display:block;font-size:10px}.signal-chip small{display:block;font-size:8px;color:#9fb3bc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.signal-chip em{font-style:normal;font-size:15px;font-weight:900;color:#6fe09a}.signal-chip.yellow em{color:#ffd957}.signal-chip.orange em{color:#ff9c4b}.signal-chip.cyan em{color:#54d9ef}
 .multi-chart-wrap,.multi-svg{height:88px}.multi-trend-row{min-height:91px}.multi-line{stroke-width:3.5}.multi-selected{r:6}
 @media(max-width:650px){.signal-grid{grid-template-columns:repeat(2,1fr)}.event-step{flex-basis:58px}.multi-chart-wrap,.multi-svg{height:82px}.multi-trend-row{min-height:85px}}
+
+/* Trend Operativi V2.1 - correzione leggibilità Timeline Evento */
+.event-track .event-step,
+.event-track .event-step.green,
+.event-track .event-step.yellow,
+.event-track .event-step.orange,
+.event-track .event-step.red{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.event-track .event-step time{
+  color:#c3d7df!important;
+  font-weight:650;
+  text-shadow:0 1px 2px rgba(0,0,0,.75);
+}
+.event-track .event-step b{
+  color:#f3f9fc!important;
+  font-weight:800;
+  text-shadow:0 1px 2px rgba(0,0,0,.85);
+}
+.event-track .event-step:before{
+  opacity:.9!important;
+  box-shadow:0 0 7px currentColor;
+}
+.event-track .event-step i{
+  background:#062534!important;
+  border-color:currentColor!important;
+  color:currentColor!important;
+  box-shadow:0 0 0 2px rgba(2,21,31,.85),0 0 12px currentColor!important;
+}
+.event-track .event-step.green{color:#69e39f!important}
+.event-track .event-step.yellow{color:#ffd657!important}
+.event-track .event-step.orange{color:#ff9948!important}
+.event-track .event-step.red{color:#ff626c!important}
