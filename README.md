@@ -1,10 +1,11 @@
-# Meteo Conte 1.1.2 — PRETEMP Operativo
+# Meteo Conte 1.1 – Trend Operativi V2 Test
 
-Aggiornamento mirato esclusivamente alla sezione PRETEMP.
+Secondo step della roadmap Trend:
+- corretto lo stato Indice Conte (niente più undefined)
+- timeline evento automatica
+- pannello segnali principali
+- lettura automatica multiparametrica migliorata
+- grafici leggermente più alti e leggibili
+- Home e funzioni esistenti invariate
 
-- Lettura automatica raccolta sopra la mappa in un unico quadro coerente.
-- Semaforo PRETEMP della Home sincronizzato con la pericolosità ufficiale.
-- Livello 0 verde, 1 giallo, 2 arancione, 3 rosso.
-- Messaggio operativo della Home aggiornato per livelli 2 e 3.
-- Area sotto la mappa ridisegnata come blocco compatto “Approfondimenti”.
-- Nessuna modifica a Home, Radar, Trend, Lamone o Centro Operativo, salvo la sincronizzazione del solo indicatore PRETEMP.
+Aggiornamento: aprire reset.html?v=1.1-trend-v2

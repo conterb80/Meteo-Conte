@@ -473,19 +473,40 @@ function multiSvg(values,times,row,selected){
  return `<svg class="multi-svg row-${row.id}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" data-multi-chart="1"><g class="multi-grid"><line x1="0" y1="${t+(h-t-b)/2}" x2="${w}" y2="${t+(h-t-b)/2}"/></g><g class="multi-bars">${bars}</g><path class="multi-line" d="${path}"/><line class="multi-cursor" x1="${sx}" y1="0" x2="${sx}" y2="${h-b}"/><circle class="multi-selected" cx="${sx}" cy="${sy}" r="5"/>${labs}</svg>`;
 }
 function combinedTrendReading(h,start,count){
- const sl=k=>h[k].slice(start,start+count);
- const p=linearRate(sl('pressure_msl')),u=linearRate(sl('relative_humidity_2m')),g=linearRate(sl('wind_gusts_10m'));
- const prob=Math.max(...sl('precipitation_probability')), rain=sl('precipitation').reduce((a,b)=>a+(b||0),0);
- let score=0,notes=[];
- if(p<-.35){score+=2;notes.push('pressione in calo')}
- if(u>1.2){score+=1;notes.push('umidità in aumento')}
- if(g>2){score+=2;notes.push('raffiche in aumento')}
- if(prob>=60){score+=2;notes.push(`probabilità di pioggia fino al ${Math.round(prob)}%`)}
- if(rain>=3){score+=2;notes.push(`accumulo previsto ${rain.toFixed(1)} mm`)}
- if(!notes.length)notes.push('parametri complessivamente regolari');
- if(score>=6)return {level:'orange',title:'Evoluzione da monitorare',text:`Segnali concordanti: ${notes.join(', ')}. Verifica radar, PRETEMP e allerte.`};
- if(score>=3)return {level:'yellow',title:'Variazioni presenti',text:`Si osservano ${notes.join(', ')}. Segui i prossimi aggiornamenti.`};
- return {level:'green',title:'Quadro regolare',text:`${notes.join(', ')}. Nessun passaggio operativo aggiuntivo richiesto.`};
+ const sl=k=>h[k].slice(start,start+count).map(v=>Number(v||0));
+ const pressure=sl('pressure_msl'), humidity=sl('relative_humidity_2m'), gusts=sl('wind_gusts_10m');
+ const probs=sl('precipitation_probability'), precip=sl('precipitation'), temps=sl('temperature_2m');
+ const p=linearRate(pressure),u=linearRate(humidity),g=linearRate(gusts);
+ const prob=Math.max(...probs), rain=precip.reduce((a,b)=>a+b,0), maxGust=Math.max(...gusts);
+ const tempDrop=temps.length>1?temps[0]-Math.min(...temps):0;
+ let score=0,signals=[];
+ if(p<-.35){score+=2;signals.push({icon:'🧭',label:'Pressione',value:'in calo',dir:'↓',tone:'yellow'})}
+ else signals.push({icon:'🧭',label:'Pressione',value:'stabile',dir:'→',tone:'green'});
+ if(u>1.2){score+=1;signals.push({icon:'💧',label:'Umidità',value:'in aumento',dir:'↑',tone:'cyan'})}
+ else signals.push({icon:'💧',label:'Umidità',value:'regolare',dir:'→',tone:'green'});
+ if(g>2||maxGust>=45){score+=2;signals.push({icon:'💨',label:'Raffiche',value:`fino a ${Math.round(maxGust)} km/h`,dir:'↑',tone:maxGust>=60?'orange':'yellow'})}
+ else signals.push({icon:'💨',label:'Raffiche',value:`max ${Math.round(maxGust)} km/h`,dir:'→',tone:'green'});
+ if(prob>=60){score+=2;signals.push({icon:'🌧️',label:'Pioggia',value:`prob. max ${Math.round(prob)}%`,dir:'↑',tone:prob>=80?'orange':'yellow'})}
+ else signals.push({icon:'🌧️',label:'Pioggia',value:`prob. max ${Math.round(prob)}%`,dir:'→',tone:'green'});
+ if(rain>=3){score+=2;signals.push({icon:'☔',label:'Accumulo',value:`${rain.toFixed(1)} mm`,dir:'↑',tone:rain>=10?'orange':'yellow'})}
+ else signals.push({icon:'☔',label:'Accumulo',value:`${rain.toFixed(1)} mm`,dir:'→',tone:'green'});
+ if(tempDrop>=5)signals.push({icon:'🌡️',label:'Temperatura',value:`calo ${tempDrop.toFixed(1)}°`,dir:'↓',tone:'cyan'});
+ let level='green',title='Quadro regolare',text='I parametri non mostrano una combinazione operativa significativa.';
+ if(score>=6){level='orange';title='Evoluzione da monitorare';text='Più parametri stanno convergendo: verifica posizione e sviluppo con radar, PRETEMP e allerte.'}
+ else if(score>=3){level='yellow';title='Variazioni presenti';text='Sono presenti segnali di cambiamento. Segui i prossimi aggiornamenti e confrontali con il radar.'}
+ return {level,title,text,score:Math.min(100,Math.round(score/8*100)),signals};
+}
+function buildTrendTimeline(h,start,count){
+ const times=h.time.slice(start,start+count), probs=h.precipitation_probability.slice(start,start+count), rain=h.precipitation.slice(start,start+count), gust=h.wind_gusts_10m.slice(start,start+count);
+ const sample=Math.max(1,Math.ceil(count/8));
+ return times.map((tm,i)=>{
+   if(i%sample&&i!==times.length-1)return '';
+   const p=Number(probs[i]||0),r=Number(rain[i]||0),g=Number(gust[i]||0);
+   let tone='green',label='Stabile',icon='●';
+   if(p>=80||r>=5||g>=65){tone='orange';label='Attenzione';icon='▲'}
+   else if(p>=45||r>=1||g>=40){tone='yellow';label='Da seguire';icon='◆'}
+   return `<div class="event-step ${tone}"><time>${new Date(tm).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><i>${icon}</i><b>${label}</b></div>`;
+ }).join('');
 }
 function renderTrendPage(){
  if(!lastData)return;
@@ -497,7 +518,7 @@ function renderTrendPage(){
  const rows=multiTrendRows();
  const reading=combinedTrendReading(h,start,actualCount);
  const idxNow=calcIndex(lastData.current,h);
- const evolutionScore=reading.level==='orange'?78:reading.level==='yellow'?48:18;
+ const evolutionScore=reading.score;
  const rowHtml=rows.map(row=>{
    const vals=h[row.key].slice(start,start+actualCount).map(v=>Number(v||0));
    const val=vals[selected], min=Math.min(...vals),max=Math.max(...vals),maxI=vals.indexOf(max), minI=vals.indexOf(min);
@@ -507,9 +528,11 @@ function renderTrendPage(){
  const selectedTime=new Date(times[selected]).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
  const box=$('trendBox');
  box.innerHTML=`<div class="trend-page-shell multi-dashboard"><header class="trend-page-head"><div><span class="label">ANALISI MULTI-PARAMETRICA SINCRONIZZATA</span><h2>📊 Trend Operativi</h2><p>Borgo Viazza · tocca i grafici per confrontare lo stesso orario.</p></div><button class="closeTrend" type="button" aria-label="Chiudi Trend Operativi">×</button></header>
- <section class="multi-kpis"><div><small>INDICE CONTE</small><b>${idxNow}<em>/100</em></b><span>${level(idxNow).label}</span></div><div><small>INDICE EVOLUZIONE</small><b>${evolutionScore}<em>/100</em></b><span>${reading.title}</span></div><div><small>AGGIORNAMENTO</small><b>${new Date(lastData.current.time).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</b><span>dati modello</span></div></section>
+ <section class="multi-kpis"><div><small>INDICE CONTE</small><b>${idxNow}<em>/100</em></b><span>${level(idxNow)[0]}</span></div><div><small>INDICE EVOLUZIONE</small><b>${evolutionScore}<em>/100</em></b><span>${reading.title}</span></div><div><small>AGGIORNAMENTO</small><b>${new Date(lastData.current.time).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</b><span>dati modello</span></div></section>
+ <section class="event-timeline"><div class="event-timeline-head"><small>TIMELINE EVENTO</small><span>lettura automatica</span></div><div class="event-track">${buildTrendTimeline(h,start,actualCount)}</div></section>
  <div class="multi-controls"><div class="trend-periods"><span>Periodo</span>${[6,12,24,48].map(n=>`<button class="${n===activeTrendHours?'active':''}" data-trend-hours="${n}" type="button">${n}h</button>`).join('')}</div><div class="selected-hour">ORARIO SELEZIONATO <b>${selectedTime}</b></div></div>
  <section class="multi-trends"><div class="multi-axis-title"><span>TREND SINCRONIZZATI · PROSSIME ${actualCount} ORE</span><small>tocca un punto per leggere tutti i valori</small></div>${rowHtml}</section>
+ <section class="signal-board"><small>SEGNALI PRINCIPALI</small><div class="signal-grid">${reading.signals.map(s=>`<div class="signal-chip ${s.tone}"><span>${s.icon}</span><div><b>${s.label}</b><small>${s.value}</small></div><em>${s.dir}</em></div>`).join('')}</div></section>
  <section class="multi-reading ${reading.level}"><div><small>LETTURA AUTOMATICA DEI TREND</small><h3>${reading.title}</h3><p>${reading.text}</p></div><div class="reading-actions"><button type="button" data-jump-trend="radar">📡 Radar</button><button type="button" data-jump-trend="pretemp">⛈️ PRETEMP</button></div></section>
  <p class="trend-disclaimer">Lettura orientativa su previsione oraria. Radar, PRETEMP e allerte ufficiali restano gli strumenti di conferma.</p></div>`;
  box.querySelector('.closeTrend')?.addEventListener('click',closeTrendPage);

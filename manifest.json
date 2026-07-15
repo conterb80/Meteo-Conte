@@ -1,13 +1,13 @@
 {
-  "name": "Meteo Conte 1.0 RC7 Bollettino Integrato",
+  "name": "Meteo Conte 1.1 Trend Operativi V2",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=1.0-rc7",
+  "start_url": "index.html?v=1.1-trend-v2",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",
   "icons": [
     {
-      "src": "icon.png?v=1-0-rc7",
+      "src": "icon.png?v=1-1-trend-v2",
       "sizes": "512x512",
       "type": "image/png"
     }
