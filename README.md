@@ -1,12 +1,10 @@
-# Meteo Conte 1.1 · Trend Operativi
+# Meteo Conte 1.1.1 — PRETEMP Automatico
 
-Base: RC7.1 stabile.
+Aggiornamento mirato esclusivamente alla sezione PRETEMP.
 
-Intervento isolato esclusivamente sul modulo Trend:
-- pagina Trend Operativi a schermo intero;
-- temperatura, pressione, umidità, vento/raffiche, pioggia e Indice Conte;
-- intervalli 6, 12 e 24 ore;
-- valore attuale, minimo/massimo, velocità di variazione e valore finale;
-- interpretazione della singola variabile;
-- diagnosi combinata orientativa;
-- nessuna modifica a Home, Bollettino Conte, Radar, Lamone, PRETEMP o Centro Operativo.
+- Recupero automatico della previsione più recente dalla pagina ufficiale PRETEMP.
+- URL immagine dinamico e anti-cache.
+- Stato aggiornamento, validità, livello, fenomeni principali ed emissione.
+- Eliminata la lettura manuale ingombrante.
+- Mappa e bollettino ufficiale restano gli elementi centrali.
+- Nessuna modifica a Home, Trend, Radar, Lamone o Centro Operativo.

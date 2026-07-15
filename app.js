@@ -773,138 +773,135 @@ loadLamoneSensors();
   setTimeout(syncValidity,800);
 })();
 
-// V62 - PRETEMP stato del giorno + lettura assistita + mappa giornaliera
-(function setupPretempV1(){
-  const map=document.getElementById('pretempMap');
-  const mapLarge=document.getElementById('pretempMapLarge');
-  const mapButton=document.getElementById('pretempMapButton');
-  const fallback=document.getElementById('pretempMapFallback');
-  const modal=document.getElementById('pretempModal');
-  const close=document.getElementById('closePretempModal');
-  const validity=document.getElementById('pretempValidity');
-  const forecastLink=document.getElementById('pretempForecastLink');
-  const modalForecastLink=document.getElementById('pretempModalForecastLink');
-  const summary=document.getElementById('pretempSummary');
-  const summaryTitle=document.getElementById('pretempSummaryTitle');
-  const summaryText=document.getElementById('pretempSummaryText');
-  const summaryState=document.getElementById('pretempSummaryState');
-  const summaryAction=document.getElementById('pretempSummaryAction');
-  const summaryDot=document.getElementById('pretempSummaryDot');
-  const decision=document.getElementById('pretempDecision');
-  const decisionTitle=document.getElementById('pretempDecisionTitle');
-  const decisionText=document.getElementById('pretempDecisionText');
-  const decisionDot=document.getElementById('pretempDecisionDot');
-  const decisionAction=document.getElementById('pretempDecisionAction');
-  if(!map || !mapButton) return;
+// V1.1.1 - PRETEMP professionale: fonte ufficiale, anti-cache e lettura automatica
+(function setupPretempProfessional(){
+  const $p=id=>document.getElementById(id);
+  const map=$p('pretempMap'), mapLarge=$p('pretempMapLarge'), mapButton=$p('pretempMapButton');
+  const fallback=$p('pretempMapFallback'), modal=$p('pretempModal'), close=$p('closePretempModal');
+  const validity=$p('pretempValidity'), forecastLink=$p('pretempForecastLink'), modalForecastLink=$p('pretempModalForecastLink');
+  const statusDot=$p('pretempStatusDot'), title=$p('pretempDecisionTitle'), text=$p('pretempDecisionText');
+  const dot=$p('pretempDecisionDot'), level=$p('pretempAutoLevel'), phenomena=$p('pretempAutoPhenomena'), issued=$p('pretempAutoIssued');
+  const refresh=$p('refreshPretemp');
+  if(!map||!mapButton) return;
 
-  const setDecision=(mode,title,text,actionText)=>{
-    if(!decision) return;
-    decision.classList.remove('is-ready','is-warning','is-error');
-    decision.classList.add(mode==='ready'?'is-ready':mode==='error'?'is-error':'is-warning');
-    if(decisionTitle) decisionTitle.textContent=title;
-    if(decisionText) decisionText.textContent=text;
-    if(decisionAction) decisionAction.textContent=actionText;
-    if(decisionDot){
-      decisionDot.classList.remove('green','yellow','red');
-      decisionDot.classList.add(mode==='ready'?'green':mode==='error'?'red':'yellow');
+  const esc=s=>String(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+  const clean=s=>String(s||'').replace(/\*\*/g,'').replace(/\s+/g,' ').trim();
+  const setState=(mode,head,detail)=>{
+    const color=mode==='ready'?'green':mode==='error'?'red':'yellow';
+    title.textContent=head; text.textContent=detail;
+    dot.className='pretemp-auto-dot '+color;
+    statusDot.className='pretemp-state '+color;
+    statusDot.textContent=mode==='ready'?'AGGIORNATA':mode==='error'?'ERRORE':'VERIFICA';
+  };
+  const setImage=url=>{
+    const bust=(url.includes('?')?'&':'?')+'mc='+Date.now();
+    map.src=url+bust;
+    if(mapLarge) mapLarge.src=url+bust;
+  };
+  const italianMonths={gennaio:0,febbraio:1,marzo:2,aprile:3,maggio:4,giugno:5,luglio:6,agosto:7,settembre:8,ottobre:9,novembre:10,dicembre:11};
+  const dateFromText=s=>{
+    const m=clean(s).toLowerCase().match(/(\d{1,2})\s+(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+(\d{4})/);
+    return m?new Date(Number(m[3]),italianMonths[m[2]],Number(m[1])):null;
+  };
+  const sameDay=(a,b)=>a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
+  const extractPhenomena=raw=>{
+    const t=raw.toLowerCase(), out=[];
+    if(/grandine|grandinate/.test(t)) out.push('🧊 Grandine');
+    if(/downburst|raffiche|vento forte|forti venti/.test(t)) out.push('💨 Raffiche');
+    if(/forti piogge|piogge intense|nubifrag|precipitazioni intense/.test(t)) out.push('🌧️ Piogge forti');
+    if(/tornado|tromba d.aria/.test(t)) out.push('🌪️ Tornado');
+    if(/temporali forti|temporali molto forti|supercell/.test(t)) out.unshift('⛈️ Temporali forti');
+    return [...new Set(out)].slice(0,4).join(' · ')||'Nessun simbolo specifico rilevato';
+  };
+  const fetchText=async url=>{
+    const proxy='https://r.jina.ai/https://'+url.replace(/^https?:\/\//,'')+(url.includes('?')?'&':'?')+'v='+Date.now();
+    const res=await fetch(proxy,{cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    return await res.text();
+  };
+  const parseHome=raw=>{
+    const forecast=(raw.match(/https?:\/\/(?:www\.)?pretemp\.it\/archivio\/\d{4}\/[^\s)]+\/previsioni\/[^\s)]+\.html/i)||[])[0];
+    const images=[...raw.matchAll(/https?:\/\/[^\s)]+\/cartine\/[^\s)]+\.(?:png|jpg|jpeg)/ig)].map(m=>m[0].replace(/\\_/g,'_'));
+    const image=images[0];
+    const heading=(raw.match(/PREVISIONE PER[^\n\r]*/i)||[])[0]||'';
+    const lev=(raw.match(/Pericolosit[aà]:\s*\**\s*(\d)/i)||[])[1];
+    const author=(raw.match(/Autore:\s*\**\s*([^\n\r]+)/i)||[])[1];
+    return {forecast,image,heading,lev,author:clean(author)};
+  };
+  const parseForecast=raw=>{
+    const valid=(raw.match(/Valida dalle ore[^\n\r]+/i)||[])[0];
+    const emission=(raw.match(/Emessa[^\n\r]+/i)||[])[0];
+    const author=(raw.match(/Previsore:\s*([^\n\r]+)/i)||[])[1];
+    const short=(raw.match(/TESTO BREVE\s*([\s\S]*?)(?:DISCUSSIONE|Emessa)/i)||[])[1]||raw;
+    const image=([...raw.matchAll(/https?:\/\/[^\s)]+\/cartine\/[^\s)]+\.(?:png|jpg|jpeg)/ig)].map(m=>m[0].replace(/\\_/g,'_')))[0];
+    return {valid:clean(valid),emission:clean(emission),author:clean(author),short:clean(short),image};
+  };
+  const fallbackCandidates=()=>{
+    const out=[], months=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+    const pad=n=>String(n).padStart(2,'0'), now=new Date();
+    for(let i=0;i<4;i++){
+      const d=new Date(now);d.setDate(now.getDate()-i);
+      const y=d.getFullYear(),dd=pad(d.getDate()),mm=pad(d.getMonth()+1),base=`https://pretemp.altervista.org/archivio/${y}/${months[d.getMonth()]}/cartine/`;
+      out.push({url:base+`${dd}_${mm}-${y}1.png`,date:d},{url:base+`${dd}_${mm}_${y}.png`,date:d},{url:base+`${dd}_${mm}-${y}.png`,date:d});
     }
+    return out;
   };
-
-  const setSummary=(mode,title,text,state,action)=>{
-    if(!summary) return;
-    summary.classList.remove('is-waiting','is-error');
-    if(mode==='waiting') summary.classList.add('is-waiting');
-    if(mode==='error') summary.classList.add('is-error');
-    if(summaryTitle) summaryTitle.textContent=title;
-    if(summaryText) summaryText.textContent=text;
-    if(summaryState) summaryState.textContent=state;
-    if(summaryAction) summaryAction.textContent=action;
-    if(summaryDot){
-      summaryDot.classList.remove('green','yellow','red');
-      summaryDot.classList.add(mode==='ok'?'green':mode==='error'?'red':'yellow');
-    }
-  };
-
-  const months=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
-  const pad=n=>String(n).padStart(2,'0');
-  const makeUrls=date=>{
-    const y=date.getFullYear(), m=date.getMonth(), d=date.getDate();
-    const stamp=`${pad(d)}_${pad(m+1)}_${y}`;
-    const officialStamp=`${pad(d)}_${pad(m+1)}_${y}`;
-    const base=`https://pretemp.altervista.org/archivio/${y}/${months[m]}`;
-    const officialBase=`https://www.pretemp.it/archivio/${y}/${months[m]}`;
-    return {
-      image:`${base}/cartine/${stamp}.png`,
-      forecast:`${officialBase}/previsioni/${officialStamp}.html`,
-      label:date.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'long'})
-    };
-  };
-
-  const candidates=[];
-  const today=new Date();
-  for(let i=0;i<4;i++){const d=new Date(today);d.setDate(today.getDate()-i);candidates.push(makeUrls(d));}
-  let attempt=0,current=candidates[0];
-  const applyCandidate=()=>{
-    current=candidates[attempt];
-    map.src=current.image;
-    if(mapLarge) mapLarge.src=current.image;
-    if(forecastLink) forecastLink.href=current.forecast;
-    if(modalForecastLink) modalForecastLink.href=current.forecast;
-    validity.textContent=(attempt===0?'oggi':'ultima disponibile')+' · 00–24 UTC';
-  };
-  map.addEventListener('load',()=>{
-    fallback?.classList.add('hidden');
-    map.classList.remove('hidden');
-    const isToday=attempt===0;
-    setDecision(
-      isToday?'ready':'warning',
-      isToday?'Previsione pronta':'Controlla la data',
-      isToday
-        ?'La mappa di oggi è disponibile. Concentrati sulla Romagna: prima il livello, poi i simboli di grandine, raffiche, piogge forti o tornado.'
-        :'È disponibile una previsione precedente. Prima di usarla, verifica attentamente data e validità.',
-      isToday?'🗺️ Leggi la mappa':'📅 Verifica validità'
-    );
-    setSummary(
-      isToday?'ok':'waiting',
-      isToday?'Previsione del giorno disponibile':'Ultima previsione disponibile',
-      isToday
-        ?'La mappa ufficiale è caricata. Controlla prima il colore del livello sulla Romagna, poi cerca eventuali simboli di grandine, raffiche, piogge forti o tornado.'
-        :'La mappa odierna non risulta ancora disponibile: viene mostrata l’ultima previsione pubblicata. Verifica sempre data e validità.',
-      isToday?'LIVE':'precedente',
-      'ingrandisci mappa'
-    );
+  const tryImages=(items,index=0)=>new Promise((resolve,reject)=>{
+    if(index>=items.length){reject(new Error('mappa non trovata'));return;}
+    const test=new Image();
+    test.onload=()=>resolve(items[index]);
+    test.onerror=()=>tryImages(items,index+1).then(resolve,reject);
+    test.src=items[index].url+(items[index].url.includes('?')?'&':'?')+'v='+Date.now();
   });
-  map.addEventListener('error',()=>{
-    attempt++;
-    if(attempt<candidates.length){applyCandidate();return;}
-    map.classList.add('hidden');fallback?.classList.remove('hidden');
-    if(forecastLink) forecastLink.href='https://www.pretemp.it/';
-    if(modalForecastLink) modalForecastLink.href='https://www.pretemp.it/';
-    validity.textContent='in attesa di pubblicazione';
-    setDecision('error','Fonte da aprire','La mappa non è disponibile nell’app. Apri PRETEMP completo per controllare la previsione ufficiale.','↗ Apri PRETEMP');
-    setSummary('error','Previsione non disponibile','La mappa non è stata trovata. Apri la pagina PRETEMP completa oppure riprova più tardi.','non disponibile','apri fonte');
-  });
-  setDecision('warning','Verifica in corso','Sto cercando la mappa ufficiale più recente.','⏳ Attendi');
-  setSummary('waiting','Carico la previsione…','Sto verificando la disponibilità della mappa ufficiale del giorno.','verifica…','attendi');
-  applyCandidate();
 
-  const openModal=()=>{
-    if(map.classList.contains('hidden')){window.open(forecastLink?.href||'https://www.pretemp.it/','_blank','noopener');return;}
-    if(mapLarge) mapLarge.src=map.src;
-    modal?.classList.remove('hidden');
-    document.body.classList.add('pretemp-modal-open');
-  };
+  async function updatePretemp(){
+    refresh&&(refresh.disabled=true,refresh.textContent='↻ Verifico…');
+    fallback?.classList.add('hidden'); map.classList.remove('hidden');
+    setState('checking','Verifica in corso','Controllo la pagina ufficiale PRETEMP e cerco l’ultima emissione.');
+    validity.textContent='verifica…'; level.textContent='—'; phenomena.textContent='in lettura…'; issued.textContent='—';
+    try{
+      const homeRaw=await fetchText('https://www.pretemp.it/');
+      const home=parseHome(homeRaw);
+      if(!home.forecast) throw new Error('link previsione non trovato');
+      const forecastRaw=await fetchText(home.forecast);
+      const detail=parseForecast(forecastRaw);
+      const image=detail.image||home.image;
+      if(!image) throw new Error('immagine non trovata');
+      setImage(image);
+      forecastLink.href=home.forecast; if(modalForecastLink) modalForecastLink.href=home.forecast;
+      const forecastDate=dateFromText(detail.valid||home.heading);
+      const fresh=sameDay(forecastDate,new Date());
+      validity.textContent=detail.valid?detail.valid.replace(/^Valida\s*/i,''):home.heading.replace(/^PREVISIONE PER\s*/i,'');
+      level.textContent='Livello '+(home.lev||'—');
+      phenomena.textContent=extractPhenomena(detail.short);
+      issued.textContent=(detail.emission||('Previsore: '+(detail.author||home.author||'—'))).replace(/^Emessa\s*/i,'');
+      setState(fresh?'ready':'checking',fresh?'Mappa aggiornata':'Ultima emissione disponibile',fresh?'La previsione ufficiale di oggi è caricata.':'La fonte ufficiale mostra una previsione con data diversa da oggi: controlla la validità.');
+      localStorage.setItem('mc_pretemp_cache',JSON.stringify({image,forecast:home.forecast,validity:validity.textContent,level:level.textContent,phenomena:phenomena.textContent,issued:issued.textContent,time:Date.now()}));
+    }catch(err){
+      try{
+        const found=await tryImages(fallbackCandidates());
+        setImage(found.url);
+        const fresh=sameDay(found.date,new Date());
+        validity.textContent=(fresh?'oggi':'ultima disponibile')+' · 00–24 UTC';
+        level.textContent='Apri mappa'; phenomena.textContent='Lettura dalla mappa ufficiale'; issued.textContent='metadati non disponibili';
+        setState(fresh?'ready':'checking',fresh?'Mappa aggiornata':'Ultima mappa disponibile',fresh?'Mappa del giorno caricata; i dati testuali non sono stati recuperati.':'È stata caricata una mappa precedente. Verifica la data stampata in basso.');
+      }catch(_){
+        const cached=JSON.parse(localStorage.getItem('mc_pretemp_cache')||'null');
+        if(cached?.image){setImage(cached.image);forecastLink.href=cached.forecast||'https://www.pretemp.it/';validity.textContent=cached.validity||'ultima salvata';level.textContent=cached.level||'—';phenomena.textContent=cached.phenomena||'—';issued.textContent=cached.issued||'—';setState('checking','Fonte temporaneamente non raggiungibile','Mostro l’ultima emissione salvata sul telefono. Usa Aggiorna o apri PRETEMP completo.');}
+        else{map.classList.add('hidden');fallback?.classList.remove('hidden');forecastLink.href='https://www.pretemp.it/';setState('error','Aggiornamento non riuscito','Non riesco a recuperare la mappa. Apri la pagina ufficiale o riprova.');validity.textContent='non disponibile';phenomena.textContent='—';issued.textContent='—';}
+      }
+    }finally{refresh&&(refresh.disabled=false,refresh.textContent='↻ Aggiorna');}
+  }
+  window.refreshPretemp=updatePretemp;
+  refresh?.addEventListener('click',updatePretemp);
+  document.getElementById('openPretempDrawer')?.addEventListener('click',()=>setTimeout(updatePretemp,80));
+  map.addEventListener('load',()=>{fallback?.classList.add('hidden');map.classList.remove('hidden');});
+  map.addEventListener('error',()=>{map.classList.add('hidden');fallback?.classList.remove('hidden');});
+  const openModal=()=>{if(map.classList.contains('hidden')){window.open(forecastLink?.href||'https://www.pretemp.it/','_blank','noopener');return;}if(mapLarge)mapLarge.src=map.src;modal?.classList.remove('hidden');document.body.classList.add('pretemp-modal-open');};
   const closeModal=()=>{modal?.classList.add('hidden');document.body.classList.remove('pretemp-modal-open');};
-  mapButton.addEventListener('click',openModal);
-  decisionAction?.addEventListener('click',()=>{
-    if(map.classList.contains('hidden')) window.open(forecastLink?.href||'https://www.pretemp.it/','_blank','noopener');
-    else openModal();
-  });
-  close?.addEventListener('click',closeModal);
-  modal?.addEventListener('click',e=>{if(e.target===modal) closeModal();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal();});
+  mapButton.addEventListener('click',openModal);close?.addEventListener('click',closeModal);modal?.addEventListener('click',e=>{if(e.target===modal)closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+  updatePretemp();
 })();
-
 
 // V59 - Guida rapida interna PRETEMP
 (function(){

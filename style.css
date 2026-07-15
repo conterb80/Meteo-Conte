@@ -2488,3 +2488,24 @@ body.trend-open{overflow:hidden}
 .trend-diagnosis{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:flex-start}.diagnosis-dot{width:16px;height:16px;border-radius:50%;background:var(--green);margin-top:3px}.trend-diagnosis.yellow .diagnosis-dot{background:var(--yellow)}.trend-diagnosis.orange .diagnosis-dot{background:#ffae57}.trend-diagnosis h3{margin:0 0 4px;font-size:20px}.trend-diagnosis p{margin:0;color:#e1edf3;font-size:14.5px;line-height:1.35}.trend-disclaimer{color:#aebfca;font-size:12px;line-height:1.35;margin:8px 4px 0;text-align:center}
 @media(max-width:430px){.trend-page-shell{padding:11px 8px 24px}.trend-page-head h2{font-size:26px}.trend-tab{padding:8px 10px;font-size:13px}.dcs-panel,.trend-diagnosis{border-radius:19px;padding:11px}.dcs-title h3{font-size:21px}.dcs-kpis b{font-size:16px}.dcs-chart{max-height:215px}}
 @media(max-width:360px){.dcs-kpis{grid-template-columns:1fr}.dcs-kpis b{white-space:normal}.trend-page-head p{font-size:13px}}
+
+/* V1.1.1 — PRETEMP professionale e compatto */
+.pretemp-head-pro{margin-bottom:12px}
+.pretemp-auto-status{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 15px;margin:0 0 12px;border:1px solid rgba(113,224,183,.26);border-radius:18px;background:rgba(3,31,42,.48)}
+.pretemp-auto-status-main{display:flex;align-items:center;gap:12px;min-width:0}
+.pretemp-auto-status-main small{display:block;color:#9fcbd4;font-size:.68rem;letter-spacing:.16em;margin-bottom:3px}
+.pretemp-auto-status-main h3{margin:0;color:#f4fbfd;font-size:1.08rem}
+.pretemp-auto-status-main p{margin:4px 0 0;color:#b9d0d6;font-size:.86rem;line-height:1.35}
+.pretemp-auto-dot{width:18px;height:18px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 14px currentColor}
+.pretemp-auto-dot.green{background:#65dfa0;color:#65dfa0}.pretemp-auto-dot.yellow{background:#ffd75e;color:#ffd75e}.pretemp-auto-dot.red{background:#ff6572;color:#ff6572}
+#refreshPretemp{flex:0 0 auto;border:1px solid rgba(116,213,232,.32);border-radius:13px;background:rgba(9,51,66,.7);color:#d9f6fb;padding:9px 11px;font-weight:700}
+#refreshPretemp:disabled{opacity:.6}
+.pretemp-auto-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:13px}
+.pretemp-auto-grid span{display:flex;flex-direction:column;justify-content:center;min-height:70px;padding:11px 12px;border:1px solid rgba(112,194,211,.22);border-radius:15px;background:rgba(8,49,63,.52);min-width:0}
+.pretemp-auto-grid small{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#8fbdc7;margin-bottom:5px}
+.pretemp-auto-grid b{font-size:.94rem;line-height:1.3;color:#f0f8fa;overflow-wrap:anywhere}
+.pretemp-map-card-pro{margin-top:0}
+.pretemp-bulletin-pro{margin-top:12px}
+.pretemp-compare-tools-pro{margin-top:10px}
+@media(max-width:430px){.pretemp-auto-status{align-items:flex-start}.pretemp-auto-status-main p{font-size:.8rem}.pretemp-auto-grid{grid-template-columns:1fr 1fr}.pretemp-auto-grid span{min-height:66px;padding:10px}.pretemp-auto-grid b{font-size:.86rem}#refreshPretemp{padding:8px;font-size:.78rem}}
+@media(max-width:350px){.pretemp-auto-grid{grid-template-columns:1fr}.pretemp-auto-status{flex-direction:column}#refreshPretemp{width:100%}}

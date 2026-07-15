@@ -245,41 +245,39 @@
 <div><span>CENTRO PRETEMP</span><b>Previsione temporali</b></div>
 <button aria-label="Chiudi contenitore PRETEMP" id="closePretempDrawer" type="button">×</button>
 </div>
-<div class="pretemp-head">
+<div class="pretemp-head pretemp-head-pro">
 <div>
 <span class="label">PRETEMP · MAPPA UFFICIALE</span>
 <h2>Centro PRETEMP</h2>
-<p>Previsione temporalesca del giorno, ottimizzata per il telefono.</p>
+<p>Mappa e dati ufficiali, aggiornati automaticamente.</p>
 </div>
-<span aria-label="Stato mappa" class="pretemp-state green" id="pretempStatusDot">LIVE</span>
+<span aria-label="Stato mappa" class="pretemp-state yellow" id="pretempStatusDot">VERIFICA</span>
 </div>
-<div class="pretemp-meta">
-<span><small>Area osservata</small><b>Romagna</b></span>
-<span><small>Validità</small><b id="pretempValidity">oggi · 00–24 UTC</b></span>
+<section aria-live="polite" class="pretemp-auto-status" id="pretempDecision">
+<div class="pretemp-auto-status-main">
+<span aria-hidden="true" class="pretemp-auto-dot yellow" id="pretempDecisionDot"></span>
+<div><small>STATO AGGIORNAMENTO</small><h3 id="pretempDecisionTitle">Verifica in corso</h3><p id="pretempDecisionText">Ricerca dell’ultima previsione ufficiale disponibile.</p></div>
 </div>
-<section aria-live="polite" class="pretemp-decision-beta pretemp-decision-compact" id="pretempDecision">
-<div class="pretemp-decision-head">
-<div><span class="label">SINTESI CONTE · PRETEMP</span><h3 id="pretempDecisionTitle">Da leggere</h3></div>
-<span aria-label="Stato decisione" class="bigdot yellow" id="pretempDecisionDot"></span>
-</div>
-<p id="pretempDecisionText">Guarda il livello sulla tua zona e gli eventuali simboli. L’orario va cercato nel bollettino testuale, non nella mappa.</p>
-<button id="pretempDecisionAction" type="button">🗺️ Apri mappa</button>
+<button id="refreshPretemp" type="button">↻ Aggiorna</button>
 </section>
+<div class="pretemp-auto-grid" aria-label="Lettura automatica PRETEMP">
+<span><small>Validità</small><b id="pretempValidity">verifica…</b></span>
+<span><small>Pericolosità</small><b id="pretempAutoLevel">—</b></span>
+<span><small>Fenomeni principali</small><b id="pretempAutoPhenomena">in lettura…</b></span>
+<span><small>Emissione</small><b id="pretempAutoIssued">—</b></span>
+</div>
 <a aria-hidden="true" class="hidden" href="https://www.pretemp.it/" id="pretempForecastLink" rel="noopener" tabindex="-1" target="_blank"></a>
-<button aria-label="Apri la mappa PRETEMP ingrandita" class="pretemp-map-card" id="pretempMapButton" type="button">
+<button aria-label="Apri la mappa PRETEMP ingrandita" class="pretemp-map-card pretemp-map-card-pro" id="pretempMapButton" type="button">
 <span class="pretemp-map-badge"><b>Mappa ufficiale</b><small>Tocca per ingrandire</small></span>
 <img alt="Mappa ufficiale PRETEMP del giorno" id="pretempMap" loading="lazy"/>
-<span class="pretemp-map-fallback hidden" id="pretempMapFallback">
-<b>Mappa non ancora pubblicata</b>
-<small>Apri il sito PRETEMP oppure riprova più tardi.</small>
-</span>
+<span class="pretemp-map-fallback hidden" id="pretempMapFallback"><b>Mappa non disponibile</b><small>Apri la pagina ufficiale oppure riprova.</small></span>
 </button>
-<section aria-label="Bollettino testuale PRETEMP" class="pretemp-bulletin">
+<section aria-label="Bollettino testuale PRETEMP" class="pretemp-bulletin pretemp-bulletin-pro">
 <button aria-expanded="false" class="pretemp-bulletin-toggle" id="togglePretempBulletin" type="button">
-<span><b>📝 Bollettino PRETEMP</b><small>Testo ufficiale pulito e leggibile</small></span><i>⌄</i>
+<span><b>📝 Bollettino ufficiale</b><small>Apri solo quando vuoi approfondire</small></span><i>⌄</i>
 </button>
 <div class="pretemp-bulletin-panel hidden" id="pretempBulletinPanel">
-<p id="pretempBulletinStatus">Tocca “Carica bollettino” per leggere il testo del previsore senza uscire dall’app.</p>
+<p id="pretempBulletinStatus">Tocca “Carica bollettino” per leggere il testo ufficiale.</p>
 <div class="pretemp-bulletin-text hidden" id="pretempBulletinText"></div>
 <div class="pretemp-bulletin-actions">
 <button id="loadPretempBulletin" type="button">Carica bollettino</button>
@@ -287,55 +285,10 @@
 </div>
 </div>
 </section>
-<div aria-label="Confronta e approfondisci PRETEMP" class="pretemp-compare-tools">
+<div aria-label="Strumenti PRETEMP" class="pretemp-compare-tools pretemp-compare-tools-pro">
 <a class="pretemp-radar-link" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" rel="noopener" target="_blank">📡 Radar meteo 24h</a>
-<a class="pretemp-guide-link" href="https://www.pretemp.it/Come_leggere_la_previsione_2022.html" rel="noopener" target="_blank">📖 Guida ufficiale</a>
+<a class="pretemp-guide-link" href="https://www.pretemp.it/" rel="noopener" target="_blank">🌐 PRETEMP completo</a>
 </div>
-<section aria-label="Lettura assistita PRETEMP" class="pretemp-reader pretemp-reader-compact" id="pretempReader">
-<div class="pretemp-reader-head">
-<div><span class="label">LETTURA ESSENZIALE</span><h3>La tua lettura</h3></div>
-<span id="pretempReaderState">da compilare</span>
-</div>
-<p class="pretemp-reader-intro">Seleziona solo livello, simboli visibili e area.</p>
-<div aria-live="polite" class="pretemp-selection-summary">
-<span><small>Livello</small><b id="pretempSelectedLevel">—</b></span>
-<span><small>Simboli</small><b id="pretempSelectedPhenomena">0</b></span>
-<span><small>Area</small><b id="pretempSelectedZone">Bassa Romagna</b></span>
-</div>
-<div class="pretemp-reader-group">
-<small>Livello sulla tua zona</small>
-<div aria-label="Seleziona livello PRETEMP" class="pretemp-level-picker" role="group">
-<button data-pretemp-level="none" type="button">Fuori area</button>
-<button data-pretemp-level="0" type="button"><i class="l0"></i>0</button>
-<button data-pretemp-level="1" type="button"><i class="l1"></i>1</button>
-<button data-pretemp-level="2" type="button"><i class="l2"></i>2</button>
-<button data-pretemp-level="3" type="button"><i class="l3"></i>3</button>
-</div>
-</div>
-<div class="pretemp-reader-group">
-<small>Simboli presenti sulla zona <em>(facoltativo)</em></small>
-<div aria-label="Seleziona fenomeni PRETEMP" class="pretemp-phenomena-picker" role="group">
-<button data-pretemp-phenomenon="none" type="button">✓ Nessun simbolo</button>
-<button data-pretemp-phenomenon="rain" type="button">🌧️ Pioggia forte</button>
-<button data-pretemp-phenomenon="hail" type="button">🧊 Grandine</button>
-<button data-pretemp-phenomenon="wind" type="button">💨 Raffiche</button>
-<button data-pretemp-phenomenon="tornado" type="button">🌪️ Tornado</button>
-</div>
-</div>
-<div class="pretemp-reader-group pretemp-context-group">
-<small>Area osservata</small>
-<div aria-label="Seleziona area osservata" class="pretemp-context-picker" role="group">
-<button data-pretemp-zone="bassa" type="button">Bassa Romagna</button>
-<button data-pretemp-zone="appennino" type="button">Appennino</button>
-<button data-pretemp-zone="pianura" type="button">Pianura</button>
-<button data-pretemp-zone="costa" type="button">Costa</button>
-</div>
-</div>
-<div class="pretemp-reader-actions">
-<button id="applyPretempReading" type="button">💾 Salva lettura del giorno</button>
-<button class="secondary reset-reading" id="resetPretempReading" type="button">↺ Azzera</button>
-</div>
-</section>
 <p class="pretemp-disclaimer pretemp-disclaimer-compact">PRETEMP è una previsione sperimentale probabilistica e non sostituisce le allerte ufficiali.</p>
 </section>
 <section class="card links operative-center operative-beta analysis-center-v78 analysis-center-v80 analysis-center-v83" id="operativeLinks">
