@@ -1,10 +1,10 @@
-# Meteo Conte 1.1.1 — PRETEMP Automatico
+# Meteo Conte 1.1.2 — PRETEMP Operativo
 
 Aggiornamento mirato esclusivamente alla sezione PRETEMP.
 
-- Recupero automatico della previsione più recente dalla pagina ufficiale PRETEMP.
-- URL immagine dinamico e anti-cache.
-- Stato aggiornamento, validità, livello, fenomeni principali ed emissione.
-- Eliminata la lettura manuale ingombrante.
-- Mappa e bollettino ufficiale restano gli elementi centrali.
-- Nessuna modifica a Home, Trend, Radar, Lamone o Centro Operativo.
+- Lettura automatica raccolta sopra la mappa in un unico quadro coerente.
+- Semaforo PRETEMP della Home sincronizzato con la pericolosità ufficiale.
+- Livello 0 verde, 1 giallo, 2 arancione, 3 rosso.
+- Messaggio operativo della Home aggiornato per livelli 2 e 3.
+- Area sotto la mappa ridisegnata come blocco compatto “Approfondimenti”.
+- Nessuna modifica a Home, Radar, Trend, Lamone o Centro Operativo, salvo la sincronizzazione del solo indicatore PRETEMP.

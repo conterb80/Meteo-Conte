@@ -253,10 +253,11 @@
 </div>
 <span aria-label="Stato mappa" class="pretemp-state yellow" id="pretempStatusDot">VERIFICA</span>
 </div>
+<section class="pretemp-readout" id="pretempReadout">
 <section aria-live="polite" class="pretemp-auto-status" id="pretempDecision">
 <div class="pretemp-auto-status-main">
 <span aria-hidden="true" class="pretemp-auto-dot yellow" id="pretempDecisionDot"></span>
-<div><small>STATO AGGIORNAMENTO</small><h3 id="pretempDecisionTitle">Verifica in corso</h3><p id="pretempDecisionText">Ricerca dell’ultima previsione ufficiale disponibile.</p></div>
+<div><small>LETTURA AUTOMATICA</small><h3 id="pretempDecisionTitle">Verifica in corso</h3><p id="pretempDecisionText">Ricerca dell’ultima previsione ufficiale disponibile.</p></div>
 </div>
 <button id="refreshPretemp" type="button">↻ Aggiorna</button>
 </section>
@@ -266,30 +267,34 @@
 <span><small>Fenomeni principali</small><b id="pretempAutoPhenomena">in lettura…</b></span>
 <span><small>Emissione</small><b id="pretempAutoIssued">—</b></span>
 </div>
+</section>
 <a aria-hidden="true" class="hidden" href="https://www.pretemp.it/" id="pretempForecastLink" rel="noopener" tabindex="-1" target="_blank"></a>
 <button aria-label="Apri la mappa PRETEMP ingrandita" class="pretemp-map-card pretemp-map-card-pro" id="pretempMapButton" type="button">
 <span class="pretemp-map-badge"><b>Mappa ufficiale</b><small>Tocca per ingrandire</small></span>
 <img alt="Mappa ufficiale PRETEMP del giorno" id="pretempMap" loading="lazy"/>
 <span class="pretemp-map-fallback hidden" id="pretempMapFallback"><b>Mappa non disponibile</b><small>Apri la pagina ufficiale oppure riprova.</small></span>
 </button>
+<section aria-label="Approfondimenti PRETEMP" class="pretemp-actions-hub">
+<div class="pretemp-actions-hub-head"><span>APPROFONDIMENTI</span><small>Apri solo ciò che ti serve</small></div>
 <section aria-label="Bollettino testuale PRETEMP" class="pretemp-bulletin pretemp-bulletin-pro">
 <button aria-expanded="false" class="pretemp-bulletin-toggle" id="togglePretempBulletin" type="button">
-<span><b>📝 Bollettino ufficiale</b><small>Apri solo quando vuoi approfondire</small></span><i>⌄</i>
+<span class="pretemp-action-icon">📝</span><span><b>Bollettino ufficiale</b><small>Testo completo della previsione</small></span><i>⌄</i>
 </button>
 <div class="pretemp-bulletin-panel hidden" id="pretempBulletinPanel">
 <p id="pretempBulletinStatus">Tocca “Carica bollettino” per leggere il testo ufficiale.</p>
 <div class="pretemp-bulletin-text hidden" id="pretempBulletinText"></div>
 <div class="pretemp-bulletin-actions">
 <button id="loadPretempBulletin" type="button">Carica bollettino</button>
-<a href="https://www.pretemp.it/" id="pretempOfficialForecastLink" rel="noopener" target="_blank">Apri pagina ufficiale ↗</a>
+<a href="https://www.pretemp.it/" id="pretempOfficialForecastLink" rel="noopener" target="_blank">Pagina ufficiale ↗</a>
 </div>
 </div>
 </section>
 <div aria-label="Strumenti PRETEMP" class="pretemp-compare-tools pretemp-compare-tools-pro">
-<a class="pretemp-radar-link" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" rel="noopener" target="_blank">📡 Radar meteo 24h</a>
-<a class="pretemp-guide-link" href="https://www.pretemp.it/" rel="noopener" target="_blank">🌐 PRETEMP completo</a>
+<a class="pretemp-radar-link" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" rel="noopener" target="_blank"><span>📡</span><b>Radar meteo</b><small>Confronta l’evoluzione</small></a>
+<a class="pretemp-guide-link" href="https://www.pretemp.it/" rel="noopener" target="_blank"><span>🌐</span><b>PRETEMP completo</b><small>Archivio e tendenze</small></a>
 </div>
-<p class="pretemp-disclaimer pretemp-disclaimer-compact">PRETEMP è una previsione sperimentale probabilistica e non sostituisce le allerte ufficiali.</p>
+<p class="pretemp-disclaimer pretemp-disclaimer-compact">Previsione sperimentale probabilistica: le allerte ufficiali restano il riferimento operativo.</p>
+</section>
 </section>
 <section class="card links operative-center operative-beta analysis-center-v78 analysis-center-v80 analysis-center-v83" id="operativeLinks">
 <div class="analysis-hero operation-hero">

@@ -781,7 +781,7 @@ loadLamoneSensors();
   const validity=$p('pretempValidity'), forecastLink=$p('pretempForecastLink'), modalForecastLink=$p('pretempModalForecastLink');
   const statusDot=$p('pretempStatusDot'), title=$p('pretempDecisionTitle'), text=$p('pretempDecisionText');
   const dot=$p('pretempDecisionDot'), level=$p('pretempAutoLevel'), phenomena=$p('pretempAutoPhenomena'), issued=$p('pretempAutoIssued');
-  const refresh=$p('refreshPretemp');
+  const refresh=$p('refreshPretemp'), readout=$p('pretempReadout');
   if(!map||!mapButton) return;
 
   const esc=s=>String(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
@@ -793,6 +793,23 @@ loadLamoneSensors();
     statusDot.className='pretemp-state '+color;
     statusDot.textContent=mode==='ready'?'AGGIORNATA':mode==='error'?'ERRORE':'VERIFICA';
   };
+  const pretempColor=n=>n>=3?'red':n===2?'orange':n===1?'yellow':'green';
+  const applyPretempLevel=(rawLevel)=>{
+    const n=Number(rawLevel);
+    if(!Number.isFinite(n)) return;
+    const color=pretempColor(n);
+    readout?.classList.remove('level-0','level-1','level-2','level-3');
+    readout?.classList.add('level-'+Math.max(0,Math.min(3,n)));
+    const homeDot=$p('dotTemporali'), homeCard=$p('briefPretemp'), homeLabel=homeCard?.querySelector('b');
+    if(homeDot) homeDot.className='dot '+color;
+    if(homeCard){homeCard.classList.remove('pretemp-l0','pretemp-l1','pretemp-l2','pretemp-l3');homeCard.classList.add('pretemp-l'+n);}
+    if(homeLabel) homeLabel.textContent='Pericolosità '+n;
+    const message=$p('statusText');
+    if(message&&n>=3) message.textContent='PRETEMP segnala pericolosità 3: controlla la mappa ufficiale.';
+    else if(message&&n===2) message.textContent='PRETEMP segnala pericolosità 2: situazione da monitorare.';
+    try{localStorage.setItem('mc_pretemp_level',String(n));}catch(_e){}
+  };
+  window.mcApplyPretempLevel=applyPretempLevel;
   const setImage=url=>{
     const bust=(url.includes('?')?'&':'?')+'mc='+Date.now();
     map.src=url+bust;
@@ -873,6 +890,7 @@ loadLamoneSensors();
       const fresh=sameDay(forecastDate,new Date());
       validity.textContent=detail.valid?detail.valid.replace(/^Valida\s*/i,''):home.heading.replace(/^PREVISIONE PER\s*/i,'');
       level.textContent='Livello '+(home.lev||'—');
+      if(home.lev!==undefined&&home.lev!==null) applyPretempLevel(home.lev);
       phenomena.textContent=extractPhenomena(detail.short);
       issued.textContent=(detail.emission||('Previsore: '+(detail.author||home.author||'—'))).replace(/^Emessa\s*/i,'');
       setState(fresh?'ready':'checking',fresh?'Mappa aggiornata':'Ultima emissione disponibile',fresh?'La previsione ufficiale di oggi è caricata.':'La fonte ufficiale mostra una previsione con data diversa da oggi: controlla la validità.');
@@ -887,11 +905,12 @@ loadLamoneSensors();
         setState(fresh?'ready':'checking',fresh?'Mappa aggiornata':'Ultima mappa disponibile',fresh?'Mappa del giorno caricata; i dati testuali non sono stati recuperati.':'È stata caricata una mappa precedente. Verifica la data stampata in basso.');
       }catch(_){
         const cached=JSON.parse(localStorage.getItem('mc_pretemp_cache')||'null');
-        if(cached?.image){setImage(cached.image);forecastLink.href=cached.forecast||'https://www.pretemp.it/';validity.textContent=cached.validity||'ultima salvata';level.textContent=cached.level||'—';phenomena.textContent=cached.phenomena||'—';issued.textContent=cached.issued||'—';setState('checking','Fonte temporaneamente non raggiungibile','Mostro l’ultima emissione salvata sul telefono. Usa Aggiorna o apri PRETEMP completo.');}
+        if(cached?.image){setImage(cached.image);forecastLink.href=cached.forecast||'https://www.pretemp.it/';validity.textContent=cached.validity||'ultima salvata';level.textContent=cached.level||'—';phenomena.textContent=cached.phenomena||'—';issued.textContent=cached.issued||'—';const cachedLevel=String(cached.level||'').match(/(\d)/)?.[1];if(cachedLevel)applyPretempLevel(cachedLevel);setState('checking','Fonte temporaneamente non raggiungibile','Mostro l’ultima emissione salvata sul telefono. Usa Aggiorna o apri PRETEMP completo.');}
         else{map.classList.add('hidden');fallback?.classList.remove('hidden');forecastLink.href='https://www.pretemp.it/';setState('error','Aggiornamento non riuscito','Non riesco a recuperare la mappa. Apri la pagina ufficiale o riprova.');validity.textContent='non disponibile';phenomena.textContent='—';issued.textContent='—';}
       }
     }finally{refresh&&(refresh.disabled=false,refresh.textContent='↻ Aggiorna');}
   }
+  try{const saved=Number(localStorage.getItem('mc_pretemp_level'));if(Number.isFinite(saved))applyPretempLevel(saved);}catch(_e){}
   window.refreshPretemp=updatePretemp;
   refresh?.addEventListener('click',updatePretemp);
   document.getElementById('openPretempDrawer')?.addEventListener('click',()=>setTimeout(updatePretemp,80));
