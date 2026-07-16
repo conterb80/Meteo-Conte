@@ -2597,3 +2597,41 @@ body.trend-open{overflow:hidden}
 .event-track .event-step.yellow{color:#ffd657!important}
 .event-track .event-step.orange{color:#ff9948!important}
 .event-track .event-step.red{color:#ff626c!important}
+
+/* RC6 — Centro Operativo: Home informa, il Centro guida */
+#operativeLinks .center-legacy-data{display:none!important}
+#operativeLinks .center-action-card{margin:0 0 12px;padding:13px 14px;border-color:rgba(94,224,165,.28);background:linear-gradient(145deg,rgba(12,62,67,.78),rgba(5,29,42,.92));box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 10px 24px rgba(0,0,0,.12)}
+#operativeLinks .center-action-card .conte-analysis-head{margin-bottom:9px}
+#operativeLinks .center-action-card .conte-analysis-title span{font-size:9px;letter-spacing:.22em;color:#83ddbd}
+#operativeLinks .center-action-card .conte-analysis-title b{font-size:19px;line-height:1.12;margin-top:4px}
+#operativeLinks .center-action-card .conte-analysis-head>i{width:12px;height:12px;flex-basis:12px;box-shadow:0 0 0 6px rgba(255,255,255,.035),0 0 16px currentColor}
+#operativeLinks .center-action-card .center-hidden-kpi{display:none}
+#operativeLinks .center-action-card .conte-analysis-grid{display:block}
+#operativeLinks .center-action-card .conte-action{padding:10px 11px;border-radius:12px;border-left:4px solid #63d7ef;background:rgba(49,164,193,.09)}
+#operativeLinks .center-action-card .conte-action small{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase}
+#operativeLinks .center-action-card .conte-action b{font-size:14.5px;line-height:1.22;margin-top:3px}
+#operativeLinks .center-action-card .conte-reason{margin-top:9px;padding-top:9px;grid-template-columns:auto 1fr;gap:8px}
+#operativeLinks .center-action-card .conte-reason>span{font-size:7.8px;color:#7eb8c8}
+#operativeLinks .center-action-card .conte-reason p{font-size:10.5px;line-height:1.3;color:#a7bdc5}
+
+#operativeLinks .center-flow-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0 0 13px;padding:10px;border-radius:17px;background:linear-gradient(145deg,rgba(5,32,45,.92),rgba(14,58,72,.48));border:1px solid rgba(94,196,229,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+#operativeLinks .center-flow-nav button{min-width:0;padding:8px 3px 7px;border-radius:12px;border:1px solid rgba(255,255,255,.065);background:rgba(255,255,255,.035);color:#effbff;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;cursor:pointer;transition:transform .12s ease,background .12s ease,border-color .12s ease}
+#operativeLinks .center-flow-nav button:active{transform:scale(.96);background:rgba(91,211,237,.12);border-color:rgba(91,211,237,.28)}
+#operativeLinks .center-flow-nav i{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:900;color:#062835;background:#73d8f1;box-shadow:0 0 0 4px rgba(77,196,226,.07)}
+#operativeLinks .center-flow-nav button:nth-child(2) i{background:#ffd45d}
+#operativeLinks .center-flow-nav button:nth-child(3) i{background:#72dfa1}
+#operativeLinks .center-flow-nav button:nth-child(4) i{background:#b997ff}
+#operativeLinks .center-flow-nav button:nth-child(5) i{background:#ffad61}
+#operativeLinks .center-flow-nav span{min-width:0;width:100%;text-align:center}
+#operativeLinks .center-flow-nav b{display:block;font-size:9.4px;line-height:1.05;white-space:normal}
+#operativeLinks .center-flow-nav small{display:block;margin-top:3px;font-size:6.6px;line-height:1.1;color:#7f9ca8;white-space:normal}
+
+@media(max-width:390px){
+ #operativeLinks .center-flow-nav{gap:4px;padding:8px 7px}
+ #operativeLinks .center-flow-nav button{padding:7px 2px 6px}
+ #operativeLinks .center-flow-nav i{width:24px;height:24px;font-size:10px}
+ #operativeLinks .center-flow-nav b{font-size:8.5px}
+ #operativeLinks .center-flow-nav small{font-size:6px}
+ #operativeLinks .center-action-card .conte-analysis-title b{font-size:17px}
+ #operativeLinks .center-action-card .conte-action b{font-size:13.5px}
+}

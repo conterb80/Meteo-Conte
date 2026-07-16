@@ -11,7 +11,7 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · Trend Operativi V1</title>
+<title>Meteo Conte 1.1 · Centro Operativo RC6</title>
 <link href="manifest.json?v=1.1-trend-v1" rel="manifest"/>
 <link href="icon.png?v=1.1-trend-v1" rel="icon" type="image/png"/>
 <link href="style.css?v=1.1-trend-v1" rel="stylesheet"/>
@@ -302,46 +302,34 @@
 <span class="operation-icon">⛈️</span>
 <div><h2>CENTRO OPERATIVO</h2><p>Meteo Conte · Sala operativa personale</p></div>
 </div>
-<span class="operation-version">RC5</span>
+<span class="operation-version">RC6</span>
 </div>
-<section aria-label="Quadro rapido Centro Analisi" class="analysis-snapshot" id="analysisSnapshot">
-<div class="snapshot-head">
-<div><span>QUADRO RAPIDO</span><b id="snapshotTitle">Aggiornamento in corso</b></div>
-<i aria-hidden="true" class="green" id="snapshotDot"></i>
-</div>
-<div class="snapshot-grid">
-<button data-analysis-jump="observeSection" type="button"><small>Adesso</small><b id="snapshotNow">--</b><em id="snapshotNowNote">meteo locale</em></button>
-<button data-analysis-jump="forecastSection" type="button"><small>Pioggia 6h</small><b id="snapshotRain">--</b><em id="snapshotRainNote">modello orario</em></button>
-<button data-analysis-jump="forecastSection" type="button"><small>Raffica</small><b id="snapshotWind">--</b><em id="snapshotWindNote">massima prevista</em></button>
-<button data-analysis-jump="forecastSection" type="button"><small>Temporali</small><b id="snapshotStorm">--</b><em id="snapshotStormNote">segnale modello</em></button>
-</div>
-<p id="snapshotAdvice">I dati sintetici servono a scegliere il primo strumento da aprire.</p>
+<section aria-hidden="true" class="analysis-snapshot center-legacy-data" id="analysisSnapshot">
+<div class="snapshot-head"><div><span>QUADRO RAPIDO</span><b id="snapshotTitle">Aggiornamento in corso</b></div><i class="green" id="snapshotDot"></i></div>
+<div class="snapshot-grid"><button type="button"><small>Adesso</small><b id="snapshotNow">--</b><em id="snapshotNowNote">meteo locale</em></button><button type="button"><small>Pioggia 6h</small><b id="snapshotRain">--</b><em id="snapshotRainNote">modello orario</em></button><button type="button"><small>Raffica</small><b id="snapshotWind">--</b><em id="snapshotWindNote">massima prevista</em></button><button type="button"><small>Temporali</small><b id="snapshotStorm">--</b><em id="snapshotStormNote">segnale modello</em></button></div><p id="snapshotAdvice"></p>
 </section>
-<section aria-label="Analisi Conte" class="conte-analysis conte-analysis-v78" id="conteAnalysis">
+<section aria-label="Azione operativa" class="conte-analysis conte-analysis-v78 center-action-card" id="conteAnalysis">
 <div class="conte-analysis-head">
-<div class="conte-analysis-title"><span>ANALISI CONTE</span><b id="conteState">Valutazione in corso</b></div>
+<div class="conte-analysis-title"><span>AZIONE OPERATIVA</span><b id="conteState">Valutazione in corso</b></div>
 <i aria-hidden="true" class="green" id="conteStateDot"></i>
 </div>
 <div class="conte-analysis-grid">
-<div class="conte-kpi"><small>Evoluzione</small><b id="conteEvolution">--</b></div>
-<div class="conte-kpi"><small>Attenzione</small><b id="conteAttention">--</b></div>
-<div class="conte-action"><small>Azione consigliata</small><b id="conteAction">Attendi aggiornamento dati</b></div>
+<div class="conte-kpi center-hidden-kpi"><small>Evoluzione</small><b id="conteEvolution">--</b></div>
+<div class="conte-kpi center-hidden-kpi"><small>Attenzione</small><b id="conteAttention">--</b></div>
+<div class="conte-action"><small>Cosa fare adesso</small><b id="conteAction">Attendi aggiornamento dati</b></div>
 </div>
-<div class="conte-reason"><span>Perché</span><p id="conteReason">La valutazione combina pioggia, raffiche e segnali temporaleschi delle prossime ore.</p></div>
+<div class="conte-reason"><span>PERCHÉ</span><p id="conteReason">La valutazione combina pioggia, raffiche e segnali temporaleschi delle prossime ore.</p></div>
 </section>
-<section aria-label="Percorso operativo consigliato" class="operative-route operative-route-v78" id="operativeRoute">
-<div class="operative-route-head">
-<div><span>PERCORSO OPERATIVO</span><b id="routeTitle">Controllo essenziale</b></div>
-<small>tocca per aprire</small>
-</div>
-<div class="operative-route-steps" role="list">
-<button data-route-target="toolZoom" role="listitem" type="button"><i>1</i><span><small>PRIMA</small><b id="routeStep1">Zoom Earth</b></span></button>
-<span aria-hidden="true" class="route-connector">›</span>
-<button data-route-target="toolRadar" role="listitem" type="button"><i>2</i><span><small>POI</small><b id="routeStep2">Radar live ER</b></span></button>
-<span aria-hidden="true" class="route-connector">›</span>
-<button data-route-target="toolPretemp" role="listitem" type="button"><i>3</i><span><small>SE SERVE</small><b id="routeStep3">Centro PRETEMP</b></span></button>
-</div>
-<p id="routeNote">Un percorso breve per verificare la situazione senza aprire strumenti inutili.</p>
+<nav aria-label="Navigazione Centro Operativo" class="center-flow-nav">
+<button data-analysis-jump="observeSection" type="button"><i>1</i><span><b>Osserva</b><small>cosa accade ora</small></span></button>
+<button data-analysis-jump="forecastSection" type="button"><i>2</i><span><b>Prevedi</b><small>come evolve</small></span></button>
+<button data-analysis-jump="riverSection" type="button"><i>3</i><span><b>Controlla</b><small>pioggia e fiumi</small></span></button>
+<button data-analysis-jump="webcamSection" type="button"><i>4</i><span><b>Conferma</b><small>guarda il cielo</small></span></button>
+<button data-analysis-jump="followSection" type="button"><i>5</i><span><b>Meteo Live</b><small>fonti e aggiornamenti</small></span></button>
+</nav>
+<section aria-hidden="true" class="operative-route operative-route-v78 center-legacy-data" id="operativeRoute">
+<div class="operative-route-head"><div><span>PERCORSO OPERATIVO</span><b id="routeTitle">Controllo essenziale</b></div></div>
+<div class="operative-route-steps"><button data-route-target="toolZoom" type="button"><i>1</i><span><small>PRIMA</small><b id="routeStep1">Zoom Earth</b></span></button><button data-route-target="toolRadar" type="button"><i>2</i><span><small>POI</small><b id="routeStep2">Radar live ER</b></span></button><button data-route-target="toolPretemp" type="button"><i>3</i><span><small>SE SERVE</small><b id="routeStep3">Centro PRETEMP</b></span></button></div><p id="routeNote"></p>
 </section>
 <div class="tool-section accordion-section observe priority open" id="observeSection">
 <button aria-expanded="true" class="tool-title accordion-toggle" type="button"><span>👁️</span><div><b>1. Osserva</b><small>Cosa sta succedendo adesso</small></div><i>⌄</i></button>
@@ -396,7 +384,7 @@
 </div>
 </div>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Trend Operativi V1</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Centro Operativo RC6</footer>
 <div aria-label="Mappa PRETEMP ingrandita" aria-modal="true" class="pretemp-modal hidden" id="pretempModal" role="dialog">
 <div class="pretemp-modal-head">
 <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
