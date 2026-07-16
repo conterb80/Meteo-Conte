@@ -9,3 +9,10 @@ Secondo step della roadmap Trend:
 - Home e funzioni esistenti invariate
 
 Aggiornamento: aprire reset.html?v=1.1-center-rc6
+
+
+## Centro Operativo RC7
+- Flusso operativo compatto
+- Meteo Live diviso in Situazione e Notizie
+- Link diretti selezionati durante i test reali
+- Nessuna modifica a Home, Trend, PRETEMP, Lamone o motore avvisi

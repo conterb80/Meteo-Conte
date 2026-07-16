@@ -2635,3 +2635,59 @@ body.trend-open{overflow:hidden}
  #operativeLinks .center-action-card .conte-analysis-title b{font-size:17px}
  #operativeLinks .center-action-card .conte-action b{font-size:13.5px}
 }
+
+
+/* RC7 — Centro Operativo: flusso rapido + Meteo Live compatto */
+#operativeLinks .analysis-hero{margin-bottom:12px}
+#operativeLinks .center-action-card{border-color:rgba(88,230,119,.48);background:linear-gradient(145deg,rgba(6,48,43,.92),rgba(3,29,39,.96));box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 0 1px rgba(71,255,102,.05),0 12px 28px rgba(0,0,0,.16)}
+#operativeLinks .center-action-card .conte-analysis-title span{color:#65ee86}
+#operativeLinks .center-action-card .conte-analysis-title b{font-size:21px}
+#operativeLinks .center-action-card .conte-action{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center;border-left:0;border:1px solid rgba(82,238,121,.2);background:rgba(29,170,91,.08)}
+#operativeLinks .center-action-card .conte-action:before{content:'◎';grid-row:1/3;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;color:#60ed8c;border:1px solid rgba(96,237,140,.35);font-size:22px}
+#operativeLinks .center-action-card .conte-reason{border-top-color:rgba(107,228,151,.12)}
+
+#operativeLinks .center-flow-nav{gap:8px;padding:11px;background:linear-gradient(145deg,rgba(3,24,36,.96),rgba(9,44,58,.62));border-color:rgba(79,194,225,.2)}
+#operativeLinks .center-flow-nav button{min-height:92px;padding:8px 4px 9px;justify-content:center;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.018));border-color:rgba(255,255,255,.09)}
+#operativeLinks .center-flow-nav button:nth-child(1){border-color:rgba(68,220,255,.5);box-shadow:inset 0 0 22px rgba(34,198,255,.06)}
+#operativeLinks .center-flow-nav i{width:31px;height:31px;font-size:12px}
+#operativeLinks .center-flow-nav b{font-size:10.4px;letter-spacing:.04em}
+#operativeLinks .center-flow-nav small{font-size:7px;color:#9bb0ba}
+
+#operativeLinks .tool-section{border-color:rgba(255,255,255,.09)}
+#operativeLinks .tool-title{min-height:62px}
+#operativeLinks .tool-title>span{width:43px;height:43px;border-radius:13px}
+#operativeLinks .tool-title b{font-size:18px}
+#operativeLinks .tool-title small{font-size:11px}
+
+#operativeLinks .live-hub{display:grid!important;grid-template-columns:1fr 1fr;gap:10px;padding-top:8px}
+#operativeLinks .live-column{min-width:0;padding:10px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(0,0,0,.08));display:flex;flex-direction:column;gap:8px}
+#operativeLinks .live-situation{border-color:rgba(255,205,57,.25)}
+#operativeLinks .live-news{border-color:rgba(74,202,255,.22)}
+#operativeLinks .live-column-head{display:flex;gap:8px;align-items:center;padding:2px 2px 7px;border-bottom:1px solid rgba(255,255,255,.08)}
+#operativeLinks .live-column-head>span{font-size:18px}
+#operativeLinks .live-column-head div{min-width:0}
+#operativeLinks .live-column-head b{display:block;font-size:9.4px;letter-spacing:.1em;color:#ffd968}
+#operativeLinks .live-news .live-column-head b{color:#75dbff}
+#operativeLinks .live-column-head small{display:block;margin-top:2px;font-size:7.6px;line-height:1.2;color:#91aab5}
+#operativeLinks .live-source{position:relative;min-height:64px;padding:9px 8px;border-radius:13px;border:1px solid rgba(255,255,255,.09);background:rgba(7,34,47,.76);display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px;align-items:center;color:#f3f9fc;text-decoration:none}
+#operativeLinks .live-source.featured{border-color:rgba(104,222,151,.35);box-shadow:inset 0 0 18px rgba(65,224,137,.05)}
+#operativeLinks .live-source>i{font-style:normal;font-size:23px;line-height:1;text-align:center}
+#operativeLinks .live-source>span{min-width:0}
+#operativeLinks .live-source b{display:block;font-size:11.5px;line-height:1.15}
+#operativeLinks .live-source small{display:block;margin-top:3px;font-size:8.5px;line-height:1.2;color:#9db1ba}
+#operativeLinks .live-source em{font-style:normal;font-size:6.8px;font-weight:800;letter-spacing:.08em;padding:4px 6px;border-radius:999px;border:1px solid rgba(255,216,84,.35);color:#ffdc65;background:rgba(255,208,54,.08)}
+#operativeLinks .live-news .live-source em{border-color:rgba(96,213,255,.3);color:#71d7ff;background:rgba(61,190,238,.08)}
+#operativeLinks .live-official-strip{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1px}
+#operativeLinks .live-official-strip a{min-height:42px;padding:8px 10px;border-radius:12px;border:1px solid rgba(113,199,224,.16);background:rgba(255,255,255,.025);color:#dceaf0;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px}
+#operativeLinks .live-official-strip b{font-size:9.5px}
+
+@media(max-width:430px){
+ #operativeLinks .center-flow-nav{gap:5px;padding:8px 6px}
+ #operativeLinks .center-flow-nav button{min-height:82px;padding:7px 2px}
+ #operativeLinks .center-flow-nav b{font-size:8.8px}
+ #operativeLinks .center-flow-nav small{font-size:6.1px}
+ #operativeLinks .live-hub{grid-template-columns:1fr;gap:9px}
+ #operativeLinks .live-column{padding:9px}
+ #operativeLinks .live-source{min-height:60px}
+ #operativeLinks .live-source b{font-size:11.2px}
+}
