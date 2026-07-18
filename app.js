@@ -560,11 +560,27 @@ $('openTrendPage')?.addEventListener('click',()=>openTrend('temperatura'));
 $('openTrendPage')?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend('temperatura')}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('trendBox')?.classList.contains('hidden'))closeTrendPage()});
 $('openOfficialAlerts')?.addEventListener('click',()=>window.open(OFFICIAL_ALERT_PAGE,'_blank','noopener'));
+
+function openWeatherAnalysis(){
+ const page=$('weatherAnalysisPage'); if(!page)return;
+ const sourceTitle=$('statusTitle')?.textContent?.trim();
+ const sourceText=$('statusText')?.textContent?.trim();
+ const title=$('weatherAnalysisTitle'), text=$('weatherAnalysisText'), dot=$('weatherAnalysisDot');
+ if(title) title.textContent=sourceTitle&&sourceTitle!=='Valutazione in corso'?sourceTitle:'Quadro meteo delle prossime ore';
+ if(text) text.textContent=sourceText&&sourceText!=='Aggiornamento dati in corso.'?sourceText:'Consulta gli strumenti operativi per verificare situazione ed evoluzione.';
+ if(dot){dot.className='';dot.classList.add(lastLevel?.[2]||'green');}
+ page.classList.remove('hidden');document.body.classList.add('weather-analysis-open');page.scrollTop=0;
+}
+function closeWeatherAnalysis(){ $('weatherAnalysisPage')?.classList.add('hidden');document.body.classList.remove('weather-analysis-open'); }
+$('briefWeather')?.addEventListener('click',openWeatherAnalysis);
+$('closeWeatherAnalysis')?.addEventListener('click',closeWeatherAnalysis);
+$('weatherAnalysisPretemp')?.addEventListener('click',()=>{closeWeatherAnalysis();document.getElementById('openPretempDrawer')?.click();});
+$('weatherAnalysisNews')?.addEventListener('click',()=>{closeWeatherAnalysis();const target=$('followSection');target?.scrollIntoView({behavior:'smooth',block:'start'});target?.classList.add('open');const toggle=target?.querySelector('.accordion-toggle');toggle?.setAttribute('aria-expanded','true');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('weatherAnalysisPage')?.classList.contains('hidden'))closeWeatherAnalysis();});
 document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>{
  const id=el.dataset.jump;
  if(id==='lamoneDrawer'){document.getElementById('openLamoneDrawer')?.click();return;}
  if(id==='pretempDrawer'){document.getElementById('openPretempDrawer')?.click();return;}
- if(id==='headerWeather'){window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{window.alert('ANALISI METEO\n\n1. Controlla il Radar Live.\n2. Verifica Radar Evoluzione.\n3. Consulta PRETEMP.\n4. Apri le Notizie Locali.\n\nQuesta è la nuova RC8: il pulsante METEO diventa il punto di partenza dell\'analisi operativa.');},250);return;}
  $(id)?.scrollIntoView({behavior:'smooth',block:'start'});
 }));
 
