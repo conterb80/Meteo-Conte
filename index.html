@@ -11,7 +11,7 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · Sala Controllo RC10</title>
+<title>Meteo Conte 1.1 · Sala Controllo RC11</title>
 <link href="manifest.json?v=1.1-control-rc10" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc10" rel="icon" type="image/png"/>
 <link href="style.css?v=1.1-control-rc10" rel="stylesheet"/>
@@ -112,7 +112,7 @@
   <div class="weather-analysis-shell control-room-shell">
     <header class="weather-analysis-header">
       <button aria-label="Chiudi Sala Controllo" class="weather-analysis-close" id="closeWeatherAnalysis" type="button">‹</button>
-      <div><small>METEO CONTE · RC10</small><h2>Sala Controllo</h2></div>
+      <div><small>METEO CONTE · RC11</small><h2>Sala Controllo</h2></div>
       <span class="weather-analysis-live"><i></i> OPERATIVA</span>
     </header>
     <section class="weather-analysis-summary" id="weatherAnalysisSummary">
@@ -126,18 +126,31 @@
       <div><small>PRESSIONE</small><b id="controlRoomPressure">--</b></div>
     </section>
     <div class="weather-analysis-route">
-      <small>SEQUENZA DI CONTROLLO</small>
-      <p>Osserva il fenomeno reale, verifica la direzione, conferma il rischio e controlla il territorio.</p>
+      <small>MONITOR SALA CONTROLLO</small>
+      <p>Radar, evoluzione e fulmini sono già davanti a te. Tocca un monitor solo per aprirlo a tutto schermo.</p>
     </div>
-    <nav class="weather-analysis-tools control-room-tools" aria-label="Strumenti Sala Controllo">
-      <a class="weather-analysis-tool primary" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" rel="noopener" target="_blank"><i>📡</i><span><b>Radar Live</b><small>Dove piove adesso e direzione delle celle</small></span><em>1</em></a>
-      <a class="weather-analysis-tool" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" rel="noopener" target="_blank"><i>🔮</i><span><b>Radar Evoluzione ER</b><small>Spostamento previsto +1h · +2h · +3h</small></span><em>2</em></a>
-      <a class="weather-analysis-tool" href="https://www.lightningmaps.org/" rel="noopener" target="_blank"><i>⚡</i><span><b>Fulmini Live</b><small>Conferma attività temporalesca reale</small></span><em>3</em></a>
-      <button class="weather-analysis-tool" id="weatherAnalysisPretemp" type="button"><i>⛈️</i><span><b>Centro PRETEMP</b><small>Pericolosità e bollettino ufficiale</small></span><em>4</em></button>
-      <button class="weather-analysis-tool" id="weatherAnalysisLamone" type="button"><i>🌊</i><span><b>Centro Lamone</b><small>Pioggia a monte e percorso della piena</small></span><em>5</em></button>
-      <a class="weather-analysis-tool" href="https://www.guardcostaus-ravenna.it/MeteoPagine/webcam.html" rel="noopener" target="_blank"><i>📷</i><span><b>Webcam Ravenna</b><small>Guarda il cielo e conferma il passaggio</small></span><em>6</em></a>
-      <a class="weather-analysis-tool" href="https://allertameteo.regione.emilia-romagna.it/web/bagnacavallo" rel="noopener" target="_blank"><i>🛡️</i><span><b>Allerte ufficiali</b><small>Zona D1 · Bagnacavallo</small></span><em>7</em></a>
-      <button class="weather-analysis-tool" id="weatherAnalysisNews" type="button"><i>📰</i><span><b>Meteo Live locale</b><small>Webcam, fonti e aggiornamenti dal territorio</small></span><em>8</em></button>
+    <section class="control-monitor-grid" aria-label="Monitor meteo live">
+      <article class="control-monitor control-monitor-radar">
+        <div class="control-monitor-head"><span><i>📡</i><b>RADAR LIVE</b><small>Pioggia reale e direzione delle celle</small></span><a href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener">APRI ↗</a></div>
+        <div class="control-monitor-map" id="controlRoomRadar"><div class="monitor-wait">Caricamento radar live…</div></div>
+        <div class="control-monitor-foot"><span id="controlRoomRadarTime">LIVE</span><em>debole ▰▰▰▰▰ intenso</em></div>
+      </article>
+      <article class="control-monitor">
+        <div class="control-monitor-head"><span><i>🔮</i><b>EVOLUZIONE RADAR ER</b><small>Spostamento previsto +1h · +2h · +3h</small></span><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">APRI ↗</a></div>
+        <a class="control-monitor-preview evolution-preview" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><span>+1h</span><span>+2h</span><span>+3h</span><b>TOCCA PER LA MAPPA UFFICIALE AGGIORNATA</b><small>La schermata completa si apre direttamente sul nowcasting regionale.</small></a>
+      </article>
+      <article class="control-monitor">
+        <div class="control-monitor-head"><span><i>⚡</i><b>FULMINI LIVE</b><small>Attività temporalesca reale sul territorio</small></span><a href="https://www.lightningmaps.org/" target="_blank" rel="noopener">APRI ↗</a></div>
+        <a class="control-monitor-preview lightning-preview" href="https://www.lightningmaps.org/" target="_blank" rel="noopener"><div class="lightning-pulse one"></div><div class="lightning-pulse two"></div><div class="lightning-pulse three"></div><b>MONITOR FULMINI IN TEMPO REALE</b><small>Tocca per aprire la mappa interattiva centrata sulla zona.</small></a>
+      </article>
+    </section>
+    <div class="weather-analysis-route compact"><small>CASSETTI DI APPROFONDIMENTO</small><p>PRETEMP e Lamone restano strumenti da aprire quando servono.</p></div>
+    <nav class="weather-analysis-tools control-room-tools compact-tools" aria-label="Cassetti Sala Controllo">
+      <button class="weather-analysis-tool" id="weatherAnalysisPretemp" type="button"><i>⛈️</i><span><b>Centro PRETEMP</b><small>Pericolosità e bollettino ufficiale</small></span><em>1</em></button>
+      <button class="weather-analysis-tool" id="weatherAnalysisLamone" type="button"><i>🌊</i><span><b>Centro Lamone</b><small>Pioggia a monte e percorso della piena</small></span><em>2</em></button>
+      <a class="weather-analysis-tool" href="https://www.guardcostaus-ravenna.it/MeteoPagine/webcam.html" rel="noopener" target="_blank"><i>📷</i><span><b>Webcam Ravenna</b><small>Conferma visiva del cielo</small></span><em>3</em></a>
+      <a class="weather-analysis-tool" href="https://allertameteo.regione.emilia-romagna.it/web/bagnacavallo" rel="noopener" target="_blank"><i>🛡️</i><span><b>Allerte ufficiali</b><small>Zona D1 · Bagnacavallo</small></span><em>4</em></a>
+      <button class="weather-analysis-tool" id="weatherAnalysisNews" type="button"><i>📰</i><span><b>Meteo Live locale</b><small>Fonti e aggiornamenti dal territorio</small></span><em>5</em></button>
     </nav>
     <section class="weather-analysis-tip"><span>💡</span><p><b>Regola operativa</b><br/>Radar prima di tutto. PRETEMP conferma il rischio; Lamone si apre quando la pioggia diventa persistente o interessa il bacino a monte.</p></section>
   </div>
@@ -424,7 +437,7 @@
 </div>
 </div>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Sala Controllo RC10</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Sala Controllo RC11</footer>
 <div aria-label="Mappa PRETEMP ingrandita" aria-modal="true" class="pretemp-modal hidden" id="pretempModal" role="dialog">
 <div class="pretemp-modal-head">
 <div><span>PRETEMP</span><b>Mappa del giorno</b></div>

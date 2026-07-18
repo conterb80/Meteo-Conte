@@ -1281,3 +1281,26 @@ loadLamoneSensors();
       }).catch(fallback);
   }catch(_e){fallback();}
 })();
+
+/* RC11 — Radar live integrato nella Sala Controllo */
+(function initControlRoomRadar(){
+  const el=document.getElementById('controlRoomRadar');
+  if(!el||typeof L==='undefined') return;
+  let initialized=false;
+  const boot=()=>{
+    if(initialized) return; initialized=true;
+    try{
+      const map=L.map(el,{center:[44.42,11.98],zoom:7,zoomControl:true,attributionControl:true,scrollWheelZoom:false});
+      map.createPane('controlRadarOverlay');map.getPane('controlRadarOverlay').style.zIndex=420;
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,minZoom:5,attribution:'© OpenStreetMap'}).addTo(map);
+      L.circleMarker([44.418,11.977],{radius:5,color:'#8af2ff',weight:2,fillColor:'#072b3b',fillOpacity:.95}).bindTooltip('Borgo Viazza').addTo(map);
+      fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'}).then(r=>r.json()).then(data=>{
+        const frames=data?.radar?.past||[]; if(!frames.length) throw new Error('no radar');
+        el.querySelector('.monitor-wait')?.remove(); const chosen=frames.slice(-6); let layer=null,idx=chosen.length-1;
+        const show=()=>{const f=chosen[idx]; if(layer)map.removeLayer(layer); const host=data.host||'https://tilecache.rainviewer.com';layer=L.tileLayer(`${host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`,{pane:'controlRadarOverlay',opacity:.75,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'}).addTo(map);const t=document.getElementById('controlRoomRadarTime');if(t)t.textContent='RADAR '+new Date(f.time*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});idx=(idx+1)%chosen.length};
+        show();setInterval(show,1400);setTimeout(()=>map.invalidateSize(),180);
+      }).catch(()=>{el.innerHTML='<a class="radar-fallback" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><span>📡</span><b>Apri Radar Live</b><small>Monitor esterno disponibile ↗</small></a>'});
+    }catch(_e){}
+  };
+  document.getElementById('openWeatherAnalysis')?.addEventListener('click',()=>setTimeout(boot,120));
+})();
