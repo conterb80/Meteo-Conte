@@ -564,6 +564,7 @@ document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click'
  const id=el.dataset.jump;
  if(id==='lamoneDrawer'){document.getElementById('openLamoneDrawer')?.click();return;}
  if(id==='pretempDrawer'){document.getElementById('openPretempDrawer')?.click();return;}
+ if(id==='headerWeather'){window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{window.alert('ANALISI METEO\n\n1. Controlla il Radar Live.\n2. Verifica Radar Evoluzione.\n3. Consulta PRETEMP.\n4. Apri le Notizie Locali.\n\nQuesta è la nuova RC8: il pulsante METEO diventa il punto di partenza dell\'analisi operativa.');},250);return;}
  $(id)?.scrollIntoView({behavior:'smooth',block:'start'});
 }));
 
