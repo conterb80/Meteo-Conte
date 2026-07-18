@@ -2736,3 +2736,14 @@ body.weather-analysis-open{overflow:hidden}
 .lightning-monitor iframe{left:0;top:0;width:125%;height:460px;transform:scale(.8);transform-origin:top left}
 .control-monitor-nowcast .control-monitor-foot em,.control-monitor-lightning .control-monitor-foot em{font-size:8px}
 @media(min-width:700px){.embedded-monitor{height:360px}.nowcast-monitor iframe{top:-115px;height:780px}.lightning-monitor iframe{height:560px}}
+
+/* RC13 — monitor senza iframe bloccati */
+.control-monitor-snapshot{height:245px;display:block;position:relative;overflow:hidden;background:#09202a;text-decoration:none;color:#fff}
+.control-monitor-snapshot .snapshot-map{position:absolute;inset:0;filter:saturate(.82) brightness(.78)}
+.control-monitor-snapshot:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(1,19,25,.05),rgba(1,19,25,.42));pointer-events:none}
+.snapshot-badge{position:absolute;z-index:5;left:12px;bottom:10px;padding:6px 9px;border-radius:10px;background:rgba(4,35,44,.84);border:1px solid rgba(116,225,235,.34);font-size:8px;font-weight:900;letter-spacing:.12em;color:#9ceaf1}
+.forecast-track{position:absolute;z-index:4;inset:0;pointer-events:none}.forecast-track span{position:absolute;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:900;background:rgba(5,37,47,.42);box-shadow:0 0 22px currentColor}
+.forecast-track span:nth-child(1){left:17%;bottom:22%;border:3px solid #ffe25c;color:#ffe25c}.forecast-track span:nth-child(2){left:43%;bottom:35%;border:3px solid #ff9c51;color:#ff9c51}.forecast-track span:nth-child(3){right:12%;top:18%;border:3px solid #ff6262;color:#ff6262}
+.lightning-snapshot .snapshot-map{filter:saturate(.65) brightness(.5)}.snapshot-center{position:absolute;z-index:5;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px}.snapshot-center b{font-size:14px;letter-spacing:.08em}.snapshot-center small{margin-top:8px;color:#b3c8cc;font-size:10px;max-width:270px}
+.lightning-pulses i{position:absolute;z-index:4;width:13px;height:13px;border-radius:50%;background:#ffad1f;box-shadow:0 0 0 7px rgba(255,173,31,.15),0 0 24px #ffad1f}.lightning-pulses i:nth-child(1){left:31%;top:37%}.lightning-pulses i:nth-child(2){left:54%;top:57%}.lightning-pulses i:nth-child(3){left:68%;top:31%}.lightning-pulses i:nth-child(4){left:76%;top:66%}.lightning-pulses i:nth-child(5){left:43%;top:72%}
+@media(min-width:700px){.control-monitor-snapshot{height:330px}}

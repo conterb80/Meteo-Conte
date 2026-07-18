@@ -1318,3 +1318,18 @@ loadLamoneSensors();
     frame.addEventListener('load',()=>frame.parentElement?.classList.add('is-loaded'));
   });
 })();
+
+/* RC13 — basemap locali per i monitor anteprima, nessun iframe esterno */
+(function(){
+ function bootSnapshot(id, zoom){
+  const el=document.getElementById(id); if(!el||el.dataset.ready||!window.L)return;
+  el.dataset.ready='1';
+  const map=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,tap:false}).setView([44.42,11.98],zoom||7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12}).addTo(map);
+  L.circleMarker([44.42,11.98],{radius:6,color:'#dffcff',weight:2,fillColor:'#00aeca',fillOpacity:1}).addTo(map);
+  setTimeout(()=>map.invalidateSize(),250);
+ }
+ function start(){bootSnapshot('controlRoomNowcastMap',7);bootSnapshot('controlRoomLightningMap',7)}
+ document.addEventListener('click',e=>{if(e.target.closest('#openWeatherAnalysis'))setTimeout(start,180)});
+ window.addEventListener('load',start);
+})();
