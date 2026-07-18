@@ -569,12 +569,22 @@ function openWeatherAnalysis(){
  if(title) title.textContent=sourceTitle&&sourceTitle!=='Valutazione in corso'?sourceTitle:'Quadro meteo delle prossime ore';
  if(text) text.textContent=sourceText&&sourceText!=='Aggiornamento dati in corso.'?sourceText:'Consulta gli strumenti operativi per verificare situazione ed evoluzione.';
  if(dot){dot.className='';dot.classList.add(lastLevel?.[2]||'green');}
+ if(lastData){
+  const c=lastData.current,h=lastData.hourly,{start,end}=upcomingSlice(h,6);
+  const rain=h.precipitation.slice(start,end).reduce((a,b)=>a+(b||0),0);
+  const gust=Math.max(c.wind_gusts_10m||0,...h.wind_gusts_10m.slice(start,end));
+  if($('controlRoomIndex')) $('controlRoomIndex').textContent=`${lastIndex}/100`;
+  if($('controlRoomRain')) $('controlRoomRain').textContent=`${rain.toFixed(1)} mm`;
+  if($('controlRoomGust')) $('controlRoomGust').textContent=`${Math.round(gust)} km/h`;
+  if($('controlRoomPressure')) $('controlRoomPressure').textContent=`${Math.round(c.pressure_msl)} hPa`;
+ }
  page.classList.remove('hidden');document.body.classList.add('weather-analysis-open');page.scrollTop=0;
 }
 function closeWeatherAnalysis(){ $('weatherAnalysisPage')?.classList.add('hidden');document.body.classList.remove('weather-analysis-open'); }
 $('briefWeather')?.addEventListener('click',openWeatherAnalysis);
 $('closeWeatherAnalysis')?.addEventListener('click',closeWeatherAnalysis);
 $('weatherAnalysisPretemp')?.addEventListener('click',()=>{closeWeatherAnalysis();document.getElementById('openPretempDrawer')?.click();});
+$('weatherAnalysisLamone')?.addEventListener('click',()=>{closeWeatherAnalysis();document.getElementById('openLamoneDrawer')?.click();});
 $('weatherAnalysisNews')?.addEventListener('click',()=>{closeWeatherAnalysis();const target=$('followSection');target?.scrollIntoView({behavior:'smooth',block:'start'});target?.classList.add('open');const toggle=target?.querySelector('.accordion-toggle');toggle?.setAttribute('aria-expanded','true');});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('weatherAnalysisPage')?.classList.contains('hidden'))closeWeatherAnalysis();});
 document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>{

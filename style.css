@@ -2710,3 +2710,10 @@ body.weather-analysis-open{overflow:hidden}
 .weather-analysis-tool:active{transform:scale(.985)}
 .weather-analysis-tip{display:flex;gap:11px;margin-top:14px;padding:14px;border-radius:17px;background:rgba(241,200,75,.07);border:1px solid rgba(241,200,75,.17)}.weather-analysis-tip span{font-size:20px}.weather-analysis-tip p{margin:0;color:#c9d8db;font-size:12px;line-height:1.45}.weather-analysis-tip b{color:#f3dc8c}
 @media(min-width:600px){.weather-analysis-tools{grid-template-columns:1fr 1fr}.weather-analysis-tool.primary{grid-column:1/-1}}
+
+/* RC10 · Sala Controllo operativa */
+.control-room-shell{padding-bottom:38px}
+.weather-analysis-live{display:flex;align-items:center;gap:6px}.weather-analysis-live i{width:7px;height:7px;border-radius:50%;background:#4bd0a3;box-shadow:0 0 0 4px rgba(75,208,163,.12)}
+.control-room-kpis{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}.control-room-kpis div{padding:12px 13px;border-radius:16px;background:#0a222b;border:1px solid rgba(112,208,223,.14)}.control-room-kpis small{display:block;font-size:8px;letter-spacing:.13em;color:#6dbdca;font-weight:900}.control-room-kpis b{display:block;margin-top:5px;font-size:17px;color:#f2fbfd}
+.control-room-tools .weather-analysis-tool{min-height:72px}.control-room-tools .weather-analysis-tool.primary{box-shadow:0 0 0 1px rgba(74,211,177,.09),0 12px 28px rgba(0,0,0,.2)}
+@media(min-width:600px){.control-room-kpis{grid-template-columns:repeat(4,1fr)}.control-room-tools .weather-analysis-tool.primary{grid-column:auto}}
