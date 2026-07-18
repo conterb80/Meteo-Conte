@@ -11,7 +11,7 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · Sala Controllo RC11</title>
+<title>Meteo Conte 1.1 · Sala Controllo RC12</title>
 <link href="manifest.json?v=1.1-control-rc10" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc10" rel="icon" type="image/png"/>
 <link href="style.css?v=1.1-control-rc10" rel="stylesheet"/>
@@ -112,7 +112,7 @@
   <div class="weather-analysis-shell control-room-shell">
     <header class="weather-analysis-header">
       <button aria-label="Chiudi Sala Controllo" class="weather-analysis-close" id="closeWeatherAnalysis" type="button">‹</button>
-      <div><small>METEO CONTE · RC11</small><h2>Sala Controllo</h2></div>
+      <div><small>METEO CONTE · RC12</small><h2>Sala Controllo</h2></div>
       <span class="weather-analysis-live"><i></i> OPERATIVA</span>
     </header>
     <section class="weather-analysis-summary" id="weatherAnalysisSummary">
@@ -135,13 +135,21 @@
         <div class="control-monitor-map" id="controlRoomRadar"><div class="monitor-wait">Caricamento radar live…</div></div>
         <div class="control-monitor-foot"><span id="controlRoomRadarTime">LIVE</span><em>debole ▰▰▰▰▰ intenso</em></div>
       </article>
-      <article class="control-monitor">
-        <div class="control-monitor-head"><span><i>🔮</i><b>EVOLUZIONE RADAR ER</b><small>Spostamento previsto +1h · +2h · +3h</small></span><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">APRI ↗</a></div>
-        <a class="control-monitor-preview evolution-preview" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><span>+1h</span><span>+2h</span><span>+3h</span><b>TOCCA PER LA MAPPA UFFICIALE AGGIORNATA</b><small>La schermata completa si apre direttamente sul nowcasting regionale.</small></a>
+      <article class="control-monitor control-monitor-nowcast">
+        <div class="control-monitor-head"><span><i>🔮</i><b>EVOLUZIONE RADAR ER</b><small>Mappa ufficiale +1h · +2h · +3h</small></span><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">APRI ↗</a></div>
+        <div class="embedded-monitor nowcast-monitor">
+          <div class="embedded-monitor-loading">Accensione monitor evoluzione…</div>
+          <iframe id="controlRoomNowcast" title="Nowcasting radar Emilia-Romagna" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar"></iframe>
+        </div>
+        <div class="control-monitor-foot"><span>UFFICIALE ER</span><em>giallo +1h · arancio +2h · rosso +3h</em></div>
       </article>
-      <article class="control-monitor">
-        <div class="control-monitor-head"><span><i>⚡</i><b>FULMINI LIVE</b><small>Attività temporalesca reale sul territorio</small></span><a href="https://www.lightningmaps.org/" target="_blank" rel="noopener">APRI ↗</a></div>
-        <a class="control-monitor-preview lightning-preview" href="https://www.lightningmaps.org/" target="_blank" rel="noopener"><div class="lightning-pulse one"></div><div class="lightning-pulse two"></div><div class="lightning-pulse three"></div><b>MONITOR FULMINI IN TEMPO REALE</b><small>Tocca per aprire la mappa interattiva centrata sulla zona.</small></a>
+      <article class="control-monitor control-monitor-lightning">
+        <div class="control-monitor-head"><span><i>⚡</i><b>FULMINI LIVE</b><small>Scariche reali attorno alla Romagna</small></span><a href="https://www.lightningmaps.org/?lang=it#m=oss;t=3;s=0;o=0;b=;ts=0;z=8;y=44.42;x=11.98;d=2;dl=2;dc=0;" target="_blank" rel="noopener">APRI ↗</a></div>
+        <div class="embedded-monitor lightning-monitor">
+          <div class="embedded-monitor-loading">Accensione monitor fulmini…</div>
+          <iframe id="controlRoomLightning" title="Fulmini in tempo reale" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.lightningmaps.org/?lang=it#m=oss;t=3;s=0;o=0;b=;ts=0;z=8;y=44.42;x=11.98;d=2;dl=2;dc=0;"></iframe>
+        </div>
+        <div class="control-monitor-foot"><span>LIVE</span><em>tocca APRI per la mappa completa</em></div>
       </article>
     </section>
     <div class="weather-analysis-route compact"><small>CASSETTI DI APPROFONDIMENTO</small><p>PRETEMP e Lamone restano strumenti da aprire quando servono.</p></div>
@@ -437,7 +445,7 @@
 </div>
 </div>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Sala Controllo RC11</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Sala Controllo RC12</footer>
 <div aria-label="Mappa PRETEMP ingrandita" aria-modal="true" class="pretemp-modal hidden" id="pretempModal" role="dialog">
 <div class="pretemp-modal-head">
 <div><span>PRETEMP</span><b>Mappa del giorno</b></div>

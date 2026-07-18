@@ -16,3 +16,6 @@ Aggiornamento: aprire reset.html?v=1.1-center-rc6
 - Meteo Live diviso in Situazione e Notizie
 - Link diretti selezionati durante i test reali
 - Nessuna modifica a Home, Trend, PRETEMP, Lamone o motore avvisi
+
+
+RC12: radar Sala Controllo corretto; nowcasting ER e fulmini incorporati come monitor sempre visibili.

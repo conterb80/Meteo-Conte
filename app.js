@@ -1282,7 +1282,7 @@ loadLamoneSensors();
   }catch(_e){fallback();}
 })();
 
-/* RC11 — Radar live integrato nella Sala Controllo */
+/* RC12 — Monitor live integrati nella Sala Controllo */
 (function initControlRoomRadar(){
   const el=document.getElementById('controlRoomRadar');
   if(!el||typeof L==='undefined') return;
@@ -1302,5 +1302,19 @@ loadLamoneSensors();
       }).catch(()=>{el.innerHTML='<a class="radar-fallback" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><span>📡</span><b>Apri Radar Live</b><small>Monitor esterno disponibile ↗</small></a>'});
     }catch(_e){}
   };
-  document.getElementById('openWeatherAnalysis')?.addEventListener('click',()=>setTimeout(boot,120));
+  // La Sala Controllo viene aperta dal pulsante #briefWeather: osserviamo la pagina
+  // invece di dipendere da un ID inesistente (bug RC11).
+  const page=document.getElementById('weatherAnalysisPage');
+  if(page){
+    new MutationObserver(()=>{if(!page.classList.contains('hidden')) setTimeout(boot,160)}).observe(page,{attributes:true,attributeFilter:['class']});
+    if(!page.classList.contains('hidden')) setTimeout(boot,160);
+  }
+})();
+
+/* RC12 — rimuove i messaggi di accensione quando gli iframe sono pronti */
+(function initEmbeddedControlMonitors(){
+  ['controlRoomNowcast','controlRoomLightning'].forEach(id=>{
+    const frame=document.getElementById(id); if(!frame)return;
+    frame.addEventListener('load',()=>frame.parentElement?.classList.add('is-loaded'));
+  });
 })();
