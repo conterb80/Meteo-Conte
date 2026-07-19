@@ -112,7 +112,7 @@
   <div class="weather-analysis-shell control-room-shell">
     <header class="weather-analysis-header">
       <button aria-label="Chiudi Sala Controllo" class="weather-analysis-close" id="closeWeatherAnalysis" type="button">‹</button>
-      <div><small>METEO CONTE · RC18</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
+      <div><small>METEO CONTE · RC19</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
       <span class="weather-analysis-live"><i></i> OPERATIVA</span>
     </header>
     <section class="weather-analysis-summary" id="weatherAnalysisSummary">
@@ -126,11 +126,12 @@
       <div><small>PRESSIONE</small><b id="controlRoomPressure">--</b></div>
     </section>
     <section class="conte-quick-read" aria-label="Sintesi operativa automatica">
-      <div class="conte-quick-head"><span>🧠</span><div><small>SINTESI CONTE</small><b id="quickReadHeadline">Lettura operativa in preparazione</b></div><em id="quickReadFreshness">DATI LIVE</em></div>
+      <div class="conte-quick-head"><span>🧠</span><div><small>QUADRO OPERATIVO</small><b id="quickReadHeadline">Lettura in preparazione</b></div><em id="quickReadFreshness">LIVE</em></div>
       <div class="conte-quick-grid">
         <div><small>ADESSO</small><b id="quickReadNow">Controllo situazione locale…</b></div>
-        <div><small>PROSSIME 2 ORE</small><b id="quickReadNext">Calcolo dell’evoluzione…</b></div>
-        <div><small>PRIORITÀ</small><b id="quickReadAction">Radar → Evoluzione → Fulmini</b></div>
+        <div><small>+1 ORA</small><b id="quickReadPlus1">Calcolo della tendenza…</b></div>
+        <div><small>+2 ORE</small><b id="quickReadNext">Calcolo dell’evoluzione…</b></div>
+        <div><small>AZIONE</small><b id="quickReadAction">Radar → Evoluzione → Fulmini</b></div>
       </div>
     </section>
     <div class="control-console-strip" aria-label="Canali operativi attivi">
@@ -146,10 +147,10 @@
         <div class="control-monitor-foot"><span id="controlRoomRadarTime">LIVE</span><em>debole ▰▰▰▰▰ intenso</em></div>
       </article>
       <article class="control-monitor control-monitor-nowcast">
-        <div class="control-monitor-head"><span><i>🔮</i><b>EVOLUZIONE ANIMATA</b><small>Spostamento previsto degli echi fino a +2 ore</small></span><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">UFFICIALE ↗</a></div>
-        <div class="monitor-quick-status" id="evolutionQuickStatus"><span>EVOLUZIONE</span><b>Interesse locale in valutazione</b></div><div class="control-monitor-map evolution-live-map" id="controlRoomNowcast"><div class="monitor-wait">Preparazione evoluzione animata…</div></div>
+        <div class="control-monitor-head"><span><i>🔮</i><b>EVOLUZIONE FUTURA</b><small>Nowcast da adesso fino a +2 ore</small></span><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">UFFICIALE ↗</a></div>
+        <div class="monitor-quick-status" id="evolutionQuickStatus"><span>PREVISIONE +2H</span><b>Traiettoria futura in valutazione</b></div><div class="control-monitor-map evolution-live-map" id="controlRoomNowcast"><div class="monitor-wait">Preparazione evoluzione animata…</div></div>
         <div class="monitor-timeline"><button id="nowcastPlay" type="button" aria-label="Pausa o avvia animazione">❚❚</button><div class="timeline-rail"><i id="nowcastProgress"></i></div><b id="controlRoomNowcastTime">CARICAMENTO</b></div>
-        <div class="control-monitor-foot"><span id="nowcastMode">NOWCAST</span><em>blu = osservato · magenta = previsto</em></div>
+        <div class="control-monitor-foot"><span id="nowcastMode">PREVISIONE RADAR</span><em>solo fotogrammi futuri disponibili</em></div>
       </article>
       <article class="control-monitor control-monitor-lightning">
         <div class="control-monitor-head"><span><i>⚡</i><b>FULMINI LIVE</b><small>Scariche in tempo reale sulla Romagna</small></span><a href="https://map.blitzortung.org/" target="_blank" rel="noopener">APRI ↗</a></div>

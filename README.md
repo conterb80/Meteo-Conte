@@ -1,9 +1,10 @@
-Meteo Conte 1.1 · RC18 Lettura Operativa Rapida
+Meteo Conte 1.1 · RC19 Sala Controllo Futuro
 
-Prima versione orientata alla riduzione dei tempi di lettura:
-- Sintesi Conte automatica in apertura della Sala Controllo
-- lettura immediata di situazione attuale, prossime 2 ore e priorità operativa
-- indicazione sintetica sopra ciascun monitor
-- strumenti e mappe esistenti mantenuti
-- valutazioni basate sui dati locali disponibili, senza sostituire radar, PRETEMP e fonti ufficiali
-- cache PWA aggiornata a RC18
+Aggiornamento mirato per il test operativo:
+- Quadro Operativo più leggibile con Adesso, +1 ora, +2 ore e Azione
+- dati superiori resi più leggibili sul telefono
+- monitor Evoluzione orientato esclusivamente ai fotogrammi futuri
+- eliminata la riproduzione del radar passato nel monitor Evoluzione
+- se la fonte integrata non fornisce il nowcast futuro, viene dichiarato chiaramente e proposto il nowcasting ufficiale ER
+- Radar Live, Fulmini, PRETEMP, Lamone, Webcam e Allerte invariati
+- cache PWA aggiornata a RC19

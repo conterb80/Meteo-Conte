@@ -578,21 +578,24 @@ function openWeatherAnalysis(){
   if($('controlRoomGust')) $('controlRoomGust').textContent=`${Math.round(gust)} km/h`;
   if($('controlRoomPressure')) $('controlRoomPressure').textContent=`${Math.round(c.pressure_msl)} hPa`;
 
+  const p1=h.precipitation.slice(start,Math.min(start+1,h.precipitation.length)).reduce((a,b)=>a+(b||0),0);
   const p2=h.precipitation.slice(start,Math.min(start+2,h.precipitation.length)).reduce((a,b)=>a+(b||0),0);
   const p3=h.precipitation.slice(start,Math.min(start+3,h.precipitation.length)).reduce((a,b)=>a+(b||0),0);
   const probs=(h.precipitation_probability||[]).slice(start,Math.min(start+3,h.time.length));
+  const prob1=probs.length?(probs[0]||0):0;
   const maxProb=probs.length?Math.max(...probs.map(v=>v||0)):0;
   const codes=(h.weather_code||[]).slice(start,Math.min(start+3,h.time.length));
   const thunder=codes.some(v=>Number(v)>=95);
   const localRain=(c.precipitation||0)>0.1;
-  const headline=$('quickReadHeadline'), now=$('quickReadNow'), next=$('quickReadNext'), action=$('quickReadAction');
-  let level='BASSO', headlineText='Quadro locale stabile', nowText='Nessuna precipitazione locale rilevante', nextText='Nessun segnale importante nelle prossime 2 ore', actionText='Controllo ordinario dei tre monitor';
-  if(localRain){level='ATTIVO';headlineText='Precipitazione locale in corso';nowText=`Pioggia rilevata: ${(c.precipitation||0).toFixed(1)} mm`;actionText='Radar e fulmini hanno priorità';}
-  if(thunder||maxProb>=65||p2>=4){level='ALTO';headlineText='Segnale temporalesco da verificare';nextText=`Rischio locale elevato · probabilità fino al ${maxProb}%`;actionText='Segui radar, evoluzione e PRETEMP';}
-  else if(maxProb>=35||p2>=1){level='MEDIO';headlineText='Possibile sviluppo da monitorare';nextText=`Possibili precipitazioni · probabilità fino al ${maxProb}%`;actionText='Controlla evoluzione ogni 15–20 min';}
-  else if(p3>0.1||maxProb>=15){level='BASSO';headlineText='Segnali deboli, quadro da osservare';nextText=`Possibilità contenuta · probabilità fino al ${maxProb}%`;actionText='Monitoraggio leggero';}
+  const headline=$('quickReadHeadline'), now=$('quickReadNow'), plus1=$('quickReadPlus1'), next=$('quickReadNext'), action=$('quickReadAction');
+  let level='BASSO', headlineText='Quadro locale stabile', nowText='Nessuna pioggia locale', plus1Text='Nessun segnale rilevante', nextText='Interesse locale basso', actionText='Controllo ordinario';
+  if(localRain){level='ATTIVO';headlineText='Precipitazione locale in corso';nowText=`Pioggia ${(c.precipitation||0).toFixed(1)} mm`;plus1Text='Segui intensità e traiettoria';actionText='Radar + fulmini';}
+  if(thunder||maxProb>=65||p2>=4){level='ALTO';headlineText='Segnale temporalesco da verificare';plus1Text=`Possibile rischio · ${prob1}%`;nextText=`Rischio elevato · fino al ${maxProb}%`;actionText='Radar · Evoluzione · PRETEMP';}
+  else if(maxProb>=35||p2>=1){level='MEDIO';headlineText='Possibile sviluppo da monitorare';plus1Text=`Possibilità ${prob1}%`;nextText=`Possibilità fino al ${maxProb}%`;actionText='Ricontrolla tra 15–20 min';}
+  else if(p3>0.1||maxProb>=15){level='BASSO';headlineText='Segnali deboli da osservare';plus1Text=p1>0.1?`Pioggia possibile · ${prob1}%`:`Possibilità ${prob1}%`;nextText=`Possibilità fino al ${maxProb}%`;actionText='Monitoraggio leggero';}
   if(headline)headline.textContent=headlineText;
   if(now)now.textContent=nowText;
+  if(plus1)plus1.textContent=plus1Text;
   if(next)next.textContent=nextText;
   if(action)action.textContent=actionText;
   if($('quickReadFreshness'))$('quickReadFreshness').textContent=level;
@@ -1352,8 +1355,8 @@ loadLamoneSensors();
     layer=L.tileLayer(`${host}${f.path}/256/{z}/{x}/{y}/${scheme}/1_1.png`,{pane:'nowcastOverlay',opacity:.78,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'}).addTo(map);
     const stamp=new Date(f.time*1000);
     const delta=Math.round((f.time*1000-Date.now())/60000);
-    if(timeEl) timeEl.textContent=delta>0?`+${delta} MIN`:stamp.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
-    if(modeEl) modeEl.textContent=f.forecast?'PREVISIONE RADAR':'OSSERVATO';
+    if(timeEl) timeEl.textContent=delta>0?`+${delta} MIN`:'ADESSO';
+    if(modeEl) modeEl.textContent='PREVISIONE RADAR';
     if(progress) progress.style.width=`${frames.length>1?(index/(frames.length-1))*100:100}%`;
   }
   function cycle(){if(!playing||!frames.length)return;index=(index+1)%frames.length;paint()}
@@ -1366,16 +1369,15 @@ loadLamoneSensors();
       L.circleMarker([44.418,11.977],{radius:5,color:'#dffcff',weight:2,fillColor:'#00aeca',fillOpacity:1}).bindTooltip('Borgo Viazza').addTo(map);
       fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('api');return r.json()}).then(data=>{
         host=data.host||host;
-        const past=(data?.radar?.past||[]).slice(-4).map(x=>({...x,forecast:false}));
         const future=(data?.radar?.nowcast||[]).map(x=>({...x,forecast:true}));
-        frames=[...past,...future];
-        if(!frames.length)throw new Error('no frames');
+        frames=future;
+        if(!frames.length)throw new Error('future frames unavailable');
         el.querySelector('.monitor-wait')?.remove();
-        index=Math.max(0,past.length-1); paint();
+        index=0; paint();
         timer=setInterval(cycle,1350);setTimeout(()=>map.invalidateSize(),180);
       }).catch(()=>{
-        el.innerHTML='<a class="radar-fallback" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><span>🔮</span><b>Evoluzione integrata non disponibile</b><small>Apri nowcasting ufficiale ER ↗</small></a>';
-        if(timeEl)timeEl.textContent='FONTE ER';if(modeEl)modeEl.textContent='UFFICIALE';
+        el.innerHTML='<a class="radar-fallback future-unavailable" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><span>🔮</span><b>Previsione futura non disponibile dalla fonte integrata</b><small>Non mostro il passato al posto del futuro. Apri il nowcasting ufficiale ER ↗</small></a>';
+        if(timeEl)timeEl.textContent='APRIRE FONTE';if(modeEl)modeEl.textContent='FUTURO NON DISPONIBILE';
       });
     }catch(_e){}
   }
