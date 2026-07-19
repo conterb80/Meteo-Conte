@@ -2761,3 +2761,16 @@ body.weather-analysis-open{overflow:hidden}
 .lightning-live-wrap.is-loaded .iframe-loading{opacity:0}
 .lightning-live-wrap .iframe-loading span{font-size:28px}.lightning-live-wrap .iframe-loading b{font-size:11px;letter-spacing:.06em}
 @media(min-width:700px){.evolution-live-map,.lightning-live-wrap{height:330px}}
+
+/* RC15 — correzione overflow orizzontale su smartphone */
+html,body{max-width:100%;overflow-x:hidden}
+.control-room-shell,.control-monitor-grid,.control-room-tools,.compact-tools{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+.compact-tools{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+.compact-tools .weather-analysis-tool{min-width:0;max-width:100%;overflow:hidden;box-sizing:border-box}
+.compact-tools .weather-analysis-tool span{min-width:0}
+.compact-tools .weather-analysis-tool b,.compact-tools .weather-analysis-tool small{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.compact-tools .weather-analysis-tool>i,.compact-tools .weather-analysis-tool>em{flex:0 0 auto}
+@media(max-width:380px){
+  .compact-tools{grid-template-columns:1fr!important}
+  .compact-tools .weather-analysis-tool:last-child{grid-column:auto!important}
+}
