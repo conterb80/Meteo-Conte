@@ -1,10 +1,9 @@
-# Meteo Conte 1.1 — RC17 Console Professionale
+Meteo Conte 1.1 · RC18 Lettura Operativa Rapida
 
-- Gerarchia visiva più compatta
-- Stato operativo ridotto a barra console
-- KPI su display unico
-- Tre canali operativi immediati
-- Monitor più protagonisti
-- Approfondimenti divisi tra Centro Operativo e Fonti locali
-- Fulmini live centrati sulla Romagna
-- Correzione overflow mobile mantenuta
+Prima versione orientata alla riduzione dei tempi di lettura:
+- Sintesi Conte automatica in apertura della Sala Controllo
+- lettura immediata di situazione attuale, prossime 2 ore e priorità operativa
+- indicazione sintetica sopra ciascun monitor
+- strumenti e mappe esistenti mantenuti
+- valutazioni basate sui dati locali disponibili, senza sostituire radar, PRETEMP e fonti ufficiali
+- cache PWA aggiornata a RC18

@@ -11,7 +11,7 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · Sala Controllo RC17</title>
+<title>Meteo Conte 1.1 · Sala Controllo RC18</title>
 <link href="manifest.json?v=1.1-control-rc15" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc15" rel="icon" type="image/png"/>
 <link href="style.css?v=1.1-control-rc15" rel="stylesheet"/>
@@ -112,7 +112,7 @@
   <div class="weather-analysis-shell control-room-shell">
     <header class="weather-analysis-header">
       <button aria-label="Chiudi Sala Controllo" class="weather-analysis-close" id="closeWeatherAnalysis" type="button">‹</button>
-      <div><small>METEO CONTE · RC17</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
+      <div><small>METEO CONTE · RC18</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
       <span class="weather-analysis-live"><i></i> OPERATIVA</span>
     </header>
     <section class="weather-analysis-summary" id="weatherAnalysisSummary">
@@ -125,6 +125,14 @@
       <div><small>RAFFICA MAX</small><b id="controlRoomGust">--</b></div>
       <div><small>PRESSIONE</small><b id="controlRoomPressure">--</b></div>
     </section>
+    <section class="conte-quick-read" aria-label="Sintesi operativa automatica">
+      <div class="conte-quick-head"><span>🧠</span><div><small>SINTESI CONTE</small><b id="quickReadHeadline">Lettura operativa in preparazione</b></div><em id="quickReadFreshness">DATI LIVE</em></div>
+      <div class="conte-quick-grid">
+        <div><small>ADESSO</small><b id="quickReadNow">Controllo situazione locale…</b></div>
+        <div><small>PROSSIME 2 ORE</small><b id="quickReadNext">Calcolo dell’evoluzione…</b></div>
+        <div><small>PRIORITÀ</small><b id="quickReadAction">Radar → Evoluzione → Fulmini</b></div>
+      </div>
+    </section>
     <div class="control-console-strip" aria-label="Canali operativi attivi">
       <span><i></i><b>RADAR</b><small>LIVE</small></span>
       <span><i></i><b>EVOLUZIONE</b><small>+2H</small></span>
@@ -134,18 +142,18 @@
     <section class="control-monitor-grid" aria-label="Monitor meteo live">
       <article class="control-monitor control-monitor-radar">
         <div class="control-monitor-head"><span><i>📡</i><b>RADAR LIVE</b><small>Pioggia reale e direzione delle celle</small></span><a href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener">APRI ↗</a></div>
-        <div class="control-monitor-map" id="controlRoomRadar"><div class="monitor-wait">Caricamento radar live…</div></div>
+        <div class="monitor-quick-status" id="radarQuickStatus"><span>RADAR</span><b>Verifica immediata di pioggia e sviluppo celle</b></div><div class="control-monitor-map" id="controlRoomRadar"><div class="monitor-wait">Caricamento radar live…</div></div>
         <div class="control-monitor-foot"><span id="controlRoomRadarTime">LIVE</span><em>debole ▰▰▰▰▰ intenso</em></div>
       </article>
       <article class="control-monitor control-monitor-nowcast">
         <div class="control-monitor-head"><span><i>🔮</i><b>EVOLUZIONE ANIMATA</b><small>Spostamento previsto degli echi fino a +2 ore</small></span><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">UFFICIALE ↗</a></div>
-        <div class="control-monitor-map evolution-live-map" id="controlRoomNowcast"><div class="monitor-wait">Preparazione evoluzione animata…</div></div>
+        <div class="monitor-quick-status" id="evolutionQuickStatus"><span>EVOLUZIONE</span><b>Interesse locale in valutazione</b></div><div class="control-monitor-map evolution-live-map" id="controlRoomNowcast"><div class="monitor-wait">Preparazione evoluzione animata…</div></div>
         <div class="monitor-timeline"><button id="nowcastPlay" type="button" aria-label="Pausa o avvia animazione">❚❚</button><div class="timeline-rail"><i id="nowcastProgress"></i></div><b id="controlRoomNowcastTime">CARICAMENTO</b></div>
         <div class="control-monitor-foot"><span id="nowcastMode">NOWCAST</span><em>blu = osservato · magenta = previsto</em></div>
       </article>
       <article class="control-monitor control-monitor-lightning">
         <div class="control-monitor-head"><span><i>⚡</i><b>FULMINI LIVE</b><small>Scariche in tempo reale sulla Romagna</small></span><a href="https://map.blitzortung.org/" target="_blank" rel="noopener">APRI ↗</a></div>
-        <div class="lightning-live-wrap">
+        <div class="monitor-quick-status" id="lightningQuickStatus"><span>FULMINI</span><b>Conferma dell’attività elettrica sulla Romagna</b></div><div class="lightning-live-wrap">
           <iframe id="controlRoomLightning" title="Mappa fulmini live Blitzortung" loading="lazy" referrerpolicy="no-referrer" src="https://map.blitzortung.org/index.php?interactive=0&amp;NavigationControl=0&amp;FullScreenControl=0&amp;ScaleControl=0&amp;MenuButtonDiv=0&amp;InfoDiv=0&amp;LinksCheckboxChecked=0&amp;LightningCheckboxChecked=1&amp;LightningRangeValue=6&amp;MapStyle=2&amp;MapStyleRangeValue=10&amp;Cookies=0&amp;Advertisment=0#7/44.42/11.98"></iframe>
           <div class="iframe-loading"><span>⚡</span><b>Collegamento rete fulmini…</b></div>
         </div>
@@ -449,7 +457,7 @@
 </div>
 </div>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Sala Controllo RC17</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Sala Controllo RC18</footer>
 <div aria-label="Mappa PRETEMP ingrandita" aria-modal="true" class="pretemp-modal hidden" id="pretempModal" role="dialog">
 <div class="pretemp-modal-head">
 <div><span>PRETEMP</span><b>Mappa del giorno</b></div>

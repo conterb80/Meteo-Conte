@@ -577,6 +577,28 @@ function openWeatherAnalysis(){
   if($('controlRoomRain')) $('controlRoomRain').textContent=`${rain.toFixed(1)} mm`;
   if($('controlRoomGust')) $('controlRoomGust').textContent=`${Math.round(gust)} km/h`;
   if($('controlRoomPressure')) $('controlRoomPressure').textContent=`${Math.round(c.pressure_msl)} hPa`;
+
+  const p2=h.precipitation.slice(start,Math.min(start+2,h.precipitation.length)).reduce((a,b)=>a+(b||0),0);
+  const p3=h.precipitation.slice(start,Math.min(start+3,h.precipitation.length)).reduce((a,b)=>a+(b||0),0);
+  const probs=(h.precipitation_probability||[]).slice(start,Math.min(start+3,h.time.length));
+  const maxProb=probs.length?Math.max(...probs.map(v=>v||0)):0;
+  const codes=(h.weather_code||[]).slice(start,Math.min(start+3,h.time.length));
+  const thunder=codes.some(v=>Number(v)>=95);
+  const localRain=(c.precipitation||0)>0.1;
+  const headline=$('quickReadHeadline'), now=$('quickReadNow'), next=$('quickReadNext'), action=$('quickReadAction');
+  let level='BASSO', headlineText='Quadro locale stabile', nowText='Nessuna precipitazione locale rilevante', nextText='Nessun segnale importante nelle prossime 2 ore', actionText='Controllo ordinario dei tre monitor';
+  if(localRain){level='ATTIVO';headlineText='Precipitazione locale in corso';nowText=`Pioggia rilevata: ${(c.precipitation||0).toFixed(1)} mm`;actionText='Radar e fulmini hanno priorità';}
+  if(thunder||maxProb>=65||p2>=4){level='ALTO';headlineText='Segnale temporalesco da verificare';nextText=`Rischio locale elevato · probabilità fino al ${maxProb}%`;actionText='Segui radar, evoluzione e PRETEMP';}
+  else if(maxProb>=35||p2>=1){level='MEDIO';headlineText='Possibile sviluppo da monitorare';nextText=`Possibili precipitazioni · probabilità fino al ${maxProb}%`;actionText='Controlla evoluzione ogni 15–20 min';}
+  else if(p3>0.1||maxProb>=15){level='BASSO';headlineText='Segnali deboli, quadro da osservare';nextText=`Possibilità contenuta · probabilità fino al ${maxProb}%`;actionText='Monitoraggio leggero';}
+  if(headline)headline.textContent=headlineText;
+  if(now)now.textContent=nowText;
+  if(next)next.textContent=nextText;
+  if(action)action.textContent=actionText;
+  if($('quickReadFreshness'))$('quickReadFreshness').textContent=level;
+  if($('radarQuickStatus'))$('radarQuickStatus').querySelector('b').textContent=localRain?'Precipitazione locale rilevata: osserva intensità e traiettoria':'Nessuna pioggia locale: verifica eventuali celle in avvicinamento';
+  if($('evolutionQuickStatus'))$('evolutionQuickStatus').querySelector('b').textContent=thunder||maxProb>=35?`Interesse locale ${level.toLowerCase()} · probabilità fino al ${maxProb}%`:'Interesse locale basso nelle prossime 2 ore';
+  if($('lightningQuickStatus'))$('lightningQuickStatus').querySelector('b').textContent=thunder?'Possibile attività elettrica: controlla scariche recenti':'Nessun temporale locale previsto dai dati orari';
  }
  page.classList.remove('hidden');document.body.classList.add('weather-analysis-open');page.scrollTop=0;
 }
