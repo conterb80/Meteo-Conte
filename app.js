@@ -1338,25 +1338,50 @@ loadLamoneSensors();
 
 
 
-/* RC14 — Evoluzione animata: osservazioni radar + nowcast quando disponibile */
-(function initControlRoomNowcast(){
+/* RC20 — Monitor Evoluzione: movimento radar osservato + nowcasting ufficiale ER */
+(function initControlRoomEvolution(){
   const el=document.getElementById('controlRoomNowcast');
   if(!el||typeof L==='undefined') return;
-  let initialized=false,playing=true,timer=null,index=0,frames=[],layer=null,map=null,host='https://tilecache.rainviewer.com';
+  const observedBtn=document.getElementById('evolutionObservedBtn');
+  const officialBtn=document.getElementById('evolutionOfficialBtn');
+  const observedPane=document.getElementById('evolutionObservedPane');
+  const officialPane=document.getElementById('evolutionOfficialPane');
+  const officialFrame=document.getElementById('officialNowcastFrame');
+  const officialOverlay=document.getElementById('officialNowcastOverlay');
+  const quick=document.getElementById('evolutionQuickStatus');
   const playBtn=document.getElementById('nowcastPlay');
   const timeEl=document.getElementById('controlRoomNowcastTime');
   const modeEl=document.getElementById('nowcastMode');
   const progress=document.getElementById('nowcastProgress');
+  const officialUrl='https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar';
+  let initialized=false,playing=true,timer=null,index=0,frames=[],layer=null,map=null,host='https://tilecache.rainviewer.com';
+
+  function setMode(mode){
+    const official=mode==='official';
+    observedBtn?.classList.toggle('active',!official); officialBtn?.classList.toggle('active',official);
+    observedBtn?.setAttribute('aria-selected',String(!official)); officialBtn?.setAttribute('aria-selected',String(official));
+    observedPane?.classList.toggle('active',!official); officialPane?.classList.toggle('active',official);
+    if(quick){
+      quick.innerHTML=official
+        ? '<span>FUTURO +1/+2/+3H</span><b>Traiettoria prevista dal nowcasting ufficiale Emilia-Romagna</b>'
+        : '<span>TRAIETTORIA</span><b>Animazione dell’ultima ora per capire direzione e sviluppo</b>';
+    }
+    if(official && officialFrame && officialFrame.src==='about:blank') officialFrame.src=officialUrl;
+    if(!official && map) setTimeout(()=>map.invalidateSize(),120);
+  }
+
   function paint(){
     if(!frames.length||!map)return;
     const f=frames[index];
     if(layer)map.removeLayer(layer);
-    const scheme=f.forecast?6:2;
-    layer=L.tileLayer(`${host}${f.path}/256/{z}/{x}/{y}/${scheme}/1_1.png`,{pane:'nowcastOverlay',opacity:.78,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'}).addTo(map);
+    layer=L.tileLayer(`${host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`,{
+      pane:'nowcastOverlay',opacity:.8,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'
+    }).addTo(map);
     const stamp=new Date(f.time*1000);
-    const delta=Math.round((f.time*1000-Date.now())/60000);
-    if(timeEl) timeEl.textContent=delta>0?`+${delta} MIN`:'ADESSO';
-    if(modeEl) modeEl.textContent='PREVISIONE RADAR';
+    const latest=frames[frames.length-1]?.time||f.time;
+    const delta=Math.round((f.time-latest)/60);
+    if(timeEl) timeEl.textContent=delta<0?`${delta} MIN`:'ADESSO';
+    if(modeEl) modeEl.textContent=index===frames.length-1?'RADAR ADESSO':'MOVIMENTO OSSERVATO';
     if(progress) progress.style.width=`${frames.length>1?(index/(frames.length-1))*100:100}%`;
   }
   function cycle(){if(!playing||!frames.length)return;index=(index+1)%frames.length;paint()}
@@ -1366,24 +1391,35 @@ loadLamoneSensors();
       map=L.map(el,{center:[44.42,11.98],zoom:7,zoomControl:true,attributionControl:true,scrollWheelZoom:false});
       map.createPane('nowcastOverlay');map.getPane('nowcastOverlay').style.zIndex=420;
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,minZoom:5,attribution:'© OpenStreetMap'}).addTo(map);
-      L.circleMarker([44.418,11.977],{radius:5,color:'#dffcff',weight:2,fillColor:'#00aeca',fillOpacity:1}).bindTooltip('Borgo Viazza').addTo(map);
-      fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('api');return r.json()}).then(data=>{
-        host=data.host||host;
-        const future=(data?.radar?.nowcast||[]).map(x=>({...x,forecast:true}));
-        frames=future;
-        if(!frames.length)throw new Error('future frames unavailable');
-        el.querySelector('.monitor-wait')?.remove();
-        index=0; paint();
-        timer=setInterval(cycle,1350);setTimeout(()=>map.invalidateSize(),180);
-      }).catch(()=>{
-        el.innerHTML='<a class="radar-fallback future-unavailable" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><span>🔮</span><b>Previsione futura non disponibile dalla fonte integrata</b><small>Non mostro il passato al posto del futuro. Apri il nowcasting ufficiale ER ↗</small></a>';
-        if(timeEl)timeEl.textContent='APRIRE FONTE';if(modeEl)modeEl.textContent='FUTURO NON DISPONIBILE';
-      });
+      L.circleMarker([44.418,11.977],{radius:6,color:'#f2ffff',weight:2,fillColor:'#00b8d4',fillOpacity:1}).bindTooltip('Borgo Viazza').addTo(map);
+      fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'})
+        .then(r=>{if(!r.ok)throw new Error('api');return r.json()})
+        .then(data=>{
+          host=data.host||host;
+          const past=data?.radar?.past||[];
+          frames=past.slice(-7);
+          if(!frames.length)throw new Error('radar unavailable');
+          el.querySelector('.monitor-wait')?.remove();
+          index=0;paint();
+          timer=setInterval(cycle,1200);
+          setTimeout(()=>map.invalidateSize(),180);
+        })
+        .catch(()=>{
+          el.innerHTML='<a class="radar-fallback" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><span>📡</span><b>Animazione radar non disponibile</b><small>Apri Zoom Earth per seguire il movimento ↗</small></a>';
+          if(timeEl)timeEl.textContent='FONTE NON DISPONIBILE';if(modeEl)modeEl.textContent='RADAR NON DISPONIBILE';
+        });
     }catch(_e){}
   }
+
+  observedBtn?.addEventListener('click',()=>setMode('observed'));
+  officialBtn?.addEventListener('click',()=>setMode('official'));
   playBtn?.addEventListener('click',()=>{playing=!playing;playBtn.textContent=playing?'❚❚':'▶';if(playing)cycle()});
+  officialFrame?.addEventListener('load',()=>{officialOverlay?.classList.add('hidden')});
   const page=document.getElementById('weatherAnalysisPage');
-  if(page){new MutationObserver(()=>{if(!page.classList.contains('hidden'))setTimeout(boot,180)}).observe(page,{attributes:true,attributeFilter:['class']});if(!page.classList.contains('hidden'))setTimeout(boot,180)}
+  if(page){
+    new MutationObserver(()=>{if(!page.classList.contains('hidden'))setTimeout(boot,180)}).observe(page,{attributes:true,attributeFilter:['class']});
+    if(!page.classList.contains('hidden'))setTimeout(boot,180);
+  }
 })();
 
 /* RC14 — stato caricamento monitor fulmini */

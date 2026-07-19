@@ -1,7 +1,7 @@
 {
-  "name": "Meteo Conte 1.1 Sala Controllo RC19",
+  "name": "Meteo Conte 1.1 Sala Controllo RC20",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=1.1-control-rc19",
+  "start_url": "index.html?v=1.1-control-rc20",
   "display": "standalone",
   "background_color": "#061b27",
   "theme_color": "#062231",

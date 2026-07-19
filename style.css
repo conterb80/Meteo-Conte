@@ -2905,3 +2905,16 @@ html,body{max-width:100%;overflow-x:hidden}
  .conte-quick-grid b{font-size:9.5px!important}
  .control-room-kpis small{font-size:6px!important}.control-room-kpis b{font-size:11px!important}
 }
+
+/* RC20 — monitor Evoluzione a due livelli: movimento osservato + futuro ufficiale */
+.evolution-mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:6px 8px;background:rgba(3,25,34,.96);border-top:1px solid rgba(100,210,224,.1);border-bottom:1px solid rgba(100,210,224,.12)}
+.evolution-mode-switch button{min-width:0;border:1px solid rgba(109,205,218,.14);border-radius:10px;padding:7px 6px;background:rgba(12,48,59,.55);color:#789da5;font:800 6.5px/1.15 system-ui;letter-spacing:.06em;cursor:pointer}
+.evolution-mode-switch button.active{background:linear-gradient(135deg,rgba(31,145,174,.48),rgba(39,198,158,.22));border-color:rgba(111,224,229,.35);color:#ecfdff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
+.evolution-pane{display:none}.evolution-pane.active{display:block}
+.official-nowcast-wrap{position:relative;height:300px;overflow:hidden;background:#08202a}
+.official-nowcast-wrap iframe{width:100%;height:100%;border:0;background:#08202a;display:block}
+.official-nowcast-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px;text-align:center;background:radial-gradient(circle at 50% 42%,rgba(25,89,107,.7),rgba(3,24,33,.97));color:#dff7fa;pointer-events:none;transition:opacity .25s}
+.official-nowcast-overlay.hidden{opacity:0;visibility:hidden}
+.official-nowcast-overlay span{font-size:28px}.official-nowcast-overlay b{font-size:12px}.official-nowcast-overlay small{font-size:8px;color:#8ecbd4;line-height:1.4}
+.rc20-evolution-monitor .monitor-timeline{border-top:1px solid rgba(99,203,216,.12)}
+@media(max-width:430px){.official-nowcast-wrap{height:270px}.evolution-mode-switch button{font-size:6px;padding:7px 4px}}
