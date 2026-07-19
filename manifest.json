@@ -1,10 +1,10 @@
 {
-  "name": "Meteo Conte 1.1 Sala Controllo RC21",
+  "name": "Meteo Conte 1.1 Home Compatta RC21",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=1.1-control-rc21",
+  "start_url": "index.html?v=1.1-home-rc21",
   "display": "standalone",
-  "background_color": "#061b27",
-  "theme_color": "#062231",
+  "background_color": "#020d14",
+  "theme_color": "#041923",
   "icons": [
     {
       "src": "icon.png?v=1-1-trend-v2",

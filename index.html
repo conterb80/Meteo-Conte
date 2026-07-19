@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · Sala Controllo RC21 · Restyling Home</title>
-<link href="manifest.json?v=1.1-control-rc21" rel="manifest"/>
-<link href="icon.png?v=1.1-control-rc21" rel="icon" type="image/png"/>
-<link href="style.css?v=1.1-control-rc21" rel="stylesheet"/>
+<title>Meteo Conte 1.1 · Home Compatta RC21</title>
+<link href="manifest.json?v=1.1-home-rc21" rel="manifest"/>
+<link href="icon.png?v=1.1-home-rc21" rel="icon" type="image/png"/>
+<link href="style.css?v=1.1-home-rc21" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -23,7 +23,7 @@
 <header aria-label="Meteo attuale Borgo Viazza" class="topbar logo-head weather-hero weather-clear" id="headerWeather">
 <div class="weather-hero-main">
 <div class="brand-block">
-<img alt="Meteo Conte" class="app-logo" src="icon.png?v=1.0-rc3"/>
+<img alt="Meteo Conte" class="app-logo" src="icon.png?v=1.1-home-rc21"/>
 <div class="hero-location">
 <span class="hero-kicker">METEO CONTE</span>
 <h1>Borgo Viazza</h1>
@@ -44,15 +44,9 @@
 <button data-trend="pressione" type="button"><i>📈</i><span><small>Pressione</small><b id="press">-- hPa</b></span></button>
 </div>
 <div aria-hidden="true" class="weather-ambient"><span></span><span></span><span></span></div>
-</header><article class="card hourly-monitor-card">
-<div class="monitor-head">
-<div><span class="label">2 · PROSSIME ORE</span><b>Temperatura e precipitazioni</b></div>
-<small>scorri →</small>
-</div>
-<div aria-label="Previsioni orarie" class="home-hourly-strip" id="hours"></div>
-</article><article class="card radar-monitor-card radar-rc2">
+</header><article class="card radar-monitor-card radar-rc2">
 <div class="monitor-head radar-head-rc1">
-<div><span class="label">3 · RADAR LIVE · RADAR LEGGERO</span><b>Precipitazioni attorno a Borgo Viazza</b></div>
+<div><span class="label">1 · RADAR LIVE · QUADRO PRINCIPALE</span><b>Precipitazioni attorno a Borgo Viazza</b></div>
 <div class="radar-head-actions">
 <span class="live-badge"><i></i>LIVE</span>
 <a href="https://zoom.earth/maps/radar/#view=44.418,11.977,8z" rel="noopener" target="_blank">Zoom Earth ↗</a>
@@ -65,42 +59,48 @@
 </div>
 <div class="radar-foot"><span id="radarFrameTime">LIVE · aggiornamento in corso</span><span>debole <i></i> intenso</span></div>
 </article><section aria-live="polite" class="top-status card status-v16 auto-briefing briefing-final">
-  <span class="label briefing-title">4 · BOLLETTINO CONTE</span>
-  <div class="briefing-status-row" id="briefingSignals" aria-label="Stato e accessi rapidi del Bollettino Conte">
-    <button aria-label="Apri spiegazione Indice Conte" class="briefing-status briefing-index" data-trend="indice" id="indiceCard" type="button">
-      <span class="bigdot green" id="statusDot"></span>
-      <small>IND. CNT</small>
-      <b><span id="indiceVal">--</span><em>/100</em></b>
-      <span class="sr-only" id="indiceLabel">--</span>
-    </button>
-    <button class="briefing-status" id="openOfficialAlerts" type="button">
-      <span class="briefing-icon">🛡️</span><i class="dot green" id="dotAllerte"></i>
-      <strong>Allerte</strong><b id="briefAlert">Verifica…</b>
-    </button>
-    <button class="briefing-status" id="briefWeather" type="button">
-      <span class="briefing-icon">☁️</span><i class="dot green" id="dotMeteo"></i>
-      <strong>Meteo</strong><b>Analisi…</b>
-    </button>
-    <button class="briefing-status" data-jump="lamoneDrawer" id="briefLamone" type="button">
-      <span class="briefing-icon">🌊</span><i class="dot green" id="dotLamone"></i>
-      <strong>Lamone</strong><b>Apri sensori</b>
-    </button>
-    <button class="briefing-status" data-jump="pretempDrawer" id="briefPretemp" type="button">
-      <span class="briefing-icon">⛈️</span><i class="dot green" id="dotTemporali"></i>
-      <strong>PRETEMP</strong><b>Bollettino</b>
-    </button>
-  </div>
-  <div class="briefing-message">
-    <small>MESSAGGIO OPERATIVO</small>
-    <p id="statusText">Aggiornamento dati in corso.</p>
-  </div>
-  <span class="sr-only" id="statusTitle">Valutazione in corso</span>
-  <span class="sr-only" id="decisionTitle">Valutazione in corso</span>
-  <span class="sr-only" id="decisionText">Sintesi automatica in arrivo</span>
-  <section aria-label="Dettaglio automatico" class="analysis-auto" id="analysisBox"></section>
-</section><article aria-label="Apri la pagina Trend Operativi" class="card operational-timeline-card trend-launcher" id="openTrendPage" role="button" tabindex="0">
+<span class="label briefing-title">2 · BOLLETTINO CONTE</span>
+<div aria-label="Stato e accessi rapidi del Bollettino Conte" class="briefing-status-row" id="briefingSignals">
+<button aria-label="Apri spiegazione Indice Conte" class="briefing-status briefing-index" data-trend="indice" id="indiceCard" type="button">
+<span class="bigdot green" id="statusDot"></span>
+<small>IND. CNT</small>
+<b><span id="indiceVal">--</span><em>/100</em></b>
+<span class="sr-only" id="indiceLabel">--</span>
+</button>
+<button class="briefing-status" id="openOfficialAlerts" type="button">
+<span class="briefing-icon">🛡️</span><i class="dot green" id="dotAllerte"></i>
+<strong>Allerte</strong><b id="briefAlert">Verifica…</b>
+</button>
+<button class="briefing-status" id="briefWeather" type="button">
+<span class="briefing-icon">☁️</span><i class="dot green" id="dotMeteo"></i>
+<strong>Meteo</strong><b>Analisi…</b>
+</button>
+<button class="briefing-status" data-jump="lamoneDrawer" id="briefLamone" type="button">
+<span class="briefing-icon">🌊</span><i class="dot green" id="dotLamone"></i>
+<strong>Lamone</strong><b>Apri sensori</b>
+</button>
+<button class="briefing-status" data-jump="pretempDrawer" id="briefPretemp" type="button">
+<span class="briefing-icon">⛈️</span><i class="dot green" id="dotTemporali"></i>
+<strong>PRETEMP</strong><b>Bollettino</b>
+</button>
+</div>
+<div class="briefing-message">
+<small>MESSAGGIO OPERATIVO</small>
+<p id="statusText">Aggiornamento dati in corso.</p>
+</div>
+<span class="sr-only" id="statusTitle">Valutazione in corso</span>
+<span class="sr-only" id="decisionTitle">Valutazione in corso</span>
+<span class="sr-only" id="decisionText">Sintesi automatica in arrivo</span>
+<section aria-label="Dettaglio automatico" class="analysis-auto" id="analysisBox"></section>
+</section><article class="card hourly-monitor-card">
 <div class="monitor-head">
-<div><span class="label">5 · TREND OPERATIVO · 6 ORE</span><b>Evoluzione a colpo d’occhio</b></div>
+<div><span class="label">3 · PROSSIME ORE</span><b>Temperatura e precipitazioni</b></div>
+<small>scorri →</small>
+</div>
+<div aria-label="Previsioni orarie" class="home-hourly-strip" id="hours"></div>
+</article><article aria-label="Apri la pagina Trend Operativi" class="card operational-timeline-card trend-launcher" id="openTrendPage" role="button" tabindex="0">
+<div class="monitor-head">
+<div><span class="label">4 · TREND OPERATIVO · 6 ORE</span><b>Evoluzione a colpo d’occhio</b></div>
 <small>apri analisi ›</small>
 </div>
 <div class="operational-timeline" id="operationalTimeline">
@@ -109,95 +109,91 @@
 <p class="timeline-summary" id="timelineSummary">La timeline usa previsione oraria, pioggia, vento e segnali temporaleschi.</p>
 </article><section aria-label="Pagina Trend Operativi" aria-modal="true" class="trendbox trend-page hidden" id="trendBox" role="dialog"></section>
 <section aria-label="Sala Controllo Meteo" aria-modal="true" class="weather-analysis-page hidden" id="weatherAnalysisPage" role="dialog">
-  <div class="weather-analysis-shell control-room-shell">
-    <header class="weather-analysis-header">
-      <button aria-label="Chiudi Sala Controllo" class="weather-analysis-close" id="closeWeatherAnalysis" type="button">‹</button>
-      <div><small>METEO CONTE · RC21</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
-      <span class="weather-analysis-live"><i></i> OPERATIVA</span>
-    </header>
-    <section class="weather-analysis-summary" id="weatherAnalysisSummary">
-      <div class="weather-analysis-state"><i class="green" id="weatherAnalysisDot"></i><span><small>STATO OPERATIVO</small><b id="weatherAnalysisTitle">Situazione in aggiornamento</b></span></div>
-      <p id="weatherAnalysisText">Sto preparando la lettura sintetica delle prossime ore.</p>
-    </section>
-    <section class="control-room-kpis" aria-label="Dati operativi">
-      <div><small>INDICE CONTE</small><b id="controlRoomIndex">--/100</b></div>
-      <div><small>PIOGGIA 6H</small><b id="controlRoomRain">--</b></div>
-      <div><small>RAFFICA MAX</small><b id="controlRoomGust">--</b></div>
-      <div><small>PRESSIONE</small><b id="controlRoomPressure">--</b></div>
-    </section>
-    <section class="conte-quick-read" aria-label="Sintesi operativa automatica">
-      <div class="conte-quick-head"><span>🧠</span><div><small>QUADRO OPERATIVO</small><b id="quickReadHeadline">Lettura in preparazione</b></div><em id="quickReadFreshness">LIVE</em></div>
-      <div class="conte-quick-grid">
-        <div><small>ADESSO</small><b id="quickReadNow">Controllo situazione locale…</b></div>
-        <div><small>+1 ORA</small><b id="quickReadPlus1">Calcolo della tendenza…</b></div>
-        <div><small>+2 ORE</small><b id="quickReadNext">Calcolo dell’evoluzione…</b></div>
-        <div><small>AZIONE</small><b id="quickReadAction">Radar → Evoluzione → Fulmini</b></div>
-      </div>
-    </section>
-    <div class="control-console-strip" aria-label="Canali operativi attivi">
-      <span><i></i><b>RADAR</b><small>LIVE</small></span>
-      <span><i></i><b>EVOLUZIONE</b><small>+2H</small></span>
-      <span><i></i><b>FULMINI</b><small>LIVE</small></span>
-    </div>
-    <div class="control-console-label"><span>MONITOR OPERATIVI</span><small>TUTTO SOTTO CONTROLLO</small></div>
-    <section class="control-monitor-grid" aria-label="Monitor meteo live">
-      <article class="control-monitor control-monitor-radar">
-        <div class="control-monitor-head"><span><i>📡</i><b>RADAR LIVE</b><small>Pioggia reale e direzione delle celle</small></span><a href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener">APRI ↗</a></div>
-        <div class="monitor-quick-status" id="radarQuickStatus"><span>RADAR</span><b>Verifica immediata di pioggia e sviluppo celle</b></div><div class="control-monitor-map" id="controlRoomRadar"><div class="monitor-wait">Caricamento radar live…</div></div>
-        <div class="control-monitor-foot"><span id="controlRoomRadarTime">LIVE</span><em>debole ▰▰▰▰▰ intenso</em></div>
-      </article>
-      <article class="control-monitor control-monitor-nowcast rc20-evolution-monitor">
-        <div class="control-monitor-head"><span><i>🔮</i><b>EVOLUZIONE</b><small>Movimento osservato + nowcasting ufficiale</small></span><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">APRI ↗</a></div>
-        <div class="evolution-mode-switch" role="tablist" aria-label="Modalità monitor evoluzione">
-          <button class="active" id="evolutionObservedBtn" type="button" role="tab" aria-selected="true">MOVIMENTO RADAR</button>
-          <button id="evolutionOfficialBtn" type="button" role="tab" aria-selected="false">FUTURO UFFICIALE +1/+2/+3H</button>
-        </div>
-        <div class="monitor-quick-status" id="evolutionQuickStatus"><span>TRAIETTORIA</span><b>Animazione dell’ultima ora per capire direzione e sviluppo</b></div>
-        <div class="evolution-pane active" id="evolutionObservedPane">
-          <div class="control-monitor-map evolution-live-map" id="controlRoomNowcast"><div class="monitor-wait">Preparazione movimento radar…</div></div>
-          <div class="monitor-timeline"><button id="nowcastPlay" type="button" aria-label="Pausa o avvia animazione">❚❚</button><div class="timeline-rail"><i id="nowcastProgress"></i></div><b id="controlRoomNowcastTime">CARICAMENTO</b></div>
-          <div class="control-monitor-foot"><span id="nowcastMode">MOVIMENTO OSSERVATO</span><em>dal passato recente fino ad adesso</em></div>
-        </div>
-        <div class="evolution-pane" id="evolutionOfficialPane">
-          <div class="official-nowcast-wrap">
-            <iframe id="officialNowcastFrame" title="Nowcasting ufficiale Emilia-Romagna" loading="lazy" referrerpolicy="no-referrer" src="about:blank"></iframe>
-            <div class="official-nowcast-overlay" id="officialNowcastOverlay"><span>🧭</span><b>Caricamento nowcasting ufficiale</b><small>Previsione degli echi radar a +1, +2 e +3 ore</small></div>
-          </div>
-          <div class="control-monitor-foot"><span>FONTE ARPAE / ALLERTA METEO ER</span><em>previsione ufficiale della traiettoria</em></div>
-        </div>
-      </article>
-      <article class="control-monitor control-monitor-lightning">
-        <div class="control-monitor-head"><span><i>⚡</i><b>FULMINI LIVE</b><small>Scariche in tempo reale sulla Romagna</small></span><a href="https://map.blitzortung.org/" target="_blank" rel="noopener">APRI ↗</a></div>
-        <div class="monitor-quick-status" id="lightningQuickStatus"><span>FULMINI</span><b>Conferma dell’attività elettrica sulla Romagna</b></div><div class="lightning-live-wrap">
-          <iframe id="controlRoomLightning" title="Mappa fulmini live Blitzortung" loading="lazy" referrerpolicy="no-referrer" src="https://map.blitzortung.org/index.php?interactive=0&amp;NavigationControl=0&amp;FullScreenControl=0&amp;ScaleControl=0&amp;MenuButtonDiv=0&amp;InfoDiv=0&amp;LinksCheckboxChecked=0&amp;LightningCheckboxChecked=1&amp;LightningRangeValue=6&amp;MapStyle=2&amp;MapStyleRangeValue=10&amp;Cookies=0&amp;Advertisment=0#7/44.42/11.98"></iframe>
-          <div class="iframe-loading"><span>⚡</span><b>Collegamento rete fulmini…</b></div>
-        </div>
-        <div class="control-monitor-foot"><span>BLITZORTUNG LIVE</span><em>bianco = scarica recente · rosso = più vecchia</em></div>
-      </article>
-    </section>
-    <div class="weather-analysis-route compact"><small>APPROFONDIMENTI</small><p>Apri solo lo strumento necessario, senza perdere il quadro dei monitor.</p></div>
-    <div class="tool-group-title"><span>CENTRO OPERATIVO</span><small>RISCHIO · TERRITORIO</small></div>
-    <nav class="weather-analysis-tools control-room-tools compact-tools primary-tools" aria-label="Strumenti operativi">
-      <button class="weather-analysis-tool" id="weatherAnalysisPretemp" type="button"><i>⛈️</i><span><b>PRETEMP</b><small>Pericolosità e bollettino</small></span><em>1</em></button>
-      <button class="weather-analysis-tool" id="weatherAnalysisLamone" type="button"><i>🌊</i><span><b>Lamone</b><small>Pioggia a monte e piena</small></span><em>2</em></button>
-      <a class="weather-analysis-tool" href="https://www.guardcostaus-ravenna.it/MeteoPagine/webcam.html" rel="noopener" target="_blank"><i>📷</i><span><b>Webcam</b><small>Conferma visiva del cielo</small></span><em>3</em></a>
-      <a class="weather-analysis-tool" href="https://allertameteo.regione.emilia-romagna.it/web/bagnacavallo" rel="noopener" target="_blank"><i>🛡️</i><span><b>Allerte</b><small>Zona D1 · Bagnacavallo</small></span><em>4</em></a>
-    </nav>
-    <div class="tool-group-title sources-title"><span>FONTI LOCALI</span><small>AGGIORNAMENTI</small></div>
-    <nav class="weather-analysis-tools control-room-tools compact-tools source-tools" aria-label="Fonti meteo locali">
-      <button class="weather-analysis-tool" id="weatherAnalysisNews" type="button"><i>📰</i><span><b>Meteo Live locale</b><small>Fonti e aggiornamenti dal territorio</small></span><em>5</em></button>
-    </nav>
-    <section class="weather-analysis-tip"><span>💡</span><p><b>Regola operativa</b><br/>Radar prima di tutto. PRETEMP conferma il rischio; Lamone si apre quando la pioggia diventa persistente o interessa il bacino a monte.</p></section>
-  </div>
+<div class="weather-analysis-shell control-room-shell">
+<header class="weather-analysis-header">
+<button aria-label="Chiudi Sala Controllo" class="weather-analysis-close" id="closeWeatherAnalysis" type="button">‹</button>
+<div><small>METEO CONTE · RC21</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
+<span class="weather-analysis-live"><i></i> OPERATIVA</span>
+</header>
+<section class="weather-analysis-summary" id="weatherAnalysisSummary">
+<div class="weather-analysis-state"><i class="green" id="weatherAnalysisDot"></i><span><small>STATO OPERATIVO</small><b id="weatherAnalysisTitle">Situazione in aggiornamento</b></span></div>
+<p id="weatherAnalysisText">Sto preparando la lettura sintetica delle prossime ore.</p>
 </section>
-
-
+<section aria-label="Dati operativi" class="control-room-kpis">
+<div><small>INDICE CONTE</small><b id="controlRoomIndex">--/100</b></div>
+<div><small>PIOGGIA 6H</small><b id="controlRoomRain">--</b></div>
+<div><small>RAFFICA MAX</small><b id="controlRoomGust">--</b></div>
+<div><small>PRESSIONE</small><b id="controlRoomPressure">--</b></div>
+</section>
+<section aria-label="Sintesi operativa automatica" class="conte-quick-read">
+<div class="conte-quick-head"><span>🧠</span><div><small>QUADRO OPERATIVO</small><b id="quickReadHeadline">Lettura in preparazione</b></div><em id="quickReadFreshness">LIVE</em></div>
+<div class="conte-quick-grid">
+<div><small>ADESSO</small><b id="quickReadNow">Controllo situazione locale…</b></div>
+<div><small>+1 ORA</small><b id="quickReadPlus1">Calcolo della tendenza…</b></div>
+<div><small>+2 ORE</small><b id="quickReadNext">Calcolo dell’evoluzione…</b></div>
+<div><small>AZIONE</small><b id="quickReadAction">Radar → Evoluzione → Fulmini</b></div>
+</div>
+</section>
+<div aria-label="Canali operativi attivi" class="control-console-strip">
+<span><i></i><b>RADAR</b><small>LIVE</small></span>
+<span><i></i><b>EVOLUZIONE</b><small>+2H</small></span>
+<span><i></i><b>FULMINI</b><small>LIVE</small></span>
+</div>
+<div class="control-console-label"><span>MONITOR OPERATIVI</span><small>TUTTO SOTTO CONTROLLO</small></div>
+<section aria-label="Monitor meteo live" class="control-monitor-grid">
+<article class="control-monitor control-monitor-radar">
+<div class="control-monitor-head"><span><i>📡</i><b>RADAR LIVE</b><small>Pioggia reale e direzione delle celle</small></span><a href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" rel="noopener" target="_blank">APRI ↗</a></div>
+<div class="monitor-quick-status" id="radarQuickStatus"><span>RADAR</span><b>Verifica immediata di pioggia e sviluppo celle</b></div><div class="control-monitor-map" id="controlRoomRadar"><div class="monitor-wait">Caricamento radar live…</div></div>
+<div class="control-monitor-foot"><span id="controlRoomRadarTime">LIVE</span><em>debole ▰▰▰▰▰ intenso</em></div>
+</article>
+<article class="control-monitor control-monitor-nowcast rc20-evolution-monitor">
+<div class="control-monitor-head"><span><i>🔮</i><b>EVOLUZIONE</b><small>Movimento osservato + nowcasting ufficiale</small></span><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" rel="noopener" target="_blank">APRI ↗</a></div>
+<div aria-label="Modalità monitor evoluzione" class="evolution-mode-switch" role="tablist">
+<button aria-selected="true" class="active" id="evolutionObservedBtn" role="tab" type="button">MOVIMENTO RADAR</button>
+<button aria-selected="false" id="evolutionOfficialBtn" role="tab" type="button">FUTURO UFFICIALE +1/+2/+3H</button>
+</div>
+<div class="monitor-quick-status" id="evolutionQuickStatus"><span>TRAIETTORIA</span><b>Animazione dell’ultima ora per capire direzione e sviluppo</b></div>
+<div class="evolution-pane active" id="evolutionObservedPane">
+<div class="control-monitor-map evolution-live-map" id="controlRoomNowcast"><div class="monitor-wait">Preparazione movimento radar…</div></div>
+<div class="monitor-timeline"><button aria-label="Pausa o avvia animazione" id="nowcastPlay" type="button">❚❚</button><div class="timeline-rail"><i id="nowcastProgress"></i></div><b id="controlRoomNowcastTime">CARICAMENTO</b></div>
+<div class="control-monitor-foot"><span id="nowcastMode">MOVIMENTO OSSERVATO</span><em>dal passato recente fino ad adesso</em></div>
+</div>
+<div class="evolution-pane" id="evolutionOfficialPane">
+<div class="official-nowcast-wrap">
+<iframe id="officialNowcastFrame" loading="lazy" referrerpolicy="no-referrer" src="about:blank" title="Nowcasting ufficiale Emilia-Romagna"></iframe>
+<div class="official-nowcast-overlay" id="officialNowcastOverlay"><span>🧭</span><b>Caricamento nowcasting ufficiale</b><small>Previsione degli echi radar a +1, +2 e +3 ore</small></div>
+</div>
+<div class="control-monitor-foot"><span>FONTE ARPAE / ALLERTA METEO ER</span><em>previsione ufficiale della traiettoria</em></div>
+</div>
+</article>
+<article class="control-monitor control-monitor-lightning">
+<div class="control-monitor-head"><span><i>⚡</i><b>FULMINI LIVE</b><small>Scariche in tempo reale sulla Romagna</small></span><a href="https://map.blitzortung.org/" rel="noopener" target="_blank">APRI ↗</a></div>
+<div class="monitor-quick-status" id="lightningQuickStatus"><span>FULMINI</span><b>Conferma dell’attività elettrica sulla Romagna</b></div><div class="lightning-live-wrap">
+<iframe id="controlRoomLightning" loading="lazy" referrerpolicy="no-referrer" src="https://map.blitzortung.org/index.php?interactive=0&amp;NavigationControl=0&amp;FullScreenControl=0&amp;ScaleControl=0&amp;MenuButtonDiv=0&amp;InfoDiv=0&amp;LinksCheckboxChecked=0&amp;LightningCheckboxChecked=1&amp;LightningRangeValue=6&amp;MapStyle=2&amp;MapStyleRangeValue=10&amp;Cookies=0&amp;Advertisment=0#7/44.42/11.98" title="Mappa fulmini live Blitzortung"></iframe>
+<div class="iframe-loading"><span>⚡</span><b>Collegamento rete fulmini…</b></div>
+</div>
+<div class="control-monitor-foot"><span>BLITZORTUNG LIVE</span><em>bianco = scarica recente · rosso = più vecchia</em></div>
+</article>
+</section>
+<div class="weather-analysis-route compact"><small>APPROFONDIMENTI</small><p>Apri solo lo strumento necessario, senza perdere il quadro dei monitor.</p></div>
+<div class="tool-group-title"><span>CENTRO OPERATIVO</span><small>RISCHIO · TERRITORIO</small></div>
+<nav aria-label="Strumenti operativi" class="weather-analysis-tools control-room-tools compact-tools primary-tools">
+<button class="weather-analysis-tool" id="weatherAnalysisPretemp" type="button"><i>⛈️</i><span><b>PRETEMP</b><small>Pericolosità e bollettino</small></span><em>1</em></button>
+<button class="weather-analysis-tool" id="weatherAnalysisLamone" type="button"><i>🌊</i><span><b>Lamone</b><small>Pioggia a monte e piena</small></span><em>2</em></button>
+<a class="weather-analysis-tool" href="https://www.guardcostaus-ravenna.it/MeteoPagine/webcam.html" rel="noopener" target="_blank"><i>📷</i><span><b>Webcam</b><small>Conferma visiva del cielo</small></span><em>3</em></a>
+<a class="weather-analysis-tool" href="https://allertameteo.regione.emilia-romagna.it/web/bagnacavallo" rel="noopener" target="_blank"><i>🛡️</i><span><b>Allerte</b><small>Zona D1 · Bagnacavallo</small></span><em>4</em></a>
+</nav>
+<div class="tool-group-title sources-title"><span>FONTI LOCALI</span><small>AGGIORNAMENTI</small></div>
+<nav aria-label="Fonti meteo locali" class="weather-analysis-tools control-room-tools compact-tools source-tools">
+<button class="weather-analysis-tool" id="weatherAnalysisNews" type="button"><i>📰</i><span><b>Meteo Live locale</b><small>Fonti e aggiornamenti dal territorio</small></span><em>5</em></button>
+</nav>
+<section class="weather-analysis-tip"><span>💡</span><p><b>Regola operativa</b><br/>Radar prima di tutto. PRETEMP conferma il rischio; Lamone si apre quando la pioggia diventa persistente o interessa il bacino a monte.</p></section>
+</div>
+</section>
 <div aria-hidden="true" class="legacy-weather-data sr-only">
 <span id="tempNow">--°C</span><span id="nowDesc">--</span><span id="dew">--°</span><span id="rain6">-- mm</span>
 </div>
-
 </section>
-
 <section aria-label="Informazioni astronomiche e stato operativo" class="home-astro-grid">
 <article class="card astro-card alert-status-card">
 <span class="label">STATO OPERATIVO</span>
@@ -343,7 +339,7 @@
 </div>
 <button id="refreshPretemp" type="button">↻ Aggiorna</button>
 </section>
-<div class="pretemp-auto-grid" aria-label="Lettura automatica PRETEMP">
+<div aria-label="Lettura automatica PRETEMP" class="pretemp-auto-grid">
 <span><small>Validità</small><b id="pretempValidity">verifica…</b></span>
 <span><small>Pericolosità</small><b id="pretempAutoLevel">—</b></span>
 <span><small>Fenomeni principali</small><b id="pretempAutoPhenomena">in lettura…</b></span>
@@ -453,13 +449,13 @@
 <div class="tool-section accordion-section news follow-step" id="followSection">
 <button aria-expanded="false" class="tool-title accordion-toggle" type="button"><span>📡</span><div><b>5. Meteo Live</b><small>Situazione, webcam e notizie</small></div><i>›</i></button>
 <div class="tool-grid analysis-tools live-info-grid live-hub accordion-content">
-<section class="live-column live-situation" aria-label="Situazione in tempo reale">
+<section aria-label="Situazione in tempo reale" class="live-column live-situation">
 <div class="live-column-head"><span>📡</span><div><b>SITUAZIONE IN TEMPO REALE</b><small>Per vedere cosa sta succedendo adesso</small></div></div>
 <a class="live-source featured" href="https://www.meteomarreno.it/riviera-romagnola-ravenna/" rel="noopener" target="_blank"><i>🌊</i><span><b>Meteo Marreno</b><small>Riviera Romagnola e Ravenna</small></span><em>RADAR</em></a>
 <a class="live-source" href="https://www.centrometeoemiliaromagna.com/webcam-regione" rel="noopener" target="_blank"><i>📷</i><span><b>Webcam Emilia-Romagna</b><small>Controllo visivo regionale</small></span><em>WEBCAM</em></a>
 <a class="live-source" href="https://meteo-pedemontanaforlivese.it/" rel="noopener" target="_blank"><i>⛰️</i><span><b>Meteo Pedemontana Forlivese</b><small>Aggiornamenti e analisi locali</small></span><em>LOCALE</em></a>
 </section>
-<section class="live-column live-news" aria-label="Notizie e aggiornamenti">
+<section aria-label="Notizie e aggiornamenti" class="live-column live-news">
 <div class="live-column-head"><span>📰</span><div><b>NOTIZIE E AGGIORNAMENTI</b><small>Per leggere cronaca, analisi e tendenze</small></div></div>
 <a class="live-source" href="https://www.meteo.it/notizie" rel="noopener" target="_blank"><i>📰</i><span><b>Meteo.it – Notizie</b><small>Notizie e approfondimenti nazionali</small></span><em>NEWS</em></a>
 <a class="live-source" href="https://www.centrometeoemiliaromagna.com/" rel="noopener" target="_blank"><i>🌦️</i><span><b>Centro Meteo Emilia-Romagna</b><small>Bollettini e analisi regionali</small></span><em>REGIONE</em></a>
