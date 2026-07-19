@@ -11,7 +11,7 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · Sala Controllo RC14</title>
+<title>Meteo Conte 1.1 · Sala Controllo RC16</title>
 <link href="manifest.json?v=1.1-control-rc15" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc15" rel="icon" type="image/png"/>
 <link href="style.css?v=1.1-control-rc15" rel="stylesheet"/>
@@ -112,7 +112,7 @@
   <div class="weather-analysis-shell control-room-shell">
     <header class="weather-analysis-header">
       <button aria-label="Chiudi Sala Controllo" class="weather-analysis-close" id="closeWeatherAnalysis" type="button">‹</button>
-      <div><small>METEO CONTE · RC15</small><h2>Sala Controllo</h2></div>
+      <div><small>METEO CONTE · RC16</small><h2>Sala Controllo</h2></div>
       <span class="weather-analysis-live"><i></i> OPERATIVA</span>
     </header>
     <section class="weather-analysis-summary" id="weatherAnalysisSummary">
@@ -125,10 +125,7 @@
       <div><small>RAFFICA MAX</small><b id="controlRoomGust">--</b></div>
       <div><small>PRESSIONE</small><b id="controlRoomPressure">--</b></div>
     </section>
-    <div class="weather-analysis-route">
-      <small>MONITOR SALA CONTROLLO</small>
-      <p>Radar, evoluzione e fulmini sono già davanti a te. Tocca un monitor solo per aprirlo a tutto schermo.</p>
-    </div>
+    <div class="control-console-label"><span>● MONITOR OPERATIVI</span><small>LIVE · NOWCAST · FULMINI</small></div>
     <section class="control-monitor-grid" aria-label="Monitor meteo live">
       <article class="control-monitor control-monitor-radar">
         <div class="control-monitor-head"><span><i>📡</i><b>RADAR LIVE</b><small>Pioggia reale e direzione delle celle</small></span><a href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener">APRI ↗</a></div>
@@ -144,7 +141,7 @@
       <article class="control-monitor control-monitor-lightning">
         <div class="control-monitor-head"><span><i>⚡</i><b>FULMINI LIVE</b><small>Scariche in tempo reale sulla Romagna</small></span><a href="https://map.blitzortung.org/" target="_blank" rel="noopener">APRI ↗</a></div>
         <div class="lightning-live-wrap">
-          <iframe id="controlRoomLightning" title="Mappa fulmini live Blitzortung" loading="lazy" referrerpolicy="no-referrer" src="https://map.blitzortung.org/index.php?interactive=0&amp;NavigationControl=0&amp;FullScreenControl=0&amp;ScaleControl=0&amp;MenuButtonDiv=0&amp;InfoDiv=0&amp;LinksCheckboxChecked=0&amp;LightningCheckboxChecked=1&amp;LightningRangeValue=6&amp;MapStyle=2&amp;MapStyleRangeValue=10&amp;Cookies=0&amp;Advertisment=0"></iframe>
+          <iframe id="controlRoomLightning" title="Mappa fulmini live Blitzortung" loading="lazy" referrerpolicy="no-referrer" src="https://map.blitzortung.org/index.php?interactive=0&amp;NavigationControl=0&amp;FullScreenControl=0&amp;ScaleControl=0&amp;MenuButtonDiv=0&amp;InfoDiv=0&amp;LinksCheckboxChecked=0&amp;LightningCheckboxChecked=1&amp;LightningRangeValue=6&amp;MapStyle=2&amp;MapStyleRangeValue=10&amp;Cookies=0&amp;Advertisment=0#7/44.42/11.98"></iframe>
           <div class="iframe-loading"><span>⚡</span><b>Collegamento rete fulmini…</b></div>
         </div>
         <div class="control-monitor-foot"><span>BLITZORTUNG LIVE</span><em>bianco = scarica recente · rosso = più vecchia</em></div>
@@ -443,7 +440,7 @@
 </div>
 </div>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Sala Controllo RC12</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Sala Controllo RC16</footer>
 <div aria-label="Mappa PRETEMP ingrandita" aria-modal="true" class="pretemp-modal hidden" id="pretempModal" role="dialog">
 <div class="pretemp-modal-head">
 <div><span>PRETEMP</span><b>Mappa del giorno</b></div>

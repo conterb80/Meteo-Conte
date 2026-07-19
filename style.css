@@ -2774,3 +2774,37 @@ html,body{max-width:100%;overflow-x:hidden}
   .compact-tools{grid-template-columns:1fr!important}
   .compact-tools .weather-analysis-tool:last-child{grid-column:auto!important}
 }
+
+
+/* RC16 — Console operativa compatta e fulmini centrati sulla Romagna */
+.weather-analysis-page .control-room-shell{padding:14px 14px 32px!important}
+.weather-analysis-page .weather-analysis-header{min-height:58px;padding:0 2px 10px!important;margin-bottom:10px!important;border-bottom:1px solid rgba(106,211,226,.17)}
+.weather-analysis-page .weather-analysis-header>div{min-width:0;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.weather-analysis-page .weather-analysis-header small{font-size:8px!important;letter-spacing:.19em!important;white-space:nowrap}
+.weather-analysis-page .weather-analysis-header h2{font-size:23px!important;line-height:1!important;margin:0!important;white-space:nowrap}
+.weather-analysis-page .weather-analysis-close{width:42px!important;height:42px!important;border-radius:14px!important;font-size:29px!important;flex:none}
+.weather-analysis-page .weather-analysis-live{padding:7px 9px!important;font-size:8px!important;letter-spacing:.13em!important;flex:none}
+.weather-analysis-summary{padding:12px 14px!important;border-radius:17px!important;display:grid!important;grid-template-columns:auto 1fr;align-items:center;gap:5px 10px;margin:0!important}
+.weather-analysis-state{grid-column:1/-1;gap:9px!important}.weather-analysis-state>i{width:12px!important;height:12px!important;box-shadow:0 0 0 6px rgba(75,208,163,.09)!important}
+.weather-analysis-state small{font-size:8px!important;letter-spacing:.14em!important}.weather-analysis-state b{font-size:19px!important;line-height:1.05!important}
+.weather-analysis-summary p{grid-column:1/-1;margin:3px 0 0!important;font-size:11px!important;line-height:1.35!important;color:#b7cbd0!important}
+.control-room-kpis{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;margin:7px 0 0!important;padding:6px!important;border-radius:15px;background:rgba(5,31,40,.72);border:1px solid rgba(104,207,220,.12)}
+.control-room-kpis div{min-width:0;padding:7px 5px!important;border:0!important;border-radius:10px!important;background:rgba(14,53,65,.55)!important;text-align:center}
+.control-room-kpis small{font-size:6px!important;letter-spacing:.08em!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.control-room-kpis b{font-size:13px!important;margin-top:3px!important;white-space:nowrap}
+.control-console-label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:13px 2px 7px;padding:0 2px;color:#73d6e4}
+.control-console-label span{font-size:9px;font-weight:900;letter-spacing:.17em}.control-console-label small{font-size:7px;letter-spacing:.12em;color:#6f969f}
+.control-monitor-grid{margin-top:0!important;gap:11px!important}
+.control-monitor{border-radius:18px!important;box-shadow:0 10px 25px rgba(0,0,0,.2)!important}
+.control-monitor-head{padding:10px 12px!important}.control-monitor-head i{font-size:19px!important}.control-monitor-head b{font-size:12px!important}.control-monitor-head small{font-size:8px!important}.control-monitor-head a{padding:7px 9px!important;font-size:8px!important}
+.control-monitor-map,.evolution-live-map,.lightning-live-wrap{height:260px!important}
+.control-monitor-foot{padding:7px 10px!important;font-size:8px!important}
+.weather-analysis-route.compact{margin-top:15px!important}.weather-analysis-route.compact p{font-size:11px!important;margin-top:4px!important}
+.lightning-live-wrap iframe{width:100%!important;height:100%!important;transform:none!important}
+@media(max-width:430px){
+ .weather-analysis-page .weather-analysis-header{display:grid!important;grid-template-columns:42px minmax(0,1fr) auto;gap:9px!important}
+ .weather-analysis-page .weather-analysis-header>div{display:block}
+ .weather-analysis-page .weather-analysis-header h2{font-size:21px!important;margin-top:2px!important}
+ .control-room-kpis{gap:4px!important;padding:5px!important}
+ .control-room-kpis div{padding:7px 2px!important}.control-room-kpis b{font-size:12px!important}
+}
