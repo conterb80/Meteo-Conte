@@ -1,12 +1,10 @@
-# Meteo Conte 1.1 RC16 — Sala Controllo Professionale
+# Meteo Conte 1.1 — RC17 Console Professionale
 
-File pronti per GitHub Pages.
-
-## Correzione RC16
-- Eliminato lo sbordamento orizzontale della pagina su smartphone.
-- Cassetti di approfondimento contenuti correttamente nella larghezza dello schermo.
-- Testi lunghi gestiti senza allargare la griglia.
-- Su schermi molto stretti i cassetti passano automaticamente a una colonna.
-- Aggiornata la cache PWA alla versione RC16.
-
-Caricare tutti i file nella root del repository, sostituendo quelli esistenti.
+- Gerarchia visiva più compatta
+- Stato operativo ridotto a barra console
+- KPI su display unico
+- Tre canali operativi immediati
+- Monitor più protagonisti
+- Approfondimenti divisi tra Centro Operativo e Fonti locali
+- Fulmini live centrati sulla Romagna
+- Correzione overflow mobile mantenuta

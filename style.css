@@ -2808,3 +2808,67 @@ html,body{max-width:100%;overflow-x:hidden}
  .control-room-kpis{gap:4px!important;padding:5px!important}
  .control-room-kpis div{padding:7px 2px!important}.control-room-kpis b{font-size:12px!important}
 }
+
+/* RC17 — gerarchia visiva da console professionale */
+.weather-analysis-page .control-room-shell{padding-top:10px!important}
+.weather-analysis-page .weather-analysis-header{min-height:50px!important;padding-bottom:8px!important;margin-bottom:8px!important}
+.weather-analysis-page .weather-analysis-header>div{position:relative;display:block!important;padding-right:4px}
+.weather-analysis-page .weather-analysis-header small{display:block;font-size:7px!important;line-height:1;letter-spacing:.2em!important;color:#78ccdc}
+.weather-analysis-page .weather-analysis-header h2{font-size:20px!important;line-height:1.05!important;margin-top:3px!important}
+.console-location{display:block;margin-top:4px;font-size:6px;font-weight:800;letter-spacing:.16em;color:#6d929a;white-space:nowrap}
+.weather-analysis-page .weather-analysis-close{width:38px!important;height:38px!important;border-radius:12px!important;font-size:26px!important}
+.weather-analysis-page .weather-analysis-live{padding:6px 8px!important;font-size:7px!important}
+
+.weather-analysis-summary{min-height:0!important;padding:9px 11px!important;border-radius:14px!important;grid-template-columns:auto minmax(0,1fr)!important;gap:3px 8px!important;background:linear-gradient(110deg,rgba(8,48,58,.92),rgba(5,31,41,.92))!important}
+.weather-analysis-state{grid-column:auto!important;display:flex!important;min-width:0}
+.weather-analysis-state>i{width:10px!important;height:10px!important;box-shadow:0 0 0 4px rgba(75,208,163,.08)!important}
+.weather-analysis-state span{min-width:0}
+.weather-analysis-state small{font-size:6px!important;letter-spacing:.13em!important}
+.weather-analysis-state b{font-size:16px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.weather-analysis-summary p{grid-column:auto!important;margin:0!important;font-size:9px!important;line-height:1.25!important;text-align:right;max-width:330px;justify-self:end}
+
+.control-room-kpis{margin-top:5px!important;padding:3px!important;gap:2px!important;border-radius:12px!important}
+.control-room-kpis div{padding:5px 2px!important;border-radius:8px!important;background:transparent!important;border-right:1px solid rgba(112,205,216,.12)!important}
+.control-room-kpis div:last-child{border-right:0!important}
+.control-room-kpis small{font-size:5.5px!important;letter-spacing:.05em!important;color:#76b9c6!important}
+.control-room-kpis b{font-size:11px!important;margin-top:2px!important}
+
+.control-console-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:8px 0 5px;padding:4px;border:1px solid rgba(103,209,220,.13);border-radius:12px;background:rgba(3,25,34,.72)}
+.control-console-strip>span{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px;min-width:0;padding:5px 6px;border-radius:8px;background:rgba(16,57,67,.52)}
+.control-console-strip i{width:6px;height:6px;border-radius:50%;background:#42d2a6;box-shadow:0 0 9px rgba(66,210,166,.8)}
+.control-console-strip b{font-size:6.5px;letter-spacing:.08em;color:#d8f4f7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.control-console-strip small{font-size:5.5px;font-weight:900;color:#79dce7;white-space:nowrap}
+.control-console-label{margin:8px 2px 5px!important}
+.control-console-label span{font-size:8px!important}.control-console-label small{font-size:6px!important}
+
+.control-monitor-grid{gap:9px!important}
+.control-monitor-head{padding:8px 10px!important}
+.control-monitor-head i{font-size:17px!important}.control-monitor-head b{font-size:11px!important}.control-monitor-head small{font-size:7px!important;margin-top:1px!important}
+.control-monitor-head a{padding:6px 8px!important;font-size:7px!important}
+.control-monitor-map,.evolution-live-map,.lightning-live-wrap{height:255px!important}
+.control-monitor-foot{padding:6px 9px!important;font-size:7px!important}
+.monitor-timeline{padding:6px 9px!important}
+
+.weather-analysis-route.compact{margin-top:13px!important;padding-top:0!important}
+.weather-analysis-route.compact small{font-size:8px!important;letter-spacing:.18em!important}
+.weather-analysis-route.compact p{font-size:9px!important;line-height:1.3!important;margin:3px 0 8px!important}
+.tool-group-title{display:flex;justify-content:space-between;align-items:center;margin:8px 2px 5px;color:#78d3df}
+.tool-group-title span{font-size:7px;font-weight:900;letter-spacing:.17em}.tool-group-title small{font-size:6px;color:#668c94;letter-spacing:.11em}
+.sources-title{margin-top:9px}
+.compact-tools{gap:6px!important}
+.compact-tools .weather-analysis-tool{min-height:58px!important;padding:8px!important;border-radius:14px!important}
+.compact-tools .weather-analysis-tool>i{width:38px!important;height:38px!important;font-size:18px!important;border-radius:12px!important}
+.compact-tools .weather-analysis-tool b{font-size:11px!important}.compact-tools .weather-analysis-tool small{font-size:7px!important}.compact-tools .weather-analysis-tool>em{width:25px!important;height:25px!important;font-size:8px!important}
+.source-tools{grid-template-columns:1fr!important}.source-tools .weather-analysis-tool{grid-column:1/-1!important}
+.weather-analysis-tip{margin-top:12px!important;padding:10px 11px!important;border-radius:14px!important}
+.weather-analysis-tip p{font-size:9px!important;line-height:1.45!important}.weather-analysis-tip span{font-size:16px!important}
+
+@media(max-width:430px){
+ .weather-analysis-page .weather-analysis-header{grid-template-columns:38px minmax(0,1fr) auto!important;gap:8px!important}
+ .weather-analysis-summary{grid-template-columns:minmax(0,1fr)!important}
+ .weather-analysis-state{grid-column:1!important}
+ .weather-analysis-summary p{grid-column:1!important;text-align:left;justify-self:start;max-width:none;margin-left:18px!important}
+ .control-room-kpis b{font-size:10px!important}
+ .control-console-strip>span{padding:5px 4px}
+ .control-console-strip b{font-size:5.8px}
+}
