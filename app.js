@@ -1311,25 +1311,59 @@ loadLamoneSensors();
   }
 })();
 
-/* RC12 — rimuove i messaggi di accensione quando gli iframe sono pronti */
-(function initEmbeddedControlMonitors(){
-  ['controlRoomNowcast','controlRoomLightning'].forEach(id=>{
-    const frame=document.getElementById(id); if(!frame)return;
-    frame.addEventListener('load',()=>frame.parentElement?.classList.add('is-loaded'));
-  });
+
+
+/* RC14 — Evoluzione animata: osservazioni radar + nowcast quando disponibile */
+(function initControlRoomNowcast(){
+  const el=document.getElementById('controlRoomNowcast');
+  if(!el||typeof L==='undefined') return;
+  let initialized=false,playing=true,timer=null,index=0,frames=[],layer=null,map=null,host='https://tilecache.rainviewer.com';
+  const playBtn=document.getElementById('nowcastPlay');
+  const timeEl=document.getElementById('controlRoomNowcastTime');
+  const modeEl=document.getElementById('nowcastMode');
+  const progress=document.getElementById('nowcastProgress');
+  function paint(){
+    if(!frames.length||!map)return;
+    const f=frames[index];
+    if(layer)map.removeLayer(layer);
+    const scheme=f.forecast?6:2;
+    layer=L.tileLayer(`${host}${f.path}/256/{z}/{x}/{y}/${scheme}/1_1.png`,{pane:'nowcastOverlay',opacity:.78,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'}).addTo(map);
+    const stamp=new Date(f.time*1000);
+    const delta=Math.round((f.time*1000-Date.now())/60000);
+    if(timeEl) timeEl.textContent=delta>0?`+${delta} MIN`:stamp.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+    if(modeEl) modeEl.textContent=f.forecast?'PREVISIONE RADAR':'OSSERVATO';
+    if(progress) progress.style.width=`${frames.length>1?(index/(frames.length-1))*100:100}%`;
+  }
+  function cycle(){if(!playing||!frames.length)return;index=(index+1)%frames.length;paint()}
+  function boot(){
+    if(initialized)return; initialized=true;
+    try{
+      map=L.map(el,{center:[44.42,11.98],zoom:7,zoomControl:true,attributionControl:true,scrollWheelZoom:false});
+      map.createPane('nowcastOverlay');map.getPane('nowcastOverlay').style.zIndex=420;
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,minZoom:5,attribution:'© OpenStreetMap'}).addTo(map);
+      L.circleMarker([44.418,11.977],{radius:5,color:'#dffcff',weight:2,fillColor:'#00aeca',fillOpacity:1}).bindTooltip('Borgo Viazza').addTo(map);
+      fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('api');return r.json()}).then(data=>{
+        host=data.host||host;
+        const past=(data?.radar?.past||[]).slice(-4).map(x=>({...x,forecast:false}));
+        const future=(data?.radar?.nowcast||[]).map(x=>({...x,forecast:true}));
+        frames=[...past,...future];
+        if(!frames.length)throw new Error('no frames');
+        el.querySelector('.monitor-wait')?.remove();
+        index=Math.max(0,past.length-1); paint();
+        timer=setInterval(cycle,1350);setTimeout(()=>map.invalidateSize(),180);
+      }).catch(()=>{
+        el.innerHTML='<a class="radar-fallback" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><span>🔮</span><b>Evoluzione integrata non disponibile</b><small>Apri nowcasting ufficiale ER ↗</small></a>';
+        if(timeEl)timeEl.textContent='FONTE ER';if(modeEl)modeEl.textContent='UFFICIALE';
+      });
+    }catch(_e){}
+  }
+  playBtn?.addEventListener('click',()=>{playing=!playing;playBtn.textContent=playing?'❚❚':'▶';if(playing)cycle()});
+  const page=document.getElementById('weatherAnalysisPage');
+  if(page){new MutationObserver(()=>{if(!page.classList.contains('hidden'))setTimeout(boot,180)}).observe(page,{attributes:true,attributeFilter:['class']});if(!page.classList.contains('hidden'))setTimeout(boot,180)}
 })();
 
-/* RC13 — basemap locali per i monitor anteprima, nessun iframe esterno */
-(function(){
- function bootSnapshot(id, zoom){
-  const el=document.getElementById(id); if(!el||el.dataset.ready||!window.L)return;
-  el.dataset.ready='1';
-  const map=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,tap:false}).setView([44.42,11.98],zoom||7);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12}).addTo(map);
-  L.circleMarker([44.42,11.98],{radius:6,color:'#dffcff',weight:2,fillColor:'#00aeca',fillOpacity:1}).addTo(map);
-  setTimeout(()=>map.invalidateSize(),250);
- }
- function start(){bootSnapshot('controlRoomNowcastMap',7);bootSnapshot('controlRoomLightningMap',7)}
- document.addEventListener('click',e=>{if(e.target.closest('#openWeatherAnalysis'))setTimeout(start,180)});
- window.addEventListener('load',start);
+/* RC14 — stato caricamento monitor fulmini */
+(function initLightningFrame(){
+  const frame=document.getElementById('controlRoomLightning');if(!frame)return;
+  frame.addEventListener('load',()=>frame.parentElement?.classList.add('is-loaded'));
 })();
