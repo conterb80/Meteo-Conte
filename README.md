@@ -1,6 +1,6 @@
-Meteo Conte 1.1 — RC21 Home Compatta
+Meteo Conte 1.1 — RC22 Sala Controllo Parete Monitor Test
 
-Restyling grafico con header ridotto, radar principale spostato in alto e proporzioni ottimizzate per smartphone. La Sala Controllo e le funzioni operative della RC20 restano invariate.
+Modifica esclusiva della Sala Controllo: ordine Evoluzione, Fulmini, Radar; monitor dimensionati; accessi webcam visibili. Home e resto dell’app congelati.
 
 Meteo Conte 1.1 · RC20 Sala Controllo Evoluzione Test
 

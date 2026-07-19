@@ -2964,3 +2964,22 @@ body{background:radial-gradient(circle at 50% -10%,#0b3a49 0,#051b27 34%,#020d14
  .hero-location h1{font-size:18px!important}.head-weather{min-width:102px!important}.head-weather b{font-size:23px!important}.hero-metrics b{font-size:8.8px!important}
  .home-radar-map{height:330px!important}.briefing-status-row{grid-template-columns:54px repeat(4,minmax(0,1fr))!important}.briefing-status strong{font-size:6.6px!important}.briefing-message p{font-size:12px!important}
 }
+
+/* RC22 — Sala Controllo: parete monitor definitiva da testare */
+.weather-analysis-page .control-monitor-grid{display:flex!important;flex-direction:column!important;gap:10px!important}
+.weather-analysis-page .control-monitor-nowcast{order:1}
+.weather-analysis-page .control-monitor-lightning{order:2}
+.weather-analysis-page .control-monitor-radar{order:3}
+.weather-analysis-page .control-monitor{width:100%!important;grid-column:auto!important}
+.weather-analysis-page .control-monitor-head span{min-width:0}
+.weather-analysis-page .control-monitor-head b{white-space:normal!important}
+.control-webcam-wall{margin-top:12px;padding:10px;border:1px solid rgba(102,206,221,.18);border-radius:17px;background:linear-gradient(145deg,rgba(5,31,41,.96),rgba(3,21,29,.98));box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.control-webcam-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.control-webcam-title span{font-size:9px;font-weight:900;letter-spacing:.13em;color:#d8f4f7}
+.control-webcam-title a{font-size:7px;font-weight:900;color:#75d9e6;text-decoration:none;border:1px solid rgba(117,217,230,.22);border-radius:9px;padding:6px 8px;white-space:nowrap}
+.control-webcam-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.control-webcam-grid>a{position:relative;min-height:88px;padding:10px;border:1px solid rgba(113,204,217,.14);border-radius:13px;background:radial-gradient(circle at 80% 20%,rgba(31,115,136,.22),transparent 38%),linear-gradient(145deg,rgba(10,49,61,.92),rgba(5,29,38,.96));text-decoration:none;color:#fff;display:grid;grid-template-columns:auto 1fr;column-gap:8px;align-content:center;overflow:hidden}
+.control-webcam-grid i{grid-row:1/4;font-style:normal;font-size:22px;align-self:center}
+.control-webcam-grid b{font-size:11px;line-height:1.1}.control-webcam-grid small{font-size:7px;color:#a8c5cb;line-height:1.25;margin-top:3px}.control-webcam-grid em{font-style:normal;font-size:6px;font-weight:900;color:#55d7a7;margin-top:6px;letter-spacing:.11em}
+@media(max-width:390px){.control-webcam-grid{grid-template-columns:1fr}.control-webcam-grid>a{min-height:72px}.control-webcam-title span{font-size:8px}}
+@media(min-width:760px){.weather-analysis-page .control-monitor-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}.weather-analysis-page .control-monitor{width:auto!important}.weather-analysis-page .control-monitor-map,.weather-analysis-page .evolution-live-map,.weather-analysis-page .lightning-live-wrap{height:310px!important}.control-webcam-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}

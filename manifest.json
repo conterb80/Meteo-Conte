@@ -1,7 +1,7 @@
 {
-  "name": "Meteo Conte 1.1 Home Compatta RC21",
+  "name": "Meteo Conte 1.1 Home Compatta RC22",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=1.1-home-rc21",
+  "start_url": "index.html?v=1.1-home-rc22",
   "display": "standalone",
   "background_color": "#020d14",
   "theme_color": "#041923",
