@@ -2918,3 +2918,63 @@ html,body{max-width:100%;overflow-x:hidden}
 .official-nowcast-overlay span{font-size:28px}.official-nowcast-overlay b{font-size:12px}.official-nowcast-overlay small{font-size:8px;color:#8ecbd4;line-height:1.4}
 .rc20-evolution-monitor .monitor-timeline{border-top:1px solid rgba(99,203,216,.12)}
 @media(max-width:430px){.official-nowcast-wrap{height:270px}.evolution-mode-switch button{font-size:6px;padding:7px 4px}}
+
+/* RC21 — restyling grafico Home / base stabile per test */
+:root{
+  --rc21-bg:#020b12;
+  --rc21-panel:#071722;
+  --rc21-panel-2:#0a1d2a;
+  --rc21-line:#17374a;
+  --rc21-cyan:#38bdf8;
+  --rc21-green:#45d483;
+  --rc21-yellow:#f4c542;
+  --rc21-text:#f2f7fa;
+  --rc21-muted:#93a8b7;
+}
+body{background:radial-gradient(circle at 50% -10%,#0b2737 0,#06131d 28%,var(--rc21-bg) 72%);color:var(--rc21-text)}
+.app{max-width:1180px;padding:10px 10px calc(26px + env(safe-area-inset-bottom));}
+.home-cockpit{display:grid;grid-template-columns:1fr;gap:10px}
+.home-cockpit>.card,.home-cockpit>.topbar{margin:0!important;border:1px solid var(--rc21-line)!important;background:linear-gradient(145deg,rgba(9,29,42,.97),rgba(4,18,28,.98))!important;box-shadow:0 12px 30px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.035)!important}
+
+/* testata compatta stile sala controllo */
+.weather-hero{padding:12px!important;border-radius:22px!important;overflow:hidden}
+.weather-hero-main{gap:10px!important}.brand-block{gap:10px!important}.app-logo{width:64px!important;height:64px!important;border-radius:18px!important;border:1px solid #23485c!important;box-shadow:0 8px 24px rgba(0,0,0,.3)!important}
+.hero-kicker{font-size:9px!important;letter-spacing:.18em!important;color:var(--rc21-yellow)!important}.hero-location h1{font-size:22px!important;line-height:1!important;margin:3px 0 5px!important}.hero-location p{font-size:12px!important;color:var(--rc21-muted)!important}
+.head-weather{min-width:112px!important;border:1px solid #1b4358!important;background:linear-gradient(135deg,#0c2940,#081d2d)!important;border-radius:18px!important;padding:9px 10px!important}.head-weather span{font-size:25px!important}.head-weather b{font-size:27px!important}.head-weather i{color:var(--rc21-cyan)!important}
+.hero-metrics{margin-top:11px!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important}
+.hero-metrics button{min-width:0!important;border:1px solid rgba(65,128,158,.28)!important;background:rgba(5,26,38,.76)!important;border-radius:14px!important;padding:8px 5px!important}.hero-metrics button i{font-size:18px!important}.hero-metrics small{font-size:8px!important;color:#7f9aa9!important}.hero-metrics b{font-size:12px!important;white-space:nowrap!important}
+
+/* titoli dei monitor */
+.monitor-head{padding:12px 13px 9px!important;margin:0!important}.monitor-head .label{font-size:9px!important;letter-spacing:.14em!important;color:#72d9ef!important}.monitor-head b{font-size:17px!important;line-height:1.1!important}.monitor-head small,.monitor-head a{font-size:11px!important;color:#a8bfcc!important}
+
+/* previsioni orarie */
+.hourly-monitor-card{order:4;border-radius:20px!important;overflow:hidden}.home-hourly-strip{padding:4px 10px 12px!important;gap:7px!important}.home-hour{min-width:74px!important;border:1px solid #183a4b!important;background:linear-gradient(180deg,#0a2130,#071722)!important;border-radius:16px!important;padding:9px 7px!important}.home-hour b{font-size:12px!important}.home-hour .hour-icon{font-size:25px!important}.home-hour strong{font-size:19px!important}
+
+/* radar protagonista */
+.radar-monitor-card{order:2;border-radius:22px!important;overflow:hidden}.radar-head-actions a{background:#0c3f72!important;color:white!important;border:1px solid #1f639d!important;border-radius:11px!important;padding:7px 9px!important}.live-badge{background:rgba(47,211,131,.11)!important;border:1px solid rgba(47,211,131,.3)!important;color:#69e39e!important;border-radius:999px!important;padding:6px 8px!important}.lite-radar-panel{margin:0 10px!important;border-radius:17px!important;overflow:hidden!important;border:1px solid #20465a!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)!important}.home-radar-map{height:390px!important}.radar-foot{padding:9px 13px 11px!important;font-size:11px!important;color:#91aab8!important}
+
+/* Bollettino Conte trasformato in plancia operativa */
+.top-status{order:1;border-radius:22px!important;padding:12px!important}.briefing-title{display:block!important;margin:0 0 9px!important;font-size:10px!important;letter-spacing:.16em!important;color:#75d9ed!important}.briefing-status-row{grid-template-columns:1.15fr repeat(4,1fr)!important;gap:7px!important}.briefing-status{border:1px solid #193c4f!important;background:linear-gradient(180deg,#0b2231,#071722)!important;border-radius:16px!important;min-height:84px!important;padding:8px 6px!important}.briefing-status strong{font-size:10px!important}.briefing-status>b{font-size:9px!important;color:#91a9b7!important}.briefing-index b{font-size:21px!important;color:#eaf8ee!important}.briefing-index small{font-size:8px!important;color:#7f9eaa!important}.bigdot{box-shadow:0 0 0 5px rgba(64,212,129,.08),0 0 20px rgba(64,212,129,.18)!important}.briefing-message{margin-top:9px!important;border:1px solid #183b4c!important;background:rgba(3,18,27,.72)!important;border-radius:15px!important;padding:10px 12px!important}.briefing-message small{font-size:8px!important;color:#65d2e8!important}.briefing-message p{font-size:13px!important;line-height:1.35!important;margin-top:4px!important}
+
+/* trend launcher */
+.operational-timeline-card{order:3;border-radius:20px!important;overflow:hidden}.operational-timeline{padding:7px 12px 10px!important}.timeline-summary{padding:0 12px 11px!important;color:#8fa6b4!important;font-size:11px!important}
+
+/* cassetti secondari */
+.quick-drawers-grid{gap:10px!important}.lamone-drawer,.pretemp-drawer{border-radius:20px!important;border-color:var(--rc21-line)!important;background:linear-gradient(145deg,#091d2a,#06131d)!important}.btn{border-radius:13px!important}
+
+/* dettagli e micro-interazioni */
+.card button,.card a{transition:transform .16s ease,filter .16s ease,border-color .16s ease}.card button:active,.card a:active{transform:scale(.985)}
+.label{font-weight:900!important}.dot.green,.bigdot.green{background:var(--rc21-green)!important}.dot.yellow,.bigdot.yellow{background:var(--rc21-yellow)!important}
+
+@media(min-width:760px){
+ .home-cockpit{grid-template-columns:1.2fr .8fr;align-items:start}
+ .weather-hero{grid-column:1/-1}.top-status{grid-column:1}.radar-monitor-card{grid-column:1;grid-row:3 / span 2}.operational-timeline-card{grid-column:2;grid-row:2}.hourly-monitor-card{grid-column:2;grid-row:3}.quick-drawers-grid{grid-column:1/-1}
+ .home-radar-map{height:480px!important}
+}
+@media(max-width:560px){
+ .app{padding-left:7px;padding-right:7px}.weather-hero{padding:10px!important}.app-logo{width:54px!important;height:54px!important}.hero-location h1{font-size:19px!important}.hero-location p{font-size:10px!important}.head-weather{min-width:92px!important;padding:7px!important}.head-weather span{font-size:21px!important}.head-weather b{font-size:23px!important}
+ .hero-metrics{grid-template-columns:repeat(3,1fr)!important}.hero-metrics button:nth-child(4),.hero-metrics button:nth-child(5){grid-column:span 1}.hero-metrics button{padding:7px 4px!important}.hero-metrics small{font-size:7px!important}.hero-metrics b{font-size:10px!important}
+ .briefing-status-row{grid-template-columns:repeat(2,1fr)!important}.briefing-index{grid-column:1/-1!important;display:grid!important;grid-template-columns:auto auto 1fr!important;align-items:center!important;min-height:62px!important}.briefing-index b{justify-self:end!important}.briefing-status{min-height:70px!important}
+ .home-radar-map{height:330px!important}.monitor-head b{font-size:15px!important}.radar-head-actions{gap:5px!important}.radar-head-actions a{font-size:9px!important;padding:6px!important}.live-badge{font-size:9px!important}
+}
+@media(max-width:370px){.home-radar-map{height:290px!important}.hero-metrics{grid-template-columns:repeat(2,1fr)!important}.hero-metrics button:last-child{grid-column:1/-1}.briefing-status-row{gap:5px!important}}
