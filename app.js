@@ -4,7 +4,36 @@ let basinRainData={lamone:null,marzeno:null};
 const WMO={0:['Sereno','☀️'],1:['Prevalentemente sereno','🌤️'],2:['Parzialmente nuvoloso','⛅'],3:['Nuvoloso','☁️'],45:['Nebbia','🌫️'],48:['Nebbia','🌫️'],51:['Pioviggine','🌦️'],53:['Pioviggine','🌦️'],55:['Pioviggine','🌦️'],61:['Pioggia','🌧️'],63:['Pioggia','🌧️'],65:['Pioggia forte','🌧️'],80:['Rovescio','🌦️'],81:['Rovescio','🌧️'],82:['Rovescio forte','⛈️'],95:['Temporale','⛈️'],96:['Temporale/grandine','⛈️'],99:['Temporale/grandine','⛈️']};
 function dewPoint(t,h){const a=17.27,b=237.7;const alpha=((a*t)/(b+t))+Math.log(Math.max(h,1)/100);return (b*alpha)/(a-alpha)}
 function upcomingSlice(hourly,hours=6){const start=nextStart(hourly.time);return {start,end:Math.min(hourly.time.length,start+hours)}}
-function calcIndex(now,hourly){const {start,end}=upcomingSlice(hourly,6);const probs=hourly.precipitation_probability.slice(start,end);const rains=hourly.precipitation.slice(start,end);const gusts=hourly.wind_gusts_10m.slice(start,end);const rainMax=probs.length?Math.max(...probs):0;const rainSum=rains.reduce((a,b)=>a+(b||0),0);const gustMax=gusts.length?Math.max(...gusts):now.wind_gusts_10m;let idx=0;idx+=rainMax*0.45;idx+=Math.min(25,rainSum*10);idx+=now.relative_humidity_2m>75?15:now.relative_humidity_2m>60?8:0;idx+=gustMax>45?15:gustMax>30?8:0;idx+=now.pressure_msl<1008?10:0;return Math.round(Math.min(100,idx))}
+function currentPrecip(now){return Number(now.precipitation||0)+Number(now.rain||0)+Number(now.showers||0)}
+function assessOperationalEvent(now,hourly){
+ const {start,end}=upcomingSlice(hourly,6);
+ const probs=(hourly.precipitation_probability||[]).slice(start,end).map(Number);
+ const rains=(hourly.precipitation||[]).slice(start,end).map(Number);
+ const gusts=(hourly.wind_gusts_10m||[]).slice(start,end).map(Number);
+ const codes=(hourly.weather_code||[]).slice(start,end).map(Number);
+ const rainMax=probs.length?Math.max(...probs):0;
+ const rainSum=rains.reduce((a,b)=>a+(b||0),0);
+ const gustNow=Number(now.wind_gusts_10m||0), gustMax=gusts.length?Math.max(gustNow,...gusts):gustNow;
+ const precipNow=currentPrecip(now), codeNow=Number(now.weather_code||0);
+ const stormNow=codeNow>=95, showerNow=codeNow>=80&&codeNow<=82;
+ const stormSoon=codes.some(x=>x>=95), showerSoon=codes.some(x=>x>=80&&x<=82);
+ let severity=0;
+ if(precipNow>=0.1||showerNow) severity=Math.max(severity,2);
+ if(stormNow) severity=3;
+ if(gustNow>=35) severity=Math.max(severity,1);
+ if(gustNow>=50) severity=Math.max(severity,2);
+ if(gustNow>=70) severity=3;
+ if(stormSoon||rainMax>=70||rainSum>=8||gustMax>=60) severity=Math.max(severity,2);
+ if((stormSoon&&gustMax>=50)||rainSum>=15) severity=3;
+ const color=['green','yellow','yellow','red'][severity];
+ const title=['Tranquilla','Attenzione','Evento in corso / da seguire','Evento intenso in corso'][severity];
+ const events=[];
+ if(stormNow||stormSoon) events.push('temporali');
+ else if(showerNow||showerSoon||precipNow>=0.1||rainSum>=1) events.push('pioggia/rovesci');
+ if(gustNow>=35||gustMax>=50) events.push('raffiche');
+ return {severity,color,title,events,rainMax,rainSum,gustNow,gustMax,precipNow,stormNow,stormSoon,showerNow,showerSoon};
+}
+function calcIndex(now,hourly){const a=assessOperationalEvent(now,hourly);let idx=0;idx+=a.rainMax*0.35;idx+=Math.min(25,a.rainSum*10);idx+=Math.min(25,a.precipNow*18);idx+=now.relative_humidity_2m>75?12:now.relative_humidity_2m>60?6:0;idx+=a.gustMax>60?20:a.gustMax>45?14:a.gustMax>30?8:0;idx+=now.pressure_msl<1008?8:0;if(a.stormNow)idx=Math.max(idx,75);else if(a.showerNow||a.precipNow>=0.1)idx=Math.max(idx,45);return Math.round(Math.min(100,idx))}
 function level(idx){if(idx>=75)return ['Alta attenzione','rosso','red'];if(idx>=50)return ['Da seguire','arancione','yellow'];if(idx>=25)return ['Da monitorare','giallo','yellow'];return ['Tranquilla','tranquillo','green']}
 function setDot(el,c){el.className='dot '+c} function setBig(c){$('statusDot').className='bigdot '+c}
 function nextStart(times){const now=new Date(); let start=times.findIndex(t=>new Date(t)>now); return start<0?0:start;}
@@ -27,43 +56,21 @@ function buildNextSignal(h){
 function renderNextSignal(h){const box=$('nextSignal');if(!box)return;const s=buildNextSignal(h);box.className='next-signal '+s.kind;const icon=s.kind==='storm'?'⛈️':s.kind==='rain'?'🌧️':s.kind==='wind'?'💨':'☀️';box.innerHTML=`<span>PROSSIMO SEGNALE</span><b>${icon} ${s.text}</b><small>Previsione oraria del modello: verifica con Radar e PRETEMP se la situazione cambia.</small>`;}
 
 function buildHomeBriefing(c,h,idx){
-  const {start,end}=upcomingSlice(h,6);
-  const probs=h.precipitation_probability.slice(start,end);
-  const rains=h.precipitation.slice(start,end);
-  const gusts=h.wind_gusts_10m.slice(start,end);
-  const codes=h.weather_code.slice(start,end);
-  const rainMax=probs.length?Math.max(...probs):0;
-  const rainSum=rains.reduce((a,b)=>a+(b||0),0);
-  const gustMax=gusts.length?Math.max(...gusts):c.wind_gusts_10m||0;
-  const storm=c.weather_code>=95||codes.some(x=>x>=95);
-  const showers=codes.some(x=>x>=80&&x<=82);
-  const heavyRain=rainSum>=8||rainMax>=70;
-  const strongWind=gustMax>=60;
-  const lowPressure=(c.pressure_msl||1015)<1008;
-  const signals=[storm,heavyRain,strongWind].filter(Boolean).length;
+  const a=assessOperationalEvent(c,h);
   let main='Nessun fenomeno rilevante previsto nelle prossime 6 ore.';
-  let detail='Situazione stabile. Non sono necessari controlli aggiuntivi.';
-  let color='green';
-  if(idx>=25 || rainMax>=35 || rainSum>=1 || gustMax>=35 || showers){
-    color='yellow';
-    main=showers?'Possibili rovesci nelle prossime ore.':'Evoluzione meteo da seguire nelle prossime ore.';
-    detail=`Pioggia massima ${rainMax}%, accumulo ${rainSum.toFixed(1)} mm e raffiche fino a ${Math.round(gustMax)} km/h. Verifica PRETEMP e Radar evoluzione se il cielo cambia.`;
+  let detail='Situazione stabile. Controllo ordinario dei monitor.';
+  if(a.severity===1){
+    main=a.gustNow>=35?`Attenzione: raffiche locali fino a ${Math.round(a.gustNow)} km/h.`:'Evoluzione meteo da seguire.';
+    detail=`Pioggia max ${a.rainMax}%, accumulo previsto ${a.rainSum.toFixed(1)} mm. Apri Evoluzione e Radar per il controllo reale.`;
   }
-  if(storm || heavyRain || strongWind || idx>=50){
-    color=(storm&&strongWind)||(signals>=2)||idx>=75?'red':'yellow';
-    const events=[];
-    if(storm) events.push('temporali');
-    if(heavyRain) events.push('piogge intense');
-    if(strongWind) events.push('raffiche forti');
-    main=`Attenzione: ${events.length?events.join(', '):'più segnali meteo'} ${events.length>1?'sono possibili':'è possibile'} nelle prossime ore.`;
-    const actions=['PRETEMP','Radar evoluzione'];
-    if(storm) actions.push('Fulmini live');
-    if(heavyRain) actions.push('Lamone');
-    detail=`Probabilità pioggia ${rainMax}%, accumulo ${rainSum.toFixed(1)} mm, raffiche fino a ${Math.round(gustMax)} km/h${lowPressure?', pressione in calo':''}. Controlla ${actions.join(', ')}.`;
+  if(a.severity>=2){
+    const active=a.events.length?a.events.join(' e '):'fenomeni meteo';
+    main=`${a.severity===3?'Attenzione forte':'Evento da seguire'}: ${active} ${a.stormNow||a.showerNow||a.precipNow>=0.1?'in corso':'possibili a breve'}.`;
+    const actions=['Evoluzione','Radar']; if(a.stormNow||a.stormSoon)actions.push('Fulmini'); actions.push('PRETEMP');
+    detail=`Precipitazione locale ${a.precipNow.toFixed(1)} mm, probabilità max ${a.rainMax}%, raffiche ${Math.round(a.gustNow)} km/h (max ${Math.round(a.gustMax)}). Controlla ${actions.join(' → ')}.`;
   }
-  return {main,detail,color,signals};
+  return {main,detail,color:a.color,signals:a.events.length,assessment:a};
 }
-
 function setControlChip(id,color,label){
   const el=$(id); if(!el) return;
   const dot=el.querySelector('i'); if(dot) dot.className=color;
@@ -279,7 +286,7 @@ async function load(){
  const alertPromise=loadOfficialAlert();
  try{
   await navigator.serviceWorker?.getRegistrations?.().then(rs=>rs.forEach(r=>r.unregister()));
-  const url='https://api.open-meteo.com/v1/forecast?latitude=44.418&longitude=11.977&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&daily=sunrise,sunset&timezone=Europe%2FRome&forecast_days=2';
+  const url='https://api.open-meteo.com/v1/forecast?latitude=44.418&longitude=11.977&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,showers,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&daily=sunrise,sunset&timezone=Europe%2FRome&forecast_days=2';
   const res=await fetch(url,{cache:'no-store'}); if(!res.ok) throw new Error('api');
   const data=await res.json(); lastData=data; const c=data.current, h=data.hourly;
   const desc=WMO[c.weather_code]||['Meteo','🌤️']; const idx=calcIndex(c,h); lastIndex=idx; const lv=level(idx); lastLevel=lv;
@@ -571,6 +578,10 @@ function openWeatherAnalysis(){
  if(dot){dot.className='';dot.classList.add(lastLevel?.[2]||'green');}
  if(lastData){
   const c=lastData.current,h=lastData.hourly,{start,end}=upcomingSlice(h,6);
+  const operational=assessOperationalEvent(c,h);
+  if(title) title.textContent=operational.title;
+  if(text) text.textContent=operational.severity>=2?`Segnali locali: ${operational.events.join(', ')||'evento meteo'}. Usa i monitor per verificare traiettoria e intensità.`:sourceText;
+  if(dot){dot.className='';dot.classList.add(operational.color);}
   const rain=h.precipitation.slice(start,end).reduce((a,b)=>a+(b||0),0);
   const gust=Math.max(c.wind_gusts_10m||0,...h.wind_gusts_10m.slice(start,end));
   if($('controlRoomIndex')) $('controlRoomIndex').textContent=`${lastIndex}/100`;
@@ -578,30 +589,30 @@ function openWeatherAnalysis(){
   if($('controlRoomGust')) $('controlRoomGust').textContent=`${Math.round(gust)} km/h`;
   if($('controlRoomPressure')) $('controlRoomPressure').textContent=`${Math.round(c.pressure_msl)} hPa`;
 
-  const p1=h.precipitation.slice(start,Math.min(start+1,h.precipitation.length)).reduce((a,b)=>a+(b||0),0);
-  const p2=h.precipitation.slice(start,Math.min(start+2,h.precipitation.length)).reduce((a,b)=>a+(b||0),0);
-  const p3=h.precipitation.slice(start,Math.min(start+3,h.precipitation.length)).reduce((a,b)=>a+(b||0),0);
+  const a=assessOperationalEvent(c,h);
+  const p1=h.precipitation.slice(start,Math.min(start+1,h.precipitation.length)).reduce((x,b)=>x+(b||0),0);
   const probs=(h.precipitation_probability||[]).slice(start,Math.min(start+3,h.time.length));
   const prob1=probs.length?(probs[0]||0):0;
   const maxProb=probs.length?Math.max(...probs.map(v=>v||0)):0;
-  const codes=(h.weather_code||[]).slice(start,Math.min(start+3,h.time.length));
-  const thunder=codes.some(v=>Number(v)>=95);
-  const localRain=(c.precipitation||0)>0.1;
   const headline=$('quickReadHeadline'), now=$('quickReadNow'), plus1=$('quickReadPlus1'), next=$('quickReadNext'), action=$('quickReadAction');
-  let level='BASSO', headlineText='Quadro locale stabile', nowText='Nessuna pioggia locale', plus1Text='Nessun segnale rilevante', nextText='Interesse locale basso', actionText='Controllo ordinario';
-  if(localRain){level='ATTIVO';headlineText='Precipitazione locale in corso';nowText=`Pioggia ${(c.precipitation||0).toFixed(1)} mm`;plus1Text='Segui intensità e traiettoria';actionText='Radar + fulmini';}
-  if(thunder||maxProb>=65||p2>=4){level='ALTO';headlineText='Segnale temporalesco da verificare';plus1Text=`Possibile rischio · ${prob1}%`;nextText=`Rischio elevato · fino al ${maxProb}%`;actionText='Radar · Evoluzione · PRETEMP';}
-  else if(maxProb>=35||p2>=1){level='MEDIO';headlineText='Possibile sviluppo da monitorare';plus1Text=`Possibilità ${prob1}%`;nextText=`Possibilità fino al ${maxProb}%`;actionText='Ricontrolla tra 15–20 min';}
-  else if(p3>0.1||maxProb>=15){level='BASSO';headlineText='Segnali deboli da osservare';plus1Text=p1>0.1?`Pioggia possibile · ${prob1}%`:`Possibilità ${prob1}%`;nextText=`Possibilità fino al ${maxProb}%`;actionText='Monitoraggio leggero';}
+  let level=['BASSO','ATTENZIONE','ATTIVO','ALTO'][a.severity];
+  let headlineText=a.title, nowText='Nessuna precipitazione locale rilevata', plus1Text='Nessun segnale rilevante', nextText=`Interesse locale ${level.toLowerCase()}`, actionText='Controllo ordinario';
+  if(a.precipNow>=0.1||a.showerNow||a.stormNow) nowText=`Fenomeno locale in corso · ${a.precipNow.toFixed(1)} mm`;
+  else if(a.gustNow>=35) nowText=`Raffiche locali ${Math.round(a.gustNow)} km/h`;
+  if(a.severity>=2){
+    plus1Text=a.stormNow?'Temporale rilevato adesso':a.stormSoon?`Temporali possibili · ${prob1}%`:`Segui intensità e traiettoria · ${prob1}%`;
+    nextText=`Probabilità fino al ${maxProb}% · raffiche max ${Math.round(a.gustMax)} km/h`;
+    actionText=a.stormNow||a.stormSoon?'Evoluzione → Radar → Fulmini → PRETEMP':'Evoluzione → Radar → PRETEMP';
+  }else if(a.severity===1){plus1Text=`Possibilità ${prob1}%`;nextText=`Raffiche max ${Math.round(a.gustMax)} km/h`;actionText='Ricontrolla tra 15 minuti';}
   if(headline)headline.textContent=headlineText;
   if(now)now.textContent=nowText;
   if(plus1)plus1.textContent=plus1Text;
   if(next)next.textContent=nextText;
   if(action)action.textContent=actionText;
   if($('quickReadFreshness'))$('quickReadFreshness').textContent=level;
-  if($('radarQuickStatus'))$('radarQuickStatus').querySelector('b').textContent=localRain?'Precipitazione locale rilevata: osserva intensità e traiettoria':'Nessuna pioggia locale: verifica eventuali celle in avvicinamento';
-  if($('evolutionQuickStatus'))$('evolutionQuickStatus').querySelector('b').textContent=thunder||maxProb>=35?`Interesse locale ${level.toLowerCase()} · probabilità fino al ${maxProb}%`:'Interesse locale basso nelle prossime 2 ore';
-  if($('lightningQuickStatus'))$('lightningQuickStatus').querySelector('b').textContent=thunder?'Possibile attività elettrica: controlla scariche recenti':'Nessun temporale locale previsto dai dati orari';
+  if($('radarQuickStatus'))$('radarQuickStatus').querySelector('b').textContent=(a.precipNow>=0.1||a.showerNow||a.stormNow)?'Fenomeno locale rilevato: osserva intensità e traiettoria':'Verifica eventuali celle in avvicinamento';
+  if($('evolutionQuickStatus'))$('evolutionQuickStatus').querySelector('b').textContent=a.severity>=1?`Interesse locale ${level.toLowerCase()} · probabilità fino al ${maxProb}%`:'Interesse locale basso nelle prossime 2 ore';
+  if($('lightningQuickStatus'))$('lightningQuickStatus').querySelector('b').textContent=(a.stormNow||a.stormSoon)?'Attività temporalesca possibile/in corso: controlla scariche recenti':'Nessun segnale temporalesco dai dati locali';
  }
  page.classList.remove('hidden');document.body.classList.add('weather-analysis-open');page.scrollTop=0;
 }

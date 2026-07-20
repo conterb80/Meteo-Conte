@@ -2983,3 +2983,8 @@ body{background:radial-gradient(circle at 50% -10%,#0b3a49 0,#051b27 34%,#020d14
 .control-webcam-grid b{font-size:11px;line-height:1.1}.control-webcam-grid small{font-size:7px;color:#a8c5cb;line-height:1.25;margin-top:3px}.control-webcam-grid em{font-style:normal;font-size:6px;font-weight:900;color:#55d7a7;margin-top:6px;letter-spacing:.11em}
 @media(max-width:390px){.control-webcam-grid{grid-template-columns:1fr}.control-webcam-grid>a{min-height:72px}.control-webcam-title span{font-size:8px}}
 @media(min-width:760px){.weather-analysis-page .control-monitor-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}.weather-analysis-page .control-monitor{width:auto!important}.weather-analysis-page .control-monitor-map,.weather-analysis-page .evolution-live-map,.weather-analysis-page .lightning-live-wrap{height:310px!important}.control-webcam-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+/* RC23 · comandi rapidi del monitor radar operativo */
+.radar-layer-switch{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px 10px;background:#06151f;border-bottom:1px solid rgba(89,188,229,.2)}
+.radar-layer-switch a{display:flex;justify-content:center;align-items:center;min-height:32px;border:1px solid rgba(89,188,229,.28);border-radius:8px;background:#0a2431;color:#b9dbea;font-size:10px;font-weight:900;letter-spacing:.06em;text-decoration:none}
+.radar-layer-switch a.active{background:#0d4057;color:#fff;border-color:#3bb7e8}
+@media(max-width:420px){.radar-layer-switch{gap:4px;padding:7px}.radar-layer-switch a{font-size:9px;min-height:30px}}
