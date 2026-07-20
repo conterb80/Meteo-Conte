@@ -1,19 +1,14 @@
-# Meteo Conte 1.1 · RC24 — Fix affidabilità radar
+# Meteo Conte 1.1 · RC24.1 — Ripristino collegamenti operativi
 
-Versione correttiva della RC23, preparata per rendere affidabili i test sul campo.
+Versione correttiva della RC24. Non aggiunge funzioni: ripristina i collegamenti bloccanti emersi nel test reale.
 
-## Correzioni principali
-- corretto il conteggio della pioggia corrente: i campi Open-Meteo non vengono più sommati più volte;
-- eliminati falsi accumuli e falsi stati «Evento intenso» causati dal doppio/triplo conteggio;
-- caricamento RainViewer con timeout e tentativi automatici;
-- indicazione visibile quando l'ultimo frame radar è in ritardo;
-- fallback funzionanti verso Radar Pedemontana e Nowcasting ufficiale ER;
-- il futuro ufficiale +1/+2/+3 ore non usa più un iframe bloccabile: si apre direttamente dalla fonte ufficiale;
-- pulsanti Radar, Fulmini, Grandine e Pioggia collegati a fonti operative reali;
-- cache e identificazione aggiornate a RC24.
+## Correzioni
+- Home → Zoom Earth apre il radar Zoom Earth reale centrato sull’area locale;
+- Radar Live → apre la pagina radar attuale di Meteo Pedemontana Forlivese (`radar.php`);
+- Radar, Grandine e fallback interni non puntano più alla pagina inesistente `nowcasting.php`;
+- Fulmini → apre Blitzortung già centrato su Emilia-Romagna / Borgo Viazza;
+- Nowcasting ufficiale → resta collegato alla pagina ufficiale Allerta Meteo Emilia-Romagna;
+- cache PWA aggiornata per evitare che il telefono mantenga i vecchi link.
 
 ## Installazione
-Caricare tutti i file nella root del repository GitHub Pages sostituendo quelli esistenti. Aprire `reset.html` una volta, oppure aprire l'app con `?v=rc24`.
-
-## Nota operativa
-La mappa radar incorporata usa RainViewer. Il nowcasting +1/+2/+3 ore è quello ufficiale Emilia-Romagna e viene aperto esternamente, perché il sito può impedire l'incorporamento. Radar e fulmini restano strumenti di verifica visiva e non vengono letti automaticamente dal motore decisionale.
+Caricare tutti i file nella root GitHub Pages sostituendo quelli esistenti. Aprire una volta `reset.html`, quindi riaprire l’app.

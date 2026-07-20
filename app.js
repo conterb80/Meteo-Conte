@@ -1305,7 +1305,7 @@ loadLamoneSensors();
   const el=document.getElementById('homeRadarMap');
   if(!el) return;
   const fallback=()=>{
-    el.innerHTML='<a class="radar-fallback" href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" target="_blank" rel="noopener"><span>📡</span><b>Radar interno momentaneamente non disponibile</b><small>Apri Radar Pedemontana o Radar ufficiale ER ↗</small></a>';
+    el.innerHTML='<a class="radar-fallback" href="https://meteo-pedemontanaforlivese.it/radar.php" target="_blank" rel="noopener"><span>📡</span><b>Radar interno momentaneamente non disponibile</b><small>Apri Radar Pedemontana o Radar ufficiale ER ↗</small></a>';
   };
   if(typeof L==='undefined'){fallback();return;}
   try{
@@ -1354,7 +1354,7 @@ loadLamoneSensors();
         el.querySelector('.monitor-wait')?.remove(); const chosen=frames.slice(-6); let layer=null,idx=chosen.length-1;
         const show=()=>{const f=chosen[idx]; if(layer)map.removeLayer(layer); const host=data.host||'https://tilecache.rainviewer.com';layer=L.tileLayer(`${host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`,{pane:'controlRadarOverlay',opacity:.75,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'}).addTo(map);const t=document.getElementById('controlRoomRadarTime');if(t)t.textContent=(stale?'RADAR IN RITARDO ':'RADAR ')+new Date(f.time*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});idx=(idx+1)%chosen.length};
         show();setInterval(show,1400);setTimeout(()=>map.invalidateSize(),180);
-      }).catch(()=>{el.innerHTML='<a class="radar-fallback" href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" target="_blank" rel="noopener"><span>📡</span><b>Apri Radar operativo</b><small>Radar Pedemontana disponibile ↗</small></a>'});
+      }).catch(()=>{el.innerHTML='<a class="radar-fallback" href="https://meteo-pedemontanaforlivese.it/radar.php" target="_blank" rel="noopener"><span>📡</span><b>Apri Radar operativo</b><small>Radar Pedemontana disponibile ↗</small></a>'});
     }catch(_e){}
   };
   // La Sala Controllo viene aperta dal pulsante #briefWeather: osserviamo la pagina
@@ -1398,7 +1398,7 @@ loadLamoneSensors();
     }
     if(official && officialOverlay){
       officialOverlay.classList.remove('hidden');
-      officialOverlay.innerHTML='<span>🧭</span><b>Nowcasting ufficiale +1 / +2 / +3 ore</b><small>La pagina ufficiale non viene incorporata: aprila direttamente per evitare monitor vuoti o bloccati.</small><div class="official-source-actions"><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">APRI NOWCASTING ER ↗</a><a href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" target="_blank" rel="noopener">APRI RADAR OPERATIVO ↗</a></div>';
+      officialOverlay.innerHTML='<span>🧭</span><b>Nowcasting ufficiale +1 / +2 / +3 ore</b><small>La pagina ufficiale non viene incorporata: aprila direttamente per evitare monitor vuoti o bloccati.</small><div class="official-source-actions"><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">APRI NOWCASTING ER ↗</a><a href="https://meteo-pedemontanaforlivese.it/radar.php" target="_blank" rel="noopener">APRI RADAR OPERATIVO ↗</a></div>';
     }
     if(!official && map) setTimeout(()=>map.invalidateSize(),120);
   }
