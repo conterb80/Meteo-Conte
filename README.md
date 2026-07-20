@@ -1,16 +1,19 @@
-# Meteo Conte 1.1 · RC23
+# Meteo Conte 1.1 · RC24 — Fix affidabilità radar
 
-Versione nata dai test reali della RC22.
+Versione correttiva della RC23, preparata per rendere affidabili i test sul campo.
 
-## Modifiche principali
-- nuova valutazione operativa dei fenomeni in corso;
-- lettura della precipitazione corrente, rovesci, temporali e raffiche locali;
-- stato Sala Controllo: Tranquilla / Attenzione / Evento in corso / Evento intenso;
-- quadro operativo e azione consigliata coerenti con i segnali locali;
-- monitor Radar con accessi rapidi a Radar, Fulmini, Grandine e Pioggia;
-- aggiornamento cache e identificazione RC23.
+## Correzioni principali
+- corretto il conteggio della pioggia corrente: i campi Open-Meteo non vengono più sommati più volte;
+- eliminati falsi accumuli e falsi stati «Evento intenso» causati dal doppio/triplo conteggio;
+- caricamento RainViewer con timeout e tentativi automatici;
+- indicazione visibile quando l'ultimo frame radar è in ritardo;
+- fallback funzionanti verso Radar Pedemontana e Nowcasting ufficiale ER;
+- il futuro ufficiale +1/+2/+3 ore non usa più un iframe bloccabile: si apre direttamente dalla fonte ufficiale;
+- pulsanti Radar, Fulmini, Grandine e Pioggia collegati a fonti operative reali;
+- cache e identificazione aggiornate a RC24.
 
 ## Installazione
-Caricare tutti i file nella root del repository GitHub Pages, sostituendo quelli esistenti. Aprire poi `reset.html` una volta oppure ricaricare l'app con il parametro `?v=rc23`.
+Caricare tutti i file nella root del repository GitHub Pages sostituendo quelli esistenti. Aprire `reset.html` una volta, oppure aprire l'app con `?v=rc24`.
 
-Nota: il riconoscimento automatico usa i dati puntuali e orari disponibili. Radar e fulmini restano monitor visivi da verificare direttamente durante l'evento.
+## Nota operativa
+La mappa radar incorporata usa RainViewer. Il nowcasting +1/+2/+3 ore è quello ufficiale Emilia-Romagna e viene aperto esternamente, perché il sito può impedire l'incorporamento. Radar e fulmini restano strumenti di verifica visiva e non vengono letti automaticamente dal motore decisionale.

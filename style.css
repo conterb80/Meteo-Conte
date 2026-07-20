@@ -2988,3 +2988,8 @@ body{background:radial-gradient(circle at 50% -10%,#0b3a49 0,#051b27 34%,#020d14
 .radar-layer-switch a{display:flex;justify-content:center;align-items:center;min-height:32px;border:1px solid rgba(89,188,229,.28);border-radius:8px;background:#0a2431;color:#b9dbea;font-size:10px;font-weight:900;letter-spacing:.06em;text-decoration:none}
 .radar-layer-switch a.active{background:#0d4057;color:#fff;border-color:#3bb7e8}
 @media(max-width:420px){.radar-layer-switch{gap:4px;padding:7px}.radar-layer-switch a{font-size:9px;min-height:30px}}
+
+/* RC24 - sorgenti radar affidabili e fallback ufficiali */
+.official-source-actions{display:flex;flex-direction:column;gap:10px;margin-top:14px;width:min(360px,92%)}
+.official-source-actions a{display:block;padding:11px 14px;border:1px solid rgba(111,225,255,.35);border-radius:12px;background:rgba(4,47,63,.82);color:#dffaff;text-align:center;font-weight:800;font-size:12px;letter-spacing:.05em;text-decoration:none}
+.official-source-actions a:last-child{border-color:rgba(105,235,175,.35);background:rgba(8,61,52,.82)}

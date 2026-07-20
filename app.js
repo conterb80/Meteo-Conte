@@ -1,10 +1,28 @@
 const $=id=>document.getElementById(id);
 let lastData=null,lastIndex=0,lastLevel=null;
 let basinRainData={lamone:null,marzeno:null};
+async function fetchJsonReliable(url, attempts=3, timeoutMs=9000){
+ let lastError;
+ for(let n=0;n<attempts;n++){
+  const ctl=new AbortController();
+  const timer=setTimeout(()=>ctl.abort(),timeoutMs);
+  try{
+   const res=await fetch(url,{cache:'no-store',signal:ctl.signal});
+   if(!res.ok) throw new Error('HTTP '+res.status);
+   return await res.json();
+  }catch(err){lastError=err; if(n<attempts-1) await new Promise(r=>setTimeout(r,500*(n+1)));}
+  finally{clearTimeout(timer);}
+ }
+ throw lastError||new Error('Fonte non disponibile');
+}
 const WMO={0:['Sereno','☀️'],1:['Prevalentemente sereno','🌤️'],2:['Parzialmente nuvoloso','⛅'],3:['Nuvoloso','☁️'],45:['Nebbia','🌫️'],48:['Nebbia','🌫️'],51:['Pioviggine','🌦️'],53:['Pioviggine','🌦️'],55:['Pioviggine','🌦️'],61:['Pioggia','🌧️'],63:['Pioggia','🌧️'],65:['Pioggia forte','🌧️'],80:['Rovescio','🌦️'],81:['Rovescio','🌧️'],82:['Rovescio forte','⛈️'],95:['Temporale','⛈️'],96:['Temporale/grandine','⛈️'],99:['Temporale/grandine','⛈️']};
 function dewPoint(t,h){const a=17.27,b=237.7;const alpha=((a*t)/(b+t))+Math.log(Math.max(h,1)/100);return (b*alpha)/(a-alpha)}
 function upcomingSlice(hourly,hours=6){const start=nextStart(hourly.time);return {start,end:Math.min(hourly.time.length,start+hours)}}
-function currentPrecip(now){return Number(now.precipitation||0)+Number(now.rain||0)+Number(now.showers||0)}
+function currentPrecip(now){
+ const total=Number(now.precipitation);
+ if(Number.isFinite(total)) return Math.max(0,total);
+ return Math.max(0,Number(now.rain||0),Number(now.showers||0));
+}
 function assessOperationalEvent(now,hourly){
  const {start,end}=upcomingSlice(hourly,6);
  const probs=(hourly.precipitation_probability||[]).slice(start,end).map(Number);
@@ -1287,7 +1305,7 @@ loadLamoneSensors();
   const el=document.getElementById('homeRadarMap');
   if(!el) return;
   const fallback=()=>{
-    el.innerHTML='<a class="radar-fallback" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><span>📡</span><b>Radar momentaneamente non disponibile</b><small>Apri Radar Evoluzione ER ↗</small></a>';
+    el.innerHTML='<a class="radar-fallback" href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" target="_blank" rel="noopener"><span>📡</span><b>Radar interno momentaneamente non disponibile</b><small>Apri Radar Pedemontana o Radar ufficiale ER ↗</small></a>';
   };
   if(typeof L==='undefined'){fallback();return;}
   try{
@@ -1295,11 +1313,12 @@ loadLamoneSensors();
     map.createPane('radarOverlay');map.getPane('radarOverlay').classList.add('radar-overlay-pane');map.getPane('radarOverlay').style.zIndex=420;
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,minZoom:5,attribution:'© OpenStreetMap'}).addTo(map);
     L.circleMarker([44.418,11.977],{radius:5,color:'#8af2ff',weight:2,fillColor:'#072b3b',fillOpacity:.9}).bindTooltip('Borgo Viazza',{direction:'top',offset:[0,-5]}).addTo(map);
-    fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'})
-      .then(r=>{if(!r.ok)throw new Error('radar api');return r.json();})
+    fetchJsonReliable('https://api.rainviewer.com/public/weather-maps.json')
       .then(data=>{
         const frames=(data.radar&&data.radar.past)||[];
         if(!frames.length) throw new Error('no frames');
+        const radarAgeMin=Math.round((Date.now()/1000-frames[frames.length-1].time)/60);
+        const stale=radarAgeMin>35;
         el.querySelector('.radar-loading')?.remove();
         const chosen=frames.slice(-5);let layer=null,index=chosen.length-1;
         const show=(i)=>{
@@ -1308,7 +1327,7 @@ loadLamoneSensors();
           const host=data.host||'https://tilecache.rainviewer.com';
           layer=L.tileLayer(`${host}${frame.path}/256/{z}/{x}/{y}/2/1_1.png`,{pane:'radarOverlay',opacity:.72,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'}).addTo(map);
           const stamp=document.getElementById('radarFrameTime');
-          if(stamp) stamp.textContent='LIVE · radar '+new Date(frame.time*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+          if(stamp) stamp.textContent=(stale?'DATI IN RITARDO · ':'LIVE · radar ')+new Date(frame.time*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
         };
         show(index);
         let timer=setInterval(()=>{index=(index+1)%chosen.length;show(index)},1300);
@@ -1330,12 +1349,12 @@ loadLamoneSensors();
       map.createPane('controlRadarOverlay');map.getPane('controlRadarOverlay').style.zIndex=420;
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,minZoom:5,attribution:'© OpenStreetMap'}).addTo(map);
       L.circleMarker([44.418,11.977],{radius:5,color:'#8af2ff',weight:2,fillColor:'#072b3b',fillOpacity:.95}).bindTooltip('Borgo Viazza').addTo(map);
-      fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'}).then(r=>r.json()).then(data=>{
-        const frames=data?.radar?.past||[]; if(!frames.length) throw new Error('no radar');
+      fetchJsonReliable('https://api.rainviewer.com/public/weather-maps.json').then(data=>{
+        const frames=data?.radar?.past||[]; if(!frames.length) throw new Error('no radar'); const radarAgeMin=Math.round((Date.now()/1000-frames[frames.length-1].time)/60); const stale=radarAgeMin>35;
         el.querySelector('.monitor-wait')?.remove(); const chosen=frames.slice(-6); let layer=null,idx=chosen.length-1;
-        const show=()=>{const f=chosen[idx]; if(layer)map.removeLayer(layer); const host=data.host||'https://tilecache.rainviewer.com';layer=L.tileLayer(`${host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`,{pane:'controlRadarOverlay',opacity:.75,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'}).addTo(map);const t=document.getElementById('controlRoomRadarTime');if(t)t.textContent='RADAR '+new Date(f.time*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});idx=(idx+1)%chosen.length};
+        const show=()=>{const f=chosen[idx]; if(layer)map.removeLayer(layer); const host=data.host||'https://tilecache.rainviewer.com';layer=L.tileLayer(`${host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`,{pane:'controlRadarOverlay',opacity:.75,maxNativeZoom:7,maxZoom:12,attribution:'Radar © RainViewer'}).addTo(map);const t=document.getElementById('controlRoomRadarTime');if(t)t.textContent=(stale?'RADAR IN RITARDO ':'RADAR ')+new Date(f.time*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});idx=(idx+1)%chosen.length};
         show();setInterval(show,1400);setTimeout(()=>map.invalidateSize(),180);
-      }).catch(()=>{el.innerHTML='<a class="radar-fallback" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><span>📡</span><b>Apri Radar Live</b><small>Monitor esterno disponibile ↗</small></a>'});
+      }).catch(()=>{el.innerHTML='<a class="radar-fallback" href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" target="_blank" rel="noopener"><span>📡</span><b>Apri Radar operativo</b><small>Radar Pedemontana disponibile ↗</small></a>'});
     }catch(_e){}
   };
   // La Sala Controllo viene aperta dal pulsante #briefWeather: osserviamo la pagina
@@ -1377,7 +1396,10 @@ loadLamoneSensors();
         ? '<span>FUTURO +1/+2/+3H</span><b>Traiettoria prevista dal nowcasting ufficiale Emilia-Romagna</b>'
         : '<span>TRAIETTORIA</span><b>Animazione dell’ultima ora per capire direzione e sviluppo</b>';
     }
-    if(official && officialFrame && officialFrame.src==='about:blank') officialFrame.src=officialUrl;
+    if(official && officialOverlay){
+      officialOverlay.classList.remove('hidden');
+      officialOverlay.innerHTML='<span>🧭</span><b>Nowcasting ufficiale +1 / +2 / +3 ore</b><small>La pagina ufficiale non viene incorporata: aprila direttamente per evitare monitor vuoti o bloccati.</small><div class="official-source-actions"><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener">APRI NOWCASTING ER ↗</a><a href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" target="_blank" rel="noopener">APRI RADAR OPERATIVO ↗</a></div>';
+    }
     if(!official && map) setTimeout(()=>map.invalidateSize(),120);
   }
 
@@ -1403,20 +1425,21 @@ loadLamoneSensors();
       map.createPane('nowcastOverlay');map.getPane('nowcastOverlay').style.zIndex=420;
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:12,minZoom:5,attribution:'© OpenStreetMap'}).addTo(map);
       L.circleMarker([44.418,11.977],{radius:6,color:'#f2ffff',weight:2,fillColor:'#00b8d4',fillOpacity:1}).bindTooltip('Borgo Viazza').addTo(map);
-      fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'})
-        .then(r=>{if(!r.ok)throw new Error('api');return r.json()})
+      fetchJsonReliable('https://api.rainviewer.com/public/weather-maps.json')
         .then(data=>{
           host=data.host||host;
           const past=data?.radar?.past||[];
           frames=past.slice(-7);
           if(!frames.length)throw new Error('radar unavailable');
+          const ageMin=Math.round((Date.now()/1000-frames[frames.length-1].time)/60);
+          if(ageMin>35 && modeEl) modeEl.textContent='DATI RADAR IN RITARDO';
           el.querySelector('.monitor-wait')?.remove();
           index=0;paint();
           timer=setInterval(cycle,1200);
           setTimeout(()=>map.invalidateSize(),180);
         })
         .catch(()=>{
-          el.innerHTML='<a class="radar-fallback" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener"><span>📡</span><b>Animazione radar non disponibile</b><small>Apri Zoom Earth per seguire il movimento ↗</small></a>';
+          el.innerHTML='<a class="radar-fallback" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" target="_blank" rel="noopener"><span>📡</span><b>Animazione interna non disponibile</b><small>Apri Nowcasting ufficiale ER ↗</small></a>';
           if(timeEl)timeEl.textContent='FONTE NON DISPONIBILE';if(modeEl)modeEl.textContent='RADAR NON DISPONIBILE';
         });
     }catch(_e){}
@@ -1425,7 +1448,7 @@ loadLamoneSensors();
   observedBtn?.addEventListener('click',()=>setMode('observed'));
   officialBtn?.addEventListener('click',()=>setMode('official'));
   playBtn?.addEventListener('click',()=>{playing=!playing;playBtn.textContent=playing?'❚❚':'▶';if(playing)cycle()});
-  officialFrame?.addEventListener('load',()=>{officialOverlay?.classList.add('hidden')});
+  // RC24: il nowcasting ufficiale viene aperto esternamente per evitare iframe bloccati.
   const page=document.getElementById('weatherAnalysisPage');
   if(page){
     new MutationObserver(()=>{if(!page.classList.contains('hidden'))setTimeout(boot,180)}).observe(page,{attributes:true,attributeFilter:['class']});

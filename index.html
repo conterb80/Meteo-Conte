@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · Sala Controllo RC23</title>
-<link href="manifest.json?v=1.1-control-rc23" rel="manifest"/>
-<link href="icon.png?v=1.1-control-rc23" rel="icon" type="image/png"/>
-<link href="style.css?v=1.1-control-rc23" rel="stylesheet"/>
+<title>Meteo Conte 1.1 · Sala Controllo RC24</title>
+<link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
+<link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
+<link href="style.css?v=1.1-control-rc24" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -23,7 +23,7 @@
 <header aria-label="Meteo attuale Borgo Viazza" class="topbar logo-head weather-hero weather-clear" id="headerWeather">
 <div class="weather-hero-main">
 <div class="brand-block">
-<img alt="Meteo Conte" class="app-logo" src="icon.png?v=1.1-control-rc23"/>
+<img alt="Meteo Conte" class="app-logo" src="icon.png?v=1.1-control-rc24"/>
 <div class="hero-location">
 <span class="hero-kicker">METEO CONTE</span>
 <h1>Borgo Viazza</h1>
@@ -55,7 +55,7 @@
 <div><span class="label">3 · RADAR LIVE · RADAR LEGGERO</span><b>Precipitazioni attorno a Borgo Viazza</b></div>
 <div class="radar-head-actions">
 <span class="live-badge"><i></i>LIVE</span>
-<a href="https://zoom.earth/maps/radar/#view=44.418,11.977,8z" rel="noopener" target="_blank">Zoom Earth ↗</a>
+<a href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" rel="noopener" target="_blank">Zoom Earth ↗</a>
 </div>
 </div>
 <div class="lite-radar-panel" id="liteRadarPanel">
@@ -112,7 +112,7 @@
   <div class="weather-analysis-shell control-room-shell">
     <header class="weather-analysis-header">
       <button aria-label="Chiudi Sala Controllo" class="weather-analysis-close" id="closeWeatherAnalysis" type="button">‹</button>
-      <div><small>METEO CONTE · RC23</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
+      <div><small>METEO CONTE · RC24</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
       <span class="weather-analysis-live"><i></i> OPERATIVA</span>
     </header>
     <section class="weather-analysis-summary" id="weatherAnalysisSummary">
@@ -155,7 +155,7 @@
         </div>
         <div class="evolution-pane" id="evolutionOfficialPane">
           <div class="official-nowcast-wrap">
-            <iframe id="officialNowcastFrame" title="Nowcasting ufficiale Emilia-Romagna" loading="lazy" referrerpolicy="no-referrer" src="about:blank"></iframe>
+            <iframe id="officialNowcastFrame" title="Nowcasting ufficiale Emilia-Romagna" loading="lazy" referrerpolicy="no-referrer" src="about:blank" title="Nowcasting ufficiale disponibile tramite apertura esterna"></iframe>
             <div class="official-nowcast-overlay" id="officialNowcastOverlay"><span>🧭</span><b>Caricamento nowcasting ufficiale</b><small>Previsione degli echi radar a +1, +2 e +3 ore</small></div>
           </div>
           <div class="control-monitor-foot"><span>FONTE ARPAE / ALLERTA METEO ER</span><em>previsione ufficiale della traiettoria</em></div>
@@ -170,7 +170,7 @@
         <div class="control-monitor-foot"><span>BLITZORTUNG LIVE</span><em>bianco = scarica recente · rosso = più vecchia</em></div>
       </article>
       <article class="control-monitor control-monitor-radar">
-        <div class="control-monitor-head"><span><i>📡</i><b>RADAR LIVE</b><small>Pioggia reale e direzione delle celle</small></span><a href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener">APRI ↗</a></div><div class="radar-layer-switch" aria-label="Layer radar operativi"><a class="active" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" target="_blank" rel="noopener">RADAR</a><a href="https://map.blitzortung.org/#7/44.42/11.98" target="_blank" rel="noopener">FULMINI</a><a href="https://www.meteologix.com/it/radar-hd/emilia-romagna" target="_blank" rel="noopener">GRANDINE</a><a href="https://allertameteo.regione.emilia-romagna.it/osservazioni-e-dati/monitoraggio-meteo/radar" target="_blank" rel="noopener">PIOGGIA</a></div>
+        <div class="control-monitor-head"><span><i>📡</i><b>RADAR LIVE</b><small>Pioggia reale e direzione delle celle</small></span><a href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" target="_blank" rel="noopener">APRI ↗</a></div><div class="radar-layer-switch" aria-label="Layer radar operativi"><a class="active" href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" target="_blank" rel="noopener">RADAR</a><a href="https://map.blitzortung.org/#7/44.42/11.98" target="_blank" rel="noopener">FULMINI</a><a href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" target="_blank" rel="noopener">GRANDINE</a><a href="https://allertameteo.regione.emilia-romagna.it/osservazioni-e-dati/monitoraggio-meteo/radar" target="_blank" rel="noopener">PIOGGIA</a></div>
         <div class="monitor-quick-status" id="radarQuickStatus"><span>RADAR</span><b>Verifica immediata di pioggia e sviluppo celle</b></div><div class="control-monitor-map" id="controlRoomRadar"><div class="monitor-wait">Caricamento radar live…</div></div>
         <div class="control-monitor-foot"><span id="controlRoomRadarTime">LIVE</span><em>debole ▰▰▰▰▰ intenso</em></div>
       </article>
@@ -425,7 +425,7 @@
 <div class="tool-section accordion-section observe priority open" id="observeSection">
 <button aria-expanded="true" class="tool-title accordion-toggle" type="button"><span>👁️</span><div><b>1. Osserva</b><small>Cosa sta succedendo adesso</small></div><i>⌄</i></button>
 <div class="tool-grid analysis-tools five-tools accordion-content">
-<a class="featured zoom" href="https://zoom.earth/maps/radar/#view=44.42,11.98,8z" id="toolZoom" rel="noopener" target="_blank"><i>🌍</i><b>Zoom Earth</b><small>radar e satellite animati</small><em>CONSIGLIATO</em></a>
+<a class="featured zoom" href="https://www.meteo-pedemontanaforlivese.it/nowcasting.php" id="toolZoom" rel="noopener" target="_blank"><i>🌍</i><b>Zoom Earth</b><small>radar e satellite animati</small><em>CONSIGLIATO</em></a>
 <a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" id="toolRadar" rel="noopener" target="_blank"><i>📡</i><b>Radar evoluzione ER</b><small>spostamento +1h · +2h · +3h</small></a>
 <a href="https://www.lightningmaps.org/" id="toolLightning" rel="noopener" target="_blank"><i>⚡</i><b>Fulmini live</b><small>scariche in tempo reale</small></a>
 <a href="https://www.meteoam.it/it/satellite/italia" rel="noopener" target="_blank"><i>🛰️</i><b>Satellite</b><small>nubi e sviluppo</small></a>
