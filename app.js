@@ -992,35 +992,40 @@ loadLamoneSensors();
     if(!res.ok) throw new Error('HTTP '+res.status);
     return await res.text();
   };
-  const absolutePretempUrl=value=>{
-    if(!value) return null;
-    const cleaned=value.replace(/[>\]\s]+$/g,'').trim();
-    try{return new URL(cleaned,'https://pretemp.it/').href;}catch(_e){return null;}
-  };
-  const extractPretempImages=raw=>{
-    const markdown=[...raw.matchAll(/!\[[^\]]*\]\((https?:\/\/[^)]+|\/[^)]+)\)/ig)].map(m=>absolutePretempUrl(m[1]));
-    const direct=[...raw.matchAll(/https?:\/\/[^\s)\]]+\.(?:png|jpg|jpeg|webp)(?:\?[^\s)\]]*)?/ig)].map(m=>absolutePretempUrl(m[0]));
-    return [...new Set([...markdown,...direct].filter(Boolean))].filter(u=>/pretemp\.it/i.test(u));
-  };
   const parseHome=raw=>{
-    const match=raw.match(/(?:https?:\/\/(?:www\.)?pretemp\.it)?\/previsioni\/\d+/i);
-    const forecast=absolutePretempUrl(match?.[0]);
-    const image=extractPretempImages(raw).find(u=>/prevision|mapp|forecast|upload/i.test(u))||extractPretempImages(raw)[0];
-    const heading=(raw.match(/(?:PREVISIONE|TENDENZA)(?:\s+PER)?[^\n\r]*/i)||[])[0]||'';
-    const lev=(raw.match(/Pericolosit[aà]\s*[:\-]?\s*\**\s*(\d)/i)||[])[1];
-    const author=(raw.match(/(?:Autore|Previsore):\s*\**\s*([^\n\r]+)/i)||[])[1];
+    const forecast=(raw.match(/https?:\/\/(?:www\.)?pretemp\.it\/archivio\/\d{4}\/[^\s)]+\/previsioni\/[^\s)]+\.html/i)||[])[0];
+    const images=[...raw.matchAll(/https?:\/\/[^\s)]+\/cartine\/[^\s)]+\.(?:png|jpg|jpeg)/ig)].map(m=>m[0].replace(/\\_/g,'_'));
+    const image=images[0];
+    const heading=(raw.match(/PREVISIONE PER[^\n\r]*/i)||[])[0]||'';
+    const lev=(raw.match(/Pericolosit[aà]:\s*\**\s*(\d)/i)||[])[1];
+    const author=(raw.match(/Autore:\s*\**\s*([^\n\r]+)/i)||[])[1];
     return {forecast,image,heading,lev,author:clean(author)};
   };
   const parseForecast=raw=>{
-    const valid=(raw.match(/Valida dalle ore[^\n\r]+/i)||raw.match(/(?:Previsione|Tendenza) per il?[^\n\r]+/i)||[])[0];
-    const emission=(raw.match(/Emessa[^\n\r]+/i)||raw.match(/Aggiornat[oa] il[^\n\r]+/i)||[])[0];
+    const valid=(raw.match(/Valida dalle ore[^\n\r]+/i)||[])[0];
+    const emission=(raw.match(/Emessa[^\n\r]+/i)||[])[0];
     const author=(raw.match(/Previsore:\s*([^\n\r]+)/i)||[])[1];
     const short=(raw.match(/TESTO BREVE\s*([\s\S]*?)(?:DISCUSSIONE|Emessa)/i)||[])[1]||raw;
-    const image=extractPretempImages(raw).find(u=>/prevision|mapp|forecast|upload/i.test(u))||extractPretempImages(raw)[0];
+    const image=([...raw.matchAll(/https?:\/\/[^\s)]+\/cartine\/[^\s)]+\.(?:png|jpg|jpeg)/ig)].map(m=>m[0].replace(/\\_/g,'_')))[0];
     return {valid:clean(valid),emission:clean(emission),author:clean(author),short:clean(short),image};
   };
-  const fallbackCandidates=()=>[];
-  const tryImages=()=>Promise.reject(new Error('nessun fallback esterno'));
+  const fallbackCandidates=()=>{
+    const out=[], months=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+    const pad=n=>String(n).padStart(2,'0'), now=new Date();
+    for(let i=0;i<4;i++){
+      const d=new Date(now);d.setDate(now.getDate()-i);
+      const y=d.getFullYear(),dd=pad(d.getDate()),mm=pad(d.getMonth()+1),base=`https://pretemp.altervista.org/archivio/${y}/${months[d.getMonth()]}/cartine/`;
+      out.push({url:base+`${dd}_${mm}-${y}1.png`,date:d},{url:base+`${dd}_${mm}_${y}.png`,date:d},{url:base+`${dd}_${mm}-${y}.png`,date:d});
+    }
+    return out;
+  };
+  const tryImages=(items,index=0)=>new Promise((resolve,reject)=>{
+    if(index>=items.length){reject(new Error('mappa non trovata'));return;}
+    const test=new Image();
+    test.onload=()=>resolve(items[index]);
+    test.onerror=()=>tryImages(items,index+1).then(resolve,reject);
+    test.src=items[index].url+(items[index].url.includes('?')?'&':'?')+'v='+Date.now();
+  });
 
   async function updatePretemp(){
     refresh&&(refresh.disabled=true,refresh.textContent='↻ Verifico…');
@@ -1028,7 +1033,7 @@ loadLamoneSensors();
     setState('checking','Verifica in corso','Controllo la pagina ufficiale PRETEMP e cerco l’ultima emissione.');
     validity.textContent='verifica…'; level.textContent='—'; phenomena.textContent='in lettura…'; issued.textContent='—';
     try{
-      const homeRaw=await fetchText('https://pretemp.it/');
+      const homeRaw=await fetchText('https://www.pretemp.it/');
       const home=parseHome(homeRaw);
       if(!home.forecast) throw new Error('link previsione non trovato');
       const forecastRaw=await fetchText(home.forecast);
@@ -1040,10 +1045,10 @@ loadLamoneSensors();
       const forecastDate=dateFromText(detail.valid||home.heading);
       const fresh=sameDay(forecastDate,new Date());
       validity.textContent=detail.valid?detail.valid.replace(/^Valida\s*/i,''):home.heading.replace(/^PREVISIONE PER\s*/i,'');
-      level.textContent=home.lev!==undefined&&home.lev!==null?'Livello '+home.lev:'—';
+      level.textContent='Livello '+(home.lev||'—');
       if(home.lev!==undefined&&home.lev!==null) applyPretempLevel(home.lev);
       phenomena.textContent=extractPhenomena(detail.short);
-      issued.textContent=(detail.emission||('Previsore: '+(detail.author||home.author||'—'))).replace(/^(?:Emessa|Aggiornato il)\s*/i,'');
+      issued.textContent=(detail.emission||('Previsore: '+(detail.author||home.author||'—'))).replace(/^Emessa\s*/i,'');
       setState(fresh?'ready':'checking',fresh?'Mappa aggiornata':'Ultima emissione disponibile',fresh?'La previsione ufficiale di oggi è caricata.':'La fonte ufficiale mostra una previsione con data diversa da oggi: controlla la validità.');
       localStorage.setItem('mc_pretemp_cache',JSON.stringify({image,forecast:home.forecast,validity:validity.textContent,level:level.textContent,phenomena:phenomena.textContent,issued:issued.textContent,time:Date.now()}));
     }catch(err){
@@ -1056,8 +1061,8 @@ loadLamoneSensors();
         setState(fresh?'ready':'checking',fresh?'Mappa aggiornata':'Ultima mappa disponibile',fresh?'Mappa del giorno caricata; i dati testuali non sono stati recuperati.':'È stata caricata una mappa precedente. Verifica la data stampata in basso.');
       }catch(_){
         const cached=JSON.parse(localStorage.getItem('mc_pretemp_cache')||'null');
-        if(cached?.image){setImage(cached.image);forecastLink.href=cached.forecast||'https://pretemp.it/';validity.textContent=cached.validity||'ultima salvata';level.textContent=cached.level||'—';phenomena.textContent=cached.phenomena||'—';issued.textContent=cached.issued||'—';const cachedLevel=String(cached.level||'').match(/(\d)/)?.[1];if(cachedLevel)applyPretempLevel(cachedLevel);setState('checking','Fonte temporaneamente non raggiungibile','Mostro l’ultima emissione salvata sul telefono. Usa Aggiorna o apri PRETEMP completo.');}
-        else{map.classList.add('hidden');fallback?.classList.remove('hidden');forecastLink.href='https://pretemp.it/';setState('error','Aggiornamento non riuscito','Non riesco a recuperare la mappa. Apri la pagina ufficiale o riprova.');validity.textContent='non disponibile';phenomena.textContent='—';issued.textContent='—';}
+        if(cached?.image){setImage(cached.image);forecastLink.href=cached.forecast||'https://www.pretemp.it/';validity.textContent=cached.validity||'ultima salvata';level.textContent=cached.level||'—';phenomena.textContent=cached.phenomena||'—';issued.textContent=cached.issued||'—';const cachedLevel=String(cached.level||'').match(/(\d)/)?.[1];if(cachedLevel)applyPretempLevel(cachedLevel);setState('checking','Fonte temporaneamente non raggiungibile','Mostro l’ultima emissione salvata sul telefono. Usa Aggiorna o apri PRETEMP completo.');}
+        else{map.classList.add('hidden');fallback?.classList.remove('hidden');forecastLink.href='https://www.pretemp.it/';setState('error','Aggiornamento non riuscito','Non riesco a recuperare la mappa. Apri la pagina ufficiale o riprova.');validity.textContent='non disponibile';phenomena.textContent='—';issued.textContent='—';}
       }
     }finally{refresh&&(refresh.disabled=false,refresh.textContent='↻ Aggiorna');}
   }
@@ -1067,7 +1072,7 @@ loadLamoneSensors();
   document.getElementById('openPretempDrawer')?.addEventListener('click',()=>setTimeout(updatePretemp,80));
   map.addEventListener('load',()=>{fallback?.classList.add('hidden');map.classList.remove('hidden');});
   map.addEventListener('error',()=>{map.classList.add('hidden');fallback?.classList.remove('hidden');});
-  const openModal=()=>{if(map.classList.contains('hidden')){window.open(forecastLink?.href||'https://pretemp.it/','_blank','noopener');return;}if(mapLarge)mapLarge.src=map.src;modal?.classList.remove('hidden');document.body.classList.add('pretemp-modal-open');};
+  const openModal=()=>{if(map.classList.contains('hidden')){window.open(forecastLink?.href||'https://www.pretemp.it/','_blank','noopener');return;}if(mapLarge)mapLarge.src=map.src;modal?.classList.remove('hidden');document.body.classList.add('pretemp-modal-open');};
   const closeModal=()=>{modal?.classList.add('hidden');document.body.classList.remove('pretemp-modal-open');};
   mapButton.addEventListener('click',openModal);close?.addEventListener('click',closeModal);modal?.addEventListener('click',e=>{if(e.target===modal)closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
   updatePretemp();
@@ -1443,7 +1448,7 @@ loadLamoneSensors();
   observedBtn?.addEventListener('click',()=>setMode('observed'));
   officialBtn?.addEventListener('click',()=>setMode('official'));
   playBtn?.addEventListener('click',()=>{playing=!playing;playBtn.textContent=playing?'❚❚':'▶';if(playing)cycle()});
-  // RC24.2: il nowcasting ufficiale viene aperto esternamente per evitare iframe bloccati e pagine bianche.
+  // RC24: il nowcasting ufficiale viene aperto esternamente per evitare iframe bloccati.
   const page=document.getElementById('weatherAnalysisPage');
   if(page){
     new MutationObserver(()=>{if(!page.classList.contains('hidden'))setTimeout(boot,180)}).observe(page,{attributes:true,attributeFilter:['class']});

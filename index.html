@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · Sala Controllo RC24.2</title>
-<link href="manifest.json?v=1.1-control-rc24-2" rel="manifest"/>
-<link href="icon.png?v=1.1-control-rc24-2" rel="icon" type="image/png"/>
-<link href="style.css?v=1.1-control-rc24-2" rel="stylesheet"/>
+<title>Meteo Conte 1.1 · Sala Controllo RC24.1</title>
+<link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
+<link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
+<link href="style.css?v=1.1-control-rc24" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -23,7 +23,7 @@
 <header aria-label="Meteo attuale Borgo Viazza" class="topbar logo-head weather-hero weather-clear" id="headerWeather">
 <div class="weather-hero-main">
 <div class="brand-block">
-<img alt="Meteo Conte" class="app-logo" src="icon.png?v=1.1-control-rc24-2"/>
+<img alt="Meteo Conte" class="app-logo" src="icon.png?v=1.1-control-rc24"/>
 <div class="hero-location">
 <span class="hero-kicker">METEO CONTE</span>
 <h1>Borgo Viazza</h1>
@@ -112,7 +112,7 @@
   <div class="weather-analysis-shell control-room-shell">
     <header class="weather-analysis-header">
       <button aria-label="Chiudi Sala Controllo" class="weather-analysis-close" id="closeWeatherAnalysis" type="button">‹</button>
-      <div><small>METEO CONTE · RC24.2</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
+      <div><small>METEO CONTE · RC24.1</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
       <span class="weather-analysis-live"><i></i> OPERATIVA</span>
     </header>
     <section class="weather-analysis-summary" id="weatherAnalysisSummary">
@@ -184,6 +184,24 @@
         <a href="https://allertameteo.regione.emilia-romagna.it/web/bagnacavallo" target="_blank" rel="noopener"><i>🛡️</i><b>Bagnacavallo</b><small>Quadro territoriale locale</small><em>APRI</em></a>
       </div>
     </section>
+
+    <section class="control-models-panel" aria-label="Modelli previsionali">
+      <div class="control-models-title"><span>5 · MODELLI PREVISIONALI</span><small>CONFRONTO RAPIDO</small></div>
+      <p class="control-models-intro">Confronta la previsione ad alta risoluzione LaMMA con il quadro generale ECMWF prima di un evento.</p>
+      <div class="control-models-grid">
+        <a class="control-model-card featured" href="https://www.lamma.toscana.it/modelli/atmo/mappe" target="_blank" rel="noopener">
+          <i>🌩️</i><span><b>WRF 3 km · LaMMA</b><small>Temporali e precipitazioni ad alta risoluzione</small></span><em>APRI ↗</em>
+        </a>
+        <a class="control-model-card" href="https://charts.ecmwf.int/products/medium-rain-acc" target="_blank" rel="noopener">
+          <i>🌍</i><span><b>ECMWF · Pioggia accumulata</b><small>Inquadramento generale e accumuli previsti</small></span><em>APRI ↗</em>
+        </a>
+        <a class="control-model-card" href="https://charts.ecmwf.int/products/medium-mslp-rain" target="_blank" rel="noopener">
+          <i>🌀</i><span><b>ECMWF · Pioggia e pressione</b><small>Passaggio perturbazioni e distribuzione della pioggia</small></span><em>APRI ↗</em>
+        </a>
+      </div>
+      <div class="control-models-note"><span>💡</span><p><b>Uso operativo:</b> LaMMA per capire dove possono svilupparsi i nuclei; ECMWF per valutare il quadro più ampio e gli accumuli.</p></div>
+    </section>
+
     <div class="weather-analysis-route compact"><small>APPROFONDIMENTI</small><p>Apri solo lo strumento necessario, senza perdere il quadro dei monitor.</p></div>
     <div class="tool-group-title"><span>CENTRO OPERATIVO</span><small>RISCHIO · TERRITORIO</small></div>
     <nav class="weather-analysis-tools control-room-tools compact-tools primary-tools" aria-label="Strumenti operativi">
@@ -359,7 +377,7 @@
 <span><small>Emissione</small><b id="pretempAutoIssued">—</b></span>
 </div>
 </section>
-<a aria-hidden="true" class="hidden" href="https://pretemp.it/" id="pretempForecastLink" rel="noopener" tabindex="-1" target="_blank"></a>
+<a aria-hidden="true" class="hidden" href="https://www.pretemp.it/" id="pretempForecastLink" rel="noopener" tabindex="-1" target="_blank"></a>
 <button aria-label="Apri la mappa PRETEMP ingrandita" class="pretemp-map-card pretemp-map-card-pro" id="pretempMapButton" type="button">
 <span class="pretemp-map-badge"><b>Mappa ufficiale</b><small>Tocca per ingrandire</small></span>
 <img alt="Mappa ufficiale PRETEMP del giorno" id="pretempMap" loading="lazy"/>
@@ -376,13 +394,13 @@
 <div class="pretemp-bulletin-text hidden" id="pretempBulletinText"></div>
 <div class="pretemp-bulletin-actions">
 <button id="loadPretempBulletin" type="button">Carica bollettino</button>
-<a href="https://pretemp.it/" id="pretempOfficialForecastLink" rel="noopener" target="_blank">Pagina ufficiale ↗</a>
+<a href="https://www.pretemp.it/" id="pretempOfficialForecastLink" rel="noopener" target="_blank">Pagina ufficiale ↗</a>
 </div>
 </div>
 </section>
 <div aria-label="Strumenti PRETEMP" class="pretemp-compare-tools pretemp-compare-tools-pro">
 <a class="pretemp-radar-link" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" rel="noopener" target="_blank"><span>📡</span><b>Radar meteo</b><small>Confronta l’evoluzione</small></a>
-<a class="pretemp-guide-link" href="https://pretemp.it/" rel="noopener" target="_blank"><span>🌐</span><b>PRETEMP completo</b><small>Archivio e tendenze</small></a>
+<a class="pretemp-guide-link" href="https://www.pretemp.it/" rel="noopener" target="_blank"><span>🌐</span><b>PRETEMP completo</b><small>Archivio e tendenze</small></a>
 </div>
 <p class="pretemp-disclaimer pretemp-disclaimer-compact">Previsione sperimentale probabilistica: le allerte ufficiali restano il riferimento operativo.</p>
 </section>
@@ -481,7 +499,7 @@
 </div>
 </div>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Sala Controllo RC24.2</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · Sala Controllo RC25</footer>
 <div aria-label="Mappa PRETEMP ingrandita" aria-modal="true" class="pretemp-modal hidden" id="pretempModal" role="dialog">
 <div class="pretemp-modal-head">
 <div><span>PRETEMP</span><b>Mappa del giorno</b></div>
@@ -490,10 +508,10 @@
 <div class="pretemp-modal-scroll">
 <img alt="Mappa PRETEMP ingrandita" id="pretempMapLarge"/>
 </div>
-<a class="btn" href="https://pretemp.it/" id="pretempModalForecastLink" rel="noopener" target="_blank">Apri previsione completa ↗</a>
+<a class="btn" href="https://www.pretemp.it/" id="pretempModalForecastLink" rel="noopener" target="_blank">Apri previsione completa ↗</a>
 </div>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=1.1-control-rc24-2"></script>
+<script src="app.js?v=1.1-center-rc25"></script>
 </body>
 </html>

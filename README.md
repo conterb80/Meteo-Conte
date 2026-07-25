@@ -1,10 +1,12 @@
-# Meteo Conte 1.1 — RC24.2
+# Meteo Conte 1.1 RC25 – Modelli previsionali
 
-Aggiornamento operativo della Sala Controllo.
+Aggiornamento mirato della Sala Controllo.
 
-- PRETEMP aggiornato al nuovo sito `https://pretemp.it/` e alla nuova struttura `/previsioni/<id>`.
-- Lettura automatica compatibile con immagini PNG, JPG e WebP del nuovo portale.
-- Rimossi i tentativi verso il vecchio archivio Altervista.
-- Nowcasting ufficiale Emilia-Romagna aperto esternamente per evitare iframe vuoti o bloccati.
-- Collegamento locale Allerta ER verificato su Bagnacavallo.
-- Cache PWA aggiornata a RC24.2 per forzare il caricamento dei nuovi file.
+## Novità
+- Nuovo pannello Modelli previsionali nella Sala Controllo.
+- Collegamento ufficiale alle mappe LaMMA WRF 3 km.
+- Collegamento ECMWF alla pioggia accumulata.
+- Collegamento ECMWF a pioggia e pressione.
+- Nessuna modifica alle altre sezioni dell’app.
+
+Dopo il caricamento su GitHub aprire reset.html una volta, poi riaprire l’app.
