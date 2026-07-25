@@ -1,14 +1,10 @@
-# Meteo Conte 1.1 · RC24.1 — Ripristino collegamenti operativi
+# Meteo Conte 1.1 — RC24.2
 
-Versione correttiva della RC24. Non aggiunge funzioni: ripristina i collegamenti bloccanti emersi nel test reale.
+Aggiornamento operativo della Sala Controllo.
 
-## Correzioni
-- Home → Zoom Earth apre il radar Zoom Earth reale centrato sull’area locale;
-- Radar Live → apre la pagina radar attuale di Meteo Pedemontana Forlivese (`radar.php`);
-- Radar, Grandine e fallback interni non puntano più alla pagina inesistente `nowcasting.php`;
-- Fulmini → apre Blitzortung già centrato su Emilia-Romagna / Borgo Viazza;
-- Nowcasting ufficiale → resta collegato alla pagina ufficiale Allerta Meteo Emilia-Romagna;
-- cache PWA aggiornata per evitare che il telefono mantenga i vecchi link.
-
-## Installazione
-Caricare tutti i file nella root GitHub Pages sostituendo quelli esistenti. Aprire una volta `reset.html`, quindi riaprire l’app.
+- PRETEMP aggiornato al nuovo sito `https://pretemp.it/` e alla nuova struttura `/previsioni/<id>`.
+- Lettura automatica compatibile con immagini PNG, JPG e WebP del nuovo portale.
+- Rimossi i tentativi verso il vecchio archivio Altervista.
+- Nowcasting ufficiale Emilia-Romagna aperto esternamente per evitare iframe vuoti o bloccati.
+- Collegamento locale Allerta ER verificato su Bagnacavallo.
+- Cache PWA aggiornata a RC24.2 per forzare il caricamento dei nuovi file.
