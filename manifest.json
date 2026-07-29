@@ -1,15 +1,10 @@
 {
-  "name": "Meteo Conte 1.1 Radar Conte Integrato RC26",
+  "name": "Meteo Conte 1.1 RC27",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=1.1-radar-integrato-rc26",
+  "start_url": "index.html?v=rc27",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#020d14",
   "theme_color": "#041923",
-  "icons": [
-    {
-      "src": "icon.png?v=1.1-radar-integrato-rc26",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "icons": [{"src":"icon.png?v=rc27","sizes":"512x512","type":"image/png"}]
 }
