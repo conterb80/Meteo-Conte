@@ -1,13 +1,13 @@
 {
-  "name": "Meteo Conte 1.1 Sala Controllo RC25",
+  "name": "Meteo Conte 1.1 Radar Conte Integrato RC26",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=1.1-control-rc24-1",
+  "start_url": "index.html?v=1.1-radar-integrato-rc26",
   "display": "standalone",
   "background_color": "#020d14",
   "theme_color": "#041923",
   "icons": [
     {
-      "src": "icon.png?v=1.1-control-rc24-1",
+      "src": "icon.png?v=1.1-radar-integrato-rc26",
       "sizes": "512x512",
       "type": "image/png"
     }

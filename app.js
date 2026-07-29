@@ -1461,3 +1461,30 @@ loadLamoneSensors();
   const frame=document.getElementById('controlRoomLightning');if(!frame)return;
   frame.addEventListener('load',()=>frame.parentElement?.classList.add('is-loaded'));
 })();
+
+/* RC26 — Radar Conte RC13 integrato nella Sala Controllo */
+(function initRadarConteModule(){
+  const page=document.getElementById('weatherAnalysisPage');
+  const frame=document.getElementById('radarConteFrame');
+  const loader=document.getElementById('radarConteLoader');
+  const reload=document.getElementById('reloadRadarConte');
+  const expand=document.getElementById('expandRadarConte');
+  if(!page||!frame)return;
+  let booted=false;
+  const src='radar-conte/index.html?embedded=1&v=rc13-integrated';
+  function boot(force=false){
+    if(force||!booted){
+      loader?.classList.remove('hidden');
+      frame.src=force?`${src}&r=${Date.now()}`:src;
+      booted=true;
+    }
+  }
+  frame.addEventListener('load',()=>loader?.classList.add('hidden'));
+  reload?.addEventListener('click',()=>boot(true));
+  expand?.addEventListener('click',()=>{
+    if(frame.requestFullscreen) frame.requestFullscreen().catch(()=>window.open(src,'_blank','noopener'));
+    else window.open(src,'_blank','noopener');
+  });
+  new MutationObserver(()=>{if(!page.classList.contains('hidden'))setTimeout(()=>boot(false),80)}).observe(page,{attributes:true,attributeFilter:['class']});
+  if(!page.classList.contains('hidden'))boot(false);
+})();
