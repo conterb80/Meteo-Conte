@@ -1483,3 +1483,25 @@ window.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('briefPretemp')?.addEventListener('click',open);
   document.getElementById('toolPretempMain')?.addEventListener('click',open);
 })();
+
+
+// RC30.1 - PRETEMP semplificato: solo collegamento diretto al sito ufficiale.
+(function setupPretempDirectOnly(){
+  const PRETEMP_URL='https://www.pretemp.it/';
+  const openOfficial=(event)=>{
+    if(event){event.preventDefault();event.stopImmediatePropagation();}
+    window.open(PRETEMP_URL,'_blank','noopener,noreferrer');
+  };
+  const direct=document.getElementById('openPretempDrawer');
+  if(direct){
+    const replacement=direct.cloneNode(true);
+    replacement.textContent='Apri PRETEMP ufficiale ↗';
+    replacement.setAttribute('aria-label','Apri il sito ufficiale PRETEMP');
+    direct.replaceWith(replacement);
+    replacement.addEventListener('click',openOfficial,true);
+  }
+  ['briefPretemp','toolPretempMain','weatherAnalysisPretemp'].forEach(id=>{
+    document.getElementById(id)?.addEventListener('click',openOfficial,true);
+  });
+  document.querySelectorAll('[data-jump="pretempDrawer"]').forEach(el=>el.addEventListener('click',openOfficial,true));
+})();
