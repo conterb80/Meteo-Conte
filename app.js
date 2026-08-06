@@ -567,7 +567,7 @@ function renderTrendPage(){
    trendSelectedOffset=Math.round(ratio*(actualCount-1)); renderTrendPage();
  }));
  box.querySelector('[data-jump-trend="radar"]')?.addEventListener('click',()=>window.open('https://zoom.earth/maps/radar/','_blank','noopener'));
- box.querySelector('[data-jump-trend="pretemp"]')?.addEventListener('click',()=>{closeTrendPage();document.getElementById('openPretempDrawer')?.click()});
+ box.querySelector('[data-jump-trend="pretemp"]')?.addEventListener('click',()=>{closeTrendPage();window.open('https://www.pretemp.it/','_blank','noopener')});
 }
 function openTrend(type='temperatura'){
  if(!lastData)return;
@@ -637,14 +637,14 @@ function openWeatherAnalysis(){
 function closeWeatherAnalysis(){ $('weatherAnalysisPage')?.classList.add('hidden');document.body.classList.remove('weather-analysis-open'); }
 $('briefWeather')?.addEventListener('click',()=>{ window.location.href='radar.html'; });
 $('closeWeatherAnalysis')?.addEventListener('click',closeWeatherAnalysis);
-$('weatherAnalysisPretemp')?.addEventListener('click',()=>{closeWeatherAnalysis();document.getElementById('openPretempDrawer')?.click();});
+$('weatherAnalysisPretemp')?.addEventListener('click',()=>{closeWeatherAnalysis();window.open('https://www.pretemp.it/','_blank','noopener');});
 $('weatherAnalysisLamone')?.addEventListener('click',()=>{closeWeatherAnalysis();document.getElementById('openLamoneDrawer')?.click();});
 $('weatherAnalysisNews')?.addEventListener('click',()=>{closeWeatherAnalysis();const target=$('followSection');target?.scrollIntoView({behavior:'smooth',block:'start'});target?.classList.add('open');const toggle=target?.querySelector('.accordion-toggle');toggle?.setAttribute('aria-expanded','true');});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('weatherAnalysisPage')?.classList.contains('hidden'))closeWeatherAnalysis();});
 document.querySelectorAll('[data-jump]').forEach(el=>el.addEventListener('click',()=>{
  const id=el.dataset.jump;
  if(id==='lamoneDrawer'){document.getElementById('openLamoneDrawer')?.click();return;}
- if(id==='pretempDrawer'){document.getElementById('openPretempDrawer')?.click();return;}
+ if(id==='pretempDrawer'){window.open('https://www.pretemp.it/','_blank','noopener');return;}
  $(id)?.scrollIntoView({behavior:'smooth',block:'start'});
 }));
 
@@ -898,206 +898,6 @@ loadLamoneSensors();
   closeBtn?.addEventListener('click',closeDrawer);
 })();
 
-
-
-// V56 - Cassetto PRETEMP: grafica interna ottimizzata, logica invariata
-(function(){
-  const openBtn=document.getElementById('openPretempDrawer');
-  const closeBtn=document.getElementById('closePretempDrawer');
-  const drawer=document.getElementById('pretempDrawer');
-  const content=document.getElementById('pretempContainer');
-  const validity=document.getElementById('pretempValidity');
-  const drawerValidity=document.getElementById('pretempDrawerValidity');
-  if(!openBtn||!content) return;
-  const syncValidity=()=>{if(drawerValidity&&validity) drawerValidity.textContent=validity.textContent;};
-  const openDrawer=()=>{
-    syncValidity();
-    content.classList.remove('hidden');
-    drawer?.classList.add('pretemp-drawer-active');
-    openBtn.setAttribute('aria-expanded','true');
-    setTimeout(()=>content.scrollIntoView({behavior:'smooth',block:'start'}),40);
-  };
-  const closeDrawer=()=>{
-    content.classList.add('hidden');
-    drawer?.classList.remove('pretemp-drawer-active');
-    openBtn.setAttribute('aria-expanded','false');
-    setTimeout(()=>drawer?.scrollIntoView({behavior:'smooth',block:'center'}),40);
-  };
-  openBtn.setAttribute('aria-expanded','false');
-  openBtn.addEventListener('click',openDrawer);
-  closeBtn?.addEventListener('click',closeDrawer);
-  setTimeout(syncValidity,800);
-})();
-
-// V1.1.1 - PRETEMP professionale: fonte ufficiale, anti-cache e lettura automatica
-(function setupPretempProfessional(){
-  const $p=id=>document.getElementById(id);
-  const map=$p('pretempMap'), mapLarge=$p('pretempMapLarge'), mapButton=$p('pretempMapButton');
-  const fallback=$p('pretempMapFallback'), modal=$p('pretempModal'), close=$p('closePretempModal');
-  const validity=$p('pretempValidity'), forecastLink=$p('pretempForecastLink'), modalForecastLink=$p('pretempModalForecastLink');
-  const statusDot=$p('pretempStatusDot'), title=$p('pretempDecisionTitle'), text=$p('pretempDecisionText');
-  const dot=$p('pretempDecisionDot'), level=$p('pretempAutoLevel'), phenomena=$p('pretempAutoPhenomena'), issued=$p('pretempAutoIssued');
-  const refresh=$p('refreshPretemp'), readout=$p('pretempReadout');
-  if(!map||!mapButton) return;
-
-  const esc=s=>String(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
-  const clean=s=>String(s||'').replace(/\*\*/g,'').replace(/\s+/g,' ').trim();
-  const setState=(mode,head,detail)=>{
-    const color=mode==='ready'?'green':mode==='error'?'red':'yellow';
-    title.textContent=head; text.textContent=detail;
-    dot.className='pretemp-auto-dot '+color;
-    statusDot.className='pretemp-state '+color;
-    statusDot.textContent=mode==='ready'?'AGGIORNATA':mode==='error'?'ERRORE':'VERIFICA';
-  };
-  const pretempColor=n=>n>=3?'red':n===2?'orange':n===1?'yellow':'green';
-  const applyPretempLevel=(rawLevel)=>{
-    const n=Number(rawLevel);
-    if(!Number.isFinite(n)) return;
-    const color=pretempColor(n);
-    readout?.classList.remove('level-0','level-1','level-2','level-3');
-    readout?.classList.add('level-'+Math.max(0,Math.min(3,n)));
-    const homeDot=$p('dotTemporali'), homeCard=$p('briefPretemp'), homeLabel=homeCard?.querySelector('b');
-    if(homeDot) homeDot.className='dot '+color;
-    if(homeCard){homeCard.classList.remove('pretemp-l0','pretemp-l1','pretemp-l2','pretemp-l3');homeCard.classList.add('pretemp-l'+n);}
-    if(homeLabel) homeLabel.textContent='Pericolosità '+n;
-    const message=$p('statusText');
-    if(message&&n>=3) message.textContent='PRETEMP segnala pericolosità 3: controlla la mappa ufficiale.';
-    else if(message&&n===2) message.textContent='PRETEMP segnala pericolosità 2: situazione da monitorare.';
-    try{localStorage.setItem('mc_pretemp_level',String(n));}catch(_e){}
-  };
-  window.mcApplyPretempLevel=applyPretempLevel;
-  const setImage=url=>{
-    const bust=(url.includes('?')?'&':'?')+'mc='+Date.now();
-    map.src=url+bust;
-    if(mapLarge) mapLarge.src=url+bust;
-  };
-  const italianMonths={gennaio:0,febbraio:1,marzo:2,aprile:3,maggio:4,giugno:5,luglio:6,agosto:7,settembre:8,ottobre:9,novembre:10,dicembre:11};
-  const dateFromText=s=>{
-    const m=clean(s).toLowerCase().match(/(\d{1,2})\s+(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+(\d{4})/);
-    return m?new Date(Number(m[3]),italianMonths[m[2]],Number(m[1])):null;
-  };
-  const sameDay=(a,b)=>a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
-  const extractPhenomena=raw=>{
-    const t=raw.toLowerCase(), out=[];
-    if(/grandine|grandinate/.test(t)) out.push('🧊 Grandine');
-    if(/downburst|raffiche|vento forte|forti venti/.test(t)) out.push('💨 Raffiche');
-    if(/forti piogge|piogge intense|nubifrag|precipitazioni intense/.test(t)) out.push('🌧️ Piogge forti');
-    if(/tornado|tromba d.aria/.test(t)) out.push('🌪️ Tornado');
-    if(/temporali forti|temporali molto forti|supercell/.test(t)) out.unshift('⛈️ Temporali forti');
-    return [...new Set(out)].slice(0,4).join(' · ')||'Nessun simbolo specifico rilevato';
-  };
-  const fetchText=async url=>{
-    const proxy='https://r.jina.ai/https://'+url.replace(/^https?:\/\//,'')+(url.includes('?')?'&':'?')+'v='+Date.now();
-    const res=await fetch(proxy,{cache:'no-store'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    return await res.text();
-  };
-  const absolutePretempUrl=(value,base='https://www.pretemp.it/')=>{
-    const url=String(value||'').trim().replace(/&amp;/g,'&').replace(/\\_/g,'_');
-    if(!url) return '';
-    try{return new URL(url,base).href;}catch(_e){return '';}
-  };
-  const extractLinks=raw=>{
-    const out=[];
-    const add=(value,base)=>{const u=absolutePretempUrl(value,base);if(u&&!out.includes(u))out.push(u);};
-    for(const m of String(raw||'').matchAll(/\[[^\]]*\]\((https?:\/\/[^\s)]+|\/[^\s)]+)\)/ig)) add(m[1]);
-    for(const m of String(raw||'').matchAll(/(?:href|src)=["']([^"']+)["']/ig)) add(m[1]);
-    for(const m of String(raw||'').matchAll(/https?:\/\/[^\s)"'<>]+/ig)) add(m[0]);
-    return out;
-  };
-  const pickForecastLink=raw=>extractLinks(raw).find(u=>/pretemp\.it\/previsioni\/\d+(?:[/?#]|$)/i.test(u))||'';
-  const pickMapLink=raw=>{
-    const links=extractLinks(raw);
-    return links.find(u=>/pretemp\.it/i.test(u)&&/(?:\.png|\.jpe?g|\.webp|\.gif|active_storage|storage|uploads|media)/i.test(u)&&!/logo|favicon|avatar|icon/i.test(u))||'';
-  };
-  const parseHome=raw=>{
-    const forecast=pickForecastLink(raw);
-    const image=pickMapLink(raw);
-    const heading=(raw.match(/(?:ULTIMA PREVISIONE|PREVISIONE PER|Previsione per il)[^\n\r]*/i)||[])[0]||'';
-    const lev=(raw.match(/Pericolosit[aà]\s*[: ]\s*\**\s*(\d)/i)||[])[1];
-    const author=(raw.match(/(?:Autore|Previsore):\s*\**\s*([^\n\r]+)/i)||[])[1];
-    return {forecast,image,heading,lev,author:clean(author)};
-  };
-  const parseForecast=raw=>{
-    const valid=(raw.match(/Valida dalle ore[^\n\r]+/i)||[])[0]||(raw.match(/Previsione per il\s+[^\n\r]+/i)||[])[0];
-    const emission=(raw.match(/Emessa[^\n\r]+/i)||[])[0]||(raw.match(/Aggiornato il[^\n\r]+/i)||[])[0];
-    const author=(raw.match(/Previsore:\s*([^\n\r]+)/i)||[])[1];
-    const levelValue=(raw.match(/Pericolosit[aà]\s*[: ]\s*\**\s*(\d)/i)||[])[1];
-    const short=(raw.match(/TESTO BREVE\s*([\s\S]*?)(?:DISCUSSIONE|Emessa|PRETEMP è)/i)||[])[1]||raw;
-    const image=pickMapLink(raw);
-    return {valid:clean(valid),emission:clean(emission),author:clean(author),short:clean(short),image,levelValue};
-  };
-
-  async function updatePretemp(){
-    refresh&&(refresh.disabled=true,refresh.textContent='↻ Verifico…');
-    fallback?.classList.add('hidden'); map.classList.remove('hidden');
-    setState('checking','Verifica in corso','Controllo la pagina ufficiale PRETEMP e cerco l’ultima emissione.');
-    validity.textContent='verifica…'; level.textContent='—'; phenomena.textContent='in lettura…'; issued.textContent='—';
-    try{
-      try{localStorage.setItem('mc_pretemp_last_check',String(Date.now()));}catch(_e){}
-      const homeRaw=await fetchText('https://www.pretemp.it/');
-      const home=parseHome(homeRaw);
-      if(!home.forecast) throw new Error('link previsione non trovato');
-      const forecastRaw=await fetchText(home.forecast);
-      const detail=parseForecast(forecastRaw);
-      const image=detail.image||home.image;
-      if(!image) throw new Error('immagine non trovata');
-      const forecastDate=dateFromText(detail.valid||home.heading)||dateFromText(forecastRaw);
-      if(!forecastDate) throw new Error('data previsione non riconosciuta');
-      const ageDays=Math.floor((new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate())-new Date(forecastDate.getFullYear(),forecastDate.getMonth(),forecastDate.getDate()))/86400000);
-      if(ageDays>1) throw new Error('previsione obsoleta');
-      setImage(image);
-      forecastLink.href=home.forecast; if(modalForecastLink) modalForecastLink.href=home.forecast;
-      const fresh=sameDay(forecastDate,new Date());
-      validity.textContent=detail.valid?detail.valid.replace(/^Valida\s*/i,''):home.heading.replace(/^(?:ULTIMA PREVISIONE|PREVISIONE PER)\s*/i,'');
-      const detectedLevel=detail.levelValue??home.lev;
-      level.textContent='Livello '+(detectedLevel??'—');
-      if(detectedLevel!==undefined&&detectedLevel!==null) applyPretempLevel(detectedLevel);
-      phenomena.textContent=extractPhenomena(detail.short);
-      issued.textContent=(detail.emission||('Previsore: '+(detail.author||home.author||'—'))).replace(/^(?:Emessa|Aggiornato il)\s*/i,'');
-      setState(fresh?'ready':'checking',fresh?'Mappa aggiornata':'Ultima emissione disponibile',fresh?'La previsione ufficiale di oggi è caricata automaticamente.':'È caricata l’ultima previsione ufficiale disponibile; controlla la data di validità.');
-      map.dataset.forecastDate=forecastDate.toISOString();
-      localStorage.setItem('mc_pretemp_cache_meta',JSON.stringify({forecast:home.forecast,validity:validity.textContent,level:level.textContent,issued:issued.textContent,time:Date.now()}));
-      localStorage.removeItem('mc_pretemp_cache');
-    }catch(err){
-      map.removeAttribute('src'); map.classList.add('hidden'); fallback?.classList.remove('hidden');
-      forecastLink.href='https://www.pretemp.it/'; if(modalForecastLink) modalForecastLink.href='https://www.pretemp.it/';
-      validity.textContent='non disponibile'; level.textContent='—'; phenomena.textContent='—'; issued.textContent='—';
-      setState('error','Mappa non aggiornata','Il recupero automatico non è riuscito. Non mostro mappe salvate o vecchie: apri PRETEMP ufficiale oppure riprova.');
-      console.warn('PRETEMP RC30:',err);
-    }finally{refresh&&(refresh.disabled=false,refresh.textContent='↻ Aggiorna');}
-  }
-
-  try{const saved=Number(localStorage.getItem('mc_pretemp_level'));if(Number.isFinite(saved))applyPretempLevel(saved);}catch(_e){}
-  window.refreshPretemp=updatePretemp;
-  refresh?.addEventListener('click',updatePretemp);
-  document.getElementById('openPretempDrawer')?.addEventListener('click',()=>setTimeout(updatePretemp,80));
-  map.addEventListener('load',()=>{fallback?.classList.add('hidden');map.classList.remove('hidden');});
-  map.addEventListener('error',()=>{map.classList.add('hidden');fallback?.classList.remove('hidden');});
-  const openModal=()=>{if(map.classList.contains('hidden')){window.open(forecastLink?.href||'https://www.pretemp.it/','_blank','noopener');return;}if(mapLarge)mapLarge.src=map.src;modal?.classList.remove('hidden');document.body.classList.add('pretemp-modal-open');};
-  const closeModal=()=>{modal?.classList.add('hidden');document.body.classList.remove('pretemp-modal-open');};
-  mapButton.addEventListener('click',openModal);close?.addEventListener('click',closeModal);modal?.addEventListener('click',e=>{if(e.target===modal)closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
-  updatePretemp();
-  // RC30: controllo automatico PRETEMP senza riuso di mappe obsolete.
-  setInterval(()=>{if(!document.hidden) updatePretemp();},30*60*1000);
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden){const last=Number(localStorage.getItem('mc_pretemp_last_check')||0);if(Date.now()-last>10*60*1000)updatePretemp();}});
-})();
-
-// V59 - Guida rapida interna PRETEMP
-(function(){
-  const toggle=document.getElementById('togglePretempGuide');
-  const open=document.getElementById('openPretempGuide');
-  const panel=document.getElementById('pretempGuidePanel');
-  if(!panel) return;
-  const setOpen=(value,scroll=false)=>{
-    panel.classList.toggle('hidden',!value);
-    toggle?.setAttribute('aria-expanded',String(value));
-    toggle?.classList.toggle('is-open',value);
-    if(value&&scroll) setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),40);
-  };
-  toggle?.addEventListener('click',()=>setOpen(panel.classList.contains('hidden'),false));
-  open?.addEventListener('click',()=>setOpen(true,true));
-})();
 
 
 // V68 - PRETEMP ottimizzato: lettura essenziale
@@ -1470,38 +1270,38 @@ loadLamoneSensors();
 // RC27: navigazione diretta dalle sezioni della Sala Controllo integrata.
 window.addEventListener('DOMContentLoaded',()=>{
   const target=new URLSearchParams(window.location.search).get('open');
-  if(target==='pretemp') setTimeout(()=>document.getElementById('openPretempDrawer')?.click(),150);
+  if(target==='pretemp') setTimeout(()=>window.open('https://www.pretemp.it/','_blank','noopener'),150);
   if(target==='lamone') setTimeout(()=>document.getElementById('openLamoneDrawer')?.click(),150);
   if(target==='trend') setTimeout(()=>document.getElementById('openTrendPage')?.click(),150);
 });
 
-// RC30 Stable - PRETEMP semplificato: solo accesso diretto alla fonte ufficiale.
-(function(){
-  const url='https://www.pretemp.it/';
-  const open=()=>window.open(url,'_blank','noopener');
-  document.getElementById('openPretempDrawer')?.addEventListener('click',open);
-  document.getElementById('briefPretemp')?.addEventListener('click',open);
-  document.getElementById('toolPretempMain')?.addEventListener('click',open);
-})();
 
-
-// RC30.1 - PRETEMP semplificato: solo collegamento diretto al sito ufficiale.
+// RC31 - PRETEMP semplificato: solo collegamento ufficiale, nessuna mappa interna.
 (function setupPretempDirectOnly(){
-  const PRETEMP_URL='https://www.pretemp.it/';
-  const openOfficial=(event)=>{
-    if(event){event.preventDefault();event.stopImmediatePropagation();}
-    window.open(PRETEMP_URL,'_blank','noopener,noreferrer');
-  };
-  const direct=document.getElementById('openPretempDrawer');
-  if(direct){
-    const replacement=direct.cloneNode(true);
-    replacement.textContent='Apri PRETEMP ufficiale ↗';
-    replacement.setAttribute('aria-label','Apri il sito ufficiale PRETEMP');
-    direct.replaceWith(replacement);
-    replacement.addEventListener('click',openOfficial,true);
-  }
-  ['briefPretemp','toolPretempMain','weatherAnalysisPretemp'].forEach(id=>{
-    document.getElementById(id)?.addEventListener('click',openOfficial,true);
+  const URL='https://www.pretemp.it/';
+  const open=()=>window.open(URL,'_blank','noopener');
+  document.addEventListener('click',event=>{
+    const trigger=event.target.closest('[data-jump="pretempDrawer"],#openPretempDrawer,#toolPretemp,#toolPretempMain,#weatherAnalysisPretemp');
+    if(!trigger) return;
+    event.preventDefault();
+    open();
   });
-  document.querySelectorAll('[data-jump="pretempDrawer"]').forEach(el=>el.addEventListener('click',openOfficial,true));
+  window.refreshPretemp=()=>{};
+  window.mcApplyPretempLevel=(raw)=>{
+    const n=Number(raw);
+    if(!Number.isFinite(n)) return;
+    const color=n>=2?'red':n===1?'yellow':'green';
+    const dot=document.getElementById('dotTemporali');
+    const card=document.getElementById('briefPretemp');
+    const label=document.getElementById('briefPretempLevel')||card?.querySelector('b');
+    if(dot){dot.className='dot '+color;}
+    if(card){card.classList.remove('pretemp-l0','pretemp-l1','pretemp-l2','pretemp-l3');card.classList.add('pretemp-l'+Math.max(0,Math.min(3,n)));}
+    if(label) label.textContent='Pericolosità '+n;
+    try{localStorage.setItem('mc_pretemp_level',String(n));}catch(_e){}
+  };
+  try{
+    const saved=Number(localStorage.getItem('mc_pretemp_level'));
+    if(Number.isFinite(saved)) window.mcApplyPretempLevel(saved);
+    ['mc_pretemp_cache','mc_pretemp_cache_meta','mc_pretemp_last_check'].forEach(k=>localStorage.removeItem(k));
+  }catch(_e){}
 })();

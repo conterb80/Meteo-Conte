@@ -3029,11 +3029,5 @@ body{background:radial-gradient(circle at 50% -10%,#0b3a49 0,#051b27 34%,#020d14
 .home-astro-grid .card{background:linear-gradient(180deg,#071c26,#04131b)!important;border-color:rgba(79,208,241,.16)!important}
 @media(max-width:560px){.home-cockpit{gap:8px!important}.home-cockpit>.card,.home-cockpit .weather-hero{border-radius:19px!important}.weather-hero:after{left:12px;right:12px}.home-cockpit .monitor-head{padding-bottom:7px!important}}
 
-/* RC30 Stable - PRETEMP diretto e pulito */
-.pretemp-direct-card{position:relative;overflow:hidden;padding:14px 15px 13px;border-color:rgba(255,205,72,.24);background:linear-gradient(180deg,rgba(13,61,79,.98),rgba(7,43,58,.98))}
-.pretemp-direct-card:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#ffe34e,#ff9d32,#ef4b43,#d72be9)}
-.pretemp-direct-badge{position:absolute;right:14px;top:12px;padding:6px 9px;border-radius:999px;background:#ffd85a;color:#352900;font-size:10px;font-weight:900;letter-spacing:.08em}
-.pretemp-direct-main{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center;margin-top:8px}.pretemp-direct-icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:rgba(255,205,72,.1);border:1px solid rgba(255,205,72,.23)}
-.pretemp-direct-main h2{margin:0 0 3px;font-size:22px}.pretemp-direct-main p{margin:0;color:#cfe1e8;font-size:12.5px;line-height:1.25;padding-right:44px}
-.pretemp-direct-status{display:grid;grid-template-columns:.75fr 1.4fr;gap:7px;margin:10px 0 8px}.pretemp-direct-status span{padding:8px 9px;border:1px solid var(--line);border-radius:13px;background:#ffffff07}.pretemp-direct-status small{display:block;color:var(--muted);font-size:10px}.pretemp-direct-status b{display:block;margin-top:2px;font-size:12px;color:#ffe06a}
-.pretemp-direct-open{width:100%;margin:0;min-height:42px;border-radius:14px}
+/* RC31: il vecchio modulo PRETEMP interno è stato rimosso. */
+#pretempDrawer,#pretempContainer,#pretempModal,.pretemp-container-openable,.pretemp-drawer,.pretemp-modal{display:none!important}
