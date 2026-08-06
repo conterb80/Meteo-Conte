@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · RC27 Sala Controllo Integrata</title>
+<title>Meteo Conte 1.1 · RC30 Stable Stabilizzazione PRETEMP</title>
 <link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
-<link href="style.css?v=1.1-control-rc24" rel="stylesheet"/>
+<link href="style.css?v=RC30 Stable" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -112,7 +112,7 @@
   <div class="weather-analysis-shell control-room-shell">
     <header class="weather-analysis-header">
       <button aria-label="Chiudi Sala Controllo" class="weather-analysis-close" id="closeWeatherAnalysis" type="button">‹</button>
-      <div><small>METEO CONTE · RC27</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
+      <div><small>METEO CONTE · RC30 Stable</small><h2>Sala Controllo</h2><span class="console-location">BORGO VIAZZA · RAVENNA</span></div>
       <span class="weather-analysis-live"><i></i> OPERATIVA</span>
     </header>
     <section class="weather-analysis-summary" id="weatherAnalysisSummary">
@@ -257,21 +257,15 @@
 </div>
 <button class="btn lamone-drawer-open" id="openLamoneDrawer" type="button">🌊 Apri Lamone</button>
 </section>
-<section aria-label="Cassetto PRETEMP" class="card pretemp-drawer" id="pretempDrawer">
-<span class="label">CASSETTO 02</span>
-<span class="pretemp-drawer-live">LIVE</span>
-<div class="pretemp-drawer-main">
-<div class="pretemp-drawer-icon">⛈️</div>
-<div>
-<h2>PRETEMP</h2>
-<p>Temporali e fenomeni intensi.</p>
+<section aria-label="Accesso PRETEMP" class="card pretemp-direct-card" id="pretempDrawer">
+<span class="label">PRETEMP · FONTE UFFICIALE</span>
+<span class="pretemp-direct-badge">VERIFICA</span>
+<div class="pretemp-direct-main">
+  <div class="pretemp-direct-icon">⛈️</div>
+  <div><h2>PRETEMP</h2><p>Pericolosità temporali e bollettino ufficiale aggiornato.</p></div>
 </div>
-</div>
-<div class="pretemp-drawer-status">
-<span><small>Zona</small><b>Romagna</b></span>
-<span><small>Lettura</small><b id="pretempDrawerReading">da compilare</b></span>
-</div>
-<button class="btn pretemp-drawer-open" id="openPretempDrawer" type="button">⛈️ Apri PRETEMP</button>
+<div class="pretemp-direct-status"><span><small>Zona</small><b>Romagna</b></span><span><small>Pericolosità</small><b>Consulta il livello ufficiale</b></span></div>
+<button class="btn pretemp-direct-open" id="openPretempDrawer" type="button">Apri PRETEMP ufficiale ↗</button>
 </section>
 </div>
 <section class="card river river-v20 river-emergency hidden lamone-container-openable" id="lamoneCard">
@@ -348,62 +342,6 @@
 <a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" rel="noopener" target="_blank">📈 Dettagli Lamone</a>
 <a class="btn secondary" href="https://www.windy.com/?rain,44.16,11.62,8" rel="noopener" target="_blank">🌧️ Pioggia a monte</a>
 </div>
-</section>
-<section class="card pretemp-container hidden pretemp-container-openable" id="pretempContainer">
-<div class="container-toolbar pretemp-toolbar">
-<div><span>CENTRO PRETEMP</span><b>Previsione temporali</b></div>
-<button aria-label="Chiudi contenitore PRETEMP" id="closePretempDrawer" type="button">×</button>
-</div>
-<div class="pretemp-head pretemp-head-pro">
-<div>
-<span class="label">PRETEMP · MAPPA UFFICIALE</span>
-<h2>Centro PRETEMP</h2>
-<p>Mappa e dati ufficiali, aggiornati automaticamente.</p>
-</div>
-<span aria-label="Stato mappa" class="pretemp-state yellow" id="pretempStatusDot">VERIFICA</span>
-</div>
-<section class="pretemp-readout" id="pretempReadout">
-<section aria-live="polite" class="pretemp-auto-status" id="pretempDecision">
-<div class="pretemp-auto-status-main">
-<span aria-hidden="true" class="pretemp-auto-dot yellow" id="pretempDecisionDot"></span>
-<div><small>LETTURA AUTOMATICA</small><h3 id="pretempDecisionTitle">Verifica in corso</h3><p id="pretempDecisionText">Ricerca dell’ultima previsione ufficiale disponibile.</p></div>
-</div>
-<button id="refreshPretemp" type="button">↻ Aggiorna</button>
-</section>
-<div class="pretemp-auto-grid" aria-label="Lettura automatica PRETEMP">
-<span><small>Validità</small><b id="pretempValidity">verifica…</b></span>
-<span><small>Pericolosità</small><b id="pretempAutoLevel">—</b></span>
-<span><small>Fenomeni principali</small><b id="pretempAutoPhenomena">in lettura…</b></span>
-<span><small>Emissione</small><b id="pretempAutoIssued">—</b></span>
-</div>
-</section>
-<a aria-hidden="true" class="hidden" href="https://www.pretemp.it/" id="pretempForecastLink" rel="noopener" tabindex="-1" target="_blank"></a>
-<button aria-label="Apri la mappa PRETEMP ingrandita" class="pretemp-map-card pretemp-map-card-pro" id="pretempMapButton" type="button">
-<span class="pretemp-map-badge"><b>Mappa ufficiale</b><small>Tocca per ingrandire</small></span>
-<img alt="Mappa ufficiale PRETEMP del giorno" id="pretempMap" loading="lazy"/>
-<span class="pretemp-map-fallback hidden" id="pretempMapFallback"><b>Mappa non disponibile</b><small>Apri la pagina ufficiale oppure riprova.</small></span>
-</button>
-<section aria-label="Approfondimenti PRETEMP" class="pretemp-actions-hub">
-<div class="pretemp-actions-hub-head"><span>APPROFONDIMENTI</span><small>Apri solo ciò che ti serve</small></div>
-<section aria-label="Bollettino testuale PRETEMP" class="pretemp-bulletin pretemp-bulletin-pro">
-<button aria-expanded="false" class="pretemp-bulletin-toggle" id="togglePretempBulletin" type="button">
-<span class="pretemp-action-icon">📝</span><span><b>Bollettino ufficiale</b><small>Testo completo della previsione</small></span><i>⌄</i>
-</button>
-<div class="pretemp-bulletin-panel hidden" id="pretempBulletinPanel">
-<p id="pretempBulletinStatus">Tocca “Carica bollettino” per leggere il testo ufficiale.</p>
-<div class="pretemp-bulletin-text hidden" id="pretempBulletinText"></div>
-<div class="pretemp-bulletin-actions">
-<button id="loadPretempBulletin" type="button">Carica bollettino</button>
-<a href="https://www.pretemp.it/" id="pretempOfficialForecastLink" rel="noopener" target="_blank">Pagina ufficiale ↗</a>
-</div>
-</div>
-</section>
-<div aria-label="Strumenti PRETEMP" class="pretemp-compare-tools pretemp-compare-tools-pro">
-<a class="pretemp-radar-link" href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" rel="noopener" target="_blank"><span>📡</span><b>Radar meteo</b><small>Confronta l’evoluzione</small></a>
-<a class="pretemp-guide-link" href="https://www.pretemp.it/" rel="noopener" target="_blank"><span>🌐</span><b>PRETEMP completo</b><small>Archivio e tendenze</small></a>
-</div>
-<p class="pretemp-disclaimer pretemp-disclaimer-compact">Previsione sperimentale probabilistica: le allerte ufficiali restano il riferimento operativo.</p>
-</section>
 </section>
 <section class="card links operative-center operative-beta analysis-center-v78 analysis-center-v80 analysis-center-v83" id="operativeLinks">
 <div class="analysis-hero operation-hero">
@@ -499,19 +437,10 @@
 </div>
 </div>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC27 Radar Integrato</footer>
-<div aria-label="Mappa PRETEMP ingrandita" aria-modal="true" class="pretemp-modal hidden" id="pretempModal" role="dialog">
-<div class="pretemp-modal-head">
-<div><span>PRETEMP</span><b>Mappa del giorno</b></div>
-<button aria-label="Chiudi mappa" id="closePretempModal" type="button">×</button>
-</div>
-<div class="pretemp-modal-scroll">
-<img alt="Mappa PRETEMP ingrandita" id="pretempMapLarge"/>
-</div>
-<a class="btn" href="https://www.pretemp.it/" id="pretempModalForecastLink" rel="noopener" target="_blank">Apri previsione completa ↗</a>
-</div>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC30 Stable PRETEMP Stabilizzato</footer>
+
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=1.1-center-rc25"></script>
+<script src="app.js?v=RC30 Stable"></script>
 </body>
 </html>

@@ -1,10 +1,16 @@
 {
-  "name": "Meteo Conte 1.1 RC28",
+  "name": "Meteo Conte 1.1 RC30 Stable",
   "short_name": "Meteo Conte",
-  "start_url": "index.html?v=rc28",
+  "start_url": "index.html?v=rc30",
   "scope": "./",
   "display": "standalone",
   "background_color": "#020d14",
   "theme_color": "#041923",
-  "icons": [{"src":"icon.png?v=rc28","sizes":"512x512","type":"image/png"}]
+  "icons": [
+    {
+      "src": "icon.png?v=rc30",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
