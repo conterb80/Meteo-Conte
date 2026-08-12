@@ -1,4 +1,4 @@
-const CACHE='meteo-conte-rc33-1-v1';
+const CACHE='meteo-conte-rc34-1-v1';
 const CORE=['./','./index.html','./style.css?v=rc33.1','./app.js?v=rc33.1','./radar.html','./radar.css','./radar.js','./manifest.json','./icon.png'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)));});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()])));

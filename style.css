@@ -3030,7 +3030,8 @@ body{background:radial-gradient(circle at 50% -10%,#0b3a49 0,#051b27 34%,#020d14
 @media(max-width:560px){.home-cockpit{gap:8px!important}.home-cockpit>.card,.home-cockpit .weather-hero{border-radius:19px!important}.weather-hero:after{left:12px;right:12px}.home-cockpit .monitor-head{padding-bottom:7px!important}}
 
 /* RC32: il modulo PRETEMP interno è stato rimosso strutturalmente. */
-\n/* RC33 - pulizia Home: nessuna nuova funzione */
+
+/* RC33 - pulizia Home: nessuna nuova funzione */
 .home-astro-grid{grid-template-columns:1fr 1fr!important}
 #operativeLinks{padding:10px!important}
 #operativeLinks .analysis-hero{padding:0 2px 5px!important;min-height:auto!important}
@@ -3049,4 +3050,119 @@ body{background:radial-gradient(circle at 50% -10%,#0b3a49 0,#051b27 34%,#020d14
 #operativeLinks .conte-reason p{font-size:11.5px!important;line-height:1.25!important}
 #operativeLinks .tool-section{margin-top:7px!important}
 @media(max-width:430px){.home-astro-grid{grid-template-columns:1fr 1fr!important}.home-astro-grid .astro-card{min-width:0}.sun-arc{gap:5px!important}.sun-arc span{font-size:17px!important}}
-\n\n/* =========================================================\n   RC34 · INTERVENTO 1 — HOME PIU COMPATTA + ACCESSO TREND\n   Nessuna modifica alle fonti o alla logica radar.\n   ========================================================= */\n.hourly-trend-launcher{cursor:pointer;position:relative}\n.hourly-trend-launcher:active{transform:scale(.997)}\n.hourly-monitor-card .monitor-head{margin-bottom:5px!important}\n.hourly-monitor-card .monitor-head .label{font-size:10px!important;letter-spacing:2.4px!important}\n.hourly-monitor-card .monitor-head b{font-size:19px!important;line-height:1.05!important}\n.hourly-monitor-card .monitor-head>small{font-size:10px!important;color:#8fc9d8!important}\n.home-hourly-strip .hour{flex-basis:68px!important;min-height:88px!important;padding:5px 4px!important;gap:2px!important}\n.home-hourly-strip .hour time{font-size:13px!important;font-weight:800!important;color:#d5f4fa!important;letter-spacing:.2px!important}\n.home-hourly-strip .hour span{font-size:22px!important}\n.home-hourly-strip .hour b{font-size:18px!important}\n.home-hourly-strip .hour small{font-size:7.5px!important}\n.radar-monitor-card{padding-top:9px!important;padding-bottom:9px!important}\n.home-radar-map{height:142px!important}\n.radar-monitor-card .monitor-head{margin-bottom:6px!important}\n.radar-monitor-card .monitor-head b{font-size:18px!important;line-height:1.08!important}\n.radar-monitor-card .label{font-size:9px!important}\n.radar-foot{margin-top:5px!important}\n@media(max-width:430px){\n .weather-hero{padding:9px 10px!important}\n .weather-hero-main{min-height:auto!important}\n .app-logo{width:54px!important;height:54px!important}\n .hero-location h1{font-size:25px!important}\n .hero-location p{font-size:14px!important}\n .hero-metrics button{min-height:55px!important;padding:5px 2px!important}\n .hero-metrics button i{font-size:22px!important}\n .hero-metrics button small{font-size:7px!important}\n .hero-metrics button b{font-size:14px!important}\n .hourly-monitor-card{padding:9px!important}\n .home-hourly-strip .hour{flex-basis:65px!important;min-height:84px!important}\n .home-radar-map{height:136px!important}\n}\n
+
+
+/* =========================================================
+   RC34 · INTERVENTO 1 — HOME PIU COMPATTA + ACCESSO TREND
+   Nessuna modifica alle fonti o alla logica radar.
+   ========================================================= */
+.hourly-trend-launcher{cursor:pointer;position:relative}
+.hourly-trend-launcher:active{transform:scale(.997)}
+.hourly-monitor-card .monitor-head{margin-bottom:5px!important}
+.hourly-monitor-card .monitor-head .label{font-size:10px!important;letter-spacing:2.4px!important}
+.hourly-monitor-card .monitor-head b{font-size:19px!important;line-height:1.05!important}
+.hourly-monitor-card .monitor-head>small{font-size:10px!important;color:#8fc9d8!important}
+.home-hourly-strip .hour{flex-basis:68px!important;min-height:88px!important;padding:5px 4px!important;gap:2px!important}
+.home-hourly-strip .hour time{font-size:13px!important;font-weight:800!important;color:#d5f4fa!important;letter-spacing:.2px!important}
+.home-hourly-strip .hour span{font-size:22px!important}
+.home-hourly-strip .hour b{font-size:18px!important}
+.home-hourly-strip .hour small{font-size:7.5px!important}
+.radar-monitor-card{padding-top:9px!important;padding-bottom:9px!important}
+.home-radar-map{height:142px!important}
+.radar-monitor-card .monitor-head{margin-bottom:6px!important}
+.radar-monitor-card .monitor-head b{font-size:18px!important;line-height:1.08!important}
+.radar-monitor-card .label{font-size:9px!important}
+.radar-foot{margin-top:5px!important}
+@media(max-width:430px){
+ .weather-hero{padding:9px 10px!important}
+ .weather-hero-main{min-height:auto!important}
+ .app-logo{width:54px!important;height:54px!important}
+ .hero-location h1{font-size:25px!important}
+ .hero-location p{font-size:14px!important}
+ .hero-metrics button{min-height:55px!important;padding:5px 2px!important}
+ .hero-metrics button i{font-size:22px!important}
+ .hero-metrics button small{font-size:7px!important}
+ .hero-metrics button b{font-size:14px!important}
+ .hourly-monitor-card{padding:9px!important}
+ .home-hourly-strip .hour{flex-basis:65px!important;min-height:84px!important}
+ .home-radar-map{height:136px!important}
+}
+
+
+/* =========================================================
+   RC34.1 · INTERVENTO 1 — SOLO PROPORZIONI HOME
+   Obiettivo: Bollettino Conte visibile nella prima schermata.
+   Nessuna modifica alla logica radar, PRETEMP o Trend.
+   ========================================================= */
+.hourly-monitor-card{
+  padding:8px 9px!important;
+  margin-bottom:7px!important;
+}
+.hourly-monitor-card .monitor-head{
+  margin-bottom:4px!important;
+  padding-bottom:5px!important;
+}
+.hourly-monitor-card .monitor-head .label{
+  font-size:9px!important;
+  margin-bottom:2px!important;
+}
+.hourly-monitor-card .monitor-head b{
+  font-size:18px!important;
+  line-height:1.03!important;
+}
+.hourly-monitor-card .monitor-head>small{
+  font-size:9px!important;
+}
+.home-hourly-strip{
+  gap:6px!important;
+  padding-bottom:2px!important;
+}
+.home-hourly-strip .hour{
+  flex:0 0 64px!important;
+  min-height:76px!important;
+  padding:4px 3px!important;
+  gap:1px!important;
+}
+.home-hourly-strip .hour time{
+  font-size:12px!important;
+  font-weight:850!important;
+  color:#dcf8ff!important;
+}
+.home-hourly-strip .hour span{font-size:20px!important}
+.home-hourly-strip .hour b{font-size:17px!important}
+.home-hourly-strip .hour small{font-size:7px!important}
+.radar-monitor-card{
+  padding:8px!important;
+  margin-bottom:7px!important;
+}
+.radar-monitor-card .monitor-head{
+  margin-bottom:5px!important;
+  padding-bottom:6px!important;
+}
+.radar-monitor-card .monitor-head b{
+  font-size:17px!important;
+  line-height:1.05!important;
+}
+.radar-monitor-card .label{font-size:8px!important}
+.home-radar-map{
+  height:255px!important;
+  min-height:255px!important;
+}
+.radar-foot{
+  margin-top:4px!important;
+  padding-top:4px!important;
+  font-size:8px!important;
+}
+@media(max-width:430px){
+  .weather-hero{padding:8px 9px!important;margin-bottom:7px!important}
+  .app-logo{width:52px!important;height:52px!important}
+  .hero-location h1{font-size:24px!important}
+  .hero-location p{font-size:13px!important}
+  .hero-metrics button{min-height:50px!important;padding:4px 2px!important}
+  .hero-metrics button i{font-size:20px!important}
+  .hero-metrics button small{font-size:6.5px!important}
+  .hero-metrics button b{font-size:13px!important}
+  .hourly-monitor-card{padding:7px 8px!important}
+  .home-hourly-strip .hour{flex-basis:62px!important;min-height:74px!important}
+  .home-radar-map{height:245px!important;min-height:245px!important}
+}
