@@ -581,6 +581,10 @@ document.querySelectorAll('[data-trend]').forEach(el=>{
   el.addEventListener('click',()=>openTrend(el.dataset.trend));
   el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend(el.dataset.trend)}});
 });
+
+// RC34 · Intervento 1: la card Prossime Ore apre direttamente il Trend Operativo
+$('openHourlyTrend')?.addEventListener('click',e=>{ if(e.target.closest('a,button')) return; openTrend('temperatura'); });
+$('openHourlyTrend')?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend('temperatura')}});
 $('openTrendPage')?.addEventListener('click',()=>openTrend('temperatura'));
 $('openTrendPage')?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend('temperatura')}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('trendBox')?.classList.contains('hidden'))closeTrendPage()});
