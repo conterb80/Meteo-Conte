@@ -961,3 +961,41 @@ document.querySelectorAll('[data-pretemp-direct="1"],a[href*="pretemp"]').forEac
   setInterval(refreshRadar,5*60*1000);
  }catch(err){ console.warn('Inizializzazione radar Home fallita',err); }
 })();
+
+
+/* =========================================================
+   RC34.2 · INTERVENTO 2 — CENTRO OPERATIVO
+   Ripristino reale dei 5 cassetti operativi.
+   Una sezione aperta alla volta; nessuna nuova funzione.
+   ========================================================= */
+(function restoreOperationalAccordions(){
+  const root=document.getElementById('operativeLinks');
+  if(!root) return;
+
+  const sections=[...root.querySelectorAll('.accordion-section')];
+  const setState=(section,open)=>{
+    section.classList.toggle('open',open);
+    const btn=section.querySelector('.accordion-toggle');
+    if(!btn) return;
+    btn.setAttribute('aria-expanded',open?'true':'false');
+    const arrow=btn.querySelector(':scope > i');
+    if(arrow) arrow.textContent=open?'⌄':'›';
+  };
+
+  sections.forEach(section=>{
+    const btn=section.querySelector('.accordion-toggle');
+    if(!btn || btn.dataset.rc342Bound==='1') return;
+    btn.dataset.rc342Bound='1';
+    btn.addEventListener('click',()=>{
+      const willOpen=!section.classList.contains('open');
+      sections.forEach(other=>setState(other,false));
+      setState(section,willOpen);
+      if(willOpen){
+        setTimeout(()=>section.scrollIntoView({behavior:'smooth',block:'nearest'}),40);
+      }
+    });
+  });
+
+  // Stato iniziale: Osserva aperto, gli altri chiusi.
+  sections.forEach(section=>setState(section,section.id==='observeSection'));
+})();
