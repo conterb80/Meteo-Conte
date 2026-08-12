@@ -918,3 +918,42 @@ try{
 // RC33: PRETEMP esclusivamente esterno. Rimuove eventuali residui legacy dal DOM.
 document.querySelectorAll('#pretempDrawer,.pretemp-drawer,.pretemp-modal,[data-pretemp-panel]').forEach(el=>el.remove());
 document.querySelectorAll('[data-pretemp-direct="1"],a[href*="pretemp"]').forEach(el=>{el.href='https://www.pretemp.it/';el.target='_blank';el.rel='noopener';});
+
+/* RC33.1 — ripristino radar leggero Home (solo correzione inizializzazione) */
+(function initHomeLiteRadar(){
+ const el=document.getElementById('homeRadarMap');
+ if(!el || typeof L==='undefined') return;
+ try{
+  el.innerHTML='';
+  const map=L.map(el,{zoomControl:false,attributionControl:true,scrollWheelZoom:false,touchZoom:true,dragging:true}).setView([44.42,11.98],7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+   maxZoom:18,attribution:'&copy; OpenStreetMap'
+  }).addTo(map);
+  L.circleMarker([44.42,11.98],{radius:6,weight:2,color:'#fff',fillColor:'#00a9c8',fillOpacity:1}).addTo(map);
+  const timeEl=document.getElementById('radarFrameTime');
+  async function refreshRadar(){
+   if(timeEl) timeEl.textContent='LIVE · aggiornamento in corso';
+   try{
+    const res=await fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    const frames=Array.isArray(data?.radar?.past)?data.radar.past:[];
+    const frame=frames.at(-1);
+    if(!frame) throw new Error('Nessun frame radar');
+    const host=data.host||'https://tilecache.rainviewer.com';
+    if(map._homeRadarLayer) map.removeLayer(map._homeRadarLayer);
+    map._homeRadarLayer=L.tileLayer(`${host}${frame.path}/256/{z}/{x}/{y}/2/1_1.png`,{
+      tileSize:256,opacity:.68,zIndex:450,maxNativeZoom:7,maxZoom:18,className:'radar-overlay-pane',attribution:'Radar © RainViewer'
+    }).addTo(map);
+    const d=new Date(frame.time*1000);
+    if(timeEl) timeEl.textContent='LIVE · radar '+d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+   }catch(err){
+    console.warn('Radar Home non disponibile',err);
+    if(timeEl) timeEl.textContent='LIVE · radar temporaneamente non disponibile';
+   }
+   setTimeout(()=>map.invalidateSize(),150);
+  }
+  refreshRadar();
+  setInterval(refreshRadar,5*60*1000);
+ }catch(err){ console.warn('Inizializzazione radar Home fallita',err); }
+})();
