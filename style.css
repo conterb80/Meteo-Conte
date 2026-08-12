@@ -3029,5 +3029,23 @@ body{background:radial-gradient(circle at 50% -10%,#0b3a49 0,#051b27 34%,#020d14
 .home-astro-grid .card{background:linear-gradient(180deg,#071c26,#04131b)!important;border-color:rgba(79,208,241,.16)!important}
 @media(max-width:560px){.home-cockpit{gap:8px!important}.home-cockpit>.card,.home-cockpit .weather-hero{border-radius:19px!important}.weather-hero:after{left:12px;right:12px}.home-cockpit .monitor-head{padding-bottom:7px!important}}
 
-/* RC31: il vecchio modulo PRETEMP interno è stato rimosso. */
-#pretempDrawer,#pretempContainer,#pretempModal,.pretemp-container-openable,.pretemp-drawer,.pretemp-modal{display:none!important}
+/* RC32: il modulo PRETEMP interno è stato rimosso strutturalmente. */
+\n/* RC33 - pulizia Home: nessuna nuova funzione */
+.home-astro-grid{grid-template-columns:1fr 1fr!important}
+#operativeLinks{padding:10px!important}
+#operativeLinks .analysis-hero{padding:0 2px 5px!important;min-height:auto!important}
+#operativeLinks .operation-brand .operation-icon{width:44px!important;height:44px!important;font-size:24px!important}
+#operativeLinks .operation-brand h2{font-size:23px!important;margin:0!important}
+#operativeLinks .operation-brand p{font-size:11px!important;margin-top:2px!important}
+#operativeLinks .operation-version{font-size:10px!important;padding:6px 9px!important}
+#operativeLinks .center-action-card{margin:5px 0 8px!important;padding:10px!important;border-radius:17px!important}
+#operativeLinks .conte-analysis-head{margin-bottom:6px!important}
+#operativeLinks .conte-analysis-title span{font-size:9px!important}
+#operativeLinks .conte-analysis-title b{font-size:18px!important}
+#operativeLinks .conte-action{min-height:auto!important;padding:9px 11px!important}
+#operativeLinks .conte-action small{font-size:9px!important}
+#operativeLinks .conte-action b{font-size:15px!important}
+#operativeLinks .conte-reason{padding-top:7px!important;margin-top:6px!important}
+#operativeLinks .conte-reason p{font-size:11.5px!important;line-height:1.25!important}
+#operativeLinks .tool-section{margin-top:7px!important}
+@media(max-width:430px){.home-astro-grid{grid-template-columns:1fr 1fr!important}.home-astro-grid .astro-card{min-width:0}.sun-arc{gap:5px!important}.sun-arc span{font-size:17px!important}}
