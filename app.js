@@ -906,7 +906,7 @@ loadLamoneSensors();
 
 
 
-// RC32 - PRETEMP diretto: nessun pannello interno, nessun parser, nessuna mappa in cache.
+// RC34.3 - PRETEMP diretto: nessun pannello interno, nessun parser, nessuna mappa in cache.
 document.addEventListener('click', function(event){
   const trigger=event.target.closest('[data-pretemp-direct="1"]');
   if(!trigger) return;
@@ -964,7 +964,7 @@ document.querySelectorAll('[data-pretemp-direct="1"],a[href*="pretemp"]').forEac
 
 
 /* =========================================================
-   RC34.2 · INTERVENTO 2 — CENTRO OPERATIVO
+   RC34.3 · INTERVENTO 2 — CENTRO OPERATIVO
    Ripristino reale dei 5 cassetti operativi.
    Una sezione aperta alla volta; nessuna nuova funzione.
    ========================================================= */
