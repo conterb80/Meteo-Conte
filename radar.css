@@ -1643,7 +1643,7 @@ button,a,input{touch-action:manipulation}
 @media(max-width:560px){.meteo-back{width:42px;height:42px;flex-basis:42px;border-radius:14px;font-size:32px}.brand-cluster{gap:9px}.brand-cluster h1{font-size:clamp(18px,5vw,26px)}.brand-cluster .place{font-size:8px;letter-spacing:.11em}}
 
 
-/* RC34.4 · Sala Controllo a tre viste + Evoluzione animata */
+/* RC34.5 · Sala Controllo a tre viste + Evoluzione animata */
 .monitor-section[hidden], .live-summary[hidden]{display:none!important}
 .mode-switch{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;position:sticky;top:max(4px,env(safe-area-inset-top));z-index:1900}
 .mode-switch button{min-width:0;min-height:48px;padding:6px 5px;border-radius:14px}
@@ -1671,3 +1671,12 @@ body[data-operational-mode="forecast"] .message,body[data-operational-mode="ligh
   .evolution-controls{grid-template-columns:44px 1fr 44px 66px;gap:5px}
   .evolution-headline{padding:9px}.evolution-headline strong{font-size:11px}
 }
+
+
+/* RC34.5 · Evoluzione futura reale ARPAE + correzione pannello Fulmini */
+.forecast-official-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;margin:10px 0;background:linear-gradient(180deg,rgba(5,31,44,.96),rgba(4,20,30,.96));border:1px solid rgba(91,211,255,.22);border-radius:18px}
+.forecast-official-head div{display:flex;flex-direction:column;gap:4px;min-width:0}.forecast-official-head span{font-size:11px;letter-spacing:.12em;color:#67d7ff;font-weight:800}.forecast-official-head strong{font-size:16px;color:#f3f8fb}.forecast-official-head a{flex:0 0 auto;padding:10px 12px;border:1px solid rgba(91,211,255,.32);border-radius:12px;color:#dff7ff;text-decoration:none;font-size:11px;font-weight:800}
+.forecast-legend-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:8px 0 10px}.forecast-legend-strip span{text-align:center;padding:10px 5px;border-radius:12px;font-size:10px;font-weight:900;letter-spacing:.05em;border:1px solid rgba(255,255,255,.12);background:#0a1b25}.forecast-legend-strip .obs{color:#70d8ff;border-color:rgba(62,199,255,.32)}.forecast-legend-strip .h1{color:#ffe85b;border-color:rgba(255,232,91,.35)}.forecast-legend-strip .h2{color:#ffad42;border-color:rgba(255,173,66,.35)}.forecast-legend-strip .h3{color:#ff6b5c;border-color:rgba(255,107,92,.35)}
+.forecast-frame-wrap{position:relative;width:100%;height:min(70vh,720px);min-height:560px;overflow:hidden;border-radius:22px;border:1px solid rgba(105,216,255,.28);background:#07131b}.forecast-frame-wrap iframe{width:100%;height:100%;border:0;background:#eef2f3;display:block}.forecast-meta.official{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:12px 14px;border:1px solid rgba(91,211,255,.18);border-radius:16px;background:rgba(3,20,29,.8)}.forecast-meta.official span{font-size:12px;color:#a9bac5;line-height:1.35}.forecast-meta.official button{padding:10px 13px;border-radius:12px}
+#lightningPanel[hidden],#forecastPanel[hidden],#radarPanel[hidden]{display:none!important}
+@media(max-width:430px){.forecast-frame-wrap{height:620px;min-height:620px}.forecast-official-head{align-items:flex-start}.forecast-official-head strong{font-size:15px}.forecast-official-head a{padding:9px 10px}.forecast-legend-strip{gap:5px}.forecast-legend-strip span{font-size:9px;padding:9px 3px}}

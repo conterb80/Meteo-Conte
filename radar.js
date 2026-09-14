@@ -330,74 +330,44 @@
   lightningLocalBtn.addEventListener('click',()=>loadLightning('local',true));
   lightningNorthBtn.addEventListener('click',()=>loadLightning('north',true));
 
-  // RC34.4: Evoluzione animata e navigazione a tre viste indipendenti.
+  // RC34.5: tre viste indipendenti; evoluzione futura reale tramite widget ufficiale ARPAE.
   const forecastModeBtn = document.getElementById('forecastModeBtn');
   const forecastPanel = document.getElementById('forecastPanel');
+  const forecastFrame = document.getElementById('forecastFrame');
   const reloadForecastBtn = document.getElementById('reloadForecastBtn');
   const forecastReloadBottomBtn = document.getElementById('forecastReloadBottomBtn');
-  const evolutionEls = {
-    map:$('evolutionMap'), timeline:$('evolutionTimeline'), play:$('evolutionPlayBtn'), prev:$('evolutionPrevBtn'), next:$('evolutionNextBtn'), latest:$('evolutionLatestBtn'),
-    first:$('evolutionFirstTime'), current:$('evolutionCurrentTime'), last:$('evolutionLastTime'), frame:$('evolutionFrameTime'), badge:$('evolutionTypeBadge'), status:$('evolutionStatus')
-  };
-  let evolutionMap=null,evolutionLayer=null,evolutionFrames=[],evolutionIndex=0,evolutionTimer=null,evolutionHost=host;
+  const forecastStatus = document.getElementById('forecastStatus');
+  const FORECAST_URL = 'https://apps.arpae.it/widgets/meteo-radar-nowcasting/';
 
-  function ensureEvolutionMap(){
-    if(evolutionMap||!evolutionEls.map)return;
-    evolutionMap=L.map('evolutionMap',{center:[44.32,11.98],zoom:8,minZoom:6,maxZoom:13,zoomControl:true,preferCanvas:true,fadeAnimation:false});
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{tileSize:256,maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(evolutionMap);
-    const evoIcon=L.divIcon({className:'',html:'<div class="conte-marker evolution-marker"><span></span></div>',iconSize:[24,24],iconAnchor:[12,12]});
-    L.marker([LOCATION.lat,LOCATION.lon],{icon:evoIcon,zIndexOffset:1000}).addTo(evolutionMap).bindTooltip('BORGO VIAZZA',{permanent:true,direction:'top',offset:[0,-13],opacity:.95,className:'conte-tooltip'});
-    setTimeout(()=>evolutionMap.invalidateSize(),120);
+  function refreshOfficialForecast(){
+    if(!forecastFrame)return;
+    forecastStatus && (forecastStatus.textContent='Aggiornamento nowcasting ARPAE in corso…');
+    forecastFrame.src = `${FORECAST_URL}?refresh=${Date.now()}`;
+    els.forecastUpdated.textContent = nowTime();
+    setTimeout(()=>{ if(forecastStatus) forecastStatus.textContent='ARPAE: osservato + previsione a +1h, +2h e +3h.'; },1200);
   }
-  function evolutionTileUrl(frame){return `${evolutionHost}${frame.path}/256/{z}/{x}/{y}/2/1_1.png?evo=${frame.time}`;}
-  function stopEvolution(){if(evolutionTimer)clearInterval(evolutionTimer);evolutionTimer=null;if(evolutionEls.play)evolutionEls.play.textContent='▶ PLAY';}
-  function showEvolutionFrame(index){
-    if(!evolutionFrames.length)return;
-    ensureEvolutionMap();
-    evolutionIndex=Math.max(0,Math.min(index,evolutionFrames.length-1));
-    const frame=evolutionFrames[evolutionIndex];
-    if(evolutionLayer)evolutionMap.removeLayer(evolutionLayer);
-    evolutionLayer=L.tileLayer(evolutionTileUrl(frame),{tileSize:256,maxNativeZoom:7,maxZoom:13,opacity:.78,zIndex:450,updateWhenIdle:false,keepBuffer:3,errorTileUrl:'',attribution:'Radar &copy; RainViewer'}).addTo(evolutionMap);
-    evolutionEls.timeline.value=String(evolutionIndex);
-    const t=fmtTime(frame.time);evolutionEls.current.textContent=t;evolutionEls.frame.textContent=t;
-    const predicted=frame.kind==='nowcast';
-    evolutionEls.badge.textContent=predicted?'NOWCAST · PREVISTO':'OSSERVATO';
-    evolutionEls.badge.classList.toggle('predicted',predicted);
+
+  // Compatibilità con loadRadar(): l'evoluzione non usa più i frame RainViewer.
+  function updateEvolutionFrames(){
+    if(forecastPanel && !forecastPanel.hidden) els.forecastUpdated.textContent = nowTime();
   }
-  function updateEvolutionFrames(past,nowcast,newHost){
-    evolutionHost=newHost||evolutionHost;
-    const recent=(past||[]).slice(-12).map(f=>({...f,kind:'past'}));
-    const future=(nowcast||[]).map(f=>({...f,kind:'nowcast'}));
-    evolutionFrames=[...recent,...future].sort((a,b)=>a.time-b.time);
-    if(!evolutionFrames.length){evolutionEls.status.textContent='Sequenza non disponibile';return;}
-    evolutionEls.timeline.max=String(evolutionFrames.length-1);
-    evolutionEls.first.textContent=fmtTime(evolutionFrames[0].time);
-    evolutionEls.last.textContent=fmtTime(evolutionFrames.at(-1).time);
-    const futureText=future.length?`${future.length} frame nowcast disponibili`:'Nowcast non disponibile: mostro il radar osservato';
-    evolutionEls.status.textContent=`${recent.length} osservati · ${futureText}`;
-    showEvolutionFrame(Math.max(0,recent.length-1));
-    els.forecastUpdated.textContent=nowTime();
-  }
-  function startEvolution(){
-    if(!evolutionFrames.length)return;
-    if(evolutionIndex>=evolutionFrames.length-1)evolutionIndex=0;
-    evolutionEls.play.textContent='Ⅱ PAUSA';
-    evolutionTimer=setInterval(()=>showEvolutionFrame(evolutionIndex>=evolutionFrames.length-1?0:evolutionIndex+1),850);
-  }
-  function toggleEvolution(){evolutionTimer?stopEvolution():startEvolution();}
-  function refreshEvolution(){stopEvolution();loadRadar({quiet:true});}
 
   function setOperationalMode(mode,{scroll=true}={}){
     saveState({mode});
     const isRadar=mode==='radar',isForecast=mode==='forecast',isLightning=mode==='lightning';
-    radarPanel.hidden=!isRadar;forecastPanel.hidden=!isForecast;lightningPanel.hidden=!isLightning;
+    radarPanel.hidden=!isRadar;
+    forecastPanel.hidden=!isForecast;
+    lightningPanel.hidden=!isLightning;
     if(els.liveSummary)els.liveSummary.hidden=!isRadar;
     radarModeBtn.classList.toggle('active',isRadar);
     forecastModeBtn.classList.toggle('active',isForecast);
     lightningModeBtn.classList.toggle('active',isLightning);
     document.body.dataset.operationalMode=mode;
     if(isLightning&&!lightningFrame.src)loadLightning(currentLightningView);
-    if(isForecast){ensureEvolutionMap();if(evolutionFrames.length)showEvolutionFrame(evolutionIndex);setTimeout(()=>evolutionMap?.invalidateSize(),140);}
+    if(isForecast){
+      if(!forecastFrame.src) forecastFrame.src=FORECAST_URL;
+      els.forecastUpdated.textContent=nowTime();
+    }
     if(isRadar)setTimeout(()=>map.invalidateSize(),120);
     const target=isLightning?lightningPanel:isForecast?forecastPanel:radarPanel;
     if(scroll)target.scrollIntoView({behavior:'smooth',block:'start'});
@@ -406,13 +376,8 @@
   radarModeBtn.addEventListener('click',()=>setOperationalMode('radar'));
   forecastModeBtn.addEventListener('click',()=>setOperationalMode('forecast'));
   lightningModeBtn.addEventListener('click',()=>setOperationalMode('lightning'));
-  evolutionEls.play?.addEventListener('click',toggleEvolution);
-  evolutionEls.prev?.addEventListener('click',()=>{stopEvolution();showEvolutionFrame(evolutionIndex-1);});
-  evolutionEls.next?.addEventListener('click',()=>{stopEvolution();showEvolutionFrame(evolutionIndex+1);});
-  evolutionEls.latest?.addEventListener('click',()=>{stopEvolution();showEvolutionFrame(evolutionFrames.length-1);});
-  evolutionEls.timeline?.addEventListener('input',e=>{stopEvolution();showEvolutionFrame(Number(e.target.value));});
-  reloadForecastBtn?.addEventListener('click',refreshEvolution);
-  forecastReloadBottomBtn?.addEventListener('click',refreshEvolution);
+  reloadForecastBtn?.addEventListener('click',refreshOfficialForecast);
+  forecastReloadBottomBtn?.addEventListener('click',refreshOfficialForecast);
 
   // P7: modalità temporale, memoria operativa e schermo intero.
   let stormMode = false;
@@ -446,7 +411,7 @@
   });
   document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)els.fullscreenBtn.textContent='⛶ SCHERMO INTERO';setTimeout(()=>map.invalidateSize(),150);});
 
-  // Fulmini si aggiorna allo stesso intervallo; l'evoluzione viene aggiornata da loadRadar().
+  // Fulmini si aggiorna allo stesso intervallo; il nowcasting ARPAE si aggiorna su richiesta e al caricamento del widget.
   setInterval(()=>{
     if(!lightningPanel.hidden) loadLightning(currentLightningView,true);
   },REFRESH_MS);
