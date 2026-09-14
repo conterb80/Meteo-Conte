@@ -2796,7 +2796,7 @@ body{background:radial-gradient(circle at 50% -10%,#0b3a49 0,#051b27 34%,#020d14
 .home-astro-grid .card{background:linear-gradient(180deg,#071c26,#04131b)!important;border-color:rgba(79,208,241,.16)!important}
 @media(max-width:560px){.home-cockpit{gap:8px!important}.home-cockpit>.card,.home-cockpit .weather-hero{border-radius:19px!important}.weather-hero:after{left:12px;right:12px}.home-cockpit .monitor-head{padding-bottom:7px!important}}
 
-/* RC34.3: il modulo PRETEMP interno è stato rimosso strutturalmente. */
+/* RC34.4: il modulo PRETEMP interno è stato rimosso strutturalmente. */
 
 /* RC33 - pulizia Home: nessuna nuova funzione */
 .home-astro-grid{grid-template-columns:1fr 1fr!important}
@@ -2936,7 +2936,7 @@ body{background:radial-gradient(circle at 50% -10%,#0b3a49 0,#051b27 34%,#020d14
 
 
 /* =========================================================
-   RC34.3 · INTERVENTO 2 — PULIZIA CENTRO OPERATIVO
+   RC34.4 · INTERVENTO 2 — PULIZIA CENTRO OPERATIVO
    Stile coerente con Home, meno altezza, nessuna funzione nuova.
    ========================================================= */
 #operativeLinks{

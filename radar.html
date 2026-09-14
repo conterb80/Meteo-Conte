@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b0c0e">
   <meta name="description" content="Radar Conte - radar meteo operativo personale per Borgo Viazza">
-  <title>Meteo Conte · Sala Controllo Radar RC29</title>
+  <title>Meteo Conte · Sala Controllo Radar RC34.4</title>
   <link rel="icon" href="icon.png" type="image/png">
   <link rel="apple-touch-icon" href="icon.png">
-  <link rel="stylesheet" href="radar.css?v=rc29">
+  <link rel="stylesheet" href="radar.css?v=rc34-4">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,7 +22,7 @@
         <div>
           
           <h1>SALA CONTROLLO</h1>
-          <p class="place">METEO CONTE · RADAR CONTE RC13 · BORGO VIAZZA</p>
+          <p class="place">METEO CONTE · RADAR CONTE · RC34.4 · BORGO VIAZZA</p>
         </div>
       </div>
       <div class="header-command">
@@ -46,15 +46,15 @@
 
     <nav class="mode-switch live-nav mission-status-nav" aria-label="Vai rapidamente ai monitor">
       <button id="radarModeBtn" class="active" type="button"><span class="nav-icon radar-icon"><em>01</em>◉</span><span><b>RADAR</b><small>LIVE</small></span><i class="state-dot green"></i></button>
-      <button id="lightningModeBtn" type="button"><span class="nav-icon lightning-icon"><em>02</em>ϟ</span><span><b>FULMINI</b><small>ATTIVI</small></span><i class="state-dot purple"></i></button>
-      <button id="forecastModeBtn" type="button"><span class="nav-icon forecast-icon"><em>03</em>☂</span><span><b>EVOLUZIONE</b><small>+3 ORE</small></span><i class="state-dot yellow"></i></button>
+      <button id="forecastModeBtn" type="button"><span class="nav-icon forecast-icon"><em>02</em>▶</span><span><b>EVOLUZIONE</b><small>ANIMATA</small></span><i class="state-dot yellow"></i></button>
+      <button id="lightningModeBtn" type="button"><span class="nav-icon lightning-icon"><em>03</em>ϟ</span><span><b>FULMINI</b><small>LIVE</small></span><i class="state-dot purple"></i></button>
     </nav>
     <div class="runtime-hidden" aria-hidden="true">
       <button id="stormModeBtn" type="button"></button><button id="fullscreenBtn" type="button"></button>
       <span id="radarUpdated">--:--</span><span id="lightningUpdated">--:--</span><span id="forecastUpdated">--:--</span>
     </div>
 
-    <section class="live-summary compact-summary" aria-live="polite">
+    <section id="liveSummary" class="live-summary compact-summary" aria-live="polite">
       <div><span>SCANSIONE</span><strong id="frameTime">--:--</strong><small id="frameDate" class="frame-date">--</small></div>
       <div><span>ETÀ DATO</span><strong id="frameAge">-- min</strong></div>
       <div><span>STATO</span><strong id="liveState">IN ANALISI</strong></div>
@@ -184,7 +184,19 @@
 
     </div>
 
-    <section id="lightningPanel" class="lightning-panel monitor-section">
+    <section id="forecastPanel" class="forecast-panel monitor-section" hidden>
+      <div class="secondary-compact-head forecast"><strong>EVOLUZIONE ANIMATA</strong><button id="reloadForecastBtn" type="button" aria-label="Aggiorna evoluzione">↻</button></div>
+      <div class="evolution-headline">
+        <div><span>SEQUENZA RADAR</span><strong>Passato recente + nowcasting disponibile</strong></div>
+        <div class="evolution-frame-clock"><small>FRAME</small><b id="evolutionFrameTime">--:--</b></div>
+      </div>
+      <section class="evolution-map-wrap">
+        <div id="evolutionMap" role="application" aria-label="Mappa dell'evoluzione radar animata centrata sulla Romagna"></div>
+        <div class="evolution-badge" id="evolutionTypeBadge">OSSERVATO</div>
+      </section>
+
+
+    <section id="lightningPanel" class="lightning-panel monitor-section" hidden>
       <div class="secondary-compact-head lightning"><strong>FULMINI LIVE</strong><button id="reloadLightningBtn" type="button">↻</button></div>
       <div class="lightning-head">
         <div>
@@ -203,29 +215,22 @@
       </div>
       <p class="lightning-note">Dati di Blitzortung.org e collaboratori. Uso personale e di osservazione, non per allertamento ufficiale.</p>
     </section>
-
-
-    <section id="forecastPanel" class="forecast-panel monitor-section">
-      <div class="secondary-compact-head forecast"><strong>EVOLUZIONE +3 ORE</strong><button id="reloadForecastBtn" type="button">↻</button></div>
-      <div class="forecast-head">
-        <div>
-          <span class="time-label">NOWCASTING UFFICIALE ARPAE</span>
-          <strong>Precipitazioni previste fino a +3 ore</strong>
-        </div>
-        
+      <section class="evolution-timeline-panel" aria-label="Timeline evoluzione radar">
+        <div class="evolution-track-labels"><span>PASSATO · OSSERVATO</span><span>NOWCAST · PREVISTO</span></div>
+        <input id="evolutionTimeline" type="range" min="0" max="0" value="0" step="1" aria-label="Seleziona fotogramma evoluzione">
+        <div class="evolution-times"><span id="evolutionFirstTime">--:--</span><strong id="evolutionCurrentTime">--:--</strong><span id="evolutionLastTime">--:--</span></div>
+      </section>
+      <div class="evolution-controls" aria-label="Comandi evoluzione animata">
+        <button id="evolutionPrevBtn" type="button" aria-label="Fotogramma precedente">◀</button>
+        <button id="evolutionPlayBtn" class="primary" type="button">▶ PLAY</button>
+        <button id="evolutionNextBtn" type="button" aria-label="Fotogramma successivo">▶</button>
+        <button id="evolutionLatestBtn" type="button">ULTIMO</button>
       </div>
-      <div class="forecast-steps" aria-label="Scadenze contenute nel nowcasting">
-        <small>SCADENZE PRESENTI NELLA MAPPA</small>
-        <div><span>OSSERVATO</span><span>+1h</span><span>+2h</span><span>+3h</span></div>
+      <div class="evolution-meta">
+        <span id="evolutionStatus">Caricamento sequenza…</span>
+        <button id="forecastReloadBottomBtn" type="button">AGGIORNA</button>
       </div>
-      <div class="forecast-frame-wrap">
-        <iframe id="forecastFrame" title="Nowcasting radar ufficiale ARPAE fino a tre ore" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-      </div>
-      <div class="forecast-actions">
-        <button id="forecastReloadBottomBtn" type="button">AGGIORNA MAPPA</button>
-        <a id="openForecastLink" href="https://apps.arpae.it/widgets/meteo-radar-nowcasting/" target="_blank" rel="noopener noreferrer">APRI A SCHERMO INTERO</a>
-      </div>
-      <p class="forecast-note">Le etichette sopra sono una legenda. I comandi interattivi sono quelli presenti dentro la mappa ARPAE; per usarla più comodamente premi <strong>APRI A SCHERMO INTERO</strong>.</p>
+      <p class="forecast-note">I fotogrammi <strong>osservati</strong> mostrano il radar recente. I fotogrammi <strong>previsti</strong>, quando forniti dalla sorgente, sono nowcasting e vanno letti come stima.</p>
     </section>
 
     <nav class="mission-bottom-nav" aria-label="Navigazione rapida Meteo Conte">
@@ -236,9 +241,9 @@
     </nav>
 
     <section id="message" class="message info" aria-live="polite">Connessione alla sorgente radar in corso…</section>
-    <footer><span>Radar: RainViewer · Fulmini: Blitzortung.org · Evoluzione: ARPAE · Cartografia: OpenStreetMap</span><span>Prototipo personale non destinato ad allertamento ufficiale</span></footer>
+    <footer><span>Radar/Evoluzione: RainViewer · Fulmini: Blitzortung.org · Cartografia: OpenStreetMap</span><span>Prototipo personale non destinato ad allertamento ufficiale</span></footer>
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="radar.js?v=rc29"></script>
+  <script src="radar.js?v=rc34-4"></script>
 </body>
 </html>

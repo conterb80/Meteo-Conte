@@ -19,7 +19,7 @@
     rangeLabel:$('rangeLabel'), timeline:$('timeline'), opacity:$('opacity'), playBtn:$('playBtn'), prevBtn:$('prevBtn'), nextBtn:$('nextBtn'),
     latestBtn:$('latestBtn'), refreshBtn:$('refreshBtn'), homeBtn:$('homeBtn'), zoomLocalBtn:$('zoomLocalBtn'), zoomRomagnaBtn:$('zoomRomagnaBtn'),
     message:$('message'), installBtn:$('installBtn'), installHelp:$('installHelp'), rangeControls:$('rangeControls'), speedControls:$('speedControls'),
-    stormModeBtn:$('stormModeBtn'), fullscreenBtn:$('fullscreenBtn'), radarUpdated:$('radarUpdated'), lightningUpdated:$('lightningUpdated'), forecastUpdated:$('forecastUpdated')
+    stormModeBtn:$('stormModeBtn'), fullscreenBtn:$('fullscreenBtn'), radarUpdated:$('radarUpdated'), lightningUpdated:$('lightningUpdated'), forecastUpdated:$('forecastUpdated'), liveSummary:$('liveSummary')
   };
 
   const map = L.map('map', { center:[LOCATION.lat,LOCATION.lon], zoom:10, minZoom:6, maxZoom:13, zoomControl:false, preferCanvas:true, fadeAnimation:false });
@@ -271,8 +271,8 @@
     if(!quiet){setStatus('loading','CARICAMENTO');setMessage('Sto scaricando gli ultimi fotogrammi radar…');}
     try{
       const response=await fetch(`${API_URL}?t=${Date.now()}`,{cache:'no-store'});if(!response.ok)throw new Error(`HTTP ${response.status}`);
-      const data=await response.json();const past=Array.isArray(data?.radar?.past)?data.radar.past:[];if(!past.length)throw new Error('Nessun fotogramma disponibile');
-      const previousLatest=allFrames.at(-1)?.time||0;host=data.host||host;allFrames=past;applyRange(selectedMinutes);setStatus('ok','LIVE · AUTO');els.radarUpdated.textContent=nowTime();const newest=allFrames.at(-1)?.time||0;setMessage(`${newest>previousLatest?'Nuova scansione acquisita':'Controllo automatico completato'} · ultimo dato ${fmtTime(newest)} · prossimo controllo entro 90 s.`,'success');setTimeout(()=>map.invalidateSize(),150);setTimeout(runAutomaticAnalysis,500);
+      const data=await response.json();const past=Array.isArray(data?.radar?.past)?data.radar.past:[];const nowcast=Array.isArray(data?.radar?.nowcast)?data.radar.nowcast:[];if(!past.length)throw new Error('Nessun fotogramma disponibile');
+      const previousLatest=allFrames.at(-1)?.time||0;host=data.host||host;allFrames=past;updateEvolutionFrames(past,nowcast,host);applyRange(selectedMinutes);setStatus('ok','LIVE · AUTO');els.radarUpdated.textContent=nowTime();const newest=allFrames.at(-1)?.time||0;setMessage(`${newest>previousLatest?'Nuova scansione acquisita':'Controllo automatico completato'} · ultimo dato ${fmtTime(newest)} · prossimo controllo entro 90 s.`,'success');setTimeout(()=>map.invalidateSize(),150);setTimeout(runAutomaticAnalysis,500);
     }catch(error){console.error(error);setStatus('error','RADAR OFFLINE');setMessage('Non riesco a ricevere i dati radar. Controlla la connessione e premi AGGIORNA.','error');}
   }
 
@@ -287,7 +287,7 @@
   window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;els.installBtn.hidden=false;});
   els.installBtn.addEventListener('click',async()=>{
     if(deferredInstallPrompt){deferredInstallPrompt.prompt();const choice=await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;els.installBtn.hidden=true;els.installHelp.hidden=false;els.installHelp.textContent=choice.outcome==='accepted'?'Installazione avviata. Radar Conte comparirà tra le app.':'Installazione annullata: puoi riprovare dal menu di Chrome.';}
-    else{els.installHelp.hidden=false;els.installHelp.textContent='Apri il menu ⋮ di Chrome e scegli “Installa app”. Se compare solo “Aggiungi a schermata Home”, ricarica una volta Radar Conte RC12 e attendi qualche secondo.';}
+    else{els.installHelp.hidden=false;els.installHelp.textContent='Apri il menu ⋮ di Chrome e scegli “Installa app”. Se compare solo “Aggiungi a schermata Home”, ricarica una volta Radar Conte e attendi qualche secondo.';}
   });
   window.addEventListener('appinstalled',()=>{els.installBtn.hidden=true;els.installHelp.hidden=false;els.installHelp.textContent='Radar Conte è installato correttamente.';});
 
@@ -330,39 +330,89 @@
   lightningLocalBtn.addEventListener('click',()=>loadLightning('local',true));
   lightningNorthBtn.addEventListener('click',()=>loadLightning('north',true));
 
-  // P6: monitor di evoluzione ufficiale ARPAE fino a +3 ore.
+  // RC34.4: Evoluzione animata e navigazione a tre viste indipendenti.
   const forecastModeBtn = document.getElementById('forecastModeBtn');
   const forecastPanel = document.getElementById('forecastPanel');
-  const forecastFrame = document.getElementById('forecastFrame');
   const reloadForecastBtn = document.getElementById('reloadForecastBtn');
   const forecastReloadBottomBtn = document.getElementById('forecastReloadBottomBtn');
-  const openForecastLink = document.getElementById('openForecastLink');
-  const forecastUrl = 'https://apps.arpae.it/widgets/meteo-radar-nowcasting/';
+  const evolutionEls = {
+    map:$('evolutionMap'), timeline:$('evolutionTimeline'), play:$('evolutionPlayBtn'), prev:$('evolutionPrevBtn'), next:$('evolutionNextBtn'), latest:$('evolutionLatestBtn'),
+    first:$('evolutionFirstTime'), current:$('evolutionCurrentTime'), last:$('evolutionLastTime'), frame:$('evolutionFrameTime'), badge:$('evolutionTypeBadge'), status:$('evolutionStatus')
+  };
+  let evolutionMap=null,evolutionLayer=null,evolutionFrames=[],evolutionIndex=0,evolutionTimer=null,evolutionHost=host;
 
-  function loadForecast(force=false){
-    forecastFrame.src = forecastUrl + (force ? `?reload=${Date.now()}` : '');
-    els.forecastUpdated.textContent = nowTime();
-    openForecastLink.href = forecastUrl;
+  function ensureEvolutionMap(){
+    if(evolutionMap||!evolutionEls.map)return;
+    evolutionMap=L.map('evolutionMap',{center:[44.32,11.98],zoom:8,minZoom:6,maxZoom:13,zoomControl:true,preferCanvas:true,fadeAnimation:false});
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{tileSize:256,maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(evolutionMap);
+    const evoIcon=L.divIcon({className:'',html:'<div class="conte-marker evolution-marker"><span></span></div>',iconSize:[24,24],iconAnchor:[12,12]});
+    L.marker([LOCATION.lat,LOCATION.lon],{icon:evoIcon,zIndexOffset:1000}).addTo(evolutionMap).bindTooltip('BORGO VIAZZA',{permanent:true,direction:'top',offset:[0,-13],opacity:.95,className:'conte-tooltip'});
+    setTimeout(()=>evolutionMap.invalidateSize(),120);
   }
+  function evolutionTileUrl(frame){return `${evolutionHost}${frame.path}/256/{z}/{x}/{y}/2/1_1.png?evo=${frame.time}`;}
+  function stopEvolution(){if(evolutionTimer)clearInterval(evolutionTimer);evolutionTimer=null;if(evolutionEls.play)evolutionEls.play.textContent='▶ PLAY';}
+  function showEvolutionFrame(index){
+    if(!evolutionFrames.length)return;
+    ensureEvolutionMap();
+    evolutionIndex=Math.max(0,Math.min(index,evolutionFrames.length-1));
+    const frame=evolutionFrames[evolutionIndex];
+    if(evolutionLayer)evolutionMap.removeLayer(evolutionLayer);
+    evolutionLayer=L.tileLayer(evolutionTileUrl(frame),{tileSize:256,maxNativeZoom:7,maxZoom:13,opacity:.78,zIndex:450,updateWhenIdle:false,keepBuffer:3,errorTileUrl:'',attribution:'Radar &copy; RainViewer'}).addTo(evolutionMap);
+    evolutionEls.timeline.value=String(evolutionIndex);
+    const t=fmtTime(frame.time);evolutionEls.current.textContent=t;evolutionEls.frame.textContent=t;
+    const predicted=frame.kind==='nowcast';
+    evolutionEls.badge.textContent=predicted?'NOWCAST · PREVISTO':'OSSERVATO';
+    evolutionEls.badge.classList.toggle('predicted',predicted);
+  }
+  function updateEvolutionFrames(past,nowcast,newHost){
+    evolutionHost=newHost||evolutionHost;
+    const recent=(past||[]).slice(-12).map(f=>({...f,kind:'past'}));
+    const future=(nowcast||[]).map(f=>({...f,kind:'nowcast'}));
+    evolutionFrames=[...recent,...future].sort((a,b)=>a.time-b.time);
+    if(!evolutionFrames.length){evolutionEls.status.textContent='Sequenza non disponibile';return;}
+    evolutionEls.timeline.max=String(evolutionFrames.length-1);
+    evolutionEls.first.textContent=fmtTime(evolutionFrames[0].time);
+    evolutionEls.last.textContent=fmtTime(evolutionFrames.at(-1).time);
+    const futureText=future.length?`${future.length} frame nowcast disponibili`:'Nowcast non disponibile: mostro il radar osservato';
+    evolutionEls.status.textContent=`${recent.length} osservati · ${futureText}`;
+    showEvolutionFrame(Math.max(0,recent.length-1));
+    els.forecastUpdated.textContent=nowTime();
+  }
+  function startEvolution(){
+    if(!evolutionFrames.length)return;
+    if(evolutionIndex>=evolutionFrames.length-1)evolutionIndex=0;
+    evolutionEls.play.textContent='Ⅱ PAUSA';
+    evolutionTimer=setInterval(()=>showEvolutionFrame(evolutionIndex>=evolutionFrames.length-1?0:evolutionIndex+1),850);
+  }
+  function toggleEvolution(){evolutionTimer?stopEvolution():startEvolution();}
+  function refreshEvolution(){stopEvolution();loadRadar({quiet:true});}
 
   function setOperationalMode(mode,{scroll=true}={}){
     saveState({mode});
-    radarPanel.hidden=false;lightningPanel.hidden=false;forecastPanel.hidden=false;
-    radarModeBtn.classList.toggle('active',mode==='radar');
-    lightningModeBtn.classList.toggle('active',mode==='lightning');
-    forecastModeBtn.classList.toggle('active',mode==='forecast');
-    if(!lightningFrame.src)loadLightning(currentLightningView);
-    if(!forecastFrame.src)loadForecast();
-    const target=mode==='lightning'?lightningPanel:mode==='forecast'?forecastPanel:radarPanel;
+    const isRadar=mode==='radar',isForecast=mode==='forecast',isLightning=mode==='lightning';
+    radarPanel.hidden=!isRadar;forecastPanel.hidden=!isForecast;lightningPanel.hidden=!isLightning;
+    if(els.liveSummary)els.liveSummary.hidden=!isRadar;
+    radarModeBtn.classList.toggle('active',isRadar);
+    forecastModeBtn.classList.toggle('active',isForecast);
+    lightningModeBtn.classList.toggle('active',isLightning);
+    document.body.dataset.operationalMode=mode;
+    if(isLightning&&!lightningFrame.src)loadLightning(currentLightningView);
+    if(isForecast){ensureEvolutionMap();if(evolutionFrames.length)showEvolutionFrame(evolutionIndex);setTimeout(()=>evolutionMap?.invalidateSize(),140);}
+    if(isRadar)setTimeout(()=>map.invalidateSize(),120);
+    const target=isLightning?lightningPanel:isForecast?forecastPanel:radarPanel;
     if(scroll)target.scrollIntoView({behavior:'smooth',block:'start'});
-    setTimeout(()=>map.invalidateSize(),120);
   }
 
   radarModeBtn.addEventListener('click',()=>setOperationalMode('radar'));
-  lightningModeBtn.addEventListener('click',()=>setOperationalMode('lightning'));
   forecastModeBtn.addEventListener('click',()=>setOperationalMode('forecast'));
-  reloadForecastBtn.addEventListener('click',()=>loadForecast(true));
-  forecastReloadBottomBtn.addEventListener('click',()=>loadForecast(true));
+  lightningModeBtn.addEventListener('click',()=>setOperationalMode('lightning'));
+  evolutionEls.play?.addEventListener('click',toggleEvolution);
+  evolutionEls.prev?.addEventListener('click',()=>{stopEvolution();showEvolutionFrame(evolutionIndex-1);});
+  evolutionEls.next?.addEventListener('click',()=>{stopEvolution();showEvolutionFrame(evolutionIndex+1);});
+  evolutionEls.latest?.addEventListener('click',()=>{stopEvolution();showEvolutionFrame(evolutionFrames.length-1);});
+  evolutionEls.timeline?.addEventListener('input',e=>{stopEvolution();showEvolutionFrame(Number(e.target.value));});
+  reloadForecastBtn?.addEventListener('click',refreshEvolution);
+  forecastReloadBottomBtn?.addEventListener('click',refreshEvolution);
 
   // P7: modalità temporale, memoria operativa e schermo intero.
   let stormMode = false;
@@ -396,10 +446,9 @@
   });
   document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)els.fullscreenBtn.textContent='⛶ SCHERMO INTERO';setTimeout(()=>map.invalidateSize(),150);});
 
-  // Aggiorna anche il monitor attivo, non soltanto il radar.
+  // Fulmini si aggiorna allo stesso intervallo; l'evoluzione viene aggiornata da loadRadar().
   setInterval(()=>{
-    loadLightning(currentLightningView,true);
-    loadForecast(true);
+    if(!lightningPanel.hidden) loadLightning(currentLightningView,true);
   },REFRESH_MS);
 
 

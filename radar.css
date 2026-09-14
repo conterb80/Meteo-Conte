@@ -1641,3 +1641,33 @@ button,a,input{touch-action:manipulation}
 .meteo-back{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border:1px solid rgba(104,226,255,.35);border-radius:16px;background:rgba(8,35,45,.88);color:#eafaff;text-decoration:none;font-size:38px;line-height:1;box-shadow:inset 0 0 20px rgba(52,201,225,.08)}
 .meteo-back:active{transform:scale(.96)}
 @media(max-width:560px){.meteo-back{width:42px;height:42px;flex-basis:42px;border-radius:14px;font-size:32px}.brand-cluster{gap:9px}.brand-cluster h1{font-size:clamp(18px,5vw,26px)}.brand-cluster .place{font-size:8px;letter-spacing:.11em}}
+
+
+/* RC34.4 · Sala Controllo a tre viste + Evoluzione animata */
+.monitor-section[hidden], .live-summary[hidden]{display:none!important}
+.mode-switch{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;position:sticky;top:max(4px,env(safe-area-inset-top));z-index:1900}
+.mode-switch button{min-width:0;min-height:48px;padding:6px 5px;border-radius:14px}
+.mode-switch button span:nth-child(2){min-width:0}
+.mode-switch button b,.mode-switch button small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mode-switch button.active{border-color:rgba(80,211,255,.78);background:linear-gradient(180deg,rgba(10,91,135,.80),rgba(6,42,69,.92));box-shadow:inset 0 0 0 1px rgba(85,218,255,.18),0 0 18px rgba(40,184,240,.16)}
+.forecast-panel{padding-top:2px;border-top:0}
+.evolution-headline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:5px 0 7px;padding:10px 11px;border:1px solid rgba(91,168,218,.22);border-radius:14px;background:linear-gradient(135deg,rgba(14,32,50,.92),rgba(7,18,29,.94))}
+.evolution-headline span{display:block;font-size:7px;font-weight:900;letter-spacing:.13em;color:#7fb9d7}.evolution-headline strong{display:block;margin-top:2px;font-size:12px;color:#edf8ff}
+.evolution-frame-clock{min-width:72px;text-align:right}.evolution-frame-clock small{font-size:7px;color:#718da1}.evolution-frame-clock b{display:block;font-size:18px;color:#fff}
+.evolution-map-wrap{position:relative;overflow:hidden;border:1px solid rgba(111,190,238,.30);border-radius:18px;background:#07131f;box-shadow:0 18px 38px rgba(0,0,0,.24)}
+#evolutionMap{height:min(58vh,540px);min-height:390px;width:100%;background:#07131f}
+.evolution-badge{position:absolute;top:10px;right:10px;z-index:600;padding:7px 9px;border-radius:10px;background:rgba(8,23,38,.90);border:1px solid rgba(75,184,244,.45);color:#68cdf8;font-size:8px;font-weight:900;letter-spacing:.08em;backdrop-filter:blur(8px)}
+.evolution-badge.predicted{border-color:rgba(255,211,84,.50);color:#ffe069}
+.evolution-timeline-panel{margin-top:7px;padding:10px 11px;border-radius:14px;border:1px solid rgba(91,168,218,.18);background:rgba(7,20,32,.84)}
+.evolution-track-labels,.evolution-times{display:flex;align-items:center;justify-content:space-between;gap:8px}.evolution-track-labels span{font-size:7px;font-weight:850;letter-spacing:.08em;color:#67c9f8}.evolution-track-labels span:last-child{color:#e7d85a}.evolution-times{margin-top:3px}.evolution-times span{font-size:9px;color:#8ca7ba}.evolution-times strong{font-size:11px;color:#fff}
+#evolutionTimeline{width:100%;margin:7px 0 4px;accent-color:#4bb8f4}
+.evolution-controls{display:grid;grid-template-columns:48px minmax(110px,1fr) 48px 72px;gap:6px;margin-top:7px}.evolution-controls button,.evolution-meta button{min-height:42px;border:1px solid rgba(91,168,218,.24);border-radius:11px;background:rgba(10,26,42,.92);color:#dff3ff;font-size:9px;font-weight:850}.evolution-controls .primary{background:linear-gradient(180deg,rgba(25,125,205,.95),rgba(12,82,153,.98));border-color:rgba(106,209,255,.75);font-size:11px}
+.evolution-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:7px;padding:8px 9px;border:1px solid rgba(91,168,218,.16);border-radius:11px;background:rgba(5,16,27,.72)}.evolution-meta span{min-width:0;color:#8da7b9;font-size:9px}.evolution-meta button{min-height:34px;padding:0 10px;white-space:nowrap}
+.forecast-note{margin:7px 2px 2px;color:#718da1;font-size:9px;line-height:1.35}
+body[data-operational-mode="forecast"] .message,body[data-operational-mode="lightning"] .message{display:none}
+@media(max-width:480px){
+  .mode-switch button{min-height:45px}.mode-switch .nav-icon{font-size:13px}.mode-switch button b{font-size:8px}.mode-switch button small{font-size:6px}
+  #evolutionMap{height:50vh;min-height:360px}
+  .evolution-controls{grid-template-columns:44px 1fr 44px 66px;gap:5px}
+  .evolution-headline{padding:9px}.evolution-headline strong{font-size:11px}
+}
