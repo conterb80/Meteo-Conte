@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · RC35.1 Home Compatta + Lamone</title>
+<title>Meteo Conte 1.1 · RC35.2 Finale Restyling</title>
 <link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
-<link href="style.css?v=rc35-1" rel="stylesheet"/>
+<link href="style.css?v=rc35-2" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -44,10 +44,10 @@
 <button data-trend="pressione" type="button"><i>📈</i><span><small>Pressione</small><b id="press">-- hPa</b></span></button>
 </div>
 <div aria-hidden="true" class="weather-ambient"><span></span><span></span><span></span></div>
-</header><article aria-label="Apri trend temperatura e precipitazioni" class="card hourly-monitor-card hourly-trend-launcher" id="openHourlyTrend" role="button" tabindex="0">
+</header><article aria-label="Apri previsioni dettagliate delle prossime ore" class="card hourly-monitor-card hourly-trend-launcher" id="openHourlyTrend" role="button" tabindex="0">
 <div class="monitor-head">
 <div><span class="label">2 · PROSSIME ORE</span><b>Temperatura e precipitazioni</b></div>
-<small>tocca per trend ›</small>
+<small>tocca per dettaglio ›</small>
 </div>
 <div aria-label="Previsioni orarie" class="home-hourly-strip" id="hours"></div>
 </article><article class="card radar-monitor-card radar-rc2">
@@ -99,6 +99,16 @@
 <span class="sr-only" id="decisionText">Sintesi automatica in arrivo</span>
 <section aria-label="Dettaglio automatico" class="analysis-auto" id="analysisBox"></section>
 </section><section aria-label="Pagina Trend Operativi" aria-modal="true" class="trendbox trend-page hidden" id="trendBox" role="dialog"></section>
+<section aria-label="Previsioni dettagliate prossime ore" aria-modal="true" class="hourly-detail-page hidden" id="hourlyDetailPage" role="dialog">
+ <div class="hourly-detail-shell">
+  <header class="hourly-detail-head"><div><span class="label">BORGO VIAZZA · APPROFONDIMENTO</span><h2>🌤️ Previsioni prossime ore</h2><p>Temperatura, pioggia, vento e raffiche ora per ora.</p></div><button id="closeHourlyDetail" type="button" aria-label="Chiudi">×</button></header>
+  <div class="hourly-detail-summary" id="hourlyDetailSummary"></div>
+  <div class="hourly-detail-strip" id="hourlyDetailStrip"></div>
+  <div class="hourly-selected" id="hourlySelected"></div>
+  <div class="hourly-conte" id="hourlyConte"></div>
+  <p class="hourly-note">Previsione oraria orientativa. Radar, PRETEMP e allerte ufficiali restano gli strumenti di conferma.</p>
+ </div>
+</section>
 <section aria-label="Sala Controllo Meteo" aria-modal="true" class="weather-analysis-page hidden" id="weatherAnalysisPage" role="dialog">
 <div class="weather-analysis-shell control-room-shell">
 <header class="weather-analysis-header">
@@ -260,15 +270,17 @@
 <div class="basin-block">
 <div class="river-chart-head"><b>Bacini a monte</b><span>pioggia · dati reali</span></div>
 <div class="basin-grid">
-<button class="basin-card" data-basin="lamone" type="button">
-<span>🏔️ Lamone</span>
-<b>Marradi</b>
-<em id="basinLamoneSummary">lettura…</em><small class="basin-forecast" id="basinLamoneForecast">prevista: in lettura…</small>
+<button class="basin-card basin-readable" data-basin="lamone" type="button">
+<span>🏔️ Lamone</span><b>Marradi</b>
+<div class="basin-kind"><small>OSSERVATA</small><div class="basin-values"><span>1h <b id="lamObs1">--</b></span><span>3h <b id="lamObs3">--</b></span><span>6h <b id="lamObs6">--</b></span></div></div>
+<div class="basin-kind forecast"><small>PREVISTA</small><div class="basin-values"><span>+1h <b id="lamFor1">--</b></span><span>+3h <b id="lamFor3">--</b></span><span>+6h <b id="lamFor6">--</b></span></div></div>
+<em id="basinLamoneSummary" class="hidden">lettura…</em><small class="basin-forecast hidden" id="basinLamoneForecast">prevista: in lettura…</small>
 </button>
-<button class="basin-card" data-basin="marzeno" type="button">
-<span>🏔️ Marzeno</span>
-<b>Modigliana</b>
-<em id="basinMarzenoSummary">lettura…</em><small class="basin-forecast" id="basinMarzenoForecast">prevista: in lettura…</small>
+<button class="basin-card basin-readable" data-basin="marzeno" type="button">
+<span>🏔️ Marzeno</span><b>Modigliana</b>
+<div class="basin-kind"><small>OSSERVATA</small><div class="basin-values"><span>1h <b id="marObs1">--</b></span><span>3h <b id="marObs3">--</b></span><span>6h <b id="marObs6">--</b></span></div></div>
+<div class="basin-kind forecast"><small>PREVISTA</small><div class="basin-values"><span>+1h <b id="marFor1">--</b></span><span>+3h <b id="marFor3">--</b></span><span>+6h <b id="marFor6">--</b></span></div></div>
+<em id="basinMarzenoSummary" class="hidden">lettura…</em><small class="basin-forecast hidden" id="basinMarzenoForecast">prevista: in lettura…</small>
 </button>
 </div>
 </div>
@@ -288,11 +300,12 @@
 <span data-sensor="Pieve Cesato"><i class="green"></i><b>Pieve Cesato</b><small>lettura…</small></span>
 <span data-sensor="Mezzano"><i class="green"></i><b>Mezzano</b><small>lettura…</small></span>
 </div>
-<svg aria-hidden="true" viewbox="0 0 320 82">
-<path class="river-area" d="M18 55 C60 55 95 54 132 53 C165 52 198 51 232 50 C258 49 282 48 302 47 L302 73 L18 73 Z"></path>
-<path class="river-line" d="M18 55 C60 55 95 54 132 53 C165 52 198 51 232 50 C258 49 282 48 302 47"></path>
-<circle cx="18" cy="55" r="3.8"></circle><circle cx="62" cy="54" r="3.8"></circle><circle cx="106" cy="54" r="3.8"></circle><circle cx="150" cy="53" r="3.8"></circle><circle cx="194" cy="51.5" r="3.8"></circle><circle cx="242" cy="49.5" r="3.8"></circle><circle cx="302" cy="47" r="3.8"></circle>
-<text text-anchor="middle" x="18" y="79">monte</text><text text-anchor="middle" x="160" y="79">Faenza</text><text text-anchor="middle" x="302" y="79">valle</text>
+<div class="sensor-trend-title"><small>PERCORSO SENSORI · MONTE → VALLE</small><span>tocca i punti sopra per il dettaglio</span></div>
+<svg aria-hidden="true" class="sensor-trend-svg" viewBox="0 0 700 104">
+<path class="river-area" d="M35 48 C120 48 185 47 265 46 C350 45 430 43 515 41 C580 40 625 39 665 37 L665 66 L35 66 Z"></path>
+<path class="river-line" d="M35 48 C120 48 185 47 265 46 C350 45 430 43 515 41 C580 40 625 39 665 37"></path>
+<circle cx="35" cy="48" r="5"></circle><circle cx="140" cy="47" r="5"></circle><circle cx="245" cy="46" r="5"></circle><circle cx="350" cy="45" r="5"></circle><circle cx="455" cy="42.5" r="5"></circle><circle cx="560" cy="40" r="5"></circle><circle cx="665" cy="37" r="5"></circle>
+<text x="35" y="83" text-anchor="middle">Marradi</text><text x="140" y="83" text-anchor="middle">Str. Casale</text><text x="245" y="83" text-anchor="middle">Sarna</text><text x="350" y="83" text-anchor="middle">Faenza</text><text x="455" y="83" text-anchor="middle">Reda</text><text x="560" y="83" text-anchor="middle">P. Cesato</text><text x="665" y="83" text-anchor="middle">Mezzano</text>
 </svg>
 <div aria-label="Tempi indicativi onda di piena" class="propagation-mini">
 <span><small>Stato onda</small><b id="waveStatusLabel">nessuna anomalia</b></span>
@@ -315,7 +328,7 @@
 </div>
 </section>
 <section class="card links operative-center rc351-access" id="operativeLinks">
-<div class="rc35-head"><div><span class="label">5 · STRUMENTI</span><h2>Accessi rapidi</h2><p>Le funzioni principali, subito.</p></div><span class="rc35-badge">RC35.1</span></div>
+<div class="rc35-head"><div><span class="label">5 · STRUMENTI</span><h2>Accessi rapidi</h2><p>Le funzioni principali, subito.</p></div><span class="rc35-badge">RC35.2</span></div>
 <div class="rc351-grid">
 <button class="rc351-tool featured" data-jump="lamoneDrawer" type="button"><i>🌊</i><b>Lamone</b></button>
 <a class="rc351-tool" href="https://radar.protezionecivile.it/" rel="noopener" target="_blank"><i>🇮🇹</i><b>Radar IT</b></a>
@@ -328,9 +341,9 @@
 <details class="rc351-details"><summary><b>＋ Altri strumenti</b><small>sensori e controlli</small></summary><div class="rc351-secondary"><a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📡 <span><b>Sensori Lamone</b><small>livelli del percorso</small></span></a><a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 <span><b>Idrometri ER</b><small>livelli ufficiali</small></span></a><button data-jump="lamoneDrawer" type="button">🏔️ <span><b>Pioggia a monte</b><small>osservata + prevista</small></span></button></div></details>
 <details class="rc351-details social"><summary><b>📡 Dirette &amp; Social</b><small>eventi ed emergenze</small></summary><div class="rc351-social" id="socialLinks"><a href="https://www.facebook.com/share/19cuHxs4cR/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 1</b><small>fonte salvata</small></span></a><a href="https://www.facebook.com/share/1FPyTnFzsx/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 2</b><small>fonte salvata</small></span></a><a href="https://www.facebook.com/share/14u3HXdyyxm/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 3</b><small>fonte salvata</small></span></a><a href="https://www.instagram.com/giuliobetti18?stkn=MTJma255ZmdlY2l3Yg==" target="_blank" rel="noopener">◎ <span><b>Giulio Betti</b><small>Instagram</small></span></a></div><button class="rc35-add" id="addSocialLink" type="button">＋ Aggiungi link</button><div class="rc35-add-form hidden" id="socialAddForm"><input id="socialName" maxlength="40" placeholder="Nome fonte" type="text"><input id="socialUrl" placeholder="https://…" type="url"><div><button id="saveSocialLink" type="button">Salva</button><button class="secondary" id="cancelSocialLink" type="button">Annulla</button></div><small>I link aggiunti restano salvati su questo dispositivo.</small></div></details>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35.1 · Home Compatta + Lamone</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35.2 · Finale Restyling</footer>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=rc35-1"></script>
+<script src="app.js?v=rc35-2"></script>
 </body>
 </html>

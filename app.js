@@ -583,8 +583,7 @@ document.querySelectorAll('[data-trend]').forEach(el=>{
 });
 
 // RC34 · Intervento 1: la card Prossime Ore apre direttamente il Trend Operativo
-$('openHourlyTrend')?.addEventListener('click',e=>{ if(e.target.closest('a,button')) return; openTrend('temperatura'); });
-$('openHourlyTrend')?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend('temperatura')}});
+
 $('openTrendPage')?.addEventListener('click',()=>openTrend('temperatura'));
 $('openTrendPage')?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTrend('temperatura')}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('trendBox')?.classList.contains('hidden'))closeTrendPage()});
@@ -709,7 +708,10 @@ function setBasinCard(key,d){
   const el=$(key==='lamone'?'basinLamoneSummary':'basinMarzenoSummary');
   if(!el) return;
   el.textContent=`1h ${d.h1.toFixed(1)} · 3h ${d.h3.toFixed(1)} · 6h ${d.h6.toFixed(1)} mm`;
-  el.style.color=d.h6>=25?'var(--yellow)':'var(--green)'; const f=$(key==='lamone'?'basinLamoneForecast':'basinMarzenoForecast'); if(f) f.textContent=`prevista 1h ${d.f1.toFixed(1)} · 3h ${d.f3.toFixed(1)} · 6h ${d.f6.toFixed(1)} mm`;
+  el.style.color=d.h6>=25?'var(--yellow)':'var(--green)';
+  const ids=key==='lamone'?['lamObs1','lamObs3','lamObs6','lamFor1','lamFor3','lamFor6']:['marObs1','marObs3','marObs6','marFor1','marFor3','marFor6'];
+  [d.h1,d.h3,d.h6,d.f1,d.f3,d.f6].forEach((v,i)=>{const x=$(ids[i]);if(x)x.textContent=v.toFixed(1)+' mm';});
+  const f=$(key==='lamone'?'basinLamoneForecast':'basinMarzenoForecast'); if(f) f.textContent=`prevista 1h ${d.f1.toFixed(1)} · 3h ${d.f3.toFixed(1)} · 6h ${d.f6.toFixed(1)} mm`;
 }
 function updateLamoneDecision(lam, mar){
   const state=sensorStateFromRain(lam,mar);
@@ -1028,3 +1030,27 @@ document.querySelectorAll('[data-pretemp-direct="1"],a[href*="pretemp"]').forEac
 
 /* RC35.1 · pioggia sintetica */
 (function(){const $=id=>document.getElementById(id);function showRain(){if(!lastData)return;const h=lastData.hourly,start=nextStart(h.time),v=h.precipitation.slice(start,start+6).map(Number),sum=n=>v.slice(0,n).reduce((a,b)=>a+(b||0),0),a=sum(1),b=sum(3),c=sum(6);if($("rc351Rain1"))$("rc351Rain1").textContent=a.toFixed(1)+" mm";if($("rc351Rain3"))$("rc351Rain3").textContent=b.toFixed(1)+" mm";if($("rc351Rain6"))$("rc351Rain6").textContent=c.toFixed(1)+" mm";if($("rc351RainMsg"))$("rc351RainMsg").textContent=c<.2?"Nessuna pioggia significativa prevista nelle prossime 6 ore.":c<2?"Pioggia debole prevista nelle prossime 6 ore.":c<10?"Pioggia prevista: controlla radar ed evoluzione.":"Pioggia consistente prevista: controlla anche il Lamone."}$("rc351RainBtn")?.addEventListener("click",()=>{$("rc351Rain")?.classList.toggle("hidden");showRain()});$("rc351RainClose")?.addEventListener("click",()=>$("rc351Rain")?.classList.add("hidden"));document.querySelector('[data-basin-forecast="1"]')?.addEventListener("click",()=>{document.querySelector('.basin-block')?.scrollIntoView({behavior:"smooth",block:"center"})});setTimeout(showRain,1800)})();
+
+/* === RC35.2 · finale restyling: approfondimento prossime ore === */
+function hourlyWeatherLabel(code){return (WMO[code]||['Meteo','🌤️'])[0]}
+function renderHourlyDetail(selected=0){
+ const page=$('hourlyDetailPage'); if(!page||!lastData?.hourly)return;
+ const h=lastData.hourly,start=nextStart(h.time),count=Math.min(13,h.time.length-start);
+ const rows=Array.from({length:count},(_,i)=>start+i);
+ const rain6=rows.slice(0,6).reduce((s,k)=>s+Number(h.precipitation[k]||0),0);
+ const gustMax=Math.max(...rows.map(k=>Number(h.wind_gusts_10m[k]||0)));
+ const minT=Math.min(...rows.map(k=>Number(h.temperature_2m[k]||0)));
+ $('hourlyDetailSummary').innerHTML=`<span><small>PIOGGIA 6H</small><b>${rain6.toFixed(1)} mm</b></span><span><small>RAFFICA MAX</small><b>${Math.round(gustMax)} km/h</b></span><span><small>MINIMA</small><b>${Math.round(minT)}°C</b></span>`;
+ $('hourlyDetailStrip').innerHTML=rows.map((k,i)=>{const d=new Date(h.time[k]),icon=(WMO[h.weather_code[k]]||['','🌤️'])[1];return `<button class="hour-detail-card ${i===selected?'active':''}" data-hour-detail="${i}" type="button"><time>${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</time><strong>${icon} ${Math.round(h.temperature_2m[k])}°</strong><small>🌧️ ${h.precipitation_probability[k]||0}% · ${Number(h.precipitation[k]||0).toFixed(1)} mm</small><small>💨 ${Math.round(h.wind_speed_10m[k]||0)} · ${Math.round(h.wind_gusts_10m[k]||0)} km/h</small></button>`}).join('');
+ const k=rows[Math.max(0,Math.min(selected,rows.length-1))],d=new Date(h.time[k]);
+ $('hourlySelected').innerHTML=`<small>ORA SELEZIONATA · ${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}</small><b>${hourlyWeatherLabel(h.weather_code[k])} · ${Math.round(h.temperature_2m[k])}°C</b><div><span>Pioggia <strong>${h.precipitation_probability[k]||0}% · ${Number(h.precipitation[k]||0).toFixed(1)} mm</strong></span><span>Vento <strong>${Math.round(h.wind_speed_10m[k]||0)} km/h</strong></span><span>Raffica <strong>${Math.round(h.wind_gusts_10m[k]||0)} km/h</strong></span><span>Umidità <strong>${Math.round(h.relative_humidity_2m[k]||0)}%</strong></span></div>`;
+ let msg=rain6<.2?'Nessuna pioggia significativa prevista nelle prossime 6 ore.':rain6<2?'Possibili precipitazioni deboli nelle prossime 6 ore.':rain6<10?'Pioggia prevista: utile confrontare con il radar.':'Pioggia consistente prevista: controlla radar, PRETEMP e Centro Lamone.';
+ $('hourlyConte').innerHTML=`<small>LETTURA CONTE</small><b>${msg}</b>`;
+ $('hourlyDetailStrip').querySelectorAll('[data-hour-detail]').forEach(b=>b.addEventListener('click',()=>renderHourlyDetail(Number(b.dataset.hourDetail))));
+}
+function openHourlyDetail(){if(!lastData)return;const p=$('hourlyDetailPage');p?.classList.remove('hidden');document.body.classList.add('trend-open');renderHourlyDetail(0)}
+function closeHourlyDetail(){$('hourlyDetailPage')?.classList.add('hidden');document.body.classList.remove('trend-open')}
+$('openHourlyTrend')?.addEventListener('click',e=>{if(e.target.closest('a,button'))return;openHourlyDetail()});
+$('openHourlyTrend')?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openHourlyDetail()}});
+$('closeHourlyDetail')?.addEventListener('click',closeHourlyDetail);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('hourlyDetailPage')?.classList.contains('hidden'))closeHourlyDetail()});
