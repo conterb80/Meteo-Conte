@@ -700,7 +700,7 @@ async function fetchBasinRain(key, lat, lon){
     if(times[i] <= now) past.push({t:times[i],v:Number(vals[i]||0)});
   }
   function sumHours(n){return past.slice(-n).reduce((a,b)=>a+b.v,0)}
-  const d={h1:sumHours(1),h3:sumHours(3),h6:sumHours(6),h24:sumHours(24),updated:new Date()};
+  const future=[]; for(let i=0;i<times.length;i++){if(times[i]>now) future.push({t:times[i],v:Number(vals[i]||0)});} function futureSum(n){return future.slice(0,n).reduce((a,b)=>a+b.v,0)} const d={h1:sumHours(1),h3:sumHours(3),h6:sumHours(6),h24:sumHours(24),f1:futureSum(1),f3:futureSum(3),f6:futureSum(6),updated:new Date()};
   basinRainData[key]=d;
   return d;
 }
@@ -709,7 +709,7 @@ function setBasinCard(key,d){
   const el=$(key==='lamone'?'basinLamoneSummary':'basinMarzenoSummary');
   if(!el) return;
   el.textContent=`1h ${d.h1.toFixed(1)} · 3h ${d.h3.toFixed(1)} · 6h ${d.h6.toFixed(1)} mm`;
-  el.style.color=d.h6>=25?'var(--yellow)':'var(--green)';
+  el.style.color=d.h6>=25?'var(--yellow)':'var(--green)'; const f=$(key==='lamone'?'basinLamoneForecast':'basinMarzenoForecast'); if(f) f.textContent=`prevista 1h ${d.f1.toFixed(1)} · 3h ${d.f3.toFixed(1)} · 6h ${d.f6.toFixed(1)} mm`;
 }
 function updateLamoneDecision(lam, mar){
   const state=sensorStateFromRain(lam,mar);
@@ -1025,3 +1025,6 @@ document.querySelectorAll('[data-pretemp-direct="1"],a[href*="pretemp"]').forEac
  save?.addEventListener('click',()=>{let n=name.value.trim(),u=url.value.trim();if(!n||!u)return; if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch{return}const v=read();v.push({name:n,url:u});write(v);render();close()});
  render();
 })();
+
+/* RC35.1 · pioggia sintetica */
+(function(){const $=id=>document.getElementById(id);function showRain(){if(!lastData)return;const h=lastData.hourly,start=nextStart(h.time),v=h.precipitation.slice(start,start+6).map(Number),sum=n=>v.slice(0,n).reduce((a,b)=>a+(b||0),0),a=sum(1),b=sum(3),c=sum(6);if($("rc351Rain1"))$("rc351Rain1").textContent=a.toFixed(1)+" mm";if($("rc351Rain3"))$("rc351Rain3").textContent=b.toFixed(1)+" mm";if($("rc351Rain6"))$("rc351Rain6").textContent=c.toFixed(1)+" mm";if($("rc351RainMsg"))$("rc351RainMsg").textContent=c<.2?"Nessuna pioggia significativa prevista nelle prossime 6 ore.":c<2?"Pioggia debole prevista nelle prossime 6 ore.":c<10?"Pioggia prevista: controlla radar ed evoluzione.":"Pioggia consistente prevista: controlla anche il Lamone."}$("rc351RainBtn")?.addEventListener("click",()=>{$("rc351Rain")?.classList.toggle("hidden");showRain()});$("rc351RainClose")?.addEventListener("click",()=>$("rc351Rain")?.classList.add("hidden"));document.querySelector('[data-basin-forecast="1"]')?.addEventListener("click",()=>{document.querySelector('.basin-block')?.scrollIntoView({behavior:"smooth",block:"center"})});setTimeout(showRain,1800)})();

@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · RC35 Accessi Rapidi</title>
+<title>Meteo Conte 1.1 · RC35.1 Home Compatta + Lamone</title>
 <link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
-<link href="style.css?v=rc35" rel="stylesheet"/>
+<link href="style.css?v=rc35-1" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -263,12 +263,12 @@
 <button class="basin-card" data-basin="lamone" type="button">
 <span>🏔️ Lamone</span>
 <b>Marradi</b>
-<em id="basinLamoneSummary">lettura…</em>
+<em id="basinLamoneSummary">lettura…</em><small class="basin-forecast" id="basinLamoneForecast">prevista: in lettura…</small>
 </button>
 <button class="basin-card" data-basin="marzeno" type="button">
 <span>🏔️ Marzeno</span>
 <b>Modigliana</b>
-<em id="basinMarzenoSummary">lettura…</em>
+<em id="basinMarzenoSummary">lettura…</em><small class="basin-forecast" id="basinMarzenoForecast">prevista: in lettura…</small>
 </button>
 </div>
 </div>
@@ -311,50 +311,26 @@
 </div>
 <div class="river-actions">
 <a class="btn" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" rel="noopener" target="_blank">📈 Dettagli Lamone</a>
-<a class="btn secondary" href="https://www.windy.com/?rain,44.16,11.62,8" rel="noopener" target="_blank">🌧️ Pioggia a monte</a>
+<button class="btn secondary" data-basin-forecast="1" type="button">🌧️ Pioggia prevista a monte</button>
 </div>
 </section>
-<section class="card links operative-center rc35-access" id="operativeLinks">
-<div class="rc35-head">
-<div><span class="label">5 · ACCESSI RAPIDI</span><h2>Strumenti meteo</h2><p>Quello che serve, senza passaggi inutili.</p></div>
-<span class="rc35-badge">RC35</span>
+<section class="card links operative-center rc351-access" id="operativeLinks">
+<div class="rc35-head"><div><span class="label">5 · STRUMENTI</span><h2>Accessi rapidi</h2><p>Le funzioni principali, subito.</p></div><span class="rc35-badge">RC35.1</span></div>
+<div class="rc351-grid">
+<button class="rc351-tool featured" data-jump="lamoneDrawer" type="button"><i>🌊</i><b>Lamone</b></button>
+<a class="rc351-tool" href="https://radar.protezionecivile.it/" rel="noopener" target="_blank"><i>🇮🇹</i><b>Radar IT</b></a>
+<a class="rc351-tool" href="https://www.windy.com/?44.42,11.98,8" rel="noopener" target="_blank"><i>🌀</i><b>Vento</b></a>
+<button class="rc351-tool" id="rc351RainBtn" type="button"><i>🌧️</i><b>Pioggia</b></button>
+<a class="rc351-tool" href="https://meteo-pedemontanaforlivese.it/" rel="noopener" target="_blank"><i>⛰️</i><b>Pedemontana</b></a>
+<a class="rc351-tool" href="https://www.3bmeteo.com/meteo/ravenna" rel="noopener" target="_blank"><i class="text3b">3B</i><b>3B Meteo</b></a>
 </div>
-<div class="rc35-grid primary-access">
-<button class="rc35-tool featured" data-jump="lamoneDrawer" type="button"><i>🌊</i><span><b>Centro Lamone</b><small>sensori · livelli · monte-valle</small></span><em>APRI</em></button>
-<a class="rc35-tool" href="https://radar.protezionecivile.it/" rel="noopener" target="_blank"><i>🇮🇹</i><span><b>Radar nazionale</b><small>quadro precipitazioni Italia</small></span><em>↗</em></a>
-<a class="rc35-tool" href="https://www.windy.com/?44.42,11.98,8" rel="noopener" target="_blank"><i>🌀</i><span><b>Windy · Vento</b><small>vento e pressione</small></span><em>↗</em></a>
-<a class="rc35-tool" href="https://www.windy.com/?rain,44.42,11.98,8" rel="noopener" target="_blank"><i>🌧️</i><span><b>Windy · Pioggia</b><small>precipitazioni previste</small></span><em>↗</em></a>
-<a class="rc35-tool" href="https://meteo-pedemontanaforlivese.it/" rel="noopener" target="_blank"><i>⛰️</i><span><b>Meteo Pedemontana</b><small>situazione e analisi Romagna</small></span><em>↗</em></a>
-<a class="rc35-tool" href="https://www.3bmeteo.com/giornale" rel="noopener" target="_blank"><i>3B</i><span><b>3B Meteo</b><small>notizie e approfondimenti</small></span><em>↗</em></a>
-</div>
-<details class="rc35-more">
-<summary><span>＋ Altri strumenti</span><small>sensori e controlli secondari</small></summary>
-<div class="rc35-grid secondary-access">
-<a class="rc35-tool" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" rel="noopener" target="_blank"><i>📡</i><span><b>Sensori Lamone</b><small>livelli del percorso</small></span><em>↗</em></a>
-<a class="rc35-tool" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" rel="noopener" target="_blank"><i>📈</i><span><b>Idrometri ER</b><small>livelli ufficiali regionali</small></span><em>↗</em></a>
-<a class="rc35-tool" href="https://www.windy.com/?rain,44.16,11.62,8" rel="noopener" target="_blank"><i>🏔️</i><span><b>Pioggia a monte</b><small>Marradi e Modigliana</small></span><em>↗</em></a>
-</div>
-</details>
-<section aria-label="Dirette e Social" class="rc35-social">
-<div class="rc35-section-title"><div><span>📣</span><b>Dirette &amp; Social</b><small>aggiornamenti rapidi durante eventi ed emergenze</small></div></div>
-<div class="rc35-social-grid" id="socialLinks">
-<a href="https://allertameteo.regione.emilia-romagna.it/" rel="noopener" target="_blank"><i>⚠️</i><span><b>Allerta Meteo ER</b><small>aggiornamenti ufficiali</small></span></a>
-<a href="https://www.protezionecivile.gov.it/it/media-e-comunicazione/social/" rel="noopener" target="_blank"><i>🛡️</i><span><b>Protezione Civile</b><small>canali social ufficiali</small></span></a>
-<a href="https://www.coprociv.ra.it/" rel="noopener" target="_blank"><i>🚨</i><span><b>Protezione Civile Ravenna</b><small>coordinamento provinciale</small></span></a>
-<a href="https://www.comune.bagnacavallo.ra.it/" rel="noopener" target="_blank"><i>📍</i><span><b>Bagnacavallo</b><small>avvisi e comunicazioni locali</small></span></a>
-</div>
-<button class="rc35-add" id="addSocialLink" type="button">＋ Aggiungi link</button>
-<div class="rc35-add-form hidden" id="socialAddForm">
-<input id="socialName" maxlength="40" placeholder="Nome (es. pagina Facebook)" type="text"/>
-<input id="socialUrl" placeholder="https://…" type="url"/>
-<div><button id="saveSocialLink" type="button">Salva</button><button class="secondary" id="cancelSocialLink" type="button">Annulla</button></div>
-<small>I link aggiunti restano salvati su questo dispositivo.</small>
-</div>
+<div class="rc351-rain hidden" id="rc351Rain"><div class="rc351-rain-head"><div><small>PIOGGIA PREVISTA · BORGO VIAZZA</small><b>Prossime 6 ore</b></div><button id="rc351RainClose" type="button">×</button></div><div class="rc351-rain-values"><span><small>+1h</small><b id="rc351Rain1">-- mm</b></span><span><small>+3h</small><b id="rc351Rain3">-- mm</b></span><span><small>+6h</small><b id="rc351Rain6">-- mm</b></span></div><p id="rc351RainMsg">Lettura previsione…</p><a href="https://www.windy.com/?rain,44.42,11.98,8" target="_blank" rel="noopener">Mappa avanzata Windy ↗</a></div>
+<details class="rc351-details"><summary><b>＋ Altri strumenti</b><small>sensori e controlli</small></summary><div class="rc351-secondary"><a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📡 <span><b>Sensori Lamone</b><small>livelli del percorso</small></span></a><a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 <span><b>Idrometri ER</b><small>livelli ufficiali</small></span></a><button data-jump="lamoneDrawer" type="button">🏔️ <span><b>Pioggia a monte</b><small>osservata + prevista</small></span></button></div></details>
+<details class="rc351-details social"><summary><b>📡 Dirette &amp; Social</b><small>eventi ed emergenze</small></summary><div class="rc351-social" id="socialLinks"><a href="https://www.facebook.com/share/19cuHxs4cR/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 1</b><small>fonte salvata</small></span></a><a href="https://www.facebook.com/share/1FPyTnFzsx/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 2</b><small>fonte salvata</small></span></a><a href="https://www.facebook.com/share/14u3HXdyyxm/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 3</b><small>fonte salvata</small></span></a><a href="https://www.instagram.com/giuliobetti18?stkn=MTJma255ZmdlY2l3Yg==" target="_blank" rel="noopener">◎ <span><b>Giulio Betti</b><small>Instagram</small></span></a></div><button class="rc35-add" id="addSocialLink" type="button">＋ Aggiungi link</button><div class="rc35-add-form hidden" id="socialAddForm"><input id="socialName" maxlength="40" placeholder="Nome fonte" type="text"><input id="socialUrl" placeholder="https://…" type="url"><div><button id="saveSocialLink" type="button">Salva</button><button class="secondary" id="cancelSocialLink" type="button">Annulla</button></div><small>I link aggiunti restano salvati su questo dispositivo.</small></div></details>
 </section>
-</section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35 · Accessi Rapidi</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35.1 · Home Compatta + Lamone</footer>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=rc35"></script>
+<script src="app.js?v=rc35-1"></script>
 </body>
 </html>
