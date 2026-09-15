@@ -999,3 +999,29 @@ document.querySelectorAll('[data-pretemp-direct="1"],a[href*="pretemp"]').forEac
   // Stato iniziale: Osserva aperto, gli altri chiusi.
   sections.forEach(section=>setState(section,section.id==='observeSection'));
 })();
+
+
+/* RC35 · Dirette & Social: link personali salvati solo sul dispositivo */
+(function rc35SocialLinks(){
+ const box=document.getElementById('socialLinks'), add=document.getElementById('addSocialLink'), form=document.getElementById('socialAddForm');
+ if(!box||!add||!form) return;
+ const name=document.getElementById('socialName'), url=document.getElementById('socialUrl'), save=document.getElementById('saveSocialLink'), cancel=document.getElementById('cancelSocialLink');
+ const KEY='meteoConteSocialLinksV1';
+ const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return []}};
+ const write=v=>localStorage.setItem(KEY,JSON.stringify(v));
+ function render(){
+   box.querySelectorAll('.custom-social').forEach(x=>x.remove());
+   read().forEach((item,i)=>{
+     const a=document.createElement('a');a.className='custom-social';a.href=item.url;a.target='_blank';a.rel='noopener';
+     const icon=document.createElement('i');icon.textContent='🔗';
+     const span=document.createElement('span');const b=document.createElement('b');b.textContent=item.name;const sm=document.createElement('small');sm.textContent='link personale';span.append(b,sm);
+     const rm=document.createElement('button');rm.type='button';rm.className='remove-social';rm.textContent='×';rm.setAttribute('aria-label','Rimuovi '+item.name);rm.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const v=read();v.splice(i,1);write(v);render()});
+     a.append(icon,span,rm);box.append(a);
+   });
+ }
+ function close(){form.classList.add('hidden');name.value='';url.value=''}
+ add.addEventListener('click',()=>{form.classList.toggle('hidden');if(!form.classList.contains('hidden'))name.focus()});
+ cancel?.addEventListener('click',close);
+ save?.addEventListener('click',()=>{let n=name.value.trim(),u=url.value.trim();if(!n||!u)return; if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch{return}const v=read();v.push({name:n,url:u});write(v);render();close()});
+ render();
+})();
