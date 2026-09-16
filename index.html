@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · RC35.2 Finale Restyling</title>
+<title>Meteo Conte 1.1 · RC35.3 Avvisi + Lamone</title>
 <link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
-<link href="style.css?v=rc35-2" rel="stylesheet"/>
+<link href="style.css?v=rc35-3" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -44,7 +44,11 @@
 <button data-trend="pressione" type="button"><i>📈</i><span><small>Pressione</small><b id="press">-- hPa</b></span></button>
 </div>
 <div aria-hidden="true" class="weather-ambient"><span></span><span></span><span></span></div>
-</header><article aria-label="Apri previsioni dettagliate delle prossime ore" class="card hourly-monitor-card hourly-trend-launcher" id="openHourlyTrend" role="button" tabindex="0">
+</header><section aria-live="polite" class="conte-alertbar hidden" id="conteAlertBar">
+ <div class="conte-alert-icon" id="conteAlertIcon">🔔</div>
+ <div class="conte-alert-copy"><small id="conteAlertKind">AVVISI CONTE</small><b id="conteAlertTitle">Attiva gli avvisi Meteo Conte</b><span id="conteAlertText">Ricevi un avviso quando il quadro locale richiede un controllo.</span></div>
+ <div class="conte-alert-actions"><button id="conteAlertOpen" type="button">CONTROLLA</button><button id="conteNotifyBtn" type="button">🔔 ATTIVA</button><button id="conteAlertDismiss" type="button" aria-label="Nascondi avviso">×</button></div>
+</section><article aria-label="Apri previsioni dettagliate delle prossime ore" class="card hourly-monitor-card hourly-trend-launcher" id="openHourlyTrend" role="button" tabindex="0">
 <div class="monitor-head">
 <div><span class="label">2 · PROSSIME ORE</span><b>Temperatura e precipitazioni</b></div>
 <small>tocca per dettaglio ›</small>
@@ -250,16 +254,13 @@
 </section>
 </div>
 <section class="card river river-v20 river-emergency hidden lamone-container-openable" id="lamoneCard">
-<div class="container-toolbar">
-<div><span>CASSETTO LAMONE</span><b>Centro controllo completo</b></div>
-<button aria-label="Chiudi contenitore Lamone" id="closeLamoneDrawer" type="button">×</button>
-</div>
+<div class="container-toolbar lamone-closebar"><button aria-label="Chiudi Lamone" id="closeLamoneDrawer" type="button">×</button></div>
 <span class="label">FIUMI · LAMONE</span><span class="cornerdot green" id="lamoneCorner"></span>
 <div class="river-status emergency-status">
 <span class="river-dot green"></span>
 <div>
 <h2>Lamone sotto controllo</h2>
-<p>Bacini, Marzeno, sensori e onda verso valle in un solo colpo d’occhio.</p>
+<p>Monte → sensori → valle.</p>
 </div>
 </div>
 <div class="river-decision compact-decision">
@@ -268,7 +269,7 @@
 <p id="lamoneDecisionText">Pioggia a monte e sensori pronti: prima guardi monte, poi segui la piena verso valle.</p>
 </div>
 <div class="basin-block">
-<div class="river-chart-head"><b>Bacini a monte</b><span>pioggia · dati reali</span></div>
+<div class="river-chart-head"><b>Bacini a monte</b><span>pioggia · stima meteo</span></div>
 <div class="basin-grid">
 <button class="basin-card basin-readable" data-basin="lamone" type="button">
 <span>🏔️ Lamone</span><b>Marradi</b>
@@ -328,7 +329,7 @@
 </div>
 </section>
 <section class="card links operative-center rc351-access" id="operativeLinks">
-<div class="rc35-head"><div><span class="label">5 · STRUMENTI</span><h2>Accessi rapidi</h2><p>Le funzioni principali, subito.</p></div><span class="rc35-badge">RC35.2</span></div>
+<div class="rc35-head"><div><span class="label">5 · STRUMENTI</span><h2>Accessi rapidi</h2><p>Le funzioni principali, subito.</p></div><span class="rc35-badge">RC35.3</span></div>
 <div class="rc351-grid">
 <button class="rc351-tool featured" data-jump="lamoneDrawer" type="button"><i>🌊</i><b>Lamone</b></button>
 <a class="rc351-tool" href="https://radar.protezionecivile.it/" rel="noopener" target="_blank"><i>🇮🇹</i><b>Radar IT</b></a>
@@ -344,6 +345,6 @@
 <footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35.2 · Finale Restyling</footer>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=rc35-2"></script>
+<script src="app.js?v=rc35-3"></script>
 </body>
 </html>

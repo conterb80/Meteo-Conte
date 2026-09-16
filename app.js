@@ -282,6 +282,7 @@ function renderOfficialAlert(state){
    const txt=state.color==='unknown'?'Verifica fonte ufficiale':state.color==='green'?'Nessuna attiva':`Allerta ${alertColorLabel(state.color).toLowerCase()}: ${state.phenomena.map(x=>x.label).join(', ')||'fenomeni segnalati'}`;
    line.textContent=txt;
  }
+ renderConteAlertCenter();
  const title=$('homeAlertTitle'),text=$('homeAlertText');
  if(title&&text&&state.color!=='unknown'){
    title.textContent=state.color==='green'?'Nessuna allerta ufficiale':`Allerta ${alertColorLabel(state.color).toLowerCase()} attiva`;
@@ -303,10 +304,10 @@ function updateBriefWeather(c,h){
 async function load(){
  const alertPromise=loadOfficialAlert();
  try{
-  await navigator.serviceWorker?.getRegistrations?.().then(rs=>rs.forEach(r=>r.unregister()));
+  if('serviceWorker' in navigator){ try{ await navigator.serviceWorker.register('./sw.js?v=rc35-3'); }catch(_e){} }
   const url='https://api.open-meteo.com/v1/forecast?latitude=44.418&longitude=11.977&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,showers,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&daily=sunrise,sunset&timezone=Europe%2FRome&forecast_days=2';
   const res=await fetch(url,{cache:'no-store'}); if(!res.ok) throw new Error('api');
-  const data=await res.json(); lastData=data; const c=data.current, h=data.hourly;
+  const data=await res.json(); lastData=data; const c=data.current, h=data.hourly; setTimeout(renderConteAlertCenter,0);
   const desc=WMO[c.weather_code]||['Meteo','🌤️']; const idx=calcIndex(c,h); lastIndex=idx; const lv=level(idx); lastLevel=lv;
   const {start,end}=upcomingSlice(h,6); const rain6=h.precipitation.slice(start,end).reduce((a,b)=>a+(b||0),0); const probs=h.precipitation_probability.slice(start,end); const rainMax=probs.length?Math.max(...probs):0;
   $('headerIcon').textContent=desc[1]; $('headerTemp').textContent=Math.round(c.temperature_2m*10)/10+'°';
@@ -1054,3 +1055,38 @@ $('openHourlyTrend')?.addEventListener('click',e=>{if(e.target.closest('a,button
 $('openHourlyTrend')?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openHourlyDetail()}});
 $('closeHourlyDetail')?.addEventListener('click',closeHourlyDetail);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('hourlyDetailPage')?.classList.contains('hidden'))closeHourlyDetail()});
+
+
+/* === RC35.3 · Centro Avvisi Conte ===
+   Avvisi locali: funzionano quando la PWA viene aggiornata/aperta.
+   Il service worker resta registrato e prepara la base per FCM push reale. */
+const CONTE_ALERT_SEEN='meteoConteAlertSeenV1';
+function conteAlertCandidate(){
+ if(officialAlertState && alertRank(officialAlertState.color)>0){
+   return {level:'official',icon:'⚠️',kind:'ALLERTA UFFICIALE',title:`Allerta ${alertColorLabel(officialAlertState.color).toLowerCase()}`,text:(officialAlertState.phenomena||[]).map(x=>x.label).join(', ')||'Apri il bollettino ufficiale.',action:'official',key:'official-'+officialAlertState.color+'-'+(officialAlertState.title||'')};
+ }
+ if(!lastData?.hourly) return null;
+ const s=buildNextSignal(lastData.hourly), a=assessOperationalEvent(lastData.current,lastData.hourly);
+ if(a.severity>=2 || s.kind==='storm') return {level:a.severity>=3?'event':'watch',icon:a.severity>=3?'🔴':'⛈️',kind:a.severity>=3?'EVENTO DA CONTROLLARE':'AVVISO CONTE',title:a.stormNow?'Temporale rilevato':s.kind==='storm'?'Possibili temporali nelle prossime ore':a.title,text:s.text||`Pioggia ${a.rainSum.toFixed(1)} mm · raffiche ${Math.round(a.gustMax)} km/h`,action:'radar',key:'local-'+s.kind+'-'+s.text};
+ if(s.kind==='rain' || s.kind==='wind' || a.severity===1) return {level:'watch',icon:s.kind==='wind'?'💨':'🌧️',kind:'AVVISO CONTE',title:s.kind==='wind'?'Vento da monitorare':'Precipitazioni da monitorare',text:s.text,action:'radar',key:'local-'+s.kind+'-'+s.text};
+ return null;
+}
+function notifyConte(c){
+ if(!c || !('Notification' in window) || Notification.permission!=='granted') return;
+ const seen=localStorage.getItem(CONTE_ALERT_SEEN); if(seen===c.key)return;
+ try{new Notification(`Meteo Conte · ${c.kind}`,{body:c.title+' — '+c.text,icon:'icon.png',tag:'meteo-conte-avviso',renotify:true});localStorage.setItem(CONTE_ALERT_SEEN,c.key)}catch(_e){}
+}
+function renderConteAlertCenter(){
+ const bar=$('conteAlertBar'); if(!bar)return;
+ const c=conteAlertCandidate(); const canNotify='Notification' in window; const permission=canNotify?Notification.permission:'unsupported';
+ if(!c && permission==='granted'){bar.classList.add('hidden');return;}
+ bar.className='conte-alertbar '+(c?.level==='official'?'alert-official':c?.level==='event'?'alert-event':'');
+ $('conteAlertIcon').textContent=c?.icon||'🔔'; $('conteAlertKind').textContent=c?.kind||'AVVISI CONTE'; $('conteAlertTitle').textContent=c?.title||'Attiva gli avvisi Meteo Conte'; $('conteAlertText').textContent=c?.text||'L’app ti segnala quando previsione locale o allerta ufficiale richiedono un controllo.';
+ const open=$('conteAlertOpen'); if(open){open.style.display=c?'':'none';open.dataset.action=c?.action||''}
+ const nb=$('conteNotifyBtn'); if(nb){nb.style.display=permission==='granted'?'none':'';nb.textContent=permission==='denied'?'🔕 BLOCCATE':'🔔 ATTIVA';nb.disabled=permission==='denied'||permission==='unsupported'}
+ notifyConte(c);
+}
+$('conteNotifyBtn')?.addEventListener('click',async()=>{if(!('Notification' in window))return;try{const p=await Notification.requestPermission();renderConteAlertCenter();if(p==='granted')new Notification('Meteo Conte',{body:'Avvisi attivati su questo dispositivo.',icon:'icon.png',tag:'meteo-conte-test'})}catch(_e){}});
+$('conteAlertOpen')?.addEventListener('click',()=>{const a=$('conteAlertOpen')?.dataset.action;if(a==='official')window.open(OFFICIAL_ALERT_PAGE,'_blank','noopener');else window.location.href='radar.html';});
+$('conteAlertDismiss')?.addEventListener('click',()=>{$('conteAlertBar')?.classList.add('hidden')});
+setTimeout(renderConteAlertCenter,2200);
