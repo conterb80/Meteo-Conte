@@ -1099,31 +1099,17 @@ function renderHourlyGraph(hours=hourlyGraphHorizon){
  if(!lastData?.hourly)return;
  hourlyGraphHorizon=hours;
  const h=lastData.hourly,start=nextStart(h.time),count=Math.min(hours,h.time.length-start);
- const ids=Array.from({length:count},(_,i)=>start+i);
- const box=$('hourlyGraph'); if(!box||!ids.length)return;
- const temps=ids.map(i=>Number(h.temperature_2m[i]||0));
- const rains=ids.map(i=>Number(h.precipitation[i]||0));
- const gusts=ids.map(i=>Number(h.wind_gusts_10m[i]||0));
- const minT=Math.min(...temps),maxT=Math.max(...temps),maxR=Math.max(1,...rains),maxG=Math.max(20,...gusts);
- const W=680,H=210,L=28,R=10,T=16,B=31,iw=W-L-R,ih=H-T-B;
- const x=i=>L+(ids.length<=1?0:i*iw/(ids.length-1));
- const yT=v=>T+ih-(v-minT)/(Math.max(1,maxT-minT))*ih*.72-ih*.12;
- const yG=v=>T+ih-(v/maxG)*ih*.42;
- const tempPath=temps.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+yT(v).toFixed(1)).join(' ');
- const gustPath=gusts.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+yG(v).toFixed(1)).join(' ');
- let bars='';
- rains.forEach((v,i)=>{if(v<=0)return;const bw=Math.max(3,iw/ids.length*.62),bh=Math.max(2,(v/maxR)*ih*.32);bars+=`<rect x="${(x(i)-bw/2).toFixed(1)}" y="${(T+ih-bh).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="2" fill="#4caed0" opacity=".7"/>`;});
- let labels='';
- const step=hours>24?8:4;
- ids.forEach((k,i)=>{if(i%step)return;const d=new Date(h.time[k]);labels+=`<text x="${x(i)}" y="${H-9}" fill="#7895a2" font-size="9" text-anchor="middle">${d.toLocaleTimeString('it-IT',{hour:'2-digit'})}</text>`});
- box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Grafico temperatura precipitazioni e raffiche">
- <line x1="${L}" y1="${T+ih}" x2="${W-R}" y2="${T+ih}" stroke="#ffffff18"/>
- <line x1="${L}" y1="${T+ih*.5}" x2="${W-R}" y2="${T+ih*.5}" stroke="#ffffff0c"/>
- ${bars}
- <path d="${gustPath}" fill="none" stroke="#a8b7c0" stroke-width="2" stroke-dasharray="5 5" opacity=".65"/>
- <path d="${tempPath}" fill="none" stroke="#f3c95d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
- <text x="${L}" y="11" fill="#f3c95d" font-size="10">${Math.round(maxT)}°</text>
- <text x="${L}" y="${T+ih-4}" fill="#8aa4af" font-size="9">${Math.round(minT)}°</text>${labels}</svg>`;
+ const ids=Array.from({length:count},(_,i)=>start+i),box=$('hourlyGraph'); if(!box||!ids.length)return;
+ const temps=ids.map(i=>Number(h.temperature_2m[i]||0)),rains=ids.map(i=>Number(h.precipitation[i]||0)),gusts=ids.map(i=>Number(h.wind_gusts_10m[i]||0));
+ const minT=Math.floor(Math.min(...temps)),maxT=Math.ceil(Math.max(...temps)),maxR=Math.max(1,...rains),maxG=Math.max(20,...gusts);
+ const W=680,H=230,L=34,R=12,T=22,B=40,iw=W-L-R,ih=H-T-B,x=i=>L+(ids.length<=1?0:i*iw/(ids.length-1));
+ const yT=v=>T+ih-(v-minT)/(Math.max(2,maxT-minT))*ih*.68-ih*.14,yG=v=>T+ih-(v/maxG)*ih*.36;
+ const tp=temps.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+yT(v).toFixed(1)).join(' ');
+ const gp=gusts.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+yG(v).toFixed(1)).join(' ');
+ let bars='',labels='',vals=''; const ls=hours>24?6:3,vs=hours>24?8:4;
+ rains.forEach((v,i)=>{if(v<=0)return;const bw=Math.max(4,iw/ids.length*.68),bh=Math.max(3,(v/maxR)*ih*.34);bars+=`<rect x="${(x(i)-bw/2).toFixed(1)}" y="${(T+ih-bh).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="2" fill="#48b5d7" opacity=".82"/>`;});
+ ids.forEach((k,i)=>{const d=new Date(h.time[k]);if(i%ls===0)labels+=`<text x="${x(i)}" y="${H-12}" fill="#91aab4" font-size="10" text-anchor="middle">${d.toLocaleTimeString('it-IT',{hour:'2-digit'})}</text>`;if(i%vs===0)vals+=`<circle cx="${x(i)}" cy="${yT(temps[i])}" r="2.7" fill="#f3c95d"/><text x="${x(i)}" y="${yT(temps[i])-7}" fill="#f3c95d" font-size="9" text-anchor="middle">${Math.round(temps[i])}°</text>`;});
+ box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img"><line x1="${L}" y1="${T+ih}" x2="${W-R}" y2="${T+ih}" stroke="#ffffff22"/><line x1="${L}" y1="${T+ih*.5}" x2="${W-R}" y2="${T+ih*.5}" stroke="#ffffff12"/>${bars}<path d="${gp}" fill="none" stroke="#b8c6cc" stroke-width="2.2" stroke-dasharray="5 5" opacity=".72"/><path d="${tp}" fill="none" stroke="#f3c95d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${vals}<text x="4" y="${T+6}" fill="#f3c95d" font-size="9">${maxT}°</text><text x="4" y="${T+ih}" fill="#91aab4" font-size="9">${minT}°</text><text x="${W-R}" y="${T+ih-7}" fill="#b8c6cc" font-size="9" text-anchor="end">raffica max ${Math.round(maxG)} km/h</text>${labels}</svg>`;
  document.querySelectorAll('[data-hourly-horizon]').forEach(b=>b.classList.toggle('active',Number(b.dataset.hourlyHorizon)===hours));
 }
 document.querySelectorAll('[data-hourly-horizon]').forEach(b=>b.addEventListener('click',()=>renderHourlyGraph(Number(b.dataset.hourlyHorizon))));

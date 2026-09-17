@@ -513,3 +513,12 @@
 
 /* RC36: Evoluzione è volutamente un collegamento esterno a Meteo & Radar.
    Nessun iframe radar futuro viene caricato dentro la PWA. */
+
+/* Meteo Conte 1.1: Evoluzione diretta, senza schermata intermedia. */
+document.querySelectorAll('[data-external-url]').forEach(btn=>{
+ btn.addEventListener('click',ev=>{
+  ev.preventDefault(); ev.stopImmediatePropagation();
+  const u=btn.dataset.externalUrl;
+  if(u) window.open(u,'_blank','noopener,noreferrer');
+ },true);
+});
