@@ -510,3 +510,6 @@
   window.setInterval(updateMissionClock,30000);
 
 })();
+
+/* RC36: Evoluzione è volutamente un collegamento esterno a Meteo & Radar.
+   Nessun iframe radar futuro viene caricato dentro la PWA. */

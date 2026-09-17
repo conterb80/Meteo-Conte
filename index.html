@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1 · RC35.3 Avvisi + Lamone</title>
+<title>Meteo Conte 1.1 · RC36 Test sul Campo</title>
 <link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
-<link href="style.css?v=rc35-3" rel="stylesheet"/>
+<link href="style.css?v=rc36" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -107,6 +107,13 @@
  <div class="hourly-detail-shell">
   <header class="hourly-detail-head"><div><span class="label">BORGO VIAZZA · APPROFONDIMENTO</span><h2>🌤️ Previsioni prossime ore</h2><p>Temperatura, pioggia, vento e raffiche ora per ora.</p></div><button id="closeHourlyDetail" type="button" aria-label="Chiudi">×</button></header>
   <div class="hourly-detail-summary" id="hourlyDetailSummary"></div>
+  <section class="hourly-graph-card" aria-label="Andamento previsto">
+    <div class="hourly-graph-head"><div><small>ANDAMENTO COMPLETO</small><b>Temperatura · pioggia · raffiche</b></div>
+      <div class="hourly-horizon"><button class="active" data-hourly-horizon="24" type="button">24H</button><button data-hourly-horizon="48" type="button">48H</button></div>
+    </div>
+    <div id="hourlyGraph" class="hourly-graph"></div>
+    <div class="hourly-graph-legend"><span>🌡️ temperatura</span><span>🌧️ precipitazioni</span><span>💨 raffiche</span></div>
+  </section>
   <div class="hourly-detail-strip" id="hourlyDetailStrip"></div>
   <div class="hourly-selected" id="hourlySelected"></div>
   <div class="hourly-conte" id="hourlyConte"></div>
@@ -329,7 +336,7 @@
 </div>
 </section>
 <section class="card links operative-center rc351-access" id="operativeLinks">
-<div class="rc35-head"><div><span class="label">5 · STRUMENTI</span><h2>Accessi rapidi</h2><p>Le funzioni principali, subito.</p></div><span class="rc35-badge">RC35.3</span></div>
+<div class="rc35-head"><div><span class="label">5 · STRUMENTI</span><h2>Accessi rapidi</h2><p>Le funzioni principali, subito.</p></div><span class="rc35-badge">RC36</span></div>
 <div class="rc351-grid">
 <button class="rc351-tool featured" data-jump="lamoneDrawer" type="button"><i>🌊</i><b>Lamone</b></button>
 <a class="rc351-tool" href="https://radar.protezionecivile.it/" rel="noopener" target="_blank"><i>🇮🇹</i><b>Radar IT</b></a>
@@ -342,9 +349,9 @@
 <details class="rc351-details"><summary><b>＋ Altri strumenti</b><small>sensori e controlli</small></summary><div class="rc351-secondary"><a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📡 <span><b>Sensori Lamone</b><small>livelli del percorso</small></span></a><a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 <span><b>Idrometri ER</b><small>livelli ufficiali</small></span></a><button data-jump="lamoneDrawer" type="button">🏔️ <span><b>Pioggia a monte</b><small>osservata + prevista</small></span></button></div></details>
 <details class="rc351-details social"><summary><b>📡 Dirette &amp; Social</b><small>eventi ed emergenze</small></summary><div class="rc351-social" id="socialLinks"><a href="https://www.facebook.com/share/19cuHxs4cR/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 1</b><small>fonte salvata</small></span></a><a href="https://www.facebook.com/share/1FPyTnFzsx/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 2</b><small>fonte salvata</small></span></a><a href="https://www.facebook.com/share/14u3HXdyyxm/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 3</b><small>fonte salvata</small></span></a><a href="https://www.instagram.com/giuliobetti18?stkn=MTJma255ZmdlY2l3Yg==" target="_blank" rel="noopener">◎ <span><b>Giulio Betti</b><small>Instagram</small></span></a></div><button class="rc35-add" id="addSocialLink" type="button">＋ Aggiungi link</button><div class="rc35-add-form hidden" id="socialAddForm"><input id="socialName" maxlength="40" placeholder="Nome fonte" type="text"><input id="socialUrl" placeholder="https://…" type="url"><div><button id="saveSocialLink" type="button">Salva</button><button class="secondary" id="cancelSocialLink" type="button">Annulla</button></div><small>I link aggiunti restano salvati su questo dispositivo.</small></div></details>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35.2 · Finale Restyling</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC36 · Test sul Campo</footer>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=rc35-3"></script>
+<script src="app.js?v=rc36"></script>
 </body>
 </html>
