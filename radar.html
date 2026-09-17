@@ -46,7 +46,7 @@
 
     <nav class="mode-switch live-nav mission-status-nav" aria-label="Vai rapidamente ai monitor">
       <button id="radarModeBtn" class="active" type="button"><span class="nav-icon radar-icon"><em>01</em>◉</span><span><b>RADAR</b><small>LIVE</small></span><i class="state-dot green"></i></button>
-      <button id="forecastModeBtn" type="button"><span class="nav-icon forecast-icon"><em>02</em>▶</span><span><b>EVOLUZIONE</b><small>+3 ORE</small></span><i class="state-dot yellow"></i></button>
+      <button id="forecastModeBtn" data-direct-evolution="true" type="button"><span class="nav-icon forecast-icon"><em>02</em>▶</span><span><b>EVOLUZIONE</b><small>+3 ORE</small></span><i class="state-dot yellow"></i></button>
       <button id="lightningModeBtn" type="button"><span class="nav-icon lightning-icon"><em>03</em>ϟ</span><span><b>FULMINI</b><small>LIVE</small></span><i class="state-dot purple"></i></button>
     </nav>
     <div class="runtime-hidden" aria-hidden="true">
@@ -228,6 +228,6 @@
     <footer><span>Radar: RainViewer · Evoluzione: Meteo & Radar · Fulmini: Blitzortung.org · Cartografia: OpenStreetMap</span><span>Prototipo personale non destinato ad allertamento ufficiale</span></footer>
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="radar.js?v=final-1-1"></script>
+  <script src="radar.js?v=final-1-1-fix1"></script>
 </body>
 </html>
