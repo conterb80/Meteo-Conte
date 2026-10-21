@@ -342,7 +342,7 @@
   function refreshOfficialForecast(){
     if(!forecastFrame)return;
     forecastStatus && (forecastStatus.textContent='Aggiornamento nowcasting ARPAE in corso…');
-    forecastFrame.src = `${FORECAST_URL}?refresh=${Date.now()}`;
+    window.open('https://www.meteoeradar.it/radar-meteo?center=44.42,11.98&zoom=7&layer=wr','_blank','noopener,noreferrer');
     els.forecastUpdated.textContent = nowTime();
     setTimeout(()=>{ if(forecastStatus) forecastStatus.textContent='ARPAE: osservato + previsione a +1h, +2h e +3h.'; },1200);
   }
@@ -365,7 +365,7 @@
     document.body.dataset.operationalMode=mode;
     if(isLightning&&!lightningFrame.src)loadLightning(currentLightningView);
     if(isForecast){
-      if(!forecastFrame.src) forecastFrame.src=FORECAST_URL;
+      /* Il link esterno è disponibile nel pannello. */
       els.forecastUpdated.textContent=nowTime();
     }
     if(isRadar)setTimeout(()=>map.invalidateSize(),120);
@@ -509,25 +509,4 @@
   updateMissionClock();
   window.setInterval(updateMissionClock,30000);
 
-})();
-
-/* RC36: Evoluzione è volutamente un collegamento esterno a Meteo & Radar.
-   Nessun iframe radar futuro viene caricato dentro la PWA. */
-
-/* Meteo Conte 1.1 Finale · Fix 1
-   Il vero pulsante Evoluzione è #forecastModeBtn.
-   Apertura immediata del servizio originale, senza pannello intermedio. */
-(()=>{
- const btn=document.getElementById('forecastModeBtn');
- if(!btn) return;
- btn.addEventListener('click',ev=>{
-   ev.preventDefault();
-   ev.stopPropagation();
-   ev.stopImmediatePropagation();
-   window.open(
-     'https://www.meteoeradar.it/radar-meteo?center=44.45,12.02&zoom=7&layer=wr',
-     '_blank',
-     'noopener,noreferrer'
-   );
- },true);
 })();

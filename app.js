@@ -304,7 +304,7 @@ function updateBriefWeather(c,h){
 async function load(){
  const alertPromise=loadOfficialAlert();
  try{
-  if('serviceWorker' in navigator){ try{ await navigator.serviceWorker.register('./sw.js?v=rc35-3'); }catch(_e){} }
+  if('serviceWorker' in navigator){ try{ await navigator.serviceWorker.register('./sw.js?v=rc35-4'); }catch(_e){} }
   const url='https://api.open-meteo.com/v1/forecast?latitude=44.418&longitude=11.977&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,showers,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&daily=sunrise,sunset&timezone=Europe%2FRome&forecast_days=2';
   const res=await fetch(url,{cache:'no-store'}); if(!res.ok) throw new Error('api');
   const data=await res.json(); lastData=data; const c=data.current, h=data.hourly; setTimeout(renderConteAlertCenter,0);
@@ -316,7 +316,7 @@ async function load(){
   const briefing=buildHomeBriefing(c,h,idx);
   $('statusTitle').textContent=lv[0];
   $('statusText').textContent=briefing.main;
-  setBig(briefing.color); setDot($('dotMeteo'),briefing.color); setDot($('dotTemporali'),idx>=40?'yellow':'green'); setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green';
+  setBig(briefing.color); setDot($('dotMeteo'),briefing.color); setDot($('dotTemporali'),idx>=40?'yellow':'green'); /* Il Lamone ha una valutazione indipendente: non forzare il verde. */
   $('indiceVal').textContent=idx; $('indiceLabel').textContent=lv[1];
   $('decisionTitle').textContent=idx<25?'Situazione gestibile':idx<50?'Da tenere d’occhio':'Controlla subito';
   $('decisionText').textContent=briefing.detail;
@@ -328,7 +328,7 @@ async function load(){
     autoBox.className='analysis-auto '+briefing.color+(idx<25?' compact':' expanded');
   }
   renderNextSignal(h); updateBriefWeather(c,h); renderRisk(h,idx); renderHours(h); renderAstro(data,briefing,idx); await alertPromise; updateControlBox(data); updateAnalysisSnapshot(data); $('updated').textContent=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
- }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; const ns=$('nextSignal'); if(ns) ns.innerHTML='<span>PROSSIMO SEGNALE</span><b>⚠️ Previsione oraria non disponibile.</b>'; setDot($('dotLamone'),'green'); $('lamoneCorner').className='cornerdot green'; const cc=$('controlCorner'); if(cc) cc.className='cornerdot yellow'; const ct=$('controlTitle'); if(ct) ct.textContent='Dati da aggiornare'; const cp=$('controlText'); if(cp) cp.textContent='Dati meteo non disponibili: usa i link ufficiali del Centro Controllo Meteo.'; }
+ }catch(e){ $('statusTitle').textContent='Dati non disponibili'; $('statusText').textContent='Controlla connessione o riprova.'; setBig('yellow'); $('decisionTitle').textContent='Valuto...'; $('decisionText').textContent='Sintesi in arrivo.'; const ns=$('nextSignal'); if(ns) ns.innerHTML='<span>PROSSIMO SEGNALE</span><b>⚠️ Previsione oraria non disponibile.</b>'; setDot($('dotLamone'),'yellow'); $('lamoneCorner').className='cornerdot yellow'; const cc=$('controlCorner'); if(cc) cc.className='cornerdot yellow'; const ct=$('controlTitle'); if(ct) ct.textContent='Dati da aggiornare'; const cp=$('controlText'); if(cp) cp.textContent='Dati meteo non disponibili: usa i link ufficiali del Centro Controllo Meteo.'; }
 }
 function renderRisk(h,base){
  const target=$('riskTimeline'); if(!target) return;
@@ -622,7 +622,7 @@ function openWeatherAnalysis(){
   if(a.precipNow>=0.1||a.showerNow||a.stormNow) nowText=`Fenomeno locale in corso · ${a.precipNow.toFixed(1)} mm`;
   else if(a.gustNow>=35) nowText=`Raffiche locali ${Math.round(a.gustNow)} km/h`;
   if(a.severity>=2){
-    plus1Text=a.stormNow?'Temporale rilevato adesso':a.stormSoon?`Temporali possibili · ${prob1}%`:`Segui intensità e traiettoria · ${prob1}%`;
+    plus1Text=a.stormNow?'Segnali di temporale nei dati meteo':a.stormSoon?`Temporali possibili · ${prob1}%`:`Segui intensità e traiettoria · ${prob1}%`;
     nextText=`Probabilità fino al ${maxProb}% · raffiche max ${Math.round(a.gustMax)} km/h`;
     actionText=a.stormNow||a.stormSoon?'Evoluzione → Radar → Fulmini → PRETEMP':'Evoluzione → Radar → PRETEMP';
   }else if(a.severity===1){plus1Text=`Possibilità ${prob1}%`;nextText=`Raffiche max ${Math.round(a.gustMax)} km/h`;actionText='Ricontrolla tra 15 minuti';}
@@ -1035,7 +1035,6 @@ document.querySelectorAll('[data-pretemp-direct="1"],a[href*="pretemp"]').forEac
 /* === RC35.2 · finale restyling: approfondimento prossime ore === */
 function hourlyWeatherLabel(code){return (WMO[code]||['Meteo','🌤️'])[0]}
 function renderHourlyDetail(selected=0){
- setTimeout(()=>renderHourlyGraph(hourlyGraphHorizon),0);
  const page=$('hourlyDetailPage'); if(!page||!lastData?.hourly)return;
  const h=lastData.hourly,start=nextStart(h.time),count=Math.min(13,h.time.length-start);
  const rows=Array.from({length:count},(_,i)=>start+i);
@@ -1068,14 +1067,23 @@ function conteAlertCandidate(){
  }
  if(!lastData?.hourly) return null;
  const s=buildNextSignal(lastData.hourly), a=assessOperationalEvent(lastData.current,lastData.hourly);
- if(a.severity>=2 || s.kind==='storm') return {level:a.severity>=3?'event':'watch',icon:a.severity>=3?'🔴':'⛈️',kind:a.severity>=3?'EVENTO DA CONTROLLARE':'AVVISO CONTE',title:a.stormNow?'Temporale rilevato':s.kind==='storm'?'Possibili temporali nelle prossime ore':a.title,text:s.text||`Pioggia ${a.rainSum.toFixed(1)} mm · raffiche ${Math.round(a.gustMax)} km/h`,action:'radar',key:'local-'+s.kind+'-'+s.text};
+ if(a.severity>=2 || s.kind==='storm') return {level:a.severity>=3?'event':'watch',icon:a.severity>=3?'🔴':'⛈️',kind:a.severity>=3?'EVENTO DA CONTROLLARE':'AVVISO CONTE',title:a.stormNow?'Possibile temporale secondo i dati meteo':s.kind==='storm'?'Possibili temporali nelle prossime ore':a.title,text:s.text||`Pioggia ${a.rainSum.toFixed(1)} mm · raffiche ${Math.round(a.gustMax)} km/h`,action:'radar',key:'local-'+s.kind+'-'+s.text};
  if(s.kind==='rain' || s.kind==='wind' || a.severity===1) return {level:'watch',icon:s.kind==='wind'?'💨':'🌧️',kind:'AVVISO CONTE',title:s.kind==='wind'?'Vento da monitorare':'Precipitazioni da monitorare',text:s.text,action:'radar',key:'local-'+s.kind+'-'+s.text};
  return null;
 }
-function notifyConte(c){
- if(!c || !('Notification' in window) || Notification.permission!=='granted') return;
- const seen=localStorage.getItem(CONTE_ALERT_SEEN); if(seen===c.key)return;
- try{new Notification(`Meteo Conte · ${c.kind}`,{body:c.title+' — '+c.text,icon:'icon.png',tag:'meteo-conte-avviso',renotify:true});localStorage.setItem(CONTE_ALERT_SEEN,c.key)}catch(_e){}
+async function showConteNotification(title,body,tag){
+ if(!('Notification' in window)||Notification.permission!=='granted')return false;
+ try{
+  const reg=await navigator.serviceWorker?.ready;
+  if(!reg || !reg.showNotification)return false;
+  await reg.showNotification(title,{body,icon:'./icon.png',badge:'./icon.png',tag});
+  return true;
+ }catch(err){console.warn('Notifica non disponibile',err);return false;}
+}
+async function notifyConte(c){
+ if(!c||!('Notification' in window)||Notification.permission!=='granted')return;
+ if(localStorage.getItem(CONTE_ALERT_SEEN)===c.key)return;
+ if(await showConteNotification(`Meteo Conte · ${c.kind}`,c.title+' — '+c.text,'meteo-conte-avviso'))localStorage.setItem(CONTE_ALERT_SEEN,c.key);
 }
 function renderConteAlertCenter(){
  const bar=$('conteAlertBar'); if(!bar)return;
@@ -1087,29 +1095,11 @@ function renderConteAlertCenter(){
  const nb=$('conteNotifyBtn'); if(nb){nb.style.display=permission==='granted'?'none':'';nb.textContent=permission==='denied'?'🔕 BLOCCATE':'🔔 ATTIVA';nb.disabled=permission==='denied'||permission==='unsupported'}
  notifyConte(c);
 }
-$('conteNotifyBtn')?.addEventListener('click',async()=>{if(!('Notification' in window))return;try{const p=await Notification.requestPermission();renderConteAlertCenter();if(p==='granted')new Notification('Meteo Conte',{body:'Avvisi attivati su questo dispositivo.',icon:'icon.png',tag:'meteo-conte-test'})}catch(_e){}});
+$('conteNotifyBtn')?.addEventListener('click',async()=>{if(!('Notification' in window))return;try{const p=await Notification.requestPermission();renderConteAlertCenter();if(p==='granted')await showConteNotification('Meteo Conte','Avvisi attivati su questo dispositivo.','meteo-conte-test')}catch(_e){}});
 $('conteAlertOpen')?.addEventListener('click',()=>{const a=$('conteAlertOpen')?.dataset.action;if(a==='official')window.open(OFFICIAL_ALERT_PAGE,'_blank','noopener');else window.location.href='radar.html';});
 $('conteAlertDismiss')?.addEventListener('click',()=>{$('conteAlertBar')?.classList.add('hidden')});
 setTimeout(renderConteAlertCenter,2200);
 
-
-/* === RC36 · grafico 24/48h usando esclusivamente lastData.hourly === */
-let hourlyGraphHorizon=24;
-function renderHourlyGraph(hours=hourlyGraphHorizon){
- if(!lastData?.hourly)return;
- hourlyGraphHorizon=hours;
- const h=lastData.hourly,start=nextStart(h.time),count=Math.min(hours,h.time.length-start);
- const ids=Array.from({length:count},(_,i)=>start+i),box=$('hourlyGraph'); if(!box||!ids.length)return;
- const temps=ids.map(i=>Number(h.temperature_2m[i]||0)),rains=ids.map(i=>Number(h.precipitation[i]||0)),gusts=ids.map(i=>Number(h.wind_gusts_10m[i]||0));
- const minT=Math.floor(Math.min(...temps)),maxT=Math.ceil(Math.max(...temps)),maxR=Math.max(1,...rains),maxG=Math.max(20,...gusts);
- const W=680,H=230,L=34,R=12,T=22,B=40,iw=W-L-R,ih=H-T-B,x=i=>L+(ids.length<=1?0:i*iw/(ids.length-1));
- const yT=v=>T+ih-(v-minT)/(Math.max(2,maxT-minT))*ih*.68-ih*.14,yG=v=>T+ih-(v/maxG)*ih*.36;
- const tp=temps.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+yT(v).toFixed(1)).join(' ');
- const gp=gusts.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+yG(v).toFixed(1)).join(' ');
- let bars='',labels='',vals=''; const ls=hours>24?6:3,vs=hours>24?8:4;
- rains.forEach((v,i)=>{if(v<=0)return;const bw=Math.max(4,iw/ids.length*.68),bh=Math.max(3,(v/maxR)*ih*.34);bars+=`<rect x="${(x(i)-bw/2).toFixed(1)}" y="${(T+ih-bh).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="2" fill="#48b5d7" opacity=".82"/>`;});
- ids.forEach((k,i)=>{const d=new Date(h.time[k]);if(i%ls===0)labels+=`<text x="${x(i)}" y="${H-12}" fill="#91aab4" font-size="10" text-anchor="middle">${d.toLocaleTimeString('it-IT',{hour:'2-digit'})}</text>`;if(i%vs===0)vals+=`<circle cx="${x(i)}" cy="${yT(temps[i])}" r="2.7" fill="#f3c95d"/><text x="${x(i)}" y="${yT(temps[i])-7}" fill="#f3c95d" font-size="9" text-anchor="middle">${Math.round(temps[i])}°</text>`;});
- box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img"><line x1="${L}" y1="${T+ih}" x2="${W-R}" y2="${T+ih}" stroke="#ffffff22"/><line x1="${L}" y1="${T+ih*.5}" x2="${W-R}" y2="${T+ih*.5}" stroke="#ffffff12"/>${bars}<path d="${gp}" fill="none" stroke="#b8c6cc" stroke-width="2.2" stroke-dasharray="5 5" opacity=".72"/><path d="${tp}" fill="none" stroke="#f3c95d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${vals}<text x="4" y="${T+6}" fill="#f3c95d" font-size="9">${maxT}°</text><text x="4" y="${T+ih}" fill="#91aab4" font-size="9">${minT}°</text><text x="${W-R}" y="${T+ih-7}" fill="#b8c6cc" font-size="9" text-anchor="end">raffica max ${Math.round(maxG)} km/h</text>${labels}</svg>`;
- document.querySelectorAll('[data-hourly-horizon]').forEach(b=>b.classList.toggle('active',Number(b.dataset.hourlyHorizon)===hours));
-}
-document.querySelectorAll('[data-hourly-horizon]').forEach(b=>b.addEventListener('click',()=>renderHourlyGraph(Number(b.dataset.hourlyHorizon))));
+/* RC35.4: aggiorna i dati solo quando la pagina è visibile; evita richieste in background. */
+setInterval(()=>{if(document.visibilityState==='visible')load();},10*60*1000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load();});

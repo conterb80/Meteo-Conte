@@ -1,0 +1,1 @@
+RC35.4 manutenzione: notifiche service worker, terminologia meteo prudente, Lamone senza verde forzato, refresh Home visibile, Evoluzione Meteo & Radar esterno, manifest/cache/reset allineati. Nessun push a app chiusa.

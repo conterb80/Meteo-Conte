@@ -11,10 +11,10 @@
 <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
-<title>Meteo Conte 1.1</title>
+<title>Meteo Conte 1.1 · RC35.4 Avvisi + Lamone</title>
 <link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
-<link href="style.css?v=final-1-1" rel="stylesheet"/>
+<link href="style.css?v=rc35-4" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 </head>
 <body>
@@ -107,13 +107,6 @@
  <div class="hourly-detail-shell">
   <header class="hourly-detail-head"><div><span class="label">BORGO VIAZZA · APPROFONDIMENTO</span><h2>🌤️ Previsioni prossime ore</h2><p>Temperatura, pioggia, vento e raffiche ora per ora.</p></div><button id="closeHourlyDetail" type="button" aria-label="Chiudi">×</button></header>
   <div class="hourly-detail-summary" id="hourlyDetailSummary"></div>
-  <section class="hourly-graph-card" aria-label="Andamento previsto">
-    <div class="hourly-graph-head"><div><small>ANDAMENTO COMPLETO</small><b>Temperatura · pioggia · raffiche</b></div>
-      <div class="hourly-horizon"><button class="active" data-hourly-horizon="24" type="button">24H</button><button data-hourly-horizon="48" type="button">48H</button></div>
-    </div>
-    <div id="hourlyGraph" class="hourly-graph"></div>
-    <div class="hourly-graph-legend"><span>🌡️ temperatura</span><span>🌧️ precipitazioni</span><span>💨 raffiche</span></div>
-  </section>
   <div class="hourly-detail-strip" id="hourlyDetailStrip"></div>
   <div class="hourly-selected" id="hourlySelected"></div>
   <div class="hourly-conte" id="hourlyConte"></div>
@@ -154,24 +147,9 @@
 <div class="control-console-label"><span>MONITOR OPERATIVI</span><small>TUTTO SOTTO CONTROLLO</small></div>
 <section aria-label="Monitor meteo live" class="control-monitor-grid">
 <article class="control-monitor control-monitor-nowcast rc20-evolution-monitor">
-<div class="control-monitor-head"><span><i>🔮</i><b>EVOLUZIONE / PROIEZIONE</b><small>Movimento osservato + accesso al futuro ufficiale</small></span><a href="https://allertameteo.regione.emilia-romagna.it/nowcasting-evoluzione-degli-echi-radar" rel="noopener" target="_blank">APRI ↗</a></div>
-<div aria-label="Modalità monitor evoluzione" class="evolution-mode-switch" role="tablist">
-<button aria-selected="true" class="active" id="evolutionObservedBtn" role="tab" type="button">MOVIMENTO RADAR</button>
-<button aria-selected="false" id="evolutionOfficialBtn" role="tab" type="button">PROIEZIONE UFFICIALE +1/+2/+3H</button>
-</div>
-<div class="monitor-quick-status" id="evolutionQuickStatus"><span>TRAIETTORIA</span><b>Animazione dell’ultima ora per capire direzione e sviluppo</b></div>
-<div class="evolution-pane active" id="evolutionObservedPane">
-<div class="control-monitor-map evolution-live-map" id="controlRoomNowcast"><div class="monitor-wait">Preparazione movimento radar…</div></div>
-<div class="monitor-timeline"><button aria-label="Pausa o avvia animazione" id="nowcastPlay" type="button">❚❚</button><div class="timeline-rail"><i id="nowcastProgress"></i></div><b id="controlRoomNowcastTime">CARICAMENTO</b></div>
-<div class="control-monitor-foot"><span id="nowcastMode">MOVIMENTO OSSERVATO</span><em>dal passato recente fino ad adesso</em></div>
-</div>
-<div class="evolution-pane" id="evolutionOfficialPane">
-<div class="official-nowcast-wrap">
-<iframe id="officialNowcastFrame" loading="lazy" referrerpolicy="no-referrer" src="about:blank" title="Nowcasting ufficiale disponibile tramite apertura esterna"></iframe>
-<div class="official-nowcast-overlay" id="officialNowcastOverlay"><span>🧭</span><b>Caricamento nowcasting ufficiale</b><small>Previsione degli echi radar a +1, +2 e +3 ore</small></div>
-</div>
-<div class="control-monitor-foot"><span>FONTE ARPAE / ALLERTA METEO ER</span><em>previsione ufficiale della traiettoria</em></div>
-</div>
+<div class="control-monitor-head"><span><i>🌧️</i><b>EVOLUZIONE ANIMATA</b><small>Passato, situazione attuale e previsione nella mappa Meteo &amp; Radar</small></span><a href="https://www.meteoeradar.it/radar-meteo?center=44.42,11.98&zoom=7&layer=wr" target="_blank" rel="noopener noreferrer">APRI ↗</a></div>
+<div style="padding:18px 14px;text-align:center"><div style="font-size:38px;margin-bottom:8px">🌦️</div><strong style="display:block;margin-bottom:8px">Radar Meteo &amp; Radar</strong><p style="margin:0 auto 16px;max-width:400px;color:#c7dbe2;line-height:1.5">Apri la mappa interattiva con timeline e animazione. Il servizio si apre nel browser, senza incorporamenti non autorizzati.</p><a href="https://www.meteoeradar.it/radar-meteo?center=44.42,11.98&zoom=7&layer=wr" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:13px 20px;border-radius:14px;background:#46d5bc;color:#06242a;font-weight:800;text-decoration:none">▶ APRI EVOLUZIONE ANIMATA ↗</a></div>
+<div class="control-monitor-foot"><span>FONTE ESTERNA · METEO &amp; RADAR</span><em>previsione e osservazione fornite dal servizio esterno</em></div>
 </article>
 <article class="control-monitor control-monitor-lightning">
 <div class="control-monitor-head"><span><i>⚡</i><b>FULMINI LIVE</b><small>Scariche in tempo reale sulla Romagna</small></span><a href="https://map.blitzortung.org/index.php?interactive=1#7/44.42/11.98" rel="noopener" target="_blank">APRI ↗</a></div>
@@ -336,7 +314,7 @@
 </div>
 </section>
 <section class="card links operative-center rc351-access" id="operativeLinks">
-<div class="rc35-head"><div><span class="label">5 · STRUMENTI</span><h2>Accessi rapidi</h2><p>Le funzioni principali, subito.</p></div><span class="rc35-badge">1.1</span></div>
+<div class="rc35-head"><div><span class="label">5 · STRUMENTI</span><h2>Accessi rapidi</h2><p>Le funzioni principali, subito.</p></div><span class="rc35-badge">RC35.4</span></div>
 <div class="rc351-grid">
 <button class="rc351-tool featured" data-jump="lamoneDrawer" type="button"><i>🌊</i><b>Lamone</b></button>
 <a class="rc351-tool" href="https://radar.protezionecivile.it/" rel="noopener" target="_blank"><i>🇮🇹</i><b>Radar IT</b></a>
@@ -349,9 +327,9 @@
 <details class="rc351-details"><summary><b>＋ Altri strumenti</b><small>sensori e controlli</small></summary><div class="rc351-secondary"><a href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener">📡 <span><b>Sensori Lamone</b><small>livelli del percorso</small></span></a><a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener">🌊 <span><b>Idrometri ER</b><small>livelli ufficiali</small></span></a><button data-jump="lamoneDrawer" type="button">🏔️ <span><b>Pioggia a monte</b><small>osservata + prevista</small></span></button></div></details>
 <details class="rc351-details social"><summary><b>📡 Dirette &amp; Social</b><small>eventi ed emergenze</small></summary><div class="rc351-social" id="socialLinks"><a href="https://www.facebook.com/share/19cuHxs4cR/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 1</b><small>fonte salvata</small></span></a><a href="https://www.facebook.com/share/1FPyTnFzsx/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 2</b><small>fonte salvata</small></span></a><a href="https://www.facebook.com/share/14u3HXdyyxm/" target="_blank" rel="noopener">ⓕ <span><b>Facebook meteo 3</b><small>fonte salvata</small></span></a><a href="https://www.instagram.com/giuliobetti18?stkn=MTJma255ZmdlY2l3Yg==" target="_blank" rel="noopener">◎ <span><b>Giulio Betti</b><small>Instagram</small></span></a></div><button class="rc35-add" id="addSocialLink" type="button">＋ Aggiungi link</button><div class="rc35-add-form hidden" id="socialAddForm"><input id="socialName" maxlength="40" placeholder="Nome fonte" type="text"><input id="socialUrl" placeholder="https://…" type="url"><div><button id="saveSocialLink" type="button">Salva</button><button class="secondary" id="cancelSocialLink" type="button">Annulla</button></div><small>I link aggiunti restano salvati su questo dispositivo.</small></div></details>
 </section>
-<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC36 · Test sul Campo</footer>
+<footer>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35.4 · Manutenzione</footer>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=final-1-1"></script>
+<script src="app.js?v=rc35-4"></script>
 </body>
 </html>
