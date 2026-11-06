@@ -1,0 +1,55 @@
+name: Test isolato ICON-2I Evoluzione
+on:
+  push:
+    branches: [test-evoluzione-icon2i]
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Verifica accesso e file precipitazioni ICON-2I
+        shell: python
+        run: |
+          import urllib.request, urllib.parse, re, datetime, json, os
+          base="https://meteohub.agenziaitaliameteo.it/nwp/ICON-2I_SURFACE_PRESSURE_LEVELS/"
+          def get(url, maxbytes=300000):
+              req=urllib.request.Request(url,headers={"User-Agent":"MeteoConte-Research/1.0"})
+              with urllib.request.urlopen(req,timeout=25) as r:
+                  return r.read(maxbytes),r.status,r.headers
+          report={"source":base,"checked_utc":datetime.datetime.now(datetime.timezone.utc).isoformat()}
+          try:
+              body,status,headers=get(base)
+              links=re.findall(r'href=["\']([^"\']+)["\']',body.decode("utf-8","replace"))
+              runs=sorted([x.strip("/") for x in links if re.fullmatch(r"20\d{8}/",x)],reverse=True)
+              report["run_count"]=len(runs);report["latest_runs"]=runs[:4]
+              if not runs: raise RuntimeError("Nessuna directory run riconosciuta")
+              run_url=urllib.parse.urljoin(base,runs[0]+"/")
+              data,_,_=get(run_url)
+              names=re.findall(r'href=["\']([^"\']+)["\']',data.decode("utf-8","replace"))
+              report["run_url"]=run_url
+              report["run_entries"]=len(names)
+              report["sample_entries"]=names[:12]
+              precip=[x for x in names if "TOT_PREC" in x.upper() or "PREC" in x.upper()]
+              report["precip_entries"]=precip[:12]
+              if precip:
+                  target=urllib.parse.urljoin(run_url,precip[0])
+                  if target.endswith("/"):
+                      child,_,_=get(target)
+                      children=re.findall(r'href=["\']([^"\']+)["\']',child.decode("utf-8","replace"))
+                      report["precip_child_entries"]=children[:12]
+                      files=[x for x in children if x.endswith((".grib2",".grib",".grb2",".bz2",".gz"))]
+                      if files: target=urllib.parse.urljoin(target,files[0])
+                      else: target=None
+                  if target:
+                      req=urllib.request.Request(target,headers={"Range":"bytes=0-31","User-Agent":"MeteoConte-Research/1.0"})
+                      with urllib.request.urlopen(req,timeout=25) as r:
+                          prefix=r.read(32);report["file_http_status"]=r.status;report["file_magic"]=prefix[:12].hex();report["content_type"]=r.headers.get("Content-Type")
+                      report["sample_file_url"]=target
+              report["result"]="ACCESSO VERIFICATO; conversione GRIB e animazione non ancora testate"
+          except Exception as e:
+              report["result"]="ERRORE";report["error"]=repr(e)
+          print(json.dumps(report,indent=2,ensure_ascii=False))
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as f:
+              f.write("## Test isolato ICON-2I\n\n```json\n"+json.dumps(report,indent=2,ensure_ascii=False)+"\n```\n")
+          if report["result"]=="ERRORE": raise SystemExit(1)
