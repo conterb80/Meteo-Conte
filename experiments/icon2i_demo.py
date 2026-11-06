@@ -11,7 +11,7 @@ def read(url):
  with urllib.request.urlopen(req,timeout=90) as r:return r.read()
 def links(url):
  return re.findall(r'href=["\\\']([^"\\\']+)["\\\']',read(url).decode("utf-8","replace"))
-runs=sorted((s.strip("/") for s in links(ROOT) if re.fullmatch(r"20\\d{8}/",s)),reverse=True)
+runs=sorted((s.strip("/") for s in links(ROOT) if re.fullmatch(r"20\d{8}/",s)),reverse=True)
 if not runs:raise RuntimeError("Nessun run ICON-2I disponibile")
 run=runs[0];folder=ROOT+run+"/TOT_PREC/"
 names=[x for x in links(folder) if x.endswith((".grib",".grib2",".grb"))]
