@@ -1,28 +1,28 @@
-# Meteo Conte 1.1 · RC35.4
+# Meteo Conte 1.1 · Home RC35.4 / Sala Controllo RC35.5
 
-Applicazione meteo personale per Borgo Viazza, con Home, previsioni, Sala Controllo, radar, fulmini, avvisi e monitoraggio Lamone.
+App meteo personale per Borgo Viazza (Ravenna): Home, previsioni, Radar Live, Evoluzione, Fulmini, avvisi e Lamone.
 
-## Versione pubblicata
-**RC35.4 · Manutenzione ed Evoluzione**
+## Versioni
+- **Home e motore meteo:** RC35.4, invariati.
+- **Sala Controllo:** RC35.5, revisione organizzativa e grafica mobile-first.
+- **Radar e analisi:** algoritmi esistenti mantenuti; questa release non introduce nuove fonti o nuove funzioni.
 
-- Evoluzione: collegamento esterno al radar animato di Meteo & Radar (senza incorporamento non autorizzato).
-- Notifiche: utilizzo del service worker quando supportato; nessuna promessa di push con app completamente chiusa.
-- Linguaggio meteo più prudente: distinzione fra previsioni e fenomeni osservati.
-- Lamone: eliminato il verde forzato in assenza di dati.
-- Aggiornamento periodico dei dati della Home mentre l'app è visibile.
-- Versioni principali, cache e reset allineati a RC35.4.
+## Sala Controllo RC35.5
+- Riepilogo sintetico prima della mappa, con meno duplicazioni.
+- Mappa radar in posizione prioritaria.
+- Play, selezione fotogrammi e timeline subito dopo la mappa.
+- Analisi automatica, storico eventi e tracking manuale in sezioni di approfondimento.
+- Intervallo, velocità, trasparenza e aggiornamento nelle impostazioni radar.
+- Evoluzione apre Meteo & Radar esternamente; Fulmini resta disponibile.
 
 ## File attivi
-- `index.html`, `style.css`, `app.js`
-- `radar.html`, `radar.css`, `radar.js`
-- `manifest.json`, `sw.js`, `reset.html`
-- icone dell'app
+- Home: `index.html`, `style.css`, `app.js`.
+- Sala Controllo: `radar.html`, `radar.css`, `radar.js`.
+- PWA: `manifest.json`, `sw.js`, `reset.html`.
 
-## Installazione e verifica
-Aprire https://conterb80.github.io/Meteo-Conte/ e verificare la versione visualizzata.
-Se necessario, utilizzare `reset.html` per cancellare le vecchie cache e riaprire l'app.
+## Verifica
+Aprire https://conterb80.github.io/Meteo-Conte/radar.html e verificare la scritta RC35.5.
+Se si vede ancora RC35.4, chiudere e riaprire la PWA; evitare reset inutili.
 
-## Note
-Le notifiche a PWA completamente chiusa richiedono un servizio push/server.
-Gli avvisi Conte non sostituiscono le allerte ufficiali della Protezione Civile.
-Questo README descrive la versione RC35.4: eventuali file storici sono materiale di sviluppo e non documentazione corrente.
+## Limiti
+Le stime di nuclei e ETA sono sperimentali, non sostituiscono osservazioni o allerte ufficiali. Le notifiche con app chiusa richiedono infrastruttura push.
