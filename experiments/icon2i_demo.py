@@ -51,7 +51,7 @@ with path.open("rb") as f:
     x=int((lons[j]-lonmin)/(lonmax-lonmin)*(w-1))
     y=int((latmax-lats[j])/(latmax-latmin)*(h-1))
     color=(52,180,245,135) if v<1 else (44,218,116,175) if v<5 else (246,206,51,190) if v<15 else (236,80,73,210)
-    px.ellipse((x-2,y-2,x+2,y+2),fill=color)
+    px.ellipse((x-6,y-6,x+6,y+6),fill=color)
    filename=f"frame-{len(frames):03}.png";image.save(OUT/filename,optimize=True)
    frames.append(filename);metadata.append({"step":str(step),"validityDate":str(key("validityDate","")),"validityTime":str(key("validityTime","")),"points":int(mask.sum()),"max":round(float(np.nanmax(vals[mask])),2)})
    print("frame",len(frames),metadata[-1],flush=True)
@@ -60,9 +60,43 @@ with path.open("rb") as f:
 path.unlink()
 if len(frames)<2:raise RuntimeError(f"Fotogrammi insufficienti: {len(frames)}")
 (OUT/"data.json").write_text(json.dumps({"run":run,"source":url,"frames":frames,"metadata":metadata},indent=2),encoding="utf8")
-html="""<!doctype html><html lang="it"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prova Evoluzione ICON-2I</title>
-<style>body{margin:0;background:#0d1828;color:#edf5ff;font:16px system-ui}main{max-width:960px;margin:auto;padding:16px}h1{font-size:23px}.map{position:relative;aspect-ratio:900/650;overflow:hidden;background:linear-gradient(135deg,#183449,#153044);border-radius:14px;border:1px solid #41627c}.map img{position:absolute;inset:0;width:100%;height:100%}.label{position:absolute;color:white;text-shadow:0 1px 4px black;font-weight:bold;font-size:13px}.controls{display:flex;gap:10px;align-items:center;margin:16px 0}button{background:#2382bc;color:white;border:0;border-radius:8px;padding:12px 20px}input{flex:1}small{color:#b5c7d9}p{line-height:1.5}</style>
-<main><h1>Prova tecnica · Evoluzione ICON-2I</h1><p>Precipitazioni previste dal modello, non radar osservato. Visualizzazione sperimentale: la griglia è georeferenziata, lo sfondo non è una cartografia stradale.</p><div class="map"><img id="layer" alt="Precipitazioni previste"><span class="label" style="left:42%;top:43%">Ravenna</span><span class="label" style="left:21%;top:62%">Bologna</span><span class="label" style="left:54%;top:72%">Rimini</span></div><div class="controls"><button id="play">▶ Play</button><input type="range" id="seek" min="0" value="0"><strong id="time"></strong></div><p id="info"></p><small>Fonte: Agenzia ItaliaMeteo · ICON-2I · TOT_PREC. Dimostrazione isolata, non integrata in Meteo Conte.</small></main>
-<script>fetch('data.json').then(r=>r.json()).then(d=>{let i=0,t=null;const im=document.querySelector('#layer'),s=document.querySelector('#seek'),b=document.querySelector('#play');s.max=d.frames.length-1;function show(){im.src=d.frames[i];s.value=i;document.querySelector('#time').textContent='+'+d.metadata[i].step+' h';document.querySelector('#info').textContent='Run '+d.run+' · Fotogramma '+(i+1)+'/'+d.frames.length+' · '+d.metadata[i].validityDate+' '+d.metadata[i].validityTime;}s.oninput=()=>{i=+s.value;show()};b.onclick=()=>{if(t){clearInterval(t);t=null;b.textContent='▶ Play'}else{t=setInterval(()=>{i=(i+1)%d.frames.length;show()},950);b.textContent='⏸ Pausa'}};show()}).catch(e=>document.querySelector('#info').textContent='Errore: '+e);</script></html>"""
+html="""<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meteo Conte · ICON-2I · Demo cartografica</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>body{margin:0;background:#0d1828;color:#edf5ff;font:16px system-ui}main{max-width:960px;margin:auto;padding:14px}h1{font-size:22px;margin:8px 0}p{line-height:1.45;color:#c1d4e4}.map{height:min(68vh,600px);min-height:350px;border-radius:14px;border:1px solid #41627c;overflow:hidden;background:#203d4a}.controls{display:flex;gap:10px;align-items:center;margin:16px 0}button{background:#2382bc;color:white;border:0;border-radius:8px;padding:12px 16px;font-size:16px}input{flex:1;min-width:40px}small{color:#b5c7d9}.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:#dceaf6}.swatch{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px}.leaflet-container{background:#183449}</style></head>
+<body><main><h1>🌧️ Meteo Conte · Evoluzione ICON-2I</h1><p>Precipitazioni previste sulla cartografia. <b>Non è un radar in tempo reale.</b> Demo sperimentale, separata dall'app.</p>
+<div id="map" class="map" aria-label="Mappa delle precipitazioni previste"></div>
+<div class="controls"><button id="play" type="button">▶ Play</button><input aria-label="Timeline previsione" type="range" id="seek" min="0" value="0"><strong id="time"></strong></div>
+<div class="legend"><span><i class="swatch" style="background:#34b4f5"></i>Debole</span><span><i class="swatch" style="background:#2cda74"></i>Moderata</span><span><i class="swatch" style="background:#f6ce33"></i>Forte</span><span><i class="swatch" style="background:#ec5049"></i>Molto forte</span></div>
+<p id="info">Caricamento dati...</p><small>Fonte: Agenzia ItaliaMeteo, modello ICON-2I, TOT_PREC (precipitazione cumulata). I colori rappresentano quantitativi cumulati, non intensità oraria. Sovrapposizione cartografica sperimentale da verificare. Base © OpenStreetMap contributors.</small></main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const info=document.querySelector('#info');
+if(typeof L==='undefined'){info.textContent='Cartografia non caricata: controlla la connessione Internet.'}
+else {
+const map=L.map('map',{zoomControl:true}).setView([44.42,11.98],8);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map);
+const bounds=[[43.55,10.75],[45.35,13.35]];
+let overlay=null,idx=0,timer=null;
+const slider=document.querySelector('#seek'),button=document.querySelector('#play'),time=document.querySelector('#time');
+fetch('data.json').then(r=>{if(!r.ok)throw Error('Dati non disponibili');return r.json()}).then(d=>{
+slider.max=d.frames.length-1;
+d.frames.forEach(f=>{const im=new Image();im.src=f});
+function show(){
+ const m=d.metadata[idx],src=d.frames[idx];
+ if(overlay)map.removeLayer(overlay);
+ overlay=L.imageOverlay(src,bounds,{opacity:.78,interactive:false}).addTo(map);
+ slider.value=idx;
+ const date=String(m.validityDate),clock=String(m.validityTime).padStart(4,'0');
+ const utc=new Date(Date.UTC(+date.slice(0,4),+date.slice(4,6)-1,+date.slice(6,8),+clock.slice(0,2),+clock.slice(2,4)));
+ const italian=new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(utc);
+ time.textContent=italian;
+ info.textContent='Previsione '+(idx+1)+' di '+d.frames.length+' · +'+m.step+' ore · run '+d.run+' · valori cumulati, non pioggia oraria';
+}
+slider.oninput=()=>{idx=+slider.value;show()};
+button.onclick=()=>{if(timer){clearInterval(timer);timer=null;button.textContent='▶ Play'}else{timer=setInterval(()=>{idx=(idx+1)%d.frames.length;show()},1100);button.textContent='⏸ Pausa'}};
+show();
+}).catch(e=>info.textContent='Errore caricamento: '+e.message);
+}
+</script></body></html>"""
 (OUT/"index.html").write_text(html,encoding="utf8")
 print("SUCCESS: demo-icon2i/index.html with",len(frames),"frames",flush=True)
