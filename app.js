@@ -700,7 +700,7 @@ async function fetchBasinRain(key, lat, lon){
     if(times[i] <= now) past.push({t:times[i],v:Number(vals[i]||0)});
   }
   function sumHours(n){return past.slice(-n).reduce((a,b)=>a+b.v,0)}
-  const future=[]; for(let i=0;i<times.length;i++){if(times[i]>now) future.push({t:times[i],v:Number(vals[i]||0)});} function futureSum(n){return future.slice(0,n).reduce((a,b)=>a+b.v,0)} const lastHour=past.length?past[past.length-1].t:null; const d={h1:sumHours(1),h3:sumHours(3),h6:sumHours(6),h24:sumHours(24),f1:futureSum(1),f3:futureSum(3),f6:futureSum(6),updated:new Date(),lastHour,stale:!lastHour||now-lastHour>3*3600000};
+  const future=[]; for(let i=0;i<times.length;i++){if(times[i]>now) future.push({t:times[i],v:Number(vals[i]||0)});} function futureSum(n){return future.slice(0,n).reduce((a,b)=>a+b.v,0)} const lastHour=past.length?past[past.length-1].t:null; const d={h1:sumHours(1),h3:sumHours(3),h6:sumHours(6),h12:sumHours(12),h24:sumHours(24),h48:sumHours(48),f12:futureSum(12),f1:futureSum(1),f3:futureSum(3),f6:futureSum(6),updated:new Date(),lastHour,stale:!lastHour||now-lastHour>3*3600000};
   basinRainData[key]=d;
   return d;
 }
@@ -713,6 +713,7 @@ function setBasinCard(key,d){
   const ids=key==='lamone'?['lamObs1','lamObs3','lamObs6','lamFor1','lamFor3','lamFor6']:['marObs1','marObs3','marObs6','marFor1','marFor3','marFor6'];
   [d.h1,d.h3,d.h6,d.f1,d.f3,d.f6].forEach((v,i)=>{const x=$(ids[i]);if(x)x.textContent=v.toFixed(1)+' mm';});
   const f=$(key==='lamone'?'basinLamoneForecast':'basinMarzenoForecast'); if(f) f.textContent=`prevista 1h ${d.f1.toFixed(1)} · 3h ${d.f3.toFixed(1)} · 6h ${d.f6.toFixed(1)} mm`;
+  const total=$(key==='lamone'?'lamoneRainTotals':'marzenoRainTotals');if(total)total.textContent=`12h ${d.h12.toFixed(1)} mm · 24h ${d.h24.toFixed(1)} mm · 48h ${d.h48.toFixed(1)} mm · prossime 12h ${d.f12.toFixed(1)} mm`;
   const stamp=$(key==='lamone'?'lamoneRainStamp':'marzenoRainStamp');if(stamp)stamp.textContent=d.lastHour?`Ultima ora nel modello: ${d.lastHour.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}${d.stale?' · dati da verificare':''}`:'Orario del modello non disponibile';
 }
 function updateLamoneDecision(lam, mar){
