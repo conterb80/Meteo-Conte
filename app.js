@@ -852,6 +852,7 @@ loadLamoneSensors();
   const content=document.getElementById('lamoneCard');
   if(!openBtn||!content) return;
   const openDrawer=()=>{
+    const v2=document.getElementById('lamoneV2Embed');if(v2&&!v2.src&&v2.dataset.src)v2.src=v2.dataset.src;
     content.classList.remove('hidden');
     drawer?.classList.add('lamone-drawer-active');
     openBtn.setAttribute('aria-expanded','true');
