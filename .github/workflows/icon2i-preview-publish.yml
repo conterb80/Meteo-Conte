@@ -5,6 +5,8 @@ on:
     paths:
       - 'experiments/icon2i_demo.py'
       - '.github/workflows/icon2i-preview-publish.yml'
+  schedule:
+    - cron: '25 4,10,16,22 * * *'
   workflow_dispatch:
 permissions:
   contents: write
@@ -27,6 +29,14 @@ jobs:
           p=pathlib.Path('demo-icon2i')
           d=json.loads((p/'data.json').read_text())
           assert len(d['frames']) >= 2
+          assert all(m.get('unit') == 'mm/1h' for m in d['metadata'])
+          assert all(float(m['max']) >= 0 for m in d['metadata'])
+          assert all(float(d['metadata'][i]['step']) > float(d['metadata'][i-1]['step']) for i in range(1,len(d['metadata'])))
+          from datetime import datetime, timezone
+          run = datetime.strptime(d['run'], '%Y%m%d%H').replace(tzinfo=timezone.utc)
+          age_hours = (datetime.now(timezone.utc)-run).total_seconds()/3600
+          assert -2 <= age_hours <= 24, f'ICON-2I run too old: {age_hours:.1f}h'
+          print('Verified ICON-2I hourly frame metadata and freshness', age_hours)
           assert all((p/name).is_file() for name in d['frames'])
           h=(p/'index.html').read_text()
           assert all(x in h for x in ('id="play"', 'id="seek"', 'data.json'))
