@@ -1,0 +1,13 @@
+name: Lamone V2 · verifica idrometri
+on:
+  push:
+    branches: [lamone-v2-prototipo]
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe official hydrometric API without modifying PWA
+        run: python experiments/lamone-v2/probe_idrometri.py
