@@ -3,7 +3,7 @@
 <title>Meteo Conte · Lamone V2 · laboratorio</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#071b27;color:#eaf5f8}*{box-sizing:border-box}body{margin:0}main{max-width:760px;margin:auto;padding:18px 14px 44px}.eyebrow{color:#9ec7d4;font-size:11px;letter-spacing:.18em;font-weight:750}h1{font-size:32px;letter-spacing:-.04em;margin:8px 0 4px}h2{font-size:18px;margin:0 0 12px}p{line-height:1.5}small,.muted{color:#a9c1cb}.sub{font-size:13px;margin:0 0 18px}.card{border:1px solid #315260;border-radius:20px;background:#0d2b38;padding:18px;margin:13px 0;box-shadow:0 8px 28px #0002}.status{background:#143643}.status strong{font-size:19px}.tag{display:inline-block;padding:5px 9px;border-radius:30px;background:#254e5b;color:#cbe6ed;font-size:11px;margin:0 0 12px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rain{padding:14px;border:1px solid #345a66;border-radius:15px;background:#153845}.rain .place{font-size:13px;color:#b7d4df}.rain .big{font-size:27px;font-weight:750;letter-spacing:-.04em;margin:6px 0}.rain .next{color:#95dce6;font-size:13px}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.line{border-top:1px solid #2d4d5b;padding:11px 0}.line:first-child{border:0}.pill{font-size:12px;padding:5px 9px;border:1px solid #3a6673;border-radius:999px;color:#b9d2db;white-space:nowrap}a{color:#9bdfef}.button{display:block;text-decoration:none;text-align:center;background:#22637c;color:white;border-radius:12px;padding:14px;font-weight:700;margin-top:13px}.note{font-size:12px;color:#abc3ce}.bars{height:75px;display:flex;align-items:end;gap:3px;margin:14px 0 7px}.bars span{flex:1;background:#55b7cf;border-radius:4px 4px 0 0;min-height:2px}.times{display:flex;justify-content:space-between;font-size:11px;color:#b5cbd3}.err{color:#ffd3a0}details{margin-top:12px}summary{cursor:pointer}summary::marker{color:#8dcfe0}button{border:1px solid #547887;background:#174455;color:#fff;border-radius:9px;padding:8px 12px;font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #91d4e4}#checked{font-size:12px;color:#bdd6de}@media(max-width:370px){.cols{grid-template-columns:1fr}.card{padding:14px}}
-</style></head><body><main>
+ .station-details{margin-top:4px}.station-details summary{font-size:12px;color:#9dd8e8;padding:5px 0}.line .note{margin:6px 0 0}.line strong{font-size:15px}.line .row strong:last-child{white-space:nowrap}.card .row h2{line-height:1.2}.card .pill{font-size:11px}@media(max-width:460px){.card>.row{align-items:flex-start;flex-wrap:wrap}.card .row h2{margin-bottom:0}.line .row{flex-wrap:nowrap}} </style></head><body><main>
 <div class="eyebrow">METEO CONTE · ANTEPRIMA PUBBLICA · NON INTEGRATA</div><h1>Lamone</h1><p class="sub">Pioggia nel bacino e risposta del fiume · Prototipo V2</p>
 <section class="card status" aria-live="polite"><div class="tag">SITUAZIONE ATTUALE</div><div class="row"><strong id="headline">Caricamento dati di pioggia…</strong><span aria-hidden="true">🌧️</span></div><p id="explain" class="muted">La risposta del fiume richiede misure idrometriche reali, non ricavabili dalle sole precipitazioni.</p><div id="checked">Fonte: Open-Meteo · stime modellistiche</div></section>
 <section class="card"><div class="row"><h2>Quanto piove a monte?</h2><span class="pill">Stime, non pluviometri</span></div><div class="cols">
@@ -79,13 +79,15 @@ function stationNode(name,live,series){
  if(Number.isFinite(Number(live?.soglia1))&&Number.isFinite(shown)){
   const p=document.createElement('p');p.className='note';p.textContent='Prima soglia ufficiale: '+Number(live.soglia1).toLocaleString('it-IT')+' m'+(shown>=Number(live.soglia1)?' · superata':'');row.append(p);
  }
+ const detail=document.createElement('details');detail.className='station-details';const summary=document.createElement('summary');summary.textContent='Grafico ultime 24 ore';detail.append(summary);
  if(points.length>3){
   const canvas=document.createElement('canvas');canvas.width=620;canvas.height=86;canvas.style.cssText='display:block;width:100%;height:70px;margin-top:8px';canvas.setAttribute('aria-label','Grafico dei livelli osservati per '+name);
   const ctx=canvas.getContext('2d'),recent=points.filter(p=>p.t>=points.at(-1).t-24*3600000);
   const v=recent.map(p=>p.v),lo=Math.min(...v),hi=Math.max(...v),range=Math.max(.05,hi-lo);
   ctx.strokeStyle='#6bd4ed';ctx.lineWidth=3;ctx.beginPath();
-  recent.forEach((p,i)=>{const x=8+i/Math.max(1,recent.length-1)*604,y=78-(p.v-lo)/range*66;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();row.append(canvas);
+  recent.forEach((p,i)=>{const x=8+i/Math.max(1,recent.length-1)*604,y=78-(p.v-lo)/range*66;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();detail.append(canvas);
  }
+if(points.length>3)row.append(detail);
  return row;
 }
 async function loadHydro(){
@@ -100,7 +102,7 @@ async function loadHydro(){
    const live=all.find(x=>String(x.idstazione)===id);
    let series=[];
    try{series=await hydroJson(HYDRO+'get-time-series/?'+new URLSearchParams({stazione:id,variabile:VAR}));}catch(e){console.warn('Storico non disponibile',name,e)}
-   if((Array.isArray(series)&&series.some(p=>Number.isFinite(p.v)&&Number.isFinite(p.t)&&Date.now()-p.t<=120*60000&&Date.now()-p.t>=-10*60000))||Number.isFinite(Number(live?.value))&&live?.value!==null)ok++;
+   if((Array.isArray(series)&&series.some(p=>Number.isFinite(p.v)&&Number.isFinite(p.t)&&Date.now()-p.t<=120*60000&&Date.now()-p.t>=-10*60000))||(live?.value!==null&&live?.value!==undefined&&Number.isFinite(Number(live.value))))ok++;
    parent.append(stationNode(name,live,series));
   }
   $('riverSource').textContent='ARPAE · '+ok+'/'+STATIONS.length+' livelli disponibili';
