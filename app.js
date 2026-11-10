@@ -688,7 +688,7 @@ $('closeBasinDetail')?.addEventListener('click',(e)=>{e.stopPropagation();$('bas
 
 
 async function fetchBasinRain(key, lat, lon){
-  const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=precipitation&past_days=1&forecast_days=1&timezone=Europe%2FRome`;
+  const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=precipitation&past_days=2&forecast_days=2&timezone=Europe%2FRome`;
   const res=await fetch(url,{cache:'no-store'});
   if(!res.ok) throw new Error('rain api');
   const data=await res.json();
@@ -700,7 +700,7 @@ async function fetchBasinRain(key, lat, lon){
     if(times[i] <= now) past.push({t:times[i],v:Number(vals[i]||0)});
   }
   function sumHours(n){return past.slice(-n).reduce((a,b)=>a+b.v,0)}
-  const future=[]; for(let i=0;i<times.length;i++){if(times[i]>now) future.push({t:times[i],v:Number(vals[i]||0)});} function futureSum(n){return future.slice(0,n).reduce((a,b)=>a+b.v,0)} const d={h1:sumHours(1),h3:sumHours(3),h6:sumHours(6),h24:sumHours(24),f1:futureSum(1),f3:futureSum(3),f6:futureSum(6),updated:new Date()};
+  const future=[]; for(let i=0;i<times.length;i++){if(times[i]>now) future.push({t:times[i],v:Number(vals[i]||0)});} function futureSum(n){return future.slice(0,n).reduce((a,b)=>a+b.v,0)} const lastHour=past.length?past[past.length-1].t:null; const d={h1:sumHours(1),h3:sumHours(3),h6:sumHours(6),h24:sumHours(24),f1:futureSum(1),f3:futureSum(3),f6:futureSum(6),updated:new Date(),lastHour,stale:!lastHour||now-lastHour>3*3600000};
   basinRainData[key]=d;
   return d;
 }
@@ -713,6 +713,7 @@ function setBasinCard(key,d){
   const ids=key==='lamone'?['lamObs1','lamObs3','lamObs6','lamFor1','lamFor3','lamFor6']:['marObs1','marObs3','marObs6','marFor1','marFor3','marFor6'];
   [d.h1,d.h3,d.h6,d.f1,d.f3,d.f6].forEach((v,i)=>{const x=$(ids[i]);if(x)x.textContent=v.toFixed(1)+' mm';});
   const f=$(key==='lamone'?'basinLamoneForecast':'basinMarzenoForecast'); if(f) f.textContent=`prevista 1h ${d.f1.toFixed(1)} · 3h ${d.f3.toFixed(1)} · 6h ${d.f6.toFixed(1)} mm`;
+  const stamp=$(key==='lamone'?'lamoneRainStamp':'marzenoRainStamp');if(stamp)stamp.textContent=d.lastHour?`Ultima ora nel modello: ${d.lastHour.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}${d.stale?' · dati da verificare':''}`:'Orario del modello non disponibile';
 }
 function updateLamoneDecision(lam, mar){
   const state=sensorStateFromRain(lam,mar);
@@ -751,6 +752,7 @@ async function loadBasinRain(){
     ]);
     setBasinCard('lamone',lam); setBasinCard('marzeno',mar);
     updateLamoneDecision(lam,mar);
+    const updated=$('lamoneLastCheck');if(updated)updated.textContent=`Controllo ${new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})} · Open-Meteo (stime orarie)`;
   }catch(e){
     const a=$('basinLamoneSummary'), b=$('basinMarzenoSummary');
     if(a) a.textContent='accumuli non disponibili';
@@ -758,7 +760,8 @@ async function loadBasinRain(){
     const decText=$('lamoneDecisionText') || document.querySelector('.compact-decision p');
     const decStrong=document.querySelector('.compact-decision strong');
     if(decStrong) decStrong.textContent='Controllo manuale pronto';
-    if(decText) decText.textContent='Accumuli non disponibili: usa Pioggia a monte, Radar ER e Dettagli Lamone.';
+    if(decText) decText.textContent='Dati non aggiornati: verifica pioggia e livelli sulle fonti ufficiali.';
+    const updated=$('lamoneLastCheck');if(updated)updated.textContent='Aggiornamento non riuscito · verifica le fonti ufficiali';
   }
 }
 
@@ -818,7 +821,7 @@ function loadLamoneSensors(){
     ch.style.cursor='pointer';
     ch.addEventListener('click',(e)=>{e.stopPropagation();openSensorDetail(name);});
   });
-  const label=$('sensorModeLabel'); if(label) label.textContent='sensori smart · tocca';
+  const label=$('sensorModeLabel'); if(label) label.textContent='livelli ufficiali esterni';
 }
 
 
@@ -833,6 +836,8 @@ document.querySelectorAll('[data-route-target]').forEach(btn=>btn.addEventListen
 }));
 load();
 loadBasinRain();
+setInterval(()=>{if(document.visibilityState==='visible')loadBasinRain();},10*60*1000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')loadBasinRain();});
 loadLamoneSensors();
 
 
