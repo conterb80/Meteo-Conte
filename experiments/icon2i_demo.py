@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Isolated ICON-2I precipitation animation experiment; no changes to production app."""
 import os,re,json,datetime,urllib.request,urllib.parse,pathlib
-from PIL import Image,ImageDraw
+from PIL import Image,ImageDraw,ImageFilter
 import numpy as np
 import eccodes
 ROOT="https://meteohub.agenziaitaliameteo.it/nwp/ICON-2I_SURFACE_PRESSURE_LEVELS/"
@@ -22,7 +22,7 @@ data=read(url)
 print("Downloaded bytes:",len(data),flush=True)
 if not data.startswith(b"GRIB"):raise RuntimeError("Il file non inizia con GRIB")
 path=OUT/"precip.grib";path.write_bytes(data)
-frames=[];metadata=[]
+frames=[];metadata=[];previous=None;previous_step=None
 # Crop north-central Italy; fit Romagna, Ravenna and surroundings
 latmin,latmax,lonmin,lonmax=43.55,45.35,10.75,13.35
 with path.open("rb") as f:
@@ -39,21 +39,31 @@ with path.open("rb") as f:
    lons=np.asarray(eccodes.codes_get_array(gid,"longitudes"),dtype=float)
    mask=(lats>=latmin)&(lats<=latmax)&(lons>=lonmin)&(lons<=lonmax)&np.isfinite(vals)
    if mask.sum()<100:continue
-   # render precipitation values as coloured transparent dots on geographic coordinates
+   # Derive hourly precipitation from consecutive cumulative forecast steps.
+   try: step_hours=float(step)
+   except (ValueError,TypeError): step_hours=None
+   if previous is None or previous_step is None or step_hours is None or step_hours-previous_step!=1:
+    previous=vals.copy();previous_step=step_hours
+    print("Skipping initial/discontinuous cumulative step",step,flush=True)
+    continue
+   hourly=np.maximum(vals-previous,0)
+   previous=vals.copy();previous_step=step_hours
+   # Render hourly precipitation (mm/1h), not cumulative values
    w,h=900,650
    image=Image.new("RGBA",(w,h),(0,0,0,0));px=ImageDraw.Draw(image)
    indexes=np.where(mask)[0]
    # sample at most 70k geographic points per frame for speed
    indexes=indexes[::max(1,len(indexes)//70000)]
    for j in indexes:
-    v=max(0,float(vals[j]))
+    v=max(0,float(hourly[j]))
     if v<0.1:continue
     x=int((lons[j]-lonmin)/(lonmax-lonmin)*(w-1))
     y=int((latmax-lats[j])/(latmax-latmin)*(h-1))
     color=(52,180,245,135) if v<1 else (44,218,116,175) if v<5 else (246,206,51,190) if v<15 else (236,80,73,210)
-    px.ellipse((x-6,y-6,x+6,y+6),fill=color)
+    px.ellipse((x-7,y-7,x+7,y+7),fill=color)
+   image=image.filter(ImageFilter.GaussianBlur(radius=3))
    filename=f"frame-{len(frames):03}.png";image.save(OUT/filename,optimize=True)
-   frames.append(filename);metadata.append({"step":str(step),"validityDate":str(key("validityDate","")),"validityTime":str(key("validityTime","")),"points":int(mask.sum()),"max":round(float(np.nanmax(vals[mask])),2)})
+   frames.append(filename);metadata.append({"step":str(step),"validityDate":str(key("validityDate","")),"validityTime":str(key("validityTime","")),"points":int(mask.sum()),"max":round(float(np.nanmax(hourly[mask])),2),"unit":"mm/1h"})
    print("frame",len(frames),metadata[-1],flush=True)
    if len(frames)>=12:break
   finally:eccodes.codes_release(gid)
@@ -67,7 +77,7 @@ html="""<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="v
 <div id="map" class="map" aria-label="Mappa delle precipitazioni previste"></div>
 <div class="controls"><button id="play" type="button">▶ Play</button><input aria-label="Timeline previsione" type="range" id="seek" min="0" value="0"><strong id="time"></strong></div>
 <div class="legend"><span><i class="swatch" style="background:#34b4f5"></i>Debole</span><span><i class="swatch" style="background:#2cda74"></i>Moderata</span><span><i class="swatch" style="background:#f6ce33"></i>Forte</span><span><i class="swatch" style="background:#ec5049"></i>Molto forte</span></div>
-<p id="info">Caricamento dati...</p><small>Fonte: Agenzia ItaliaMeteo, modello ICON-2I, TOT_PREC (precipitazione cumulata). I colori rappresentano quantitativi cumulati, non intensità oraria. Sovrapposizione cartografica sperimentale da verificare. Base © OpenStreetMap contributors.</small></main>
+<p id="info">Caricamento dati...</p><small>Fonte: Agenzia ItaliaMeteo, modello ICON-2I, TOT_PREC (differenze orarie tra cumulati). I colori rappresentano la pioggia prevista nell’ora precedente (mm/1h), calcolata dalle differenze tra cumulati. Sovrapposizione cartografica sperimentale da verificare. Base © OpenStreetMap contributors.</small></main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const info=document.querySelector('#info');
@@ -90,7 +100,7 @@ function show(){
  const utc=new Date(Date.UTC(+date.slice(0,4),+date.slice(4,6)-1,+date.slice(6,8),+clock.slice(0,2),+clock.slice(2,4)));
  const italian=new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(utc);
  time.textContent=italian;
- info.textContent='Previsione '+(idx+1)+' di '+d.frames.length+' · +'+m.step+' ore · run '+d.run+' · valori cumulati, non pioggia oraria';
+ info.textContent='Previsione '+(idx+1)+' di '+d.frames.length+' · +'+m.step+' ore · run '+d.run+' · pioggia prevista nell’ora precedente (mm/1h)';
 }
 slider.oninput=()=>{idx=+slider.value;show()};
 button.onclick=()=>{if(timer){clearInterval(timer);timer=null;button.textContent='▶ Play'}else{timer=setInterval(()=>{idx=(idx+1)%d.frames.length;show()},1100);button.textContent='⏸ Pausa'}};
