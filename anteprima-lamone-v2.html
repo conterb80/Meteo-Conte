@@ -3,7 +3,7 @@
 <title>Meteo Conte · Lamone V2 · laboratorio</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#071b27;color:#eaf5f8}*{box-sizing:border-box}body{margin:0}main{max-width:760px;margin:auto;padding:18px 14px 44px}.eyebrow{color:#9ec7d4;font-size:11px;letter-spacing:.18em;font-weight:750}h1{font-size:32px;letter-spacing:-.04em;margin:8px 0 4px}h2{font-size:18px;margin:0 0 12px}p{line-height:1.5}small,.muted{color:#a9c1cb}.sub{font-size:13px;margin:0 0 18px}.card{border:1px solid #315260;border-radius:20px;background:#0d2b38;padding:18px;margin:13px 0;box-shadow:0 8px 28px #0002}.status{background:#143643}.status strong{font-size:19px}.tag{display:inline-block;padding:5px 9px;border-radius:30px;background:#254e5b;color:#cbe6ed;font-size:11px;margin:0 0 12px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rain{padding:14px;border:1px solid #345a66;border-radius:15px;background:#153845}.rain .place{font-size:13px;color:#b7d4df}.rain .big{font-size:27px;font-weight:750;letter-spacing:-.04em;margin:6px 0}.rain .next{color:#95dce6;font-size:13px}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.line{border-top:1px solid #2d4d5b;padding:11px 0}.line:first-child{border:0}.pill{font-size:12px;padding:5px 9px;border:1px solid #3a6673;border-radius:999px;color:#b9d2db;white-space:nowrap}a{color:#9bdfef}.button{display:block;text-decoration:none;text-align:center;background:#22637c;color:white;border-radius:12px;padding:14px;font-weight:700;margin-top:13px}.note{font-size:12px;color:#abc3ce}.bars{height:75px;display:flex;align-items:end;gap:3px;margin:14px 0 7px}.bars span{flex:1;background:#55b7cf;border-radius:4px 4px 0 0;min-height:2px}.times{display:flex;justify-content:space-between;font-size:11px;color:#b5cbd3}.err{color:#ffd3a0}details{margin-top:12px}summary{cursor:pointer}summary::marker{color:#8dcfe0}button{border:1px solid #547887;background:#174455;color:#fff;border-radius:9px;padding:8px 12px;font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #91d4e4}#checked{font-size:12px;color:#bdd6de}@media(max-width:370px){.cols{grid-template-columns:1fr}.card{padding:14px}}
- .station-details{margin-top:4px}.station-details summary{font-size:12px;color:#9dd8e8;padding:5px 0}.line .note{margin:6px 0 0}.line strong{font-size:15px}.line .row strong:last-child{white-space:nowrap}.card .row h2{line-height:1.2}.card .pill{font-size:11px}@media(max-width:460px){.card>.row{align-items:flex-start;flex-wrap:wrap}.card .row h2{margin-bottom:0}.line .row{flex-wrap:nowrap}} </style></head><body><main>
+ .station-details{margin-top:4px}.station-details summary{font-size:12px;color:#9dd8e8;padding:5px 0}.line .note{margin:6px 0 0}.line strong{font-size:15px}.line .row strong:last-child{white-space:normal;text-align:right}.trend-arrow{display:block;font-size:11px;font-weight:600;margin-top:3px}.card .row h2{line-height:1.2}.card .pill{font-size:11px}@media(max-width:460px){.card>.row{align-items:flex-start;flex-wrap:wrap}.card .row h2{margin-bottom:0}.line .row{flex-wrap:nowrap}} </style></head><body><main>
 <div class="eyebrow">METEO CONTE · LAMONE V2 · MONITORAGGIO</div><h1>Lamone</h1><p class="sub">Pioggia nel bacino e risposta del fiume · Dati aggiornati e livelli ufficiali</p>
 <section class="card status" aria-live="polite"><div class="tag">SITUAZIONE ATTUALE</div><div class="row"><strong id="headline">Caricamento dati di pioggia…</strong><span aria-hidden="true">🌧️</span></div><p id="explain" class="muted">La risposta del fiume richiede misure idrometriche reali, non ricavabili dalle sole precipitazioni.</p><div id="checked">Fonte: Open-Meteo · stime modellistiche</div></section>
 <section class="card"><div class="row"><h2>Quanto piove a monte?</h2><span class="pill">Stime, non pluviometri</span></div><div class="cols">
@@ -11,8 +11,8 @@
 <div class="rain"><div class="place">Marzeno · Modigliana</div><div class="big" id="z24">— mm</div><small>ultime 24 ore</small><div class="next" id="zf12">Prossime 12h: —</div><div class="note" id="zstamp"></div></div></div>
 <details><summary>Mostra accumuli 6 / 12 / 48 ore e andamento orario</summary><div id="moreRain">Dati in caricamento…</div><div class="bars" id="bars" aria-label="Pioggia oraria stimata a Marradi"></div><div class="times"><span>24 ore fa</span><span>Ora</span></div><p class="note">I valori 6, 12, 24 e 48 ore sono finestre sovrapposte: non vanno sommati. Due punti non rappresentano la media dell'intero bacino.</p></details></section>
 <section class="card"><div class="row"><h2>Come si muove il fiume?</h2><span class="pill" id="riverSource">ARPAE · caricamento</span></div><p class="muted" style="font-size:13px">Livelli e trend ricavati dalle serie temporali del portale Allerta Meteo Emilia-Romagna. Gli orari e i dati mancanti sono mostrati esplicitamente.</p><div id="stations" aria-live="polite"><p class="muted">Lettura dei livelli ufficiali in corso…</p></div>
-<a class="button" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener noreferrer">Consulta livelli idrometrici ufficiali ↗</a></section>
-<section class="card"><h2>Verso Villanova</h2><p>Per seguire un rialzo verso valle servono misure consecutive di livello e orario nelle stazioni ufficiali. Non è possibile calcolare in modo attendibile un orario di arrivo della piena con i soli dati disponibili qui.</p><a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener noreferrer">Consulta allerte e bollettini regionali ↗</a></section>
+<a class="button" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener noreferrer">Tutti i sensori Lamone · pagina unica ↗</a><a class="button" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener noreferrer">Consulta livelli idrometrici ufficiali ↗</a></section>
+<section class="card"><h2>Verso Villanova</h2><p id="downstreamSummary" class="muted">Lettura dei trend ufficiali in corso…</p><p>Per seguire un rialzo verso valle servono misure consecutive di livello e orario nelle stazioni ufficiali. Non è possibile calcolare in modo attendibile un orario di arrivo della piena con i soli dati disponibili qui.</p><a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener noreferrer">Consulta allerte e bollettini regionali ↗</a></section>
 <p class="note">Versione sperimentale isolata: nessuna modifica all'app pubblicata. I dati Open-Meteo sono stime modellistiche e non sostituiscono il monitoraggio ufficiale.</p>
 </main><script>
 const $=id=>document.getElementById(id);
@@ -73,10 +73,11 @@ function stationNode(name,live,series){
  else{
   const t1=cmTrend(points,last.t,1),t3=cmTrend(points,last.t,3);
   const trend=v=>v===null?'n.d.':(v>0?'+':'')+v+' cm';
+  const arrow=document.createElement('span');arrow.className='trend-arrow';arrow.textContent=t1===null?' · ?':t1>=3?' · ↑ in crescita':t1<=-3?' · ↓ in calo':' · → stabile';arrow.style.color=t1===null?'#b5cbd3':t1>=3?'#ffda91':t1<=-3?'#9edce9':'#b5cbd3';value.append(arrow);
   info.textContent='1h '+trend(t1)+' · 3h '+trend(t3)+' · ultima misura '+timeStr(last.t);
  }
  row.append(info);
- if(Number.isFinite(Number(live?.soglia1))&&Number.isFinite(shown)){
+ if(live?.soglia1!==null&&live?.soglia1!==undefined&&Number.isFinite(Number(live.soglia1))&&Number.isFinite(shown)){
   const p=document.createElement('p');p.className='note';p.textContent='Prima soglia ufficiale: '+Number(live.soglia1).toLocaleString('it-IT')+' m'+(shown>=Number(live.soglia1)?' · superata':'');row.append(p);
  }
  const detail=document.createElement('details');detail.className='station-details';const summary=document.createElement('summary');summary.textContent='Grafico ultime 24 ore';detail.append(summary);
@@ -86,6 +87,7 @@ function stationNode(name,live,series){
   const v=recent.map(p=>p.v),lo=Math.min(...v),hi=Math.max(...v),range=Math.max(.05,hi-lo);
   ctx.strokeStyle='#6bd4ed';ctx.lineWidth=3;ctx.beginPath();
   recent.forEach((p,i)=>{const x=8+i/Math.max(1,recent.length-1)*604,y=78-(p.v-lo)/range*66;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();detail.append(canvas);
+  const meta=document.createElement('p');meta.className='note';meta.textContent='Ultime 24h · minimo '+lo.toFixed(2)+' m · massimo '+hi.toFixed(2)+' m · fino alle '+new Date(recent.at(-1).t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});detail.append(meta);
  }
 if(points.length>3)row.append(detail);
  return row;
@@ -108,6 +110,9 @@ async function loadHydro(){
    parent.append(stationNode(name,live,series));
   }
   $('riverSource').textContent='ARPAE · '+ok+'/'+STATIONS.length+' livelli disponibili';
+  const downstream=data.filter(x=>['Marradi','Strada Casale','Sarna','Faenza','Reda','Pieve Cesato','Mezzano'].includes(x.name)).map(x=>{const pts=Array.isArray(x.series)?x.series.filter(p=>Number.isFinite(p.t)&&Number.isFinite(p.v)).sort((a,b)=>a.t-b.t):[];const last=pts.at(-1);if(!last||Date.now()-last.t>120*60000)return null;const delta=cmTrend(pts,last.t,3);return delta===null?null:{name:x.name,delta}}).filter(Boolean);
+  const growing=downstream.filter(x=>x.delta>=3),falling=downstream.filter(x=>x.delta<=-3);
+  $('downstreamSummary').textContent=downstream.length?('Trend 3 ore: '+growing.length+' stazioni in crescita'+(growing.length?' ('+growing.map(x=>x.name).join(', ')+')':'')+', '+falling.length+' in calo, '+(downstream.length-growing.length-falling.length)+' stabili. Dati osservati, non previsione di piena o tempo di arrivo.'):'Trend verso valle non disponibile: dati ufficiali insufficienti.';
  }catch(e){$('riverSource').textContent='Livelli non disponibili';$('stations').textContent='Non riesco a leggere i sensori ufficiali: '+e.message+'. Apri il portale regionale tramite il pulsante.'}
 }
 function reportHeight(){if(window.parent===window)return;const height=Math.ceil(document.documentElement.scrollHeight);window.parent.postMessage({type:'meteo-conte-lamone-height',height},window.location.origin)}
