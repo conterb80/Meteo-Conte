@@ -14,7 +14,7 @@
 <title>Meteo Conte · Lamone chiaro RC36.1</title>
 <link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
-<link href="style.css?v=rc36-2" rel="stylesheet"/>
+<link href="style.css?v=rc36-3" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 <style>
 /* RC36.2: Lamone mobile, compact and honest about data sources */
@@ -50,6 +50,9 @@
 #lamoneCard .river-decision p{white-space:normal;overflow:visible;text-overflow:clip;display:block;line-height:1.5}
 #lamoneCard .lamone-levels-panel .lamone-places{width:100%;max-width:100%;align-items:flex-start}
 #lamoneCard .lamone-levels-panel .lamone-places span{max-width:100%;white-space:normal}
+#lamoneCard .lamone-last-check{font-size:12px;color:#b8d3dd;margin:8px 0 13px;line-height:1.4}
+#lamoneCard .lamone-data-stamp{display:block;margin-top:8px;font-size:10px;line-height:1.4;color:#b8d3dd;white-space:normal}
+#lamoneCard .lamone-levels-panel .river-chart-head span{font-size:11px}
 </style></head>
 <body>
 <main class="app">
@@ -289,18 +292,18 @@
 </div>
 <div class="basin-block">
 <div class="river-chart-head"><b>Quanto piove a monte?</b><span>stime Open-Meteo</span></div><p class="river-truth-note">Ultime ore = stima meteorologica, non pluviometro. Prossime ore = previsione. I valori 1h, 3h e 6h non vanno sommati.</p>
-<div class="basin-grid">
+<p class="lamone-last-check" id="lamoneLastCheck" aria-live="polite">Aggiornamento pioggia in corso…</p><div class="basin-grid">
 <button class="basin-card basin-readable" data-basin="lamone" type="button">
 <span>🏔️ Lamone</span><b>Marradi</b>
 <div class="basin-kind"><small>STIMATA · ULTIME ORE</small><div class="basin-values"><span>1h <b id="lamObs1">--</b></span><span>3h <b id="lamObs3">--</b></span><span>6h <b id="lamObs6">--</b></span></div></div>
 <div class="basin-kind forecast"><small>PREVISTA</small><div class="basin-values"><span>+1h <b id="lamFor1">--</b></span><span>+3h <b id="lamFor3">--</b></span><span>+6h <b id="lamFor6">--</b></span></div></div>
-<em id="basinLamoneSummary" class="hidden">lettura…</em><small class="basin-forecast hidden" id="basinLamoneForecast">prevista: in lettura…</small>
+<small class="lamone-data-stamp" id="lamoneRainStamp">Orario modello in lettura…</small><em id="basinLamoneSummary" class="hidden">lettura…</em><small class="basin-forecast hidden" id="basinLamoneForecast">prevista: in lettura…</small>
 </button>
 <button class="basin-card basin-readable" data-basin="marzeno" type="button">
 <span>🏔️ Marzeno</span><b>Modigliana</b>
 <div class="basin-kind"><small>STIMATA · ULTIME ORE</small><div class="basin-values"><span>1h <b id="marObs1">--</b></span><span>3h <b id="marObs3">--</b></span><span>6h <b id="marObs6">--</b></span></div></div>
 <div class="basin-kind forecast"><small>PREVISTA</small><div class="basin-values"><span>+1h <b id="marFor1">--</b></span><span>+3h <b id="marFor3">--</b></span><span>+6h <b id="marFor6">--</b></span></div></div>
-<em id="basinMarzenoSummary" class="hidden">lettura…</em><small class="basin-forecast hidden" id="basinMarzenoForecast">prevista: in lettura…</small>
+<small class="lamone-data-stamp" id="marzenoRainStamp">Orario modello in lettura…</small><em id="basinMarzenoSummary" class="hidden">lettura…</em><small class="basin-forecast hidden" id="basinMarzenoForecast">prevista: in lettura…</small>
 </button>
 </div>
 </div>
@@ -346,6 +349,6 @@
 <footer>Lamone RC36.1 · Dati pioggia modellistici, livelli fiume da fonti ufficiali.<br/>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35.4 · Manutenzione</footer>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=rc36-2"></script>
+<script src="app.js?v=rc36-3"></script>
 </body>
 </html>
