@@ -61,19 +61,23 @@ function stationNode(name,live,series){
  const row=document.createElement('div');row.className='line';
  const header=document.createElement('div');header.className='row';
  const label=document.createElement('strong');label.textContent=name;header.append(label);
- const value=document.createElement('strong');value.textContent=Number.isFinite(live?.value)?Number(live.value).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})+' m':'Misura assente';header.append(value);row.append(header);
+ const value=document.createElement('strong');header.append(value);row.append(header);
  const points=Array.isArray(series)?series.filter(p=>Number.isFinite(p.t)&&Number.isFinite(p.v)).sort((a,b)=>a.t-b.t):[];
  const last=points.at(-1),age=last?(Date.now()-last.t)/60000:Infinity;
+ const liveValue=live?.value===null||live?.value===undefined?NaN:Number(live.value);
+ const validHistory=last&&age>=-10&&age<=120;
+ const shown=validHistory?last.v:(Number.isFinite(liveValue)?liveValue:NaN);
+ value.textContent=Number.isFinite(shown)?shown.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})+' m':'Misura non disponibile';
  const info=document.createElement('p');info.className='note';
- if(!last||age>120){info.textContent='Trend non disponibile · misura storica assente o vecchia'+(last?' (ultima: '+timeStr(last.t)+')':'');}
+ if(!last||age>120||age< -10){info.textContent='Trend non disponibile · misura storica assente o vecchia'+(last?' (ultima: '+timeStr(last.t)+')':'');}
  else{
   const t1=cmTrend(points,last.t,1),t3=cmTrend(points,last.t,3);
   const trend=v=>v===null?'n.d.':(v>0?'+':'')+v+' cm';
   info.textContent='1h '+trend(t1)+' · 3h '+trend(t3)+' · ultima misura '+timeStr(last.t);
  }
  row.append(info);
- if(Number.isFinite(live?.soglia1)&&Number.isFinite(live?.value)){
-  const p=document.createElement('p');p.className='note';p.textContent='Prima soglia ufficiale: '+Number(live.soglia1).toLocaleString('it-IT')+' m'+(live.value>=live.soglia1?' · superata':'');row.append(p);
+ if(Number.isFinite(Number(live?.soglia1))&&Number.isFinite(shown)){
+  const p=document.createElement('p');p.className='note';p.textContent='Prima soglia ufficiale: '+Number(live.soglia1).toLocaleString('it-IT')+' m'+(shown>=Number(live.soglia1)?' · superata':'');row.append(p);
  }
  if(points.length>3){
   const canvas=document.createElement('canvas');canvas.width=620;canvas.height=86;canvas.style.cssText='display:block;width:100%;height:70px;margin-top:8px';canvas.setAttribute('aria-label','Grafico dei livelli osservati per '+name);
@@ -96,10 +100,10 @@ async function loadHydro(){
    const live=all.find(x=>String(x.idstazione)===id);
    let series=[];
    try{series=await hydroJson(HYDRO+'get-time-series/?'+new URLSearchParams({stazione:id,variabile:VAR}));}catch(e){console.warn('Storico non disponibile',name,e)}
-   if(Number.isFinite(live?.value))ok++;
+   if((Array.isArray(series)&&series.some(p=>Number.isFinite(p.v)&&Number.isFinite(p.t)&&Date.now()-p.t<=120*60000&&Date.now()-p.t>=-10*60000))||Number.isFinite(Number(live?.value))&&live?.value!==null)ok++;
    parent.append(stationNode(name,live,series));
   }
-  $('riverSource').textContent='ARPAE · '+ok+'/'+STATIONS.length+' misure';
+  $('riverSource').textContent='ARPAE · '+ok+'/'+STATIONS.length+' livelli disponibili';
  }catch(e){$('riverSource').textContent='Livelli non disponibili';$('stations').textContent='Non riesco a leggere i sensori ufficiali: '+e.message+'. Apri il portale regionale tramite il pulsante.'}
 }
 loadHydro();setInterval(()=>{if(!document.hidden)loadHydro()},15*60000);
