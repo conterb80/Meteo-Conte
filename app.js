@@ -851,6 +851,7 @@ loadLamoneSensors();
   const drawer=document.getElementById('lamoneDrawer');
   const content=document.getElementById('lamoneCard');
   if(!openBtn||!content) return;
+  window.addEventListener('message',(event)=>{if(event.origin!==window.location.origin||event.source!==document.getElementById('lamoneV2Embed')?.contentWindow||event.data?.type!=='meteo-conte-lamone-height')return;const h=Number(event.data.height);if(Number.isFinite(h)&&h>200&&h<12000)document.getElementById('lamoneV2Embed').style.height=(h+12)+'px';});
   const openDrawer=()=>{
     const v2=document.getElementById('lamoneV2Embed');if(v2&&!v2.src&&v2.dataset.src)v2.src=v2.dataset.src;
     content.classList.remove('hidden');
