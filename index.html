@@ -14,7 +14,7 @@
 <title>Meteo Conte · Lamone chiaro RC36.1</title>
 <link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
-<link href="style.css?v=rc36-4" rel="stylesheet"/>
+<link href="style.css?v=rc36-5" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 <style>
 /* RC36.2: Lamone mobile, compact and honest about data sources */
@@ -54,6 +54,12 @@
 #lamoneCard .lamone-data-stamp{display:block;margin-top:8px;font-size:10px;line-height:1.4;color:#b8d3dd;white-space:normal}
 #lamoneCard .lamone-levels-panel .river-chart-head span{font-size:11px}
 #lamoneCard .lamone-rain-totals{font-size:12px;line-height:1.55;color:#e0f1f7;margin-top:9px;padding:8px 9px;background:rgba(14,53,66,.65);border-radius:9px;white-space:normal;overflow-wrap:break-word}
+/* RC36.5: integrate tested Lamone V2 as independent monitoring module */
+#lamoneCard{padding:12px!important;min-height:0!important;height:auto!important}
+#lamoneCard > :not(.container-toolbar):not(.lamone-v2-embed):not(.lamone-v2-full){display:none!important}
+#lamoneCard .lamone-v2-embed{display:block;width:100%;height:min(78dvh,850px);min-height:470px;border:0;border-radius:14px;background:#071b27}
+#lamoneCard .lamone-v2-full{display:block;margin:9px auto 3px;text-align:center;color:#9de1f0;font-size:13px;padding:10px}
+#lamoneCard .container-toolbar{position:relative;z-index:2}
 </style></head>
 <body>
 <main class="app">
@@ -277,6 +283,7 @@
 </section>
 </div>
 <section class="card river river-v20 river-emergency hidden lamone-container-openable" id="lamoneCard">
+<iframe class="lamone-v2-embed" id="lamoneV2Embed" title="Monitoraggio Lamone V2, livelli ARPAE e pioggia a monte" data-src="./anteprima-lamone-v2.html?v=rc36-5" loading="lazy"></iframe><a class="lamone-v2-full" href="./anteprima-lamone-v2.html?v=rc36-5" target="_blank" rel="noopener noreferrer">Apri Lamone a schermo intero ↗</a>
 <div class="container-toolbar lamone-closebar"><button aria-label="Chiudi Lamone" id="closeLamoneDrawer" type="button">×</button></div>
 <span class="label">FIUMI · LAMONE · MONITORAGGIO</span><span class="cornerdot green" id="lamoneCorner"></span>
 <div class="river-status emergency-status">
@@ -350,6 +357,6 @@
 <footer>Lamone RC36.1 · Dati pioggia modellistici, livelli fiume da fonti ufficiali.<br/>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35.4 · Manutenzione</footer>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=rc36-4"></script>
+<script src="app.js?v=rc36-5"></script>
 </body>
 </html>
