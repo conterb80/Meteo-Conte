@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#092431">
+<title>Meteo Conte · Lamone V2 · laboratorio</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#071b27;color:#eaf5f8}*{box-sizing:border-box}body{margin:0}main{max-width:760px;margin:auto;padding:18px 14px 44px}.eyebrow{color:#9ec7d4;font-size:11px;letter-spacing:.18em;font-weight:750}h1{font-size:32px;letter-spacing:-.04em;margin:8px 0 4px}h2{font-size:18px;margin:0 0 12px}p{line-height:1.5}small,.muted{color:#a9c1cb}.sub{font-size:13px;margin:0 0 18px}.card{border:1px solid #315260;border-radius:20px;background:#0d2b38;padding:18px;margin:13px 0;box-shadow:0 8px 28px #0002}.status{background:#143643}.status strong{font-size:19px}.tag{display:inline-block;padding:5px 9px;border-radius:30px;background:#254e5b;color:#cbe6ed;font-size:11px;margin:0 0 12px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rain{padding:14px;border:1px solid #345a66;border-radius:15px;background:#153845}.rain .place{font-size:13px;color:#b7d4df}.rain .big{font-size:27px;font-weight:750;letter-spacing:-.04em;margin:6px 0}.rain .next{color:#95dce6;font-size:13px}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.line{border-top:1px solid #2d4d5b;padding:11px 0}.line:first-child{border:0}.pill{font-size:12px;padding:5px 9px;border:1px solid #3a6673;border-radius:999px;color:#b9d2db;white-space:nowrap}a{color:#9bdfef}.button{display:block;text-decoration:none;text-align:center;background:#22637c;color:white;border-radius:12px;padding:14px;font-weight:700;margin-top:13px}.note{font-size:12px;color:#abc3ce}.bars{height:75px;display:flex;align-items:end;gap:3px;margin:14px 0 7px}.bars span{flex:1;background:#55b7cf;border-radius:4px 4px 0 0;min-height:2px}.times{display:flex;justify-content:space-between;font-size:11px;color:#b5cbd3}.err{color:#ffd3a0}details{margin-top:12px}summary{cursor:pointer}summary::marker{color:#8dcfe0}button{border:1px solid #547887;background:#174455;color:#fff;border-radius:9px;padding:8px 12px;font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #91d4e4}#checked{font-size:12px;color:#bdd6de}@media(max-width:370px){.cols{grid-template-columns:1fr}.card{padding:14px}}
+</style></head><body><main>
+<div class="eyebrow">METEO CONTE · LABORATORIO SEPARATO</div><h1>Lamone</h1><p class="sub">Pioggia nel bacino e risposta del fiume · Prototipo V2</p>
+<section class="card status" aria-live="polite"><div class="tag">SITUAZIONE ATTUALE</div><div class="row"><strong id="headline">Caricamento dati di pioggia…</strong><span aria-hidden="true">🌧️</span></div><p id="explain" class="muted">La risposta del fiume richiede misure idrometriche reali, non ricavabili dalle sole precipitazioni.</p><div id="checked">Fonte: Open-Meteo · stime modellistiche</div></section>
+<section class="card"><div class="row"><h2>Quanto piove a monte?</h2><span class="pill">Stime, non pluviometri</span></div><div class="cols">
+<div class="rain"><div class="place">Alto Lamone · Marradi</div><div class="big" id="m24">— mm</div><small>ultime 24 ore</small><div class="next" id="mf12">Prossime 12h: —</div><div class="note" id="mstamp"></div></div>
+<div class="rain"><div class="place">Marzeno · Modigliana</div><div class="big" id="z24">— mm</div><small>ultime 24 ore</small><div class="next" id="zf12">Prossime 12h: —</div><div class="note" id="zstamp"></div></div></div>
+<details><summary>Mostra accumuli 6 / 12 / 48 ore e andamento orario</summary><div id="moreRain">Dati in caricamento…</div><div class="bars" id="bars" aria-label="Pioggia oraria stimata a Marradi"></div><div class="times"><span>24 ore fa</span><span>Ora</span></div><p class="note">I valori 6, 12, 24 e 48 ore sono finestre sovrapposte: non vanno sommati. Due punti non rappresentano la media dell'intero bacino.</p></details></section>
+<section class="card"><div class="row"><h2>Come si muove il fiume?</h2><span class="pill">Misure da collegare</span></div><p class="muted" style="font-size:13px">Questa anteprima non riceve ancora le serie idrometriche ufficiali. Nessuna tendenza è dedotta dalle stime di pioggia.</p><div id="stations">
+<div class="row line"><span>Marradi</span><span class="pill">Livello non disponibile</span></div>
+<div class="row line"><span>Strada Casale</span><span class="pill">Livello non disponibile</span></div>
+<div class="row line"><span>Sarna / Faenza</span><span class="pill">Livello non disponibile</span></div>
+<div class="row line"><span>Reda / Pieve Cesato / Mezzano</span><span class="pill">Livello non disponibile</span></div></div>
+<a class="button" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener noreferrer">Consulta livelli idrometrici ufficiali ↗</a></section>
+<section class="card"><h2>Verso Villanova</h2><p>Per seguire un rialzo verso valle servono misure consecutive di livello e orario nelle stazioni ufficiali. Non è possibile calcolare in modo attendibile un orario di arrivo della piena con i soli dati disponibili qui.</p><a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener noreferrer">Consulta allerte e bollettini regionali ↗</a></section>
+<p class="note">Versione sperimentale isolata: nessuna modifica all'app pubblicata. I dati Open-Meteo sono stime modellistiche e non sostituiscono il monitoraggio ufficiale.</p>
+</main><script>
+const $=id=>document.getElementById(id);
+function sum(v){return v.reduce((a,b)=>a+(Number.isFinite(b)?b:0),0)}
+async function rain(lat,lon){
+ const url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&hourly=precipitation&past_days=3&forecast_days=2&timezone=Europe%2FRome';
+ const c=new AbortController(),t=setTimeout(()=>c.abort(),12000);
+ try{const r=await fetch(url,{signal:c.signal,cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!d.hourly?.time||!d.hourly?.precipitation)throw Error('Serie non disponibile');
+ const now=new Date(),timestamps=d.hourly.time.map(s=>new Date(s.slice(0,4)+'-'+s.slice(5,7)+'-'+s.slice(8,10)+'T'+s.slice(11,16)+':00'));
+ const vals=d.hourly.precipitation.map(v=>v===null?NaN:Number(v));
+ const past=vals.map((v,i)=>({v,t:timestamps[i]})).filter(x=>x.t<=now&&Number.isFinite(x.v));
+ const future=vals.map((v,i)=>({v,t:timestamps[i]})).filter(x=>x.t>now&&Number.isFinite(x.v));
+ const windowSum=h=>sum(past.filter(x=>x.t>new Date(now.getTime()-h*3600000)).map(x=>x.v));
+ const last=past.at(-1)?.t;
+ return {h6:windowSum(6),h12:windowSum(12),h24:windowSum(24),h48:windowSum(48),f12:sum(future.slice(0,12).map(x=>x.v)),last,series:past.filter(x=>x.t>new Date(now.getTime()-24*3600000)).map(x=>x.v)};
+ }finally{clearTimeout(t)}
+}
+const mm=x=>x.toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:1})+' mm';
+async function load(){
+ $('checked').textContent='Aggiornamento in corso…';
+ const results=await Promise.allSettled([rain(44.08,11.61),rain(44.16,11.79)]);
+ const [m,z]=results.map(x=>x.status==='fulfilled'?x.value:null);
+ for(const [d,prefix] of [[m,'m'],[z,'z']]){
+  $(prefix+'24').textContent=d?mm(d.h24):'Non disponibile';
+  $(prefix+'f12').textContent=d?'Prossime 12h: '+mm(d.f12):'Previsione non disponibile';
+  $(prefix+'stamp').textContent=d?.last?'Ultima ora nel modello: '+d.last.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'Dato non aggiornato';
+ }
+ if(m||z){const max=Math.max(m?.h24||0,z?.h24||0);$('headline').textContent=max>=30?'Pioggia stimata significativa a monte':max>=10?'Pioggia a monte da seguire':'Precipitazioni stimate contenute';$('explain').textContent='Valutazione riferita soltanto alle stime di pioggia delle ultime 24 ore. Il livello del Lamone non è acquisito in questa anteprima.';}else{$('headline').textContent='Dati di pioggia non disponibili';$('explain').textContent='Impossibile aggiornare le stime. Consulta le fonti ufficiali.';}
+ $('checked').textContent='Controllo: '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})+' · Open-Meteo · dati modellistici';
+ $('moreRain').textContent=[['Marradi',m],['Modigliana',z]].map(([name,d])=>d?name+': 6h '+mm(d.h6)+' · 12h '+mm(d.h12)+' · 48h '+mm(d.h48):name+': dati non disponibili').join(' | ');
+ const series=m?.series||[];const max=Math.max(1,...series);$('bars').replaceChildren(...series.map(v=>{const e=document.createElement('span');e.style.height=Math.max(3,Math.round(100*v/max))+'%';e.title=mm(v);return e;}));
+}
+load();document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});setInterval(()=>{if(!document.hidden)load()},600000);
+</script></body></html>
