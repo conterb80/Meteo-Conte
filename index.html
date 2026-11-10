@@ -14,7 +14,7 @@
 <title>Meteo Conte · Lamone chiaro RC36.1</title>
 <link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
-<link href="style.css?v=rc36-3" rel="stylesheet"/>
+<link href="style.css?v=rc36-4" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 <style>
 /* RC36.2: Lamone mobile, compact and honest about data sources */
@@ -53,6 +53,7 @@
 #lamoneCard .lamone-last-check{font-size:12px;color:#b8d3dd;margin:8px 0 13px;line-height:1.4}
 #lamoneCard .lamone-data-stamp{display:block;margin-top:8px;font-size:10px;line-height:1.4;color:#b8d3dd;white-space:normal}
 #lamoneCard .lamone-levels-panel .river-chart-head span{font-size:11px}
+#lamoneCard .lamone-rain-totals{font-size:12px;line-height:1.55;color:#e0f1f7;margin-top:9px;padding:8px 9px;background:rgba(14,53,66,.65);border-radius:9px;white-space:normal;overflow-wrap:break-word}
 </style></head>
 <body>
 <main class="app">
@@ -297,13 +298,13 @@
 <span>🏔️ Lamone</span><b>Marradi</b>
 <div class="basin-kind"><small>STIMATA · ULTIME ORE</small><div class="basin-values"><span>1h <b id="lamObs1">--</b></span><span>3h <b id="lamObs3">--</b></span><span>6h <b id="lamObs6">--</b></span></div></div>
 <div class="basin-kind forecast"><small>PREVISTA</small><div class="basin-values"><span>+1h <b id="lamFor1">--</b></span><span>+3h <b id="lamFor3">--</b></span><span>+6h <b id="lamFor6">--</b></span></div></div>
-<small class="lamone-data-stamp" id="lamoneRainStamp">Orario modello in lettura…</small><em id="basinLamoneSummary" class="hidden">lettura…</em><small class="basin-forecast hidden" id="basinLamoneForecast">prevista: in lettura…</small>
+<div class="lamone-rain-totals" id="lamoneRainTotals">Accumuli 12/24/48h in lettura…</div><small class="lamone-data-stamp" id="lamoneRainStamp">Orario modello in lettura…</small><em id="basinLamoneSummary" class="hidden">lettura…</em><small class="basin-forecast hidden" id="basinLamoneForecast">prevista: in lettura…</small>
 </button>
 <button class="basin-card basin-readable" data-basin="marzeno" type="button">
 <span>🏔️ Marzeno</span><b>Modigliana</b>
 <div class="basin-kind"><small>STIMATA · ULTIME ORE</small><div class="basin-values"><span>1h <b id="marObs1">--</b></span><span>3h <b id="marObs3">--</b></span><span>6h <b id="marObs6">--</b></span></div></div>
 <div class="basin-kind forecast"><small>PREVISTA</small><div class="basin-values"><span>+1h <b id="marFor1">--</b></span><span>+3h <b id="marFor3">--</b></span><span>+6h <b id="marFor6">--</b></span></div></div>
-<small class="lamone-data-stamp" id="marzenoRainStamp">Orario modello in lettura…</small><em id="basinMarzenoSummary" class="hidden">lettura…</em><small class="basin-forecast hidden" id="basinMarzenoForecast">prevista: in lettura…</small>
+<div class="lamone-rain-totals" id="marzenoRainTotals">Accumuli 12/24/48h in lettura…</div><small class="lamone-data-stamp" id="marzenoRainStamp">Orario modello in lettura…</small><em id="basinMarzenoSummary" class="hidden">lettura…</em><small class="basin-forecast hidden" id="basinMarzenoForecast">prevista: in lettura…</small>
 </button>
 </div>
 </div>
@@ -313,7 +314,7 @@
 <div class="river-values"><span>1h <b id="basin1h">-- mm</b></span><span>3h <b id="basin3h">-- mm</b></span><span>6h <b id="basin6h">-- mm</b></span></div>
 </div>
 <div class="river-chart lamone-levels-panel">
-<div class="river-chart-head"><b>Livelli del fiume</b><span id="sensorModeLabel">misure da verificare</span></div><p class="river-truth-note">Le stime di pioggia NON misurano il livello del Lamone. I punti sotto sono località di controllo, non letture in tempo reale.</p>
+<div class="river-chart-head"><b>Trend del fiume · misure reali</b><span id="sensorModeLabel">misure da verificare</span></div><p class="river-truth-note">Per capire se il fiume sale servono livelli misurati in metri e variazioni nel tempo. Non sono ancora acquisiti in questa schermata: apri il grafico ufficiale delle ultime 48 ore.</p>
 <div class="lamone-places"><span>Marradi</span><span>Strada Casale</span><span>Sarna</span><span>Faenza</span><span>Reda</span><span>Pieve Cesato</span><span>Mezzano</span></div>
 <p class="lamone-sensor-hint">Percorso monte → valle · per livelli in metri, trend e orari apri i sensori ufficiali.</p>
 <a class="lamone-official-link" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener noreferrer">Consulta livelli ufficiali ↗</a>
@@ -349,6 +350,6 @@
 <footer>Lamone RC36.1 · Dati pioggia modellistici, livelli fiume da fonti ufficiali.<br/>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35.4 · Manutenzione</footer>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=rc36-3"></script>
+<script src="app.js?v=rc36-4"></script>
 </body>
 </html>
