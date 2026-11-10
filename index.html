@@ -14,10 +14,10 @@
 <title>Meteo Conte · Lamone chiaro RC36.1</title>
 <link href="manifest.json?v=1.1-control-rc24" rel="manifest"/>
 <link href="icon.png?v=1.1-control-rc24" rel="icon" type="image/png"/>
-<link href="style.css?v=rc36-1" rel="stylesheet"/>
+<link href="style.css?v=rc36-2" rel="stylesheet"/>
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
 <style>
-/* RC36.1: Lamone mobile, compact and honest about data sources */
+/* RC36.2: Lamone mobile, compact and honest about data sources */
 #lamoneCard{max-width:100%;overflow:hidden}
 #lamoneCard .river-status{margin:12px 0}
 #lamoneCard .river-status h2{font-size:clamp(21px,5vw,28px);line-height:1.18}
@@ -42,6 +42,14 @@
 #lamoneCard .lamone-official-link{display:inline-flex;padding:10px 13px;border-radius:10px;background:#21556a;color:#f1fcff;font-weight:700;font-size:13px}
 #lamoneCard .river-actions{margin-top:14px}
 @media(max-width:390px){#lamoneCard .basin-grid{grid-template-columns:1fr}#lamoneCard .basin-card{width:100%}}
+#lamoneCard .lamone-levels-panel{box-sizing:border-box!important;display:block!important;position:relative!important;min-height:0!important;height:auto!important;max-height:none!important;overflow:visible!important;padding:16px!important;white-space:normal!important}
+#lamoneCard .lamone-levels-panel *{box-sizing:border-box;max-width:100%;white-space:normal;overflow-wrap:break-word}
+#lamoneCard .lamone-levels-panel .river-truth-note,#lamoneCard .lamone-levels-panel .lamone-sensor-hint{display:block;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;line-height:1.45}
+#lamoneCard .lamone-levels-panel .river-chart-head span{font-size:11px;white-space:normal}
+#lamoneCard .lamone-official-link{display:flex;width:100%;justify-content:center;text-decoration:none;white-space:normal}
+#lamoneCard .river-decision p{white-space:normal;overflow:visible;text-overflow:clip;display:block;line-height:1.5}
+#lamoneCard .lamone-levels-panel .lamone-places{width:100%;max-width:100%;align-items:flex-start}
+#lamoneCard .lamone-levels-panel .lamone-places span{max-width:100%;white-space:normal}
 </style></head>
 <body>
 <main class="app">
@@ -301,12 +309,12 @@
 <p id="basinText">Qui trovi gli accumuli stimati dal modello meteo per la zona a monte selezionata.</p>
 <div class="river-values"><span>1h <b id="basin1h">-- mm</b></span><span>3h <b id="basin3h">-- mm</b></span><span>6h <b id="basin6h">-- mm</b></span></div>
 </div>
-<button aria-label="Apri andamento Lamone" class="river-chart interactive" id="riverChartBtn" type="button">
-<div class="river-chart-head"><b>Livelli del fiume</b><span id="sensorModeLabel">verifica misure ufficiali</span></div><p class="river-truth-note">Le stime di pioggia NON misurano il livello del Lamone. I punti sotto sono località di controllo, non letture in tempo reale.</p>
+<div class="river-chart lamone-levels-panel">
+<div class="river-chart-head"><b>Livelli del fiume</b><span id="sensorModeLabel">misure da verificare</span></div><p class="river-truth-note">Le stime di pioggia NON misurano il livello del Lamone. I punti sotto sono località di controllo, non letture in tempo reale.</p>
 <div class="lamone-places"><span>Marradi</span><span>Strada Casale</span><span>Sarna</span><span>Faenza</span><span>Reda</span><span>Pieve Cesato</span><span>Mezzano</span></div>
 <p class="lamone-sensor-hint">Percorso monte → valle · per livelli in metri, trend e orari apri i sensori ufficiali.</p>
-<div class="lamone-official-link">Apri dettagli e misure del Lamone ↗</div>
-</button>
+<a class="lamone-official-link" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener noreferrer">Consulta livelli ufficiali ↗</a>
+</div>
 <div class="river-detail hidden" id="riverDetail">
 <div class="river-detail-head"><b>Dettaglio percorso</b><button aria-label="Chiudi dettaglio Lamone" id="closeRiverDetail" type="button">×</button></div>
 <p id="riverDetailText">I dati pluviometrici sono stime modellistiche; per conoscere l’andamento reale del fiume consulta i sensori ufficiali.</p>
@@ -338,6 +346,6 @@
 <footer>Lamone RC36.1 · Dati pioggia modellistici, livelli fiume da fonti ufficiali.<br/>Aggiornato <span id="updated">--:--</span><br/>Meteo Conte 1.1 · RC35.4 · Manutenzione</footer>
 </main>
 <script crossorigin="" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=rc36-1"></script>
+<script src="app.js?v=rc36-2"></script>
 </body>
 </html>
