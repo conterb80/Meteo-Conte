@@ -692,7 +692,7 @@ async function fetchBasinRain(key, lat, lon){
   const res=await fetch(url,{cache:'no-store'});
   if(!res.ok) throw new Error('rain api');
   const data=await res.json();
-  const times=data.hourly.time.map(t=>new Date(t));
+  const times=data.hourly.time.map(t=>{const [day,hour]=t.split('T');const [yy,mm,dd]=day.split('-').map(Number);const [hh,mi]=hour.split(':').map(Number);return new Date(yy,mm-1,dd,hh,mi||0);}); // local time matching Europe/Rome on device
   const vals=data.hourly.precipitation||[];
   const now=new Date();
   const past=[];
@@ -730,30 +730,16 @@ function updateLamoneDecision(lam, mar){
   const drawerText=$('lamoneDrawerText');
   const drawerState=$('lamoneDrawerState');
   const drawerRain=$('lamoneDrawerRain');
-  if(drawerRain) drawerRain.textContent=`${Math.max(lam?.h6||0,mar?.h6||0).toFixed(1)} mm / 6h`;
-  if(drawerState) drawerState.textContent=state.level>=3?'criticità':state.level===2?'monitorare':state.level===1?'osservazione':'regolare';
-  if(drawerTitle) drawerTitle.textContent=state.level>=3?'Lamone in criticità':state.level===2?'Lamone da monitorare':state.level===1?'Lamone sotto osservazione':'Lamone';
-  if(drawerText) drawerText.textContent=state.level>=2?'Piogge significative a monte: apri il contenitore e segui sensori e onda verso valle.':state.level===1?'Primi accumuli a monte: il contenitore è pronto per un controllo rapido.':'Sensori, pioggia a monte e onda di piena.';
+  if(drawerRain) drawerRain.textContent=`${Math.max(lam?.h6||0,mar?.h6||0).toFixed(1)} mm / 6h (stima)`;
+  if(drawerState) drawerState.textContent=state.level>=2?'pioggia stimata forte':state.level===1?'pioggia da seguire':'livelli da verificare';
+  if(drawerTitle) drawerTitle.textContent='Lamone · pioggia a monte';
+  if(drawerText) drawerText.textContent='Stime di pioggia a monte. Livelli reali e allerte da verificare sulle fonti ufficiali.';
 
   updateSensorIntelligence(lam,mar);
 
-  if(state.level>=3){
-    if(titleEl) titleEl.textContent='Lamone in criticità';
-    if(descEl) descEl.textContent='Accumuli forti a monte: priorità a sensori, bollettini e percorso onda.';
-    if(decStrong) decStrong.textContent='Attenzione operativa';
-  }else if(state.level===2){
-    if(titleEl) titleEl.textContent='Lamone da monitorare';
-    if(descEl) descEl.textContent='Pioggia significativa a monte: segui sensori da Marradi verso valle.';
-    if(decStrong) decStrong.textContent='Monitoraggio consigliato';
-  }else if(state.level===1){
-    if(titleEl) titleEl.textContent='Lamone sotto osservazione';
-    if(descEl) descEl.textContent='Primi accumuli a monte: utile ricontrollare se la pioggia continua.';
-    if(decStrong) decStrong.textContent='Ricontrollo utile';
-  }else{
-    if(titleEl) titleEl.textContent='Lamone sotto controllo';
-    if(descEl) descEl.textContent='Bacini, Marzeno, sensori e onda verso valle in un solo colpo d’occhio.';
-    if(decStrong) decStrong.textContent='Situazione tranquilla';
-  }
+  if(titleEl)titleEl.textContent=state.level>=2?'Pioggia intensa stimata a monte':state.level===1?'Pioggia a monte da seguire':'Pioggia a monte · Lamone';
+  if(descEl)descEl.textContent='Stime Open-Meteo, non pluviometri. Livelli del fiume non acquisiti qui.';
+  if(decStrong)decStrong.textContent=state.level>=2?'Verifica sensori e allerte':'Controlla le stime e i livelli ufficiali';
   if(decText) decText.textContent=lamoneSmartMessage(lam,mar,state);
   updateControlBoxLamone(lam,mar,state);
 }
@@ -781,50 +767,21 @@ let sensorStatus={};
 function sensorStateFromRain(lam,mar){
   const max6=Math.max(lam?.h6||0,mar?.h6||0);
   const max3=Math.max(lam?.h3||0,mar?.h3||0);
-  const source=(lam?.h6||0)>=(mar?.h6||0)?'Lamone/Marradi':'Marzeno/Modigliana';
-  if(max6>=50 || max3>=30) return {level:3,color:'red',label:'Critico',active:3,wave:'criticità a monte',villanova:'monitorare',source};
-  if(max6>=25 || max3>=15) return {level:2,color:'yellow',label:'Attenzione',active:2,wave:'onda in formazione',villanova:'da seguire',source};
-  if(max6>=10 || max3>=8) return {level:1,color:'yellow',label:'In crescita',active:1,wave:'primi segnali a monte',villanova:'ricontrolla',source};
-  return {level:0,color:'green',label:'Normale',active:-1,wave:'nessuna anomalia',villanova:'tranquilla',source:'nessuno'};
+  const source=(lam?.h6||0)>=(mar?.h6||0)?'Marradi (alto Lamone)':'Modigliana (Marzeno)';
+  const level=max6>=50||max3>=30?3:max6>=25||max3>=15?2:max6>=10||max3>=8?1:0;
+  return {level,color:level>=3?'red':level>=1?'yellow':'green',label:level>=2?'Pioggia intensa stimata':level===1?'Pioggia da seguire':'Pioggia stimata contenuta',active:-1,wave:'livelli non verificati',villanova:'consulta allerte ufficiali',source};
 }
 function lamoneSmartMessage(lam,mar,state){
-  const l6=(lam?.h6||0).toFixed(1), m6=(mar?.h6||0).toFixed(1);
-  if(state.level>=3) return `Criticità possibile: accumuli forti su ${state.source}. Lamone ${l6} mm / Marzeno ${m6} mm nelle ultime 6h. Apri sensori, bollettini e segui il passaggio monte → Faenza → valle.`;
-  if(state.level===2) return `Monitoraggio consigliato: pioggia significativa su ${state.source}. Lamone ${l6} mm / Marzeno ${m6} mm nelle ultime 6h. Controlla Marradi, Sarna e Faenza.`;
-  if(state.level===1) return `Ricontrollo utile: primi accumuli a monte. Lamone ${l6} mm / Marzeno ${m6} mm nelle ultime 6h. Tieni d’occhio il trend se continua a piovere.`;
-  return `Situazione tranquilla: pioggia a monte bassa. Lamone ${l6} mm / Marzeno ${m6} mm nelle ultime 6h. Nessun segnale operativo sul percorso.`;
+  const l6=(lam?.h6||0).toFixed(1),m6=(mar?.h6||0).toFixed(1);
+  return `Stime ultime 6 ore: Marradi ${l6} mm, Modigliana ${m6} mm. ${state.level>=2?'Pioggia stimata significativa:':'Controlla se la pioggia prosegue:'} i livelli del fiume e le allerte vanno verificati sulle fonti ufficiali.`;
 }
 function updateSensorIntelligence(lam,mar){
-  const state=sensorStateFromRain(lam,mar);
-  SENSOR_ORDER.forEach((name,idx)=>{
-    let color='green', label='Normale', trend='→ stabile';
-    if(state.level>0){
-      if(idx===state.active){ color=state.color; label=state.label; trend=state.level>=2?'↗ in crescita':'↗ lieve'; }
-      else if(idx<state.active){ color='green'; label='Passato'; trend='→ controllo'; }
-      else { color='green'; label='Normale'; trend='→ attesa'; }
-    }
-    sensorStatus[name]={color,label,trend};
-    const ch=document.querySelector(`[data-sensor="${name}"]`);
-    if(ch){
-      ch.classList.remove('sensor-green','sensor-yellow','sensor-red');
-      ch.classList.add('sensor-'+color);
-      const dot=ch.querySelector('i'); if(dot) dot.className=color;
-      const sm=ch.querySelector('small'); if(sm) sm.textContent=label;
-    }
-  });
-  const wave=$('waveStatusLabel'); if(wave) wave.textContent=state.wave;
-  const activeName=state.active>=0?SENSOR_ORDER[state.active]:'nessuno';
-  const active=$('activeSensorLabel'); if(active) active.textContent=activeName;
-  const villa=$('villanovaStatusLabel'); if(villa) villa.textContent=state.villanova;
-  const dw=$('detailWaveState'); if(dw) dw.textContent=state.wave;
-  const da=$('detailActiveState'); if(da) da.textContent=activeName;
-  const dv=$('detailVillaState'); if(dv) dv.textContent=state.villanova;
+  // Non inventare stati dei sensori da dati di precipitazione modellistica.
+  SENSOR_ORDER.forEach(name=>{sensorStatus[name]={color:'unknown',label:'Da verificare',trend:'misura non acquisita'};});
+  const values={waveStatusLabel:'non verificata',activeSensorLabel:'nessuna misura',villanovaStatusLabel:'consulta allerte',detailWaveState:'non acquisiti',detailActiveState:'da verificare',detailVillaState:'consulta allerte'};
+  for(const [id,v] of Object.entries(values)){const el=$(id);if(el)el.textContent=v;}
   const text=$('riverDetailText');
-  if(text && !text.dataset.manualSensor){
-    text.textContent=state.level>0
-      ? `Decisione Conte 2.0: segnale su ${state.source}. Segui il percorso ${activeName} → Faenza → valle e confronta con bollettini ufficiali.`
-      : 'Decisione Conte 2.0: nessuna anomalia su pioggia a monte e percorso Lamone. Continua il controllo normale.';
-  }
+  if(text&&!text.dataset.manualSensor)text.textContent='I livelli idrometrici non sono acquisiti automaticamente in questa sezione. Consulta i sensori ufficiali per valori, orari e andamento reale.';
 }
 
 const SENSOR_META={
@@ -841,7 +798,7 @@ function openSensorDetail(name){
   const m=SENSOR_META[name]||{};
   const title=d.querySelector('.river-detail-head b'); if(title) title.textContent='Sensore '+name;
   const text=$('riverDetailText');
-  const st=(sensorStatus && sensorStatus[name]) || {label:'Normale',color:'green',trend:'→ stabile'};
+  const st=(sensorStatus && sensorStatus[name]) || {label:'Da verificare',color:'unknown',trend:'misura non acquisita'};
   if(text){ text.dataset.manualSensor='1'; text.textContent=`${m.order||''} · ${m.role||'Sensore Lamone'}. ${m.phase||'Punto del percorso monte → valle'}. Stato operativo: ${st.label} · ${st.trend}. Link ufficiale sempre disponibile da Dettagli Lamone.`; }
   const vals=d.querySelectorAll('.propagation-values');
   if(vals[0]) vals[0].innerHTML=`<span>Posizione <b>${m.order||'--'}</b></span><span>Stato <b>${st.label}</b></span><span>Trend <b>${st.trend}</b></span>`;
