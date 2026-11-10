@@ -10,11 +10,7 @@
 <div class="rain"><div class="place">Alto Lamone · Marradi</div><div class="big" id="m24">— mm</div><small>ultime 24 ore</small><div class="next" id="mf12">Prossime 12h: —</div><div class="note" id="mstamp"></div></div>
 <div class="rain"><div class="place">Marzeno · Modigliana</div><div class="big" id="z24">— mm</div><small>ultime 24 ore</small><div class="next" id="zf12">Prossime 12h: —</div><div class="note" id="zstamp"></div></div></div>
 <details><summary>Mostra accumuli 6 / 12 / 48 ore e andamento orario</summary><div id="moreRain">Dati in caricamento…</div><div class="bars" id="bars" aria-label="Pioggia oraria stimata a Marradi"></div><div class="times"><span>24 ore fa</span><span>Ora</span></div><p class="note">I valori 6, 12, 24 e 48 ore sono finestre sovrapposte: non vanno sommati. Due punti non rappresentano la media dell'intero bacino.</p></details></section>
-<section class="card"><div class="row"><h2>Come si muove il fiume?</h2><span class="pill">Misure da collegare</span></div><p class="muted" style="font-size:13px">Questa anteprima non riceve ancora le serie idrometriche ufficiali. Nessuna tendenza è dedotta dalle stime di pioggia.</p><div id="stations">
-<div class="row line"><span>Marradi</span><span class="pill">Livello non disponibile</span></div>
-<div class="row line"><span>Strada Casale</span><span class="pill">Livello non disponibile</span></div>
-<div class="row line"><span>Sarna / Faenza</span><span class="pill">Livello non disponibile</span></div>
-<div class="row line"><span>Reda / Pieve Cesato / Mezzano</span><span class="pill">Livello non disponibile</span></div></div>
+<section class="card"><div class="row"><h2>Come si muove il fiume?</h2><span class="pill" id="riverSource">ARPAE · caricamento</span></div><p class="muted" style="font-size:13px">Livelli e trend ricavati dalle serie temporali del portale Allerta Meteo Emilia-Romagna. Gli orari e i dati mancanti sono mostrati esplicitamente.</p><div id="stations" aria-live="polite"><p class="muted">Lettura dei livelli ufficiali in corso…</p></div>
 <a class="button" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener noreferrer">Consulta livelli idrometrici ufficiali ↗</a></section>
 <section class="card"><h2>Verso Villanova</h2><p>Per seguire un rialzo verso valle servono misure consecutive di livello e orario nelle stazioni ufficiali. Non è possibile calcolare in modo attendibile un orario di arrivo della piena con i soli dati disponibili qui.</p><a href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener noreferrer">Consulta allerte e bollettini regionali ↗</a></section>
 <p class="note">Versione sperimentale isolata: nessuna modifica all'app pubblicata. I dati Open-Meteo sono stime modellistiche e non sostituiscono il monitoraggio ufficiale.</p>
@@ -49,5 +45,64 @@ async function load(){
  $('moreRain').textContent=[['Marradi',m],['Modigliana',z]].map(([name,d])=>d?name+': 6h '+mm(d.h6)+' · 12h '+mm(d.h12)+' · 48h '+mm(d.h48):name+': dati non disponibili').join(' | ');
  const series=m?.series||[];const max=Math.max(1,...series);$('bars').replaceChildren(...series.map(v=>{const e=document.createElement('span');e.style.height=Math.max(3,Math.round(100*v/max))+'%';e.title=mm(v);return e;}));
 }
+
+const HYDRO='https://allertameteo.regione.emilia-romagna.it/o/api/allerta/';
+const VAR='254,0,0/1,-,-,-/B13215';
+const STATIONS=[['Marradi','3037'],['Strada Casale','3217'],['Modigliana','3195'],['Sarna','3214'],['Faenza','3189'],['Reda','3204'],['Pieve Cesato','3200'],['Mezzano','3194']];
+async function hydroJson(url){const c=new AbortController(),t=setTimeout(()=>c.abort(),13000);try{const r=await fetch(url,{signal:c.signal,cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}}
+function timeStr(ms){return new Date(ms).toLocaleString('it-IT',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}
+function cmTrend(points,now,hours){
+ const before=points.filter(p=>p.t<=now-hours*3600000).at(-1);
+ const last=points.at(-1);
+ if(!before||!last||Math.abs((now-hours*3600000)-before.t)>60*60000)return null;
+ return Math.round((last.v-before.v)*100);
+}
+function stationNode(name,live,series){
+ const row=document.createElement('div');row.className='line';
+ const header=document.createElement('div');header.className='row';
+ const label=document.createElement('strong');label.textContent=name;header.append(label);
+ const value=document.createElement('strong');value.textContent=Number.isFinite(live?.value)?Number(live.value).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})+' m':'Misura assente';header.append(value);row.append(header);
+ const points=Array.isArray(series)?series.filter(p=>Number.isFinite(p.t)&&Number.isFinite(p.v)).sort((a,b)=>a.t-b.t):[];
+ const last=points.at(-1),age=last?(Date.now()-last.t)/60000:Infinity;
+ const info=document.createElement('p');info.className='note';
+ if(!last||age>120){info.textContent='Trend non disponibile · misura storica assente o vecchia'+(last?' (ultima: '+timeStr(last.t)+')':'');}
+ else{
+  const t1=cmTrend(points,last.t,1),t3=cmTrend(points,last.t,3);
+  const trend=v=>v===null?'n.d.':(v>0?'+':'')+v+' cm';
+  info.textContent='1h '+trend(t1)+' · 3h '+trend(t3)+' · ultima misura '+timeStr(last.t);
+ }
+ row.append(info);
+ if(Number.isFinite(live?.soglia1)&&Number.isFinite(live?.value)){
+  const p=document.createElement('p');p.className='note';p.textContent='Prima soglia ufficiale: '+Number(live.soglia1).toLocaleString('it-IT')+' m'+(live.value>=live.soglia1?' · superata':'');row.append(p);
+ }
+ if(points.length>3){
+  const canvas=document.createElement('canvas');canvas.width=620;canvas.height=86;canvas.style.cssText='display:block;width:100%;height:70px;margin-top:8px';canvas.setAttribute('aria-label','Grafico dei livelli osservati per '+name);
+  const ctx=canvas.getContext('2d'),recent=points.filter(p=>p.t>=points.at(-1).t-24*3600000);
+  const v=recent.map(p=>p.v),lo=Math.min(...v),hi=Math.max(...v),range=Math.max(.05,hi-lo);
+  ctx.strokeStyle='#6bd4ed';ctx.lineWidth=3;ctx.beginPath();
+  recent.forEach((p,i)=>{const x=8+i/Math.max(1,recent.length-1)*604,y=78-(p.v-lo)/range*66;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();row.append(canvas);
+ }
+ return row;
+}
+async function loadHydro(){
+ $('riverSource').textContent='ARPAE · aggiornamento…';
+ try{
+  const ts=Date.now(),query=new URLSearchParams({variabile:VAR,time:String(ts)});
+  const all=await hydroJson(HYDRO+'get-sensor-values?'+query);
+  if(!Array.isArray(all))throw Error('Formato stazioni inatteso');
+  const parent=$('stations');parent.replaceChildren();
+  let ok=0;
+  for(const [name,id] of STATIONS){
+   const live=all.find(x=>String(x.idstazione)===id);
+   let series=[];
+   try{series=await hydroJson(HYDRO+'get-time-series/?'+new URLSearchParams({stazione:id,variabile:VAR}));}catch(e){console.warn('Storico non disponibile',name,e)}
+   if(Number.isFinite(live?.value))ok++;
+   parent.append(stationNode(name,live,series));
+  }
+  $('riverSource').textContent='ARPAE · '+ok+'/'+STATIONS.length+' misure';
+ }catch(e){$('riverSource').textContent='Livelli non disponibili';$('stations').textContent='Non riesco a leggere i sensori ufficiali: '+e.message+'. Apri il portale regionale tramite il pulsante.'}
+}
+loadHydro();setInterval(()=>{if(!document.hidden)loadHydro()},15*60000);
+
 load();document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});setInterval(()=>{if(!document.hidden)load()},600000);
 </script></body></html>
