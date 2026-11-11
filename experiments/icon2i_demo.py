@@ -25,6 +25,11 @@ path=OUT/"precip.grib";path.write_bytes(data)
 frames=[];metadata=[];previous=None;previous_step=None;previous_lats=None;previous_lons=None
 # Crop north-central Italy; fit Romagna, Ravenna and surroundings
 latmin,latmax,lonmin,lonmax=43.55,45.35,10.75,13.35
+# Leaflet imageOverlay uses Web Mercator: use the same vertical projection.
+def mercator_y(lat):
+ rad=np.deg2rad(lat)
+ return np.log(np.tan(np.pi/4+rad/2))
+y_north=mercator_y(latmax);y_south=mercator_y(latmin)
 with path.open("rb") as f:
  for idx in range(150):
   gid=eccodes.codes_grib_new_from_file(f)
@@ -67,7 +72,7 @@ with path.open("rb") as f:
     v=max(0,float(hourly[j]))
     if v<0.1:continue
     x=int((lons[j]-lonmin)/(lonmax-lonmin)*(w-1))
-    y=int((latmax-lats[j])/(latmax-latmin)*(h-1))
+    y=int((y_north-mercator_y(lats[j]))/(y_north-y_south)*(h-1))
     color=(52,180,245,135) if v<1 else (44,218,116,175) if v<5 else (246,206,51,190) if v<15 else (236,80,73,210)
     px.ellipse((x-7,y-7,x+7,y+7),fill=color)
    image=image.filter(ImageFilter.GaussianBlur(radius=3))
