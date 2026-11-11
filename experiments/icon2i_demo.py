@@ -61,6 +61,18 @@ with path.open("rb") as f:
    if negative:
     raise RuntimeError(f"Accumuli TOT_PREC decrescenti in {negative} punti tra {previous_step} e {step}; differenza oraria non affidabile")
    hourly=np.maximum(delta,0)
+   # Audit on original GRIB grid, before any smoothing or drawing.
+   reconstruction_error=float(np.max(np.abs((previous[mask]+hourly[mask])-vals[mask])))
+   if not np.isfinite(reconstruction_error) or reconstruction_error>0.010001:
+    raise RuntimeError(f"Errore ricostruzione cumulati tra {previous_step} e {step}: {reconstruction_error}")
+   if not np.all(np.isfinite(hourly[mask])):
+    raise RuntimeError(f"Valori orari non finiti al passo {step}")
+   audit={"previousStep":previous_step,"stepHours":step_hours,
+          "negativePoints":negative,"reconstructionMaxErrorMm":round(reconstruction_error,6),
+          "hourlyMeanMm":round(float(np.mean(hourly[mask])),4),
+          "hourlyMaxMm":round(float(np.max(hourly[mask])),4),
+          "wetPoints":int(np.count_nonzero(hourly[mask]>=0.1)),
+          "gridPoints":int(mask.sum()),"projection":"EPSG:3857"}
    previous=vals.copy();previous_step=step_hours;previous_lats=lats.copy();previous_lons=lons.copy()
    # Render hourly precipitation (mm/1h), not cumulative values
    w,h=900,650
@@ -77,7 +89,7 @@ with path.open("rb") as f:
     px.ellipse((x-7,y-7,x+7,y+7),fill=color)
    image=image.filter(ImageFilter.GaussianBlur(radius=3))
    filename=f"frame-{len(frames):03}.png";image.save(OUT/filename,optimize=True)
-   frames.append(filename);metadata.append({"step":str(step),"validityDate":str(key("validityDate","")),"validityTime":str(key("validityTime","")),"points":int(mask.sum()),"max":round(float(np.nanmax(hourly[mask])),2),"unit":"mm/1h"})
+   frames.append(filename);metadata.append({"step":str(step),"validityDate":str(key("validityDate","")),"validityTime":str(key("validityTime","")),"points":int(mask.sum()),"max":round(float(np.nanmax(hourly[mask])),2),"unit":"mm/1h","audit":audit})
    print("frame",len(frames),metadata[-1],flush=True)
    if len(frames)>=12:break
   finally:eccodes.codes_release(gid)
