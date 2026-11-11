@@ -23,6 +23,7 @@ a{color:#8bdaff}
 <section id="intro" class="panel hidden"><h2>Anteprima integrata</h2><p>Questa è la schermata sperimentale di Meteo Conte. La scheda ICON-2I usa dati previsionali aggiornati pubblicati nel ramo di prova.</p><p>Non è un radar in tempo reale e non rappresenta pioggia osservata.</p></section>
 <section id="forecast" class="panel"><div id="map"></div>
 <div class="controls"><button id="viewItaly" type="button">🗺️ Nord e Centro Italia</button><button id="viewRomagna" type="button">📍 Romagna</button></div>
+<div class="controls"><button id="horizon3" type="button" aria-pressed="true">+3 ore</button><button id="horizon6" type="button" aria-pressed="false">+6 ore</button></div>
 <div class="controls"><button id="play">▶ Play</button><input id="seek" type="range" min="0" max="0" value="0" aria-label="Ora di previsione"><span id="time">--:--</span></div>
 <div class="legend"><span><i style="background:#34b4f5"></i>Debole</span><span><i style="background:#2cda74"></i>Moderata</span><span><i style="background:#f6ce33"></i>Forte</span><span><i style="background:#ec5049"></i>Molto forte</span></div>
 <p id="status">Caricamento previsione...</p><small>Fonte: Agenzia ItaliaMeteo, ICON-2I, TOT_PREC · differenze tra cumulati (mm/1h). Mappa sperimentale © OpenStreetMap contributors.</small></section>
@@ -31,7 +32,7 @@ a{color:#8bdaff}
 (()=>{'use strict';
 const base='https://raw.githubusercontent.com/conterb80/Meteo-Conte/icon2i-preview-pages/';
 const status=document.getElementById('status'),seek=document.getElementById('seek'),play=document.getElementById('play'),time=document.getElementById('time');
-let map,layer,data,index=0,timer=null;
+let map,layer,data,index=0,timer=null,horizon=3,windowStart=0,windowEnd=0;
 function stop(){if(timer){clearInterval(timer);timer=null;}play.textContent='▶ Play';}
 function tab(show){document.getElementById('intro').classList.toggle('hidden',show);document.getElementById('forecast').classList.toggle('hidden',!show);document.getElementById('tabInfo').setAttribute('aria-selected',String(!show));document.getElementById('tabMap').setAttribute('aria-selected',String(show));if(show&&map)setTimeout(()=>map.invalidateSize(),50);}
 document.getElementById('tabInfo').onclick=()=>{stop();tab(false)};document.getElementById('tabMap').onclick=()=>tab(true);
@@ -44,20 +45,23 @@ document.getElementById('viewItaly').onclick=()=>map.fitBounds(wideBounds,{paddi
 document.getElementById('viewRomagna').onclick=()=>map.setView([44.42,11.98],9);
 function validUtc(m){const d=String(m.validityDate),t=String(m.validityTime).padStart(4,'0');return Date.UTC(+d.slice(0,4),+d.slice(4,6)-1,+d.slice(6,8),+t.slice(0,2),+t.slice(2));}
 function firstFutureFrame(d){const now=Date.now();const found=d.metadata.findIndex(m=>validUtc(m)>=now);return found;}
+function setHorizon(hours){horizon=hours;stop();document.getElementById('horizon3').setAttribute('aria-pressed',String(hours===3));document.getElementById('horizon6').setAttribute('aria-pressed',String(hours===6));if(!data)return;const first=firstFutureFrame(data);if(first<0){status.textContent='⚠️ Nessuna previsione futura disponibile.';return;}windowStart=first;windowEnd=Math.min(data.frames.length-1,first+hours-1);seek.min=windowStart;seek.max=windowEnd;index=windowStart;draw();}
+document.getElementById('horizon3').onclick=()=>setHorizon(3);
+document.getElementById('horizon6').onclick=()=>setHorizon(6);
 function draw(){if(!data)return;const m=data.metadata[index];if(layer)map.removeLayer(layer);
 layer=L.imageOverlay(base+data.frames[index]+'?run='+encodeURIComponent(data.run),data.bounds||legacyBounds,{opacity:.78,interactive:false}).addTo(map);
 seek.value=index;const d=String(m.validityDate),t=String(m.validityTime).padStart(4,'0');
 const utc=new Date(Date.UTC(+d.slice(0,4),+d.slice(4,6)-1,+d.slice(6,8),+t.slice(0,2),+t.slice(2)));
 time.textContent=new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(utc);
-status.textContent=(validUtc(m)<Date.now()?'⚠️ ORA PASSATA · ':'PREVISIONE FUTURA · ')+'Run '+data.run+' · fotogramma '+(index+1)+'/'+data.frames.length+' · +'+m.step+' ore · pioggia prevista (mm/1h)';
+status.textContent=(validUtc(m)<Date.now()?'⚠️ ORA PASSATA · ':'PREVISIONE FUTURA · ')+'Orizzonte +'+horizon+'h · ora '+(index-windowStart+1)+'/'+(windowEnd-windowStart+1)+' · Run '+data.run+' · pioggia prevista (mm/1h)';
 }
 seek.oninput=()=>{index=+seek.value;draw()};
-play.onclick=()=>{if(!data)return;if(timer){stop();return;}const first=firstFutureFrame(data);if(first<0){status.textContent='⚠️ Nessuna previsione futura disponibile: attendere il prossimo aggiornamento.';return;}if(index<first||index>=data.frames.length-1)index=first;draw();timer=setInterval(()=>{const next=firstFutureFrame(data);if(next<0){stop();status.textContent='⚠️ Previsione scaduta: attendere aggiornamento.';return;}index=Math.max(index+1,next);if(index>=data.frames.length){stop();index=data.frames.length-1;draw();return;}draw();},1100);play.textContent='⏸ Pausa';};
+play.onclick=()=>{if(!data)return;if(timer){stop();return;}const first=firstFutureFrame(data);if(first<0){status.textContent='⚠️ Nessuna previsione futura disponibile.';return;}if(first!==windowStart)setHorizon(horizon);if(index>=windowEnd)index=windowStart;draw();if(windowEnd===windowStart)return;timer=setInterval(()=>{if(index>=windowEnd){stop();return;}index++;draw();if(index>=windowEnd)stop();},2500);play.textContent='⏸ Pausa';};
 fetch(base+'data.json?check='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(d=>{
 if(!Array.isArray(d.frames)||d.frames.length<24||d.frames.length!==d.metadata?.length)throw Error('Sequenza futura incompleta o dati vecchi: richiesti almeno 24 fotogrammi');
 if(d.rendererVersion!=='icon2i-future-v2')throw Error('Versione previsionale vecchia: attendere aggiornamento');
 if(!d.metadata.every(m=>m.unit==='mm/1h'&&m.audit?.projection==='EPSG:3857'&&m.audit?.negativePoints===0&&m.audit?.reconstructionMaxErrorMm<=0.010001))throw Error('Controlli GRIB non superati');
-data=d;const future=firstFutureFrame(d);seek.min=future>=0?future:0;seek.max=d.frames.length-1;index=future>=0?future:d.frames.length-1;draw();if(future<0){stop();status.textContent='⚠️ PREVISIONE SCADUTA: non ci sono ore future disponibili. Attendere aggiornamento automatico.';}if(d.bounds)map.fitBounds(d.bounds,{padding:[8,8]});
+data=d;const future=firstFutureFrame(d);if(future>=0)setHorizon(3);else{index=d.frames.length-1;seek.min=index;seek.max=index;draw();}if(future<0){stop();status.textContent='⚠️ PREVISIONE SCADUTA: non ci sono ore future disponibili. Attendere aggiornamento automatico.';}if(d.bounds)map.fitBounds(d.bounds,{padding:[8,8]});
 }).catch(e=>{status.textContent='Dati non disponibili o non validati: '+e.message;});
 })();
 </script></body></html>
