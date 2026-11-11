@@ -80,6 +80,8 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 .stage-item span{font-size:12px;color:#b0bdc7;display:block;margin-top:4px;line-height:1.45}
 @media(min-width:560px){.stage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:370px){.basin-streams{gap:6px}.stream-lane{padding:10px 6px}.stream-lane .sensor{padding:10px 7px}.stream-lane .sensor-name{font-size:14px}.stream-lane .sensor-level{font-size:22px}}
+.refresh-toolbar{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:13px}.refresh-toolbar button{font:inherit;font-size:12px;font-weight:750;color:#e0faff;background:#205366;border:1px solid #508297;border-radius:10px;padding:9px 13px;cursor:pointer}.refresh-toolbar button:disabled{opacity:.5;cursor:default}.refresh-toolbar button:focus-visible{outline:2px solid #8be0ff}
+.sensor-extremes{font-size:11px;color:#9ecbd6;margin-top:6px;line-height:1.5}.sensor.empty .sensor-level{color:#a3aeba}.spark[aria-label]{overflow:visible}
 </style>
 </head><body><main>
 <div class="eyebrow">Meteo Conte · Bacino del Lamone</div>
@@ -88,6 +90,7 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 <section class="card" aria-live="polite">
  <div class="intro"><div><div class="kicker">Quadro di monitoraggio</div><p id="status">Controllo delle fonti in corso…</p></div><span class="pill blue" id="update"><i class="dot"></i> In aggiornamento</span></div>
  <p class="small" id="availability">Le misure sono indicative e vanno confrontate con le comunicazioni ufficiali.</p>
+ <div class="refresh-toolbar"><button type="button" id="refresh-now">↻ Aggiorna dati</button><span class="small">Aggiornamento ogni 15 minuti con la pagina aperta</span></div>
 </section>
 <a class="link quicklink" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener noreferrer">↗ Apri tutti i sensori Lamone · Protezione Civile Calderara</a>
 <p class="small" style="margin:5px 3px 16px">Pagina unica con grafici dei sensori · dati regionali elaborati dai volontari.</p>
@@ -152,7 +155,7 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 </section>
 <a class="link" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener noreferrer">Allerte, previsioni e bollettini della Regione ↗</a>
 <a class="link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener noreferrer">Pagina unica di tutti i sensori Lamone ↗</a>
-<p class="footnote">Versione di verifica Lamone V3 · Le misure delle reti sono provvisorie e non validate. Il dato assente, incompleto o vecchio non viene mai trasformato in uno stato di sicurezza. Il dato modellistico è segnalato come stima. Nessun codice colore di questa schermata costituisce un'allerta di Protezione Civile.</p>
+<p class="footnote">Versione di verifica Lamone V3.2 · Le misure delle reti sono provvisorie e non validate. Il dato assente, incompleto o vecchio non viene mai trasformato in uno stato di sicurezza. Il dato modellistico è segnalato come stima. Nessun codice colore di questa schermata costituisce un'allerta di Protezione Civile.</p>
 </main><script>
 'use strict';
 const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
@@ -185,8 +188,12 @@ function station(list,name){
  null;
 }
 function points(raw){
- return Array.isArray(raw)?raw.map(x=>({t:Number(x.t),v:Number(x.v)}))
- .filter(x=>Number.isFinite(x.t)&&x.t>1000000000000&&x.t<=Date.now()+600000&&Number.isFinite(x.v)).sort((a,b)=>a.t-b.t):[];
+ // Null o stringa vuota non devono MAI diventare 0: in idrologia uno zero falso può essere pericoloso.
+ return Array.isArray(raw)?raw.filter(x=>x&&x.t!==null&&x.t!==undefined&&x.v!==null&&x.v!==undefined&&String(x.v).trim()!=='')
+ .map(x=>({t:Number(x.t),v:Number(x.v)}))
+ .filter(x=>Number.isFinite(x.t)&&x.t>1000000000000&&x.t<=Date.now()+600000&&Number.isFinite(x.v))
+ .sort((a,b)=>a.t-b.t)
+ .filter((x,i,a)=>i===a.length-1||x.t!==a[i+1].t):[];
 }
 function validLatest(arr,maxMin=120){
  const x=arr.at(-1);return x&&Date.now()-x.t>=-600000&&Date.now()-x.t<=maxMin*60000?x:null;
@@ -206,13 +213,13 @@ function spark(id,arr,color='#57a9d2',filled=true){
  let poly=document.createElementNS(NS,'polyline');poly.setAttribute('points',ps);poly.setAttribute('fill','none');poly.setAttribute('stroke',color);poly.setAttribute('stroke-width','2.8');poly.setAttribute('stroke-linecap','round');poly.setAttribute('stroke-linejoin','round');el.append(poly);
 }
 function renderSensor(parent,s,live,arr){
- const current=validLatest(arr),fallback=live?.value===null||live?.value===undefined?NaN:Number(live.value);
+ const current=validLatest(arr),fallback=live?.value===null||live?.value===undefined||String(live.value).trim()===''?NaN:Number(live.value);
  const value=current?.v??(Number.isFinite(fallback)?fallback:NaN),d1=delta(arr,1),d3=delta(arr,3);
  const one=Number.isFinite(d1)?(d1>0?'+':'')+d1+' cm':'n.d.';
  const three=Number.isFinite(d3)?(d3>0?'+':'')+d3+' cm':'n.d.';
  const trendClass=!Number.isFinite(d1)?'flat':d1>=3?'up':d1<=-3?'down':'flat';
  const trendLabel=!Number.isFinite(d1)?'trend non disponibile':d1>=3?'↑ in aumento':d1<=-3?'↓ in calo':'→ stabile';
- const card=document.createElement('article');card.className='sensor';
+ const card=document.createElement('article');card.className='sensor'+(!current?' empty':'');
  const top=document.createElement('div');top.className='sensor-top';
  const text=document.createElement('div'),name=document.createElement('div');name.className='sensor-name';name.textContent=s.name;
  const route=document.createElement('div');route.className='sensor-route';route.textContent=s.route;text.append(name,route);
@@ -224,6 +231,13 @@ function renderSensor(parent,s,live,arr){
  history.id='chart-'+normal(s.name).replace(/\s+/g,'-');card.append(history);
  const stamp=document.createElement('div');stamp.className='stamp';stamp.textContent=current?'Ultima misura '+time(current.t):arr.length?'Serie non recente · ultima '+time(arr.at(-1).t):Number.isFinite(fallback)?'Valore disponibile senza orario verificabile; trend non utilizzabile':'Misura non disponibile';
  card.append(stamp);
+ const values24=arr.filter(x=>x.t>=Date.now()-24*3600000);
+ if(values24.length>=3){
+  const extrema=document.createElement('div');extrema.className='sensor-extremes';
+  const vs=values24.map(x=>x.v);
+  extrema.textContent='Ultime 24h · min '+fmt(Math.min(...vs),2)+' m · max '+fmt(Math.max(...vs),2)+' m';
+  card.append(extrema);
+ }
  const thresholds=[live?.soglia1,live?.soglia2,live?.soglia3].map(v=>v===null||v===undefined?NaN:Number(v));
  if(thresholds.every(x=>Number.isFinite(x)&&x>0)){
   const line=document.createElement('div');line.className='threshold';
@@ -316,15 +330,26 @@ async function hydro(){
  }
 }
 function windowRain(arr,h){
- const cutoff=Date.now()-h*3600000,found=arr.filter(x=>x.t>cutoff&&x.t<=Date.now()&&x.v>=0&&x.v<=300);
- if(found.length<Math.max(2,Math.floor(h*.7)))return null;
- return found.reduce((n,x)=>n+x.v,0);
+ // La variabile B13011/1h è precipitazione oraria: seleziona una sola lettura per ora.
+ // Non sommare letture ripetute sub-orarie, né dichiarare cumulati con grandi buchi.
+ const now=Date.now(),cutoff=now-h*3600000;
+ const slots=new Map();
+ for(const x of arr){
+  if(x.t<=cutoff||x.t>now||!Number.isFinite(x.v)||x.v<0||x.v>300)continue;
+  const hour=Math.floor(x.t/3600000);
+  const prior=slots.get(hour);
+  if(!prior||x.t>prior.t)slots.set(hour,x);
+ }
+ const hourly=[...slots.values()].sort((a,b)=>a.t-b.t);
+ if(hourly.length<Math.ceil(h*.90))return null;
+ if(hourly.length>=2&&hourly.some((x,i)=>i>0&&x.t-hourly[i-1].t>1.8*3600000))return null;
+ return hourly.reduce((n,x)=>n+x.v,0);
 }
 async function model(lat,lon){
- const url='https://api.open-meteo.com/v1/forecast?'+new URLSearchParams({latitude:String(lat),longitude:String(lon),hourly:'precipitation',past_days:'3',forecast_days:'1',timezone:'Europe/Rome'});
+ const url='https://api.open-meteo.com/v1/forecast?'+new URLSearchParams({latitude:String(lat),longitude:String(lon),hourly:'precipitation',past_days:'3',forecast_days:'1',timezone:'Europe/Rome',timeformat:'unixtime'});
  let raw=await json(url);if(!raw.hourly||!Array.isArray(raw.hourly.time))throw Error('Dati modello non disponibili');
  const ts=raw.hourly.time,v=raw.hourly.precipitation;
- return points(ts.map((s,i)=>({t:new Date(s).getTime(),v:v[i]===null?NaN:Number(v[i])})));
+ return points(ts.map((epoch,i)=>({t:Number(epoch)*1000,v:v[i]})));
 }
 function renderRain(idPrefix,data,observed,sourceName){
  for(let h of [6,12,24,48]){
@@ -333,7 +358,7 @@ function renderRain(idPrefix,data,observed,sourceName){
   else el.textContent=val===null?'—':fmt(val)+' mm';
  }
  const label=$(idPrefix+'type');label.className='pill '+(observed?'blue':'amber');
- label.textContent=observed?'● Pluviometro · rilevato':'◌ Stima modellistica';
+ label.textContent=observed?'● Pluviometro · rilevato':'◌ '+(data.length?'Stima modellistica':'Nessun dato disponibile');
  const last=data.at(-1),age=last?Math.round((Date.now()-last.t)/60000):null;
  $(idPrefix+'stamp').textContent='Fonte: '+sourceName+' · '+(last?'ora '+time(last.t)+(age>120?' · dato non recente':''):'dato non disponibile')+(observed?' · dati provvisori':' · non è una misura al suolo');
  spark(idPrefix+'chart',data.filter(x=>x.t>=Date.now()-24*3600000).map(x=>x.v),observed?'#4db3e5':'#d0a269');
@@ -362,12 +387,20 @@ async function rain(){
 }
 let working=false;
 async function refresh(){
- if(working)return;working=true;
- $('update').textContent='In aggiornamento';
- await Promise.allSettled([hydro(),rain()]);
- $('update').textContent='Verificato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
- working=false;reportHeight();
+ if(working)return;
+ working=true;
+ $('refresh-now').disabled=true;
+ $('update').textContent='Lettura in corso…';
+ try{
+  await Promise.allSettled([hydro(),rain()]);
+  $('update').textContent='Controllo '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+ }finally{
+  working=false;
+  $('refresh-now').disabled=false;
+  reportHeight();
+ }
 }
+$('refresh-now').addEventListener('click',refresh);
 function reportHeight(){
  if(window.parent===window)return;
  window.parent.postMessage({type:'meteo-conte-lamone-height',height:Math.ceil(document.documentElement.scrollHeight)},window.location.origin)
