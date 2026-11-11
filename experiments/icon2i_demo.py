@@ -104,7 +104,7 @@ with path.open("rb") as f:
   finally:eccodes.codes_release(gid)
 path.unlink()
 if len(frames)<2:raise RuntimeError(f"Fotogrammi insufficienti: {len(frames)}")
-(OUT/"data.json").write_text(json.dumps({"run":run,"source":url,"bounds":[[latmin,lonmin],[latmax,lonmax]],"frames":frames,"metadata":metadata},indent=2),encoding="utf8")
+(OUT/"data.json").write_text(json.dumps({"run":run,"source":url,"rendererVersion":"icon2i-feather-v1","bounds":[[latmin,lonmin],[latmax,lonmax]],"frames":frames,"metadata":metadata},indent=2),encoding="utf8")
 html="""<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meteo Conte · ICON-2I · Demo cartografica</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>body{margin:0;background:#0d1828;color:#edf5ff;font:16px system-ui}main{max-width:960px;margin:auto;padding:14px}h1{font-size:22px;margin:8px 0}p{line-height:1.45;color:#c1d4e4}.map{height:min(68vh,600px);min-height:350px;border-radius:14px;border:1px solid #41627c;overflow:hidden;background:#203d4a}.controls{display:flex;gap:10px;align-items:center;margin:16px 0}button{background:#2382bc;color:white;border:0;border-radius:8px;padding:12px 16px;font-size:16px}input{flex:1;min-width:40px}small{color:#b5c7d9}.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:#dceaf6}.swatch{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px}.leaflet-container{background:#183449}</style></head>
