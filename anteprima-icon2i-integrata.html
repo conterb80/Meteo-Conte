@@ -42,19 +42,21 @@ const legacyBounds=[[43.55,10.75],[45.35,13.35]];
 const wideBounds=[[42.25,8.25],[46.65,15.25]];
 document.getElementById('viewItaly').onclick=()=>map.fitBounds(wideBounds,{padding:[8,8]});
 document.getElementById('viewRomagna').onclick=()=>map.setView([44.42,11.98],9);
+function validUtc(m){const d=String(m.validityDate),t=String(m.validityTime).padStart(4,'0');return Date.UTC(+d.slice(0,4),+d.slice(4,6)-1,+d.slice(6,8),+t.slice(0,2),+t.slice(2));}
+function firstFutureFrame(d){const now=Date.now();const found=d.metadata.findIndex(m=>validUtc(m)>=now);return found;}
 function draw(){if(!data)return;const m=data.metadata[index];if(layer)map.removeLayer(layer);
 layer=L.imageOverlay(base+data.frames[index]+'?run='+encodeURIComponent(data.run),data.bounds||legacyBounds,{opacity:.78,interactive:false}).addTo(map);
 seek.value=index;const d=String(m.validityDate),t=String(m.validityTime).padStart(4,'0');
 const utc=new Date(Date.UTC(+d.slice(0,4),+d.slice(4,6)-1,+d.slice(6,8),+t.slice(0,2),+t.slice(2)));
 time.textContent=new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(utc);
-status.textContent='Run '+data.run+' · fotogramma '+(index+1)+'/'+data.frames.length+' · +'+m.step+' ore · pioggia prevista (mm/1h)';
+status.textContent=(validUtc(m)<Date.now()?'⚠️ ORA PASSATA · ':'PREVISIONE FUTURA · ')+'Run '+data.run+' · fotogramma '+(index+1)+'/'+data.frames.length+' · +'+m.step+' ore · pioggia prevista (mm/1h)';
 }
 seek.oninput=()=>{index=+seek.value;draw()};
 play.onclick=()=>{if(!data)return;if(timer){stop();return;}timer=setInterval(()=>{index=(index+1)%data.frames.length;draw()},1100);play.textContent='⏸ Pausa';};
 fetch(base+'data.json?check='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(d=>{
 if(!Array.isArray(d.frames)||d.frames.length<2||d.frames.length!==d.metadata?.length)throw Error('Sequenza incompleta');
 if(!d.metadata.every(m=>m.unit==='mm/1h'&&m.audit?.projection==='EPSG:3857'&&m.audit?.negativePoints===0&&m.audit?.reconstructionMaxErrorMm<=0.010001))throw Error('Controlli GRIB non superati');
-data=d;seek.max=d.frames.length-1;draw();if(d.bounds)map.fitBounds(d.bounds,{padding:[8,8]});
+data=d;seek.max=d.frames.length-1;const future=firstFutureFrame(d);index=future>=0?future:d.frames.length-1;draw();if(future<0){stop();status.textContent='⚠️ PREVISIONE SCADUTA: non ci sono ore future disponibili. Attendere aggiornamento automatico.';}if(d.bounds)map.fitBounds(d.bounds,{padding:[8,8]});
 }).catch(e=>{status.textContent='Dati non disponibili o non validati: '+e.message;});
 })();
 </script></body></html>
