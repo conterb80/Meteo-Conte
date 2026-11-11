@@ -186,8 +186,8 @@ const specs=[
 const normal=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const fmt=(v,n=1)=>Number.isFinite(v)?v.toLocaleString('it-IT',{minimumFractionDigits:n,maximumFractionDigits:n}):'—';
 const time=t=>Number.isFinite(t)?new Date(t).toLocaleString('it-IT',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
-async function json(url){
- const c=new AbortController(),timer=setTimeout(()=>c.abort(),12000);
+async function json(url,timeoutMs=12000){
+ const c=new AbortController(),timer=setTimeout(()=>c.abort(),timeoutMs);
  try{let r=await fetch(url,{signal:c.signal,cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(timer)}
 }
 function station(list,name){
@@ -317,9 +317,10 @@ async function hydro(){
   const all=await json(API+'get-sensor-values?'+new URLSearchParams({variabile:HYDRO_VAR,time:String(Date.now())}));
   if(!Array.isArray(all))throw Error('Catalogo sensori non valido');
   const data=[];
-  // Massimo 2 richieste parallele alla serie: evita raffiche a 9 stazioni.
-  for(let i=0;i<specs.length;i+=2){
-   const batch=await Promise.all(specs.slice(i,i+2).map(async s=>{
+  // Gruppi controllati: abbastanza rapidi anche con una fonte rallentata.
+  // I tentativi hanno scadenze corte, così il quadro non resta bloccato.
+  for(let i=0;i<specs.length;i+=5){
+   const batch=await Promise.all(specs.slice(i,i+5).map(async s=>{
     const live=station(all,s.name);
     let arr=[],error='',rawCount=0,alt=false;
     if(!live?.idstazione){
@@ -327,7 +328,7 @@ async function hydro(){
     }else{
      const params=new URLSearchParams({stazione:live.idstazione,variabile:HYDRO_VAR});
      try{
-      const result=await json(API+'get-time-series/?'+params);
+      const result=await json(API+'get-time-series/?'+params,6500);
       rawCount=Array.isArray(result)?result.length:0;
       arr=points(result);
       if(!Array.isArray(result))error='Formato storico non riconosciuto';
@@ -338,7 +339,7 @@ async function hydro(){
      if(!arr.length){
       try{
        const url=API+'get-time-series/?stazione='+live.idstazione+'&variabile='+HYDRO_VAR;
-       const result=await json(url);
+       const result=await json(url,4000);
        const fallback=points(result);
        if(fallback.length){arr=fallback;alt=true;error='';}
       }catch(e){if(!error)error='Secondo tentativo: '+(e?.message||'errore')}
