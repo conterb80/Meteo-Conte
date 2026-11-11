@@ -29,7 +29,7 @@ a{color:#8bdaff}
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
 (()=>{'use strict';
-const base='https://cdn.jsdelivr.net/gh/conterb80/Meteo-Conte@icon2i-preview-pages/';
+const base='https://raw.githubusercontent.com/conterb80/Meteo-Conte/icon2i-preview-pages/';
 const status=document.getElementById('status'),seek=document.getElementById('seek'),play=document.getElementById('play'),time=document.getElementById('time');
 let map,layer,data,index=0,timer=null;
 function stop(){if(timer){clearInterval(timer);timer=null;}play.textContent='▶ Play';}
@@ -54,7 +54,8 @@ status.textContent=(validUtc(m)<Date.now()?'⚠️ ORA PASSATA · ':'PREVISIONE 
 seek.oninput=()=>{index=+seek.value;draw()};
 play.onclick=()=>{if(!data)return;if(timer){stop();return;}const first=firstFutureFrame(data);if(first<0){status.textContent='⚠️ Nessuna previsione futura disponibile: attendere il prossimo aggiornamento.';return;}if(index<first||index>=data.frames.length-1)index=first;draw();timer=setInterval(()=>{const next=firstFutureFrame(data);if(next<0){stop();status.textContent='⚠️ Previsione scaduta: attendere aggiornamento.';return;}index=Math.max(index+1,next);if(index>=data.frames.length){stop();index=data.frames.length-1;draw();return;}draw();},1100);play.textContent='⏸ Pausa';};
 fetch(base+'data.json?check='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(d=>{
-if(!Array.isArray(d.frames)||d.frames.length<2||d.frames.length!==d.metadata?.length)throw Error('Sequenza incompleta');
+if(!Array.isArray(d.frames)||d.frames.length<24||d.frames.length!==d.metadata?.length)throw Error('Sequenza futura incompleta o dati vecchi: richiesti almeno 24 fotogrammi');
+if(d.rendererVersion!=='icon2i-future-v2')throw Error('Versione previsionale vecchia: attendere aggiornamento');
 if(!d.metadata.every(m=>m.unit==='mm/1h'&&m.audit?.projection==='EPSG:3857'&&m.audit?.negativePoints===0&&m.audit?.reconstructionMaxErrorMm<=0.010001))throw Error('Controlli GRIB non superati');
 data=d;const future=firstFutureFrame(d);seek.min=future>=0?future:0;seek.max=d.frames.length-1;index=future>=0?future:d.frames.length-1;draw();if(future<0){stop();status.textContent='⚠️ PREVISIONE SCADUTA: non ci sono ore future disponibili. Attendere aggiornamento automatico.';}if(d.bounds)map.fitBounds(d.bounds,{padding:[8,8]});
 }).catch(e=>{status.textContent='Dati non disponibili o non validati: '+e.message;});
