@@ -82,6 +82,11 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 @media(max-width:370px){.basin-streams{gap:6px}.stream-lane{padding:10px 6px}.stream-lane .sensor{padding:10px 7px}.stream-lane .sensor-name{font-size:14px}.stream-lane .sensor-level{font-size:22px}}
 .refresh-toolbar{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:13px}.refresh-toolbar button{font:inherit;font-size:12px;font-weight:750;color:#e0faff;background:#205366;border:1px solid #508297;border-radius:10px;padding:9px 13px;cursor:pointer}.refresh-toolbar button:disabled{opacity:.5;cursor:default}.refresh-toolbar button:focus-visible{outline:2px solid #8be0ff}
 .sensor-extremes{font-size:11px;color:#9ecbd6;margin-top:6px;line-height:1.5}.sensor.empty .sensor-level{color:#a3aeba}.spark[aria-label]{overflow:visible}
+.diagnostics{border:1px solid #3f4c58;border-radius:13px;background:#1a2029;padding:12px;margin:11px 0 15px}
+.diagnostics summary{cursor:pointer;font-size:12px;font-weight:700;color:#b9d9e3}
+.diagnostics summary:focus-visible{outline:2px solid #80d5e8}
+.diag-lines{font-size:11px;color:#bac8d2;line-height:1.5;overflow-wrap:anywhere}
+.diag-line{padding:7px 0;border-top:1px solid #35404a}
 </style>
 </head><body><main>
 <div class="eyebrow">Meteo Conte · Bacino del Lamone</div>
@@ -119,6 +124,11 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 <a class="link" href="https://www.arpae.it/it/temi-ambientali/meteo/dati-e-osservazioni/dati-in-tempo-reale/dati-in-tempo-reale-in-emilia-romagna" target="_blank" rel="noopener">Verifica precipitazioni ARPAE ↗</a>
 
 <h2 class="section-title">Percorso del fiume</h2>
+<details class="diagnostics" id="hydro-diag"><summary>Verifica collegamento sensori idrometrici</summary>
+ <p class="small">Questo riquadro aiuta a distinguere un sensore senza dati da una richiesta non riuscita. Non contiene valutazioni di rischio.</p>
+ <p class="small" id="hydro-summary">Diagnostica in corso…</p>
+ <div id="hydro-details" class="diag-lines"></div>
+</details>
 <p class="section-sub">Due bacini a monte: Lamone e Marzeno. I punti sono disposti nell'ordine del corso d'acqua; Sarna è prima della confluenza e la stazione Faenza è a valle.</p>
 <div class="basin-streams">
  <section class="stream-lane upstream" aria-label="Bacino alto Lamone">
@@ -155,7 +165,7 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 </section>
 <a class="link" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener noreferrer">Allerte, previsioni e bollettini della Regione ↗</a>
 <a class="link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener noreferrer">Pagina unica di tutti i sensori Lamone ↗</a>
-<p class="footnote">Versione di verifica Lamone V3.2 · Le misure delle reti sono provvisorie e non validate. Il dato assente, incompleto o vecchio non viene mai trasformato in uno stato di sicurezza. Il dato modellistico è segnalato come stima. Nessun codice colore di questa schermata costituisce un'allerta di Protezione Civile.</p>
+<p class="footnote">Versione di verifica Lamone V3.3 · Le misure delle reti sono provvisorie e non validate. Il dato assente, incompleto o vecchio non viene mai trasformato in uno stato di sicurezza. Il dato modellistico è segnalato come stima. Nessun codice colore di questa schermata costituisce un'allerta di Protezione Civile.</p>
 </main><script>
 'use strict';
 const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
@@ -182,11 +192,13 @@ async function json(url){
 }
 function station(list,name){
  const key=normal(name),valid=list.filter(x=>x&&x.idstazione&&normal(x.nomestaz||x.nome));
- return valid.find(x=>normal(x.nomestaz||x.nome)===key)||
- valid.find(x=>normal(x.nomestaz||x.nome).endsWith(' '+key))||
- valid.find(x=>normal(x.nomestaz||x.nome).startsWith(key+' '))||
- null;
+ const rank=x=>{const n=normal(x.nomestaz||x.nome);return n===key?3:n.endsWith(' '+key)||n.startsWith(key+' ')?2:0};
+ const candidates=valid.filter(x=>rank(x)>0);
+ // Quando esistono omonimi, preferire misure attuali valide, non il primo record.
+ candidates.sort((a,b)=>(rank(b)-rank(a))||(hasNumber(b.value)?1:0)-(hasNumber(a.value)?1:0));
+ return candidates[0]||null;
 }
+function hasNumber(x){return x!==null&&x!==undefined&&String(x).trim()!==''&&Number.isFinite(Number(x))}
 function points(raw){
  // Null o stringa vuota non devono MAI diventare 0: in idrologia uno zero falso può essere pericoloso.
  return Array.isArray(raw)?raw.filter(x=>x&&x.t!==null&&x.t!==undefined&&x.v!==null&&x.v!==undefined&&String(x.v).trim()!=='')
@@ -295,34 +307,76 @@ function summarizeWave(data){
  }
  $('downstream').textContent='Serie idrometriche recenti: '+valid+'/'+data.length+'. Letture e tendenze sono osservazioni non validate; il passaggio del colmo e un orario di arrivo richiedono analisi idrologica e dati ufficiali.';
 }
+
 async function hydro(){
  const ids=['stations-lamone-upper','stations-marzeno-upper','stations-lamone-downstream'];
  for(const id of ids)$(id).textContent='';
+ $('hydro-summary').textContent='Contatto ARPAE in corso…';
+ $('hydro-details').replaceChildren();
  try{
   const all=await json(API+'get-sensor-values?'+new URLSearchParams({variabile:HYDRO_VAR,time:String(Date.now())}));
-  if(!Array.isArray(all))throw Error('Risposta non valida');
-  const data=await Promise.all(specs.map(async s=>{
-   const live=station(all,s.name);
-   let arr=[];
-   if(live?.idstazione)try{
-    arr=points(await json(API+'get-time-series/?'+new URLSearchParams({stazione:live.idstazione,variabile:HYDRO_VAR})));
-   }catch(e){console.warn('Serie idrometrica',s.name,e)}
-   return {s,live,arr}
-  }));
-  let active=0;
+  if(!Array.isArray(all))throw Error('Catalogo sensori non valido');
+  const data=[];
+  // Massimo 2 richieste parallele alla serie: evita raffiche a 9 stazioni.
+  for(let i=0;i<specs.length;i+=2){
+   const batch=await Promise.all(specs.slice(i,i+2).map(async s=>{
+    const live=station(all,s.name);
+    let arr=[],error='',rawCount=0,alt=false;
+    if(!live?.idstazione){
+     error='Stazione non trovata nel catalogo';
+    }else{
+     const params=new URLSearchParams({stazione:live.idstazione,variabile:HYDRO_VAR});
+     try{
+      const result=await json(API+'get-time-series/?'+params);
+      rawCount=Array.isArray(result)?result.length:0;
+      arr=points(result);
+      if(!Array.isArray(result))error='Formato storico non riconosciuto';
+      else if(!arr.length)error='Storico vuoto o non interpretabile ('+rawCount+' righe)';
+     }catch(e){error='Serie: '+(e?.message||'errore sconosciuto')}
+     // Fallback 1 sola volta se la richiesta originale è fallita. Variante di URL
+     // usata in esempi del portale regionale (stazione non codificata).
+     if(!arr.length){
+      try{
+       const url=API+'get-time-series/?stazione='+live.idstazione+'&variabile='+HYDRO_VAR;
+       const result=await json(url);
+       const fallback=points(result);
+       if(fallback.length){arr=fallback;alt=true;error='';}
+      }catch(e){if(!error)error='Secondo tentativo: '+(e?.message||'errore')}
+     }
+    }
+    return {s,live,arr,error,rawCount,alt};
+   }));
+   data.push(...batch);
+  }
+  let active=0,seriesCount=0,valueCount=0;
+  const diagnostic=$('hydro-details');
   for(const x of data){
    let id=x.s.group==='marzeno'?'stations-marzeno-upper':
     ['Marradi','Strada Casale','Sarna'].includes(x.s.name)?'stations-lamone-upper':'stations-lamone-downstream';
    const state=renderSensor($(id),x.s,x.live,x.arr);
    if(state.usable)active++;
+   if(x.arr.length)seriesCount++;
+   if(hasNumber(x.live?.value))valueCount++;
+   const line=document.createElement('div');line.className='diag-line';
+   let label=x.s.name+': ';
+   if(!x.live)label+='non presente in elenco';
+   else if(state.usable)label+='serie recente · '+x.arr.length+' punti, ultima '+time(x.arr.at(-1).t);
+   else if(x.arr.length)label+='serie non recente · ultima '+time(x.arr.at(-1).t);
+   else label+='nessuna misura storica';
+   if(x.live)label+=' · valore catalogo: '+(hasNumber(x.live.value)?String(x.live.value):'assente');
+   if(x.alt)label+=' · URL alternativo';
+   if(x.error)label+=' · '+x.error;
+   line.textContent=label;diagnostic.append(line);
   }
   $('status').textContent=active+'/'+specs.length+' stazioni con serie recenti';
-  $('availability').textContent=active===specs.length?'Serie ricevute dalle stazioni disponibili sul servizio regionale.':'Alcune misure o serie non sono disponibili. Le stazioni senza dato recente non vanno considerate stabili o sicure.';
+  $('hydro-summary').textContent='Catalogo: '+data.filter(x=>x.live).length+'/'+specs.length+' · serie ricevute: '+seriesCount+'/'+specs.length+' · valori istantanei: '+valueCount+'/'+specs.length+' · serie recenti: '+active+'/'+specs.length;
+  $('availability').textContent=active===specs.length?'Serie recenti disponibili dalle stazioni regionali.':'Alcune misure idrometriche non sono disponibili. Se Calderara mostra trend ma qui no, apri il dettaglio tecnico sopra; non considerare sicure le stazioni senza dato.';
   summarizeWave(data);
  }catch(e){
   for(const id of ids)$(id).textContent='Il servizio idrometrico non risponde. Consulta i sensori ufficiali dai collegamenti presenti nella pagina.';
   $('status').textContent='Livelli non disponibili';
   $('availability').textContent='Servizio regionale temporaneamente non raggiungibile o non compatibile: '+e.message;
+  $('hydro-summary').textContent='Catalogo livelli: '+e.message;
   $('wave-status').textContent='Analisi della propagazione non disponibile';
   $('wave-propagation').textContent='Senza misure recenti non è possibile riconoscere rialzi o passaggi di piena.';
   $('downstream').textContent='Nessun orario di arrivo calcolato.';
