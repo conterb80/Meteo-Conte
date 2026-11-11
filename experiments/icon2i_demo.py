@@ -46,7 +46,7 @@ with path.open("rb") as f:
    try: step_hours=float(step)
    except (ValueError,TypeError): step_hours=None
    if previous is None or previous_step is None or step_hours is None or step_hours-previous_step!=1:
-    previous=vals.copy();previous_step=step_hours;previous_lats=lats.copy();previous_lons=lons.copy();previous_lats=lats.copy();previous_lons=lons.copy()
+    previous=vals.copy();previous_step=step_hours;previous_lats=lats.copy();previous_lons=lons.copy()
     print("Skipping initial/discontinuous cumulative step",step,flush=True)
     continue
    if vals.shape!=previous.shape or not np.array_equal(lats,previous_lats) or not np.array_equal(lons,previous_lons):
@@ -56,7 +56,7 @@ with path.open("rb") as f:
    if negative:
     raise RuntimeError(f"Accumuli TOT_PREC decrescenti in {negative} punti tra {previous_step} e {step}; differenza oraria non affidabile")
    hourly=np.maximum(delta,0)
-   previous=vals.copy();previous_step=step_hours
+   previous=vals.copy();previous_step=step_hours;previous_lats=lats.copy();previous_lons=lons.copy()
    # Render hourly precipitation (mm/1h), not cumulative values
    w,h=900,650
    image=Image.new("RGBA",(w,h),(0,0,0,0));px=ImageDraw.Draw(image)
