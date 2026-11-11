@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meteo Conte · Test integrazione ICON-2I</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#071a27;color:#eaf5fb;font:15px system-ui,sans-serif}
+header{padding:16px;background:#0b293a;border-bottom:1px solid #28566c}header strong{font-size:22px}header p{margin:6px 0 0;color:#aac6d5}
+main{max-width:1080px;margin:auto;padding:12px}.tabs{display:flex;gap:8px;margin:8px 0 12px}
+.tabs button,.controls button{border:1px solid #38718a;background:#123a50;color:#eaf5fb;border-radius:9px;padding:11px 15px;font:inherit;cursor:pointer}
+.tabs button[aria-selected=true]{background:#1a7192;border-color:#64bddc}
+.panel{border:1px solid #28566c;background:#0b2635;border-radius:14px;padding:12px}
+#map{height:min(65vh,590px);min-height:350px;border-radius:10px;background:#143343}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}.controls input{flex:1;min-width:100px}
+#time{font-weight:700}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:8px 0}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px}
+small,#status{color:#a9c7d6}#status{margin:8px 0;min-height:40px}.hidden{display:none}
+a{color:#8bdaff}
+</style></head><body>
+<header><strong>🌦️ Meteo Conte <span style="font-size:13px;color:#9dd9ed">· TEST SPERIMENTALE</span></strong>
+<p>Integrazione ICON-2I separata dall'app ufficiale. Nessuna modifica ai dati personali o alla versione di produzione.</p></header>
+<main>
+<div class="tabs" role="tablist"><button id="tabInfo" aria-selected="false">Panoramica</button><button id="tabMap" aria-selected="true">🌧️ Evoluzione ICON-2I</button></div>
+<section id="intro" class="panel hidden"><h2>Anteprima integrata</h2><p>Questa è la schermata sperimentale di Meteo Conte. La scheda ICON-2I usa dati previsionali aggiornati pubblicati nel ramo di prova.</p><p>Non è un radar in tempo reale e non rappresenta pioggia osservata.</p></section>
+<section id="forecast" class="panel"><div id="map"></div>
+<div class="controls"><button id="play">▶ Play</button><input id="seek" type="range" min="0" max="0" value="0" aria-label="Ora di previsione"><span id="time">--:--</span></div>
+<div class="legend"><span><i style="background:#34b4f5"></i>Debole</span><span><i style="background:#2cda74"></i>Moderata</span><span><i style="background:#f6ce33"></i>Forte</span><span><i style="background:#ec5049"></i>Molto forte</span></div>
+<p id="status">Caricamento previsione...</p><small>Fonte: Agenzia ItaliaMeteo, ICON-2I, TOT_PREC · differenze tra cumulati (mm/1h). Mappa sperimentale © OpenStreetMap contributors.</small></section>
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
+(()=>{'use strict';
+const base='https://cdn.jsdelivr.net/gh/conterb80/Meteo-Conte@icon2i-preview-pages/';
+const status=document.getElementById('status'),seek=document.getElementById('seek'),play=document.getElementById('play'),time=document.getElementById('time');
+let map,layer,data,index=0,timer=null;
+function stop(){if(timer){clearInterval(timer);timer=null;}play.textContent='▶ Play';}
+function tab(show){document.getElementById('intro').classList.toggle('hidden',show);document.getElementById('forecast').classList.toggle('hidden',!show);document.getElementById('tabInfo').setAttribute('aria-selected',String(!show));document.getElementById('tabMap').setAttribute('aria-selected',String(show));if(show&&map)setTimeout(()=>map.invalidateSize(),50);}
+document.getElementById('tabInfo').onclick=()=>{stop();tab(false)};document.getElementById('tabMap').onclick=()=>tab(true);
+if(typeof L==='undefined'){status.textContent='Errore: libreria cartografica non disponibile.';return;}
+map=L.map('map').setView([44.42,11.98],8);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map);
+const bounds=[[43.55,10.75],[45.35,13.35]];
+function draw(){if(!data)return;const m=data.metadata[index];if(layer)map.removeLayer(layer);
+layer=L.imageOverlay(base+data.frames[index]+'?run='+encodeURIComponent(data.run),bounds,{opacity:.78,interactive:false}).addTo(map);
+seek.value=index;const d=String(m.validityDate),t=String(m.validityTime).padStart(4,'0');
+const utc=new Date(Date.UTC(+d.slice(0,4),+d.slice(4,6)-1,+d.slice(6,8),+t.slice(0,2),+t.slice(2)));
+time.textContent=new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(utc);
+status.textContent='Run '+data.run+' · fotogramma '+(index+1)+'/'+data.frames.length+' · +'+m.step+' ore · pioggia prevista (mm/1h)';
+}
+seek.oninput=()=>{index=+seek.value;draw()};
+play.onclick=()=>{if(!data)return;if(timer){stop();return;}timer=setInterval(()=>{index=(index+1)%data.frames.length;draw()},1100);play.textContent='⏸ Pausa';};
+fetch(base+'data.json?check='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(d=>{
+if(!Array.isArray(d.frames)||d.frames.length<2||d.frames.length!==d.metadata?.length)throw Error('Sequenza incompleta');
+if(!d.metadata.every(m=>m.unit==='mm/1h'&&m.audit?.projection==='EPSG:3857'&&m.audit?.negativePoints===0&&m.audit?.reconstructionMaxErrorMm<=0.010001))throw Error('Controlli GRIB non superati');
+data=d;seek.max=d.frames.length-1;draw();
+}).catch(e=>{status.textContent='Dati non disponibili o non validati: '+e.message;});
+})();
+</script></body></html>
