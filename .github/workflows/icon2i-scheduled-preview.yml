@@ -31,6 +31,7 @@ jobs:
           assert len(d['frames'])==len(d['metadata'])
           assert all((p/f).is_file() and (p/f).stat().st_size>0 for f in d['frames'])
           assert all(m.get('unit')=='mm/1h' for m in d['metadata'])
+          assert d.get('rendererVersion')=='icon2i-feather-v1','Preview renderer is not the validated feather version'
           # Fail closed: do not publish if the original-GRIB numerical audit is absent.
           for m in d['metadata']:
             a=m.get('audit')
