@@ -24,7 +24,7 @@ if not data.startswith(b"GRIB"):raise RuntimeError("Il file non inizia con GRIB"
 path=OUT/"precip.grib";path.write_bytes(data)
 frames=[];metadata=[];previous=None;previous_step=None;previous_lats=None;previous_lons=None
 # Crop north-central Italy; fit Romagna, Ravenna and surroundings
-latmin,latmax,lonmin,lonmax=43.55,45.35,10.75,13.35
+latmin,latmax,lonmin,lonmax=42.25,46.65,8.25,15.25
 # Leaflet imageOverlay uses Web Mercator: use the same vertical projection.
 def mercator_y(lat):
  rad=np.deg2rad(lat)
@@ -75,19 +75,19 @@ with path.open("rb") as f:
           "gridPoints":int(mask.sum()),"projection":"EPSG:3857"}
    previous=vals.copy();previous_step=step_hours;previous_lats=lats.copy();previous_lons=lons.copy()
    # Render hourly precipitation (mm/1h), not cumulative values
-   w,h=900,650
+   w,h=1200,800
    image=Image.new("RGBA",(w,h),(0,0,0,0));px=ImageDraw.Draw(image)
    indexes=np.where(mask)[0]
    # sample at most 70k geographic points per frame for speed
    indexes=indexes[::max(1,len(indexes)//70000)]
    for j in indexes:
     v=max(0,float(hourly[j]))
-    if v<0.1:continue
+    if v<0.2:continue
     x=int((lons[j]-lonmin)/(lonmax-lonmin)*(w-1))
     y=int((y_north-mercator_y(lats[j]))/(y_north-y_south)*(h-1))
-    color=(52,180,245,135) if v<1 else (44,218,116,175) if v<5 else (246,206,51,190) if v<15 else (236,80,73,210)
-    px.ellipse((x-7,y-7,x+7,y+7),fill=color)
-   image=image.filter(ImageFilter.GaussianBlur(radius=3))
+    color=(52,180,245,85) if v<1 else (44,218,116,165) if v<5 else (246,206,51,190) if v<15 else (236,80,73,210)
+    px.ellipse((x-5,y-5,x+5,y+5),fill=color)
+   image=image.filter(ImageFilter.GaussianBlur(radius=2))
    filename=f"frame-{len(frames):03}.png";image.save(OUT/filename,optimize=True)
    frames.append(filename);metadata.append({"step":str(step),"validityDate":str(key("validityDate","")),"validityTime":str(key("validityTime","")),"points":int(mask.sum()),"max":round(float(np.nanmax(hourly[mask])),2),"unit":"mm/1h","audit":audit})
    print("frame",len(frames),metadata[-1],flush=True)
@@ -95,7 +95,7 @@ with path.open("rb") as f:
   finally:eccodes.codes_release(gid)
 path.unlink()
 if len(frames)<2:raise RuntimeError(f"Fotogrammi insufficienti: {len(frames)}")
-(OUT/"data.json").write_text(json.dumps({"run":run,"source":url,"frames":frames,"metadata":metadata},indent=2),encoding="utf8")
+(OUT/"data.json").write_text(json.dumps({"run":run,"source":url,"bounds":[[latmin,lonmin],[latmax,lonmax]],"frames":frames,"metadata":metadata},indent=2),encoding="utf8")
 html="""<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meteo Conte · ICON-2I · Demo cartografica</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>body{margin:0;background:#0d1828;color:#edf5ff;font:16px system-ui}main{max-width:960px;margin:auto;padding:14px}h1{font-size:22px;margin:8px 0}p{line-height:1.45;color:#c1d4e4}.map{height:min(68vh,600px);min-height:350px;border-radius:14px;border:1px solid #41627c;overflow:hidden;background:#203d4a}.controls{display:flex;gap:10px;align-items:center;margin:16px 0}button{background:#2382bc;color:white;border:0;border-radius:8px;padding:12px 16px;font-size:16px}input{flex:1;min-width:40px}small{color:#b5c7d9}.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:#dceaf6}.swatch{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px}.leaflet-container{background:#183449}</style></head>
@@ -111,7 +111,7 @@ if(typeof L==='undefined'){info.textContent='Cartografia non caricata: controlla
 else {
 const map=L.map('map',{zoomControl:true}).setView([44.42,11.98],8);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map);
-const bounds=[[43.55,10.75],[45.35,13.35]];
+const bounds=[[42.25,8.25],[46.65,15.25]];
 let overlay=null,idx=0,timer=null;
 const slider=document.querySelector('#seek'),button=document.querySelector('#play'),time=document.querySelector('#time');
 fetch('data.json').then(r=>{if(!r.ok)throw Error('Dati non disponibili');return r.json()}).then(d=>{
