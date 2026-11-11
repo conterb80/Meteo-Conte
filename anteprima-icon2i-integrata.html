@@ -22,6 +22,7 @@ a{color:#8bdaff}
 <div class="tabs" role="tablist"><button id="tabInfo" aria-selected="false">Panoramica</button><button id="tabMap" aria-selected="true">🌧️ Evoluzione ICON-2I</button></div>
 <section id="intro" class="panel hidden"><h2>Anteprima integrata</h2><p>Questa è la schermata sperimentale di Meteo Conte. La scheda ICON-2I usa dati previsionali aggiornati pubblicati nel ramo di prova.</p><p>Non è un radar in tempo reale e non rappresenta pioggia osservata.</p></section>
 <section id="forecast" class="panel"><div id="map"></div>
+<div class="controls"><button id="viewItaly" type="button">🗺️ Nord e Centro Italia</button><button id="viewRomagna" type="button">📍 Romagna</button></div>
 <div class="controls"><button id="play">▶ Play</button><input id="seek" type="range" min="0" max="0" value="0" aria-label="Ora di previsione"><span id="time">--:--</span></div>
 <div class="legend"><span><i style="background:#34b4f5"></i>Debole</span><span><i style="background:#2cda74"></i>Moderata</span><span><i style="background:#f6ce33"></i>Forte</span><span><i style="background:#ec5049"></i>Molto forte</span></div>
 <p id="status">Caricamento previsione...</p><small>Fonte: Agenzia ItaliaMeteo, ICON-2I, TOT_PREC · differenze tra cumulati (mm/1h). Mappa sperimentale © OpenStreetMap contributors.</small></section>
@@ -37,9 +38,12 @@ document.getElementById('tabInfo').onclick=()=>{stop();tab(false)};document.getE
 if(typeof L==='undefined'){status.textContent='Errore: libreria cartografica non disponibile.';return;}
 map=L.map('map').setView([44.42,11.98],8);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map);
-const bounds=[[43.55,10.75],[45.35,13.35]];
+const legacyBounds=[[43.55,10.75],[45.35,13.35]];
+const wideBounds=[[42.25,8.25],[46.65,15.25]];
+document.getElementById('viewItaly').onclick=()=>map.fitBounds(wideBounds,{padding:[8,8]});
+document.getElementById('viewRomagna').onclick=()=>map.setView([44.42,11.98],9);
 function draw(){if(!data)return;const m=data.metadata[index];if(layer)map.removeLayer(layer);
-layer=L.imageOverlay(base+data.frames[index]+'?run='+encodeURIComponent(data.run),bounds,{opacity:.78,interactive:false}).addTo(map);
+layer=L.imageOverlay(base+data.frames[index]+'?run='+encodeURIComponent(data.run),data.bounds||legacyBounds,{opacity:.78,interactive:false}).addTo(map);
 seek.value=index;const d=String(m.validityDate),t=String(m.validityTime).padStart(4,'0');
 const utc=new Date(Date.UTC(+d.slice(0,4),+d.slice(4,6)-1,+d.slice(6,8),+t.slice(0,2),+t.slice(2)));
 time.textContent=new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(utc);
@@ -50,7 +54,7 @@ play.onclick=()=>{if(!data)return;if(timer){stop();return;}timer=setInterval(()=
 fetch(base+'data.json?check='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(d=>{
 if(!Array.isArray(d.frames)||d.frames.length<2||d.frames.length!==d.metadata?.length)throw Error('Sequenza incompleta');
 if(!d.metadata.every(m=>m.unit==='mm/1h'&&m.audit?.projection==='EPSG:3857'&&m.audit?.negativePoints===0&&m.audit?.reconstructionMaxErrorMm<=0.010001))throw Error('Controlli GRIB non superati');
-data=d;seek.max=d.frames.length-1;draw();
+data=d;seek.max=d.frames.length-1;draw();if(d.bounds)map.fitBounds(d.bounds,{padding:[8,8]});
 }).catch(e=>{status.textContent='Dati non disponibili o non validati: '+e.message;});
 })();
 </script></body></html>
