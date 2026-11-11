@@ -27,11 +27,11 @@ jobs:
           p=pathlib.Path('demo-icon2i')
           d=json.loads((p/'data.json').read_text())
           assert (p/'index.html').is_file()
-          assert len(d['frames'])>=2
+          assert len(d['frames'])>=24
           assert len(d['frames'])==len(d['metadata'])
           assert all((p/f).is_file() and (p/f).stat().st_size>0 for f in d['frames'])
           assert all(m.get('unit')=='mm/1h' for m in d['metadata'])
-          assert d.get('rendererVersion')=='icon2i-feather-v1','Preview renderer is not the validated feather version'
+          assert d.get('rendererVersion')=='icon2i-future-v2','Preview renderer is not the validated feather version'
           # Fail closed: do not publish if the original-GRIB numerical audit is absent.
           for m in d['metadata']:
             a=m.get('audit')
@@ -45,6 +45,11 @@ jobs:
           assert all(b-a==1 for a,b in zip(steps,steps[1:]))
           now=datetime.datetime.now(datetime.timezone.utc)
           run=datetime.datetime.strptime(d['run'],'%Y%m%d%H').replace(tzinfo=datetime.timezone.utc)
+          # Do not publish a forecast whose final frame is already in the past.
+          last=d['metadata'][-1]
+          day=str(last['validityDate']);hhmm=str(last['validityTime']).zfill(4)
+          end=datetime.datetime.strptime(day+hhmm,'%Y%m%d%H%M').replace(tzinfo=datetime.timezone.utc)
+          assert end>=now+datetime.timedelta(hours=6),f'Forecast horizon insufficient: {end.isoformat()}'
           age=(now-run).total_seconds()/3600
           assert -2<=age<=24,f'ICON-2I source too old: {age:.1f} hours'
           print('Preview validated:',d['run'],'age hours:',round(age,1))
