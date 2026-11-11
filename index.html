@@ -237,12 +237,18 @@
 <div class="weather-analysis-route compact"><small>APPROFONDIMENTI</small><p>Apri solo lo strumento necessario, senza perdere il quadro dei monitor.</p></div>
 <div class="tool-group-title"><span>CENTRO OPERATIVO</span><small>RISCHIO · TERRITORIO</small></div>
 <nav aria-label="Strumenti operativi" class="weather-analysis-tools control-room-tools compact-tools primary-tools">
-<a class="weather-analysis-tool" href="./anteprima-icon2i-integrata.html" target="_blank" rel="noopener"><i>🌧️</i><span><b>ICON-2I · TEST</b><small>Evoluzione precipitazioni previste</small></span><em>↗</em></a>
+<a class="weather-analysis-tool" href="#icon2iExperimental" onclick="document.getElementById('icon2iExperimental').open=true"><i>🌧️</i><span><b>ICON-2I · TEST</b><small>Evoluzione precipitazioni previste</small></span><em>↓</em></a>
 <a class="weather-analysis-tool" data-pretemp-direct="1" href="https://www.pretemp.it/" id="weatherAnalysisPretemp" rel="noopener" target="_blank"><i>⛈️</i><span><b>PRETEMP</b><small>Pericolosità e bollettino</small></span><em>1</em></a>
 <button class="weather-analysis-tool" id="weatherAnalysisLamone" type="button"><i>🌊</i><span><b>Lamone</b><small>Pioggia a monte e piena</small></span><em>2</em></button>
 <a class="weather-analysis-tool" href="https://www.guardcostaus-ravenna.it/MeteoPagine/webcam.html" rel="noopener" target="_blank"><i>📷</i><span><b>Webcam</b><small>Conferma visiva del cielo</small></span><em>3</em></a>
 <a class="weather-analysis-tool" href="https://allertameteo.regione.emilia-romagna.it/web/bagnacavallo" rel="noopener" target="_blank"><i>🛡️</i><span><b>Allerte</b><small>Zona D1 · Bagnacavallo</small></span><em>4</em></a>
 </nav>
+<details id="icon2iExperimental" style="margin:12px 0;border:1px solid #37728a;border-radius:14px;padding:12px;background:#0b2635">
+<summary style="cursor:pointer;font-weight:700">🌧️ Evoluzione ICON-2I · Test integrato</summary>
+<p style="font-size:13px;opacity:.85">Previsioni ICON-2I, non radar osservato. Mappa sperimentale separata dalla versione ufficiale.</p>
+<iframe title="Mappa ICON-2I sperimentale" src="./anteprima-icon2i-integrata.html" loading="lazy" style="width:100%;height:680px;max-height:75vh;border:0;border-radius:10px;background:#071a27" referrerpolicy="no-referrer"></iframe>
+<p><a href="./anteprima-icon2i-integrata.html" target="_blank" rel="noopener noreferrer">Apri mappa a schermo intero</a></p>
+</details>
 <div class="tool-group-title sources-title"><span>FONTI LOCALI</span><small>AGGIORNAMENTI</small></div>
 <nav aria-label="Fonti meteo locali" class="weather-analysis-tools control-room-tools compact-tools source-tools">
 <button class="weather-analysis-tool" id="weatherAnalysisNews" type="button"><i>📰</i><span><b>Meteo Live locale</b><small>Fonti e aggiornamenti dal territorio</small></span><em>5</em></button>
