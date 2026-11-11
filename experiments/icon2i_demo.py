@@ -22,7 +22,7 @@ data=read(url)
 print("Downloaded bytes:",len(data),flush=True)
 if not data.startswith(b"GRIB"):raise RuntimeError("Il file non inizia con GRIB")
 path=OUT/"precip.grib";path.write_bytes(data)
-frames=[];metadata=[];previous=None;previous_step=None
+frames=[];metadata=[];previous=None;previous_step=None;previous_lats=None;previous_lons=None
 # Crop north-central Italy; fit Romagna, Ravenna and surroundings
 latmin,latmax,lonmin,lonmax=43.55,45.35,10.75,13.35
 with path.open("rb") as f:
@@ -34,6 +34,9 @@ with path.open("rb") as f:
     try:return eccodes.codes_get(gid,k)
     except Exception:return default
    step=key("endStep",key("step",idx))
+   step_type=str(key("stepType","")).lower()
+   if step_type and step_type not in ("accum","accumulation"):
+    raise RuntimeError(f"TOT_PREC non cumulativo: stepType={step_type}, step={step}")
    vals=np.asarray(eccodes.codes_get_array(gid,"values"),dtype=float)
    lats=np.asarray(eccodes.codes_get_array(gid,"latitudes"),dtype=float)
    lons=np.asarray(eccodes.codes_get_array(gid,"longitudes"),dtype=float)
@@ -43,10 +46,16 @@ with path.open("rb") as f:
    try: step_hours=float(step)
    except (ValueError,TypeError): step_hours=None
    if previous is None or previous_step is None or step_hours is None or step_hours-previous_step!=1:
-    previous=vals.copy();previous_step=step_hours
+    previous=vals.copy();previous_step=step_hours;previous_lats=lats.copy();previous_lons=lons.copy();previous_lats=lats.copy();previous_lons=lons.copy()
     print("Skipping initial/discontinuous cumulative step",step,flush=True)
     continue
-   hourly=np.maximum(vals-previous,0)
+   if vals.shape!=previous.shape or not np.array_equal(lats,previous_lats) or not np.array_equal(lons,previous_lons):
+    raise RuntimeError(f"Griglia ICON-2I cambiata tra i passi {previous_step} e {step}")
+   delta=vals-previous
+   negative=int(np.count_nonzero((delta < -0.01)&mask))
+   if negative:
+    raise RuntimeError(f"Accumuli TOT_PREC decrescenti in {negative} punti tra {previous_step} e {step}; differenza oraria non affidabile")
+   hourly=np.maximum(delta,0)
    previous=vals.copy();previous_step=step_hours
    # Render hourly precipitation (mm/1h), not cumulative values
    w,h=900,650
