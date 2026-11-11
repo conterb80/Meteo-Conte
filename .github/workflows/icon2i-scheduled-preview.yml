@@ -31,6 +31,15 @@ jobs:
           assert len(d['frames'])==len(d['metadata'])
           assert all((p/f).is_file() and (p/f).stat().st_size>0 for f in d['frames'])
           assert all(m.get('unit')=='mm/1h' for m in d['metadata'])
+          # Fail closed: do not publish if the original-GRIB numerical audit is absent.
+          for m in d['metadata']:
+            a=m.get('audit')
+            assert isinstance(a,dict),f"Missing GRIB audit at step {m['step']}"
+            assert a.get('projection')=='EPSG:3857',f"Unexpected projection at {m['step']}"
+            assert a.get('negativePoints')==0,f"Negative precipitation at {m['step']}"
+            assert a.get('reconstructionMaxErrorMm',999)<=0.010001,f"GRIB reconstruction failed at {m['step']}"
+            assert a.get('gridPoints',0)>=100,f"Too few grid points at {m['step']}"
+            assert a.get('stepHours')-a.get('previousStep')==1,f"Non-hourly audit at {m['step']}"
           steps=[float(m['step']) for m in d['metadata']]
           assert all(b-a==1 for a,b in zip(steps,steps[1:]))
           now=datetime.datetime.now(datetime.timezone.utc)
