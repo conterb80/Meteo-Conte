@@ -88,6 +88,15 @@ with path.open("rb") as f:
     color=(52,180,245,85) if v<1 else (44,218,116,165) if v<5 else (246,206,51,190) if v<15 else (236,80,73,210)
     px.ellipse((x-5,y-5,x+5,y+5),fill=color)
    image=image.filter(ImageFilter.GaussianBlur(radius=2))
+   # Feather the artificial crop boundary so it cannot look like a sharp rain front.
+   # Only the visualization alpha changes; the original hourly GRIB values stay untouched.
+   rgba=np.asarray(image,dtype=np.uint8).copy()
+   feather=42
+   edge_x=np.minimum(np.arange(w),np.arange(w)[::-1])
+   edge_y=np.minimum(np.arange(h),np.arange(h)[::-1])
+   edge_alpha=np.minimum(1.0,np.minimum(edge_y[:,None],edge_x[None,:])/feather)
+   rgba[:,:,3]=np.rint(rgba[:,:,3].astype(np.float32)*edge_alpha).astype(np.uint8)
+   image=Image.fromarray(rgba,"RGBA")
    filename=f"frame-{len(frames):03}.png";image.save(OUT/filename,optimize=True)
    frames.append(filename);metadata.append({"step":str(step),"validityDate":str(key("validityDate","")),"validityTime":str(key("validityTime","")),"points":int(mask.sum()),"max":round(float(np.nanmax(hourly[mask])),2),"unit":"mm/1h","audit":audit})
    print("frame",len(frames),metadata[-1],flush=True)
