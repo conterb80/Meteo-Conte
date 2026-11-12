@@ -225,19 +225,18 @@ body .forecast-note{line-height:1.5}
 
     </div>
 
-    <section id="forecastPanel" class="forecast-panel monitor-section" hidden>
-<div class="secondary-compact-head forecast"><strong>MAPPE METEO · RADAREU + VENTUSKY · TEST</strong></div>
-<div class="forecast-official-head"><div><span>EVOLUZIONE E PREVISIONI</span><strong>Due strumenti, un'unica Sala Controllo</strong></div><a id="openForecastLink" href="https://radareu.cz/" target="_blank" rel="noopener noreferrer">APRI RADAREU ↗</a></div>
-<div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap"><button type="button" id="radareuSelect" aria-pressed="true" style="padding:12px;border:1px solid #54bfc9;border-radius:9px;background:#146073;color:white;font-weight:700">🌧️ Evoluzione · RadarEU</button><button type="button" id="ventuskySelect" aria-pressed="false" style="padding:12px;border:1px solid #54bfc9;border-radius:9px;background:#102a3a;color:white;font-weight:700">🌡️ Previsioni · Ventusky</button></div>
+    <section id="forecastPanel" class="forecast-panel monitor-section" hidden style="padding-top:6px">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 7px">
+<button type="button" id="radareuSelect" aria-pressed="true" style="min-width:0;padding:9px 5px;border:1px solid #54bfc9;border-radius:8px;background:#146073;color:white;font:600 12px system-ui">🌧️ RadarEU</button>
+<button type="button" id="ventuskySelect" aria-pressed="false" style="min-width:0;padding:9px 5px;border:1px solid #54bfc9;border-radius:8px;background:#102a3a;color:white;font:600 12px system-ui">🌡️ Ventusky</button>
+</div>
 <div id="radareuView">
-<p class="forecast-note">RadarEU: animazione delle precipitazioni, orari e velocità regolabili. Controlla la dicitura RADAR/PREVISIONE sulla linea temporale. Inquadratura iniziale definita dal codice ufficiale generato dal tuo account.</p>
-<iframe src="https://radareu.cz/embed/?m=hbneqkpzi5" width="100%" height="700" style="display:block;width:100%;height:70dvh;min-height:650px;max-height:850px;border:0;border-radius:12px;background:#071a27" loading="lazy" allow="fullscreen" title="RadarEU rain radar"></iframe>
-<p style="font:12px sans-serif;margin:8px 0"><a href="https://radareu.cz/" rel="nofollow noopener" target="_blank">RadarEU rain radar</a> · Previsioni indicative, non sostituiscono le allerte ufficiali.</p>
+<iframe src="https://radareu.cz/embed/?m=hbneqkpzi5" width="100%" height="700" style="display:block;width:100%;height:calc(100dvh - 290px);min-height:440px;max-height:850px;border:0;border-radius:10px;background:#071a27" loading="lazy" allow="fullscreen" title="RadarEU rain radar"></iframe>
+<p style="font:11px sans-serif;margin:5px 0"><a href="https://radareu.cz/" rel="nofollow noopener" target="_blank">RadarEU rain radar</a> · Previsioni indicative, non sostituiscono le allerte ufficiali.</p>
 </div>
 <div id="ventuskyView" hidden>
-<p class="forecast-note">Ventusky: mappe meteo di temperatura, vento e precipitazioni. Servizio esterno; i livelli disponibili dipendono dal suo incorporamento ufficiale.</p>
-<iframe id="ventuskyForecastFrame" title="Ventusky mappa meteo Romagna" width="100%" height="700" style="display:block;width:100%;height:70dvh;min-height:650px;max-height:850px;border:0;border-radius:12px;background:#071a27" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-<p style="font:12px sans-serif;margin:8px 0"><a href="https://www.ventusky.com/" rel="nofollow noopener" target="_blank">Ventusky</a> · Previsioni indicative, non sostituiscono le allerte ufficiali.</p>
+<iframe id="ventuskyForecastFrame" title="Ventusky mappa meteo Romagna" width="100%" height="700" style="display:block;width:100%;height:calc(100dvh - 290px);min-height:440px;max-height:850px;border:0;border-radius:10px;background:#071a27" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<p style="font:11px sans-serif;margin:5px 0"><a href="https://www.ventusky.com/" rel="nofollow noopener" target="_blank">Ventusky</a> · Previsioni indicative, non sostituiscono le allerte ufficiali.</p>
 </div>
 <span id="forecastStatus" hidden></span><span id="forecastFrame" hidden></span>
 </section>
@@ -272,8 +271,8 @@ body .forecast-note{line-height:1.5}
   <script src="radar.js?v=rc35-5"></script>
 <script>
 (function(){
-const r=document.getElementById('radareuSelect'),v=document.getElementById('ventuskySelect'),rv=document.getElementById('radareuView'),vv=document.getElementById('ventuskyView'),frame=document.getElementById('ventuskyForecastFrame'),link=document.getElementById('openForecastLink');
-function show(which){const vent=which==='ventusky';rv.hidden=vent;vv.hidden=!vent;r.setAttribute('aria-pressed',String(!vent));v.setAttribute('aria-pressed',String(vent));r.style.background=vent?'#102a3a':'#146073';v.style.background=vent?'#146073':'#102a3a';link.href=vent?'https://www.ventusky.com/':'https://radareu.cz/';link.textContent=vent?'APRI VENTUSKY ↗':'APRI RADAREU ↗';if(vent&&!frame.src)frame.src='https://embed.ventusky.com/?p=44.4;11.95;8';}
+const r=document.getElementById('radareuSelect'),v=document.getElementById('ventuskySelect'),rv=document.getElementById('radareuView'),vv=document.getElementById('ventuskyView'),frame=document.getElementById('ventuskyForecastFrame');
+function show(which){const vent=which==='ventusky';rv.hidden=vent;vv.hidden=!vent;r.setAttribute('aria-pressed',String(!vent));v.setAttribute('aria-pressed',String(vent));r.style.background=vent?'#102a3a':'#146073';v.style.background=vent?'#146073':'#102a3a';if(vent&&!frame.src)frame.src='https://embed.ventusky.com/?p=44.4;11.95;8';}
 r.addEventListener('click',()=>show('radareu'));v.addEventListener('click',()=>show('ventusky'));
 })();
 </script>
