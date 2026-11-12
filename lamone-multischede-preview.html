@@ -682,7 +682,9 @@ function drawRainPlot(prefix){
  const available=actual.map(b=>b.point.v);
  const max=available.length?Math.max(...available):0;
  const upper=Math.max(1,Math.ceil(max/2)*2);
- const L=54,R=748,T=24,B=205,W=R-L,unit= W/Math.max(1,bins.length);
+ const narrow=typeof window!=='undefined'&&window.innerWidth>0&&window.innerWidth<=520;
+ const width=narrow?420:760;board.setAttribute('viewBox','0 0 '+width+' 246');
+ const L=narrow?47:54,R=narrow?411:748,T=24,B=205,W=R-L,unit=W/Math.max(1,bins.length);
  const observed=cached.observed,barColor=observed?'#67c5ef':'#e5ae66';
  for(let i=0;i<=4;i++){
   const y=B-i*(B-T)/4;
@@ -713,7 +715,7 @@ function drawRainPlot(prefix){
  const missing=bins.length-validCount,wet=actual.filter(x=>x.point.v>0).length;
  const dry=validCount>0&&wet===0;
  const stale=age>120?' · ultima misura non recente':'';
- const info='Ore con dato: '+validCount+'/'+bins.length+
+ const info='Fasce orarie con dato: '+validCount+'/'+bins.length+' (finestra mobile di '+hours+'h)'+
  (missing?' · '+missing+' intervalli senza dato':'')+
  ' · '+(dry?'nessuna precipitazione nei campioni disponibili':'ore con pioggia: '+wet)+
  ' · picco orario: '+(validCount?fmt(max,1)+' mm':'n.d.')+stale;
