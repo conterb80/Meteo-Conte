@@ -87,6 +87,7 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 .diagnostics summary:focus-visible{outline:2px solid #80d5e8}
 .diag-lines{font-size:11px;color:#bac8d2;line-height:1.5;overflow-wrap:anywhere}
 .diag-line{padding:7px 0;border-top:1px solid #35404a}
+.sensor-graph-title{font-size:10px;color:#93b6c6;margin-top:12px;letter-spacing:.02em}
 </style>
 </head><body><main>
 <div class="eyebrow">Meteo Conte · Bacino del Lamone</div>
@@ -165,7 +166,7 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 </section>
 <a class="link" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener noreferrer">Allerte, previsioni e bollettini della Regione ↗</a>
 <a class="link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener noreferrer">Pagina unica di tutti i sensori Lamone ↗</a>
-<p class="footnote">Versione di verifica Lamone V3.3 · Le misure delle reti sono provvisorie e non validate. Il dato assente, incompleto o vecchio non viene mai trasformato in uno stato di sicurezza. Il dato modellistico è segnalato come stima. Nessun codice colore di questa schermata costituisce un'allerta di Protezione Civile.</p>
+<p class="footnote">Versione di verifica Lamone V3.4 · Le misure delle reti sono provvisorie e non validate. Il dato assente, incompleto o vecchio non viene mai trasformato in uno stato di sicurezza. Il dato modellistico è segnalato come stima. Nessun codice colore di questa schermata costituisce un'allerta di Protezione Civile.</p>
 </main><script>
 'use strict';
 const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
@@ -239,8 +240,10 @@ function renderSensor(parent,s,live,arr){
  top.append(text,level);card.append(top);
  const footer=document.createElement('div');footer.className='sensor-foot';
  const tr=document.createElement('div');tr.className='trend '+trendClass;tr.textContent=trendLabel+' · 1h '+one+' · 3h '+three;footer.append(tr);card.append(footer);
- const history=document.createElement('svg');history.setAttribute('viewBox','0 0 300 49');history.setAttribute('preserveAspectRatio','none');history.setAttribute('class','spark');history.setAttribute('role','img');history.setAttribute('aria-label','Storico del livello idrometrico a '+s.name);
- history.id='chart-'+normal(s.name).replace(/\s+/g,'-');card.append(history);
+ const history=document.createElementNS(NS,'svg');history.setAttribute('viewBox','0 0 300 49');history.setAttribute('preserveAspectRatio','none');history.setAttribute('class','spark');history.setAttribute('role','img');history.setAttribute('aria-label','Storico del livello idrometrico a '+s.name);
+ history.id='chart-'+normal(s.name).replace(/\s+/g,'-');
+ const graphTitle=document.createElement('div');graphTitle.className='sensor-graph-title';graphTitle.textContent='Andamento livello · ultime 24h';
+ card.append(graphTitle,history);
  const stamp=document.createElement('div');stamp.className='stamp';stamp.textContent=current?'Ultima misura '+time(current.t):arr.length?'Serie non recente · ultima '+time(arr.at(-1).t):Number.isFinite(fallback)?'Valore disponibile senza orario verificabile; trend non utilizzabile':'Misura non disponibile';
  card.append(stamp);
  const values24=arr.filter(x=>x.t>=Date.now()-24*3600000);
