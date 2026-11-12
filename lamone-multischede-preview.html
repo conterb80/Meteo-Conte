@@ -160,6 +160,16 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 .rain-plot-explain{color:#a7c5d1;font-size:11px;line-height:1.5;margin-top:9px}
 .rain-card-pro .rain-source{font-size:11px;color:#aac1ce;border-top:1px solid #385163;padding-top:11px;margin:14px 0 0;line-height:1.55}
 @media(max-width:435px){.rain-card-pro{padding:13px}.rain-primary{gap:9px}.rain-card-pro .rain-big{font-size:45px}.rain-side-stat{min-width:125px}.rain-card-pro .rain-metrics>div{padding:9px 7px}.rain-card-pro .metric-val{font-size:15px}}
+
+/* Final rain cards: independent collapsible hourly charts, values and sources always visible */
+.rain-details{border-top:1px solid #365365;margin:4px 0 0;padding-top:10px}
+.rain-details>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 12px;border-radius:11px;background:#143746;border:1px solid #3c7187;cursor:pointer;color:#e0f7ff;font-size:13px;font-weight:750;user-select:none}
+.rain-details>summary::-webkit-details-marker{display:none}
+.rain-details>summary:focus-visible{outline:2px solid #a3e1ff;outline-offset:2px}
+.rain-details[open]>summary{background:#20495b;margin-bottom:13px}
+.rain-detail-arrow{font-size:18px;transition:transform .15s ease;line-height:1}
+.rain-details[open] .rain-detail-arrow{transform:rotate(180deg)}
+.rain-details .rain-plot-head{margin-top:0}
 </style>
 </head><body><main>
 <div class="eyebrow">Meteo Conte · Bacino del Lamone</div>
@@ -186,9 +196,11 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
    <div><div class="metric-label">12 ore</div><div class="metric-val" id="m12">—</div></div>
    <div><div class="metric-label">48 ore</div><div class="metric-val" id="m48">—</div></div>
   </div>
-  <div class="rain-plot-head"><strong>Distribuzione oraria</strong><div class="rain-tabs" role="group" aria-label="Intervallo grafico pioggia Marradi"><button type="button" id="m24btn" aria-pressed="true">24h</button><button type="button" id="m48btn" aria-pressed="false">48h</button></div></div>
+  <details class="rain-details" id="mgraph-details"><summary>Mostra grafico orario e dettagli <span class="rain-detail-arrow" aria-hidden="true">⌄</span></summary>
+<div class="rain-plot-head"><strong>Distribuzione oraria</strong><div class="rain-tabs" role="group" aria-label="Intervallo grafico pioggia Marradi"><button type="button" id="m24btn" aria-pressed="true">24h</button><button type="button" id="m48btn" aria-pressed="false">48h</button></div></div>
   <div class="rain-plot-wrap"><svg id="mchart" viewBox="0 0 760 246" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Precipitazioni orarie a Marradi"></svg></div>
   <div class="rain-plot-explain" id="mcoverage">Verifica completezza dati…</div>
+  </details>
   <p class="stamp rain-source" id="mstamp">Fonte: in verifica…</p>
  </article>
  <article class="rain-card rain-card-pro" id="rain-modigliana">
@@ -202,9 +214,11 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
    <div><div class="metric-label">12 ore</div><div class="metric-val" id="z12">—</div></div>
    <div><div class="metric-label">48 ore</div><div class="metric-val" id="z48">—</div></div>
   </div>
-  <div class="rain-plot-head"><strong>Distribuzione oraria</strong><div class="rain-tabs" role="group" aria-label="Intervallo grafico pioggia Modigliana"><button type="button" id="z24btn" aria-pressed="true">24h</button><button type="button" id="z48btn" aria-pressed="false">48h</button></div></div>
+  <details class="rain-details" id="zgraph-details"><summary>Mostra grafico orario e dettagli <span class="rain-detail-arrow" aria-hidden="true">⌄</span></summary>
+<div class="rain-plot-head"><strong>Distribuzione oraria</strong><div class="rain-tabs" role="group" aria-label="Intervallo grafico pioggia Modigliana"><button type="button" id="z24btn" aria-pressed="true">24h</button><button type="button" id="z48btn" aria-pressed="false">48h</button></div></div>
   <div class="rain-plot-wrap"><svg id="zchart" viewBox="0 0 760 246" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Precipitazioni orarie a Modigliana"></svg></div>
   <div class="rain-plot-explain" id="zcoverage">Verifica completezza dati…</div>
+  </details>
   <p class="stamp rain-source" id="zstamp">Fonte: in verifica…</p>
  </article>
 </div>
