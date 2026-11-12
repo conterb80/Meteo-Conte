@@ -304,7 +304,7 @@ function updateBriefWeather(c,h){
 async function load(){
  const alertPromise=loadOfficialAlert();
  try{
-  if('serviceWorker' in navigator){ try{ await navigator.serviceWorker.register('./sw.js?v=rc35-4'); }catch(_e){} }
+  if('serviceWorker' in navigator){ try{ await navigator.serviceWorker.register('./sw.js?v=lamone-final-1'); }catch(_e){} }
   const url='https://api.open-meteo.com/v1/forecast?latitude=44.418&longitude=11.977&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,showers,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,pressure_msl&daily=sunrise,sunset&timezone=Europe%2FRome&forecast_days=2';
   const res=await fetch(url,{cache:'no-store'}); if(!res.ok) throw new Error('api');
   const data=await res.json(); lastData=data; const c=data.current, h=data.hourly; setTimeout(renderConteAlertCenter,0);
