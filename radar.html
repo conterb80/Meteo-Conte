@@ -225,13 +225,21 @@ body .forecast-note{line-height:1.5}
 
     </div>
 
-    <section id="forecastPanel" class="forecast-panel monitor-section" hidden>
-      <div class="secondary-compact-head forecast"><strong>EVOLUZIONE ANIMATA · METEO &amp; RADAR</strong></div>
-      <div class="forecast-official-head"><div><span>SERVIZIO ESTERNO</span><strong>Passato → Adesso → Previsione</strong></div><a id="openForecastLink" href="https://www.meteoeradar.it/radar-meteo?center=44.42,11.98&zoom=7&layer=wr" target="_blank" rel="noopener noreferrer">APRI MAPPA ↗</a></div>
-      <p class="forecast-note">La mappa animata si apre direttamente su Meteo &amp; Radar: timeline e dati restano gestiti dal fornitore. Nessun iframe o copia delle mappe.</p>
-      <p style="text-align:center;padding:18px"><a href="https://www.meteoeradar.it/radar-meteo?center=44.42,11.98&zoom=7&layer=wr" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:14px 20px;border-radius:14px;background:#46d5bc;color:#06242a;font-weight:800;text-decoration:none">▶ APRI EVOLUZIONE ANIMATA ↗</a></p>
-      <span id="forecastStatus" hidden></span><span id="forecastFrame" hidden></span>
-    </section>
+    <section id="forecastPanel" class="forecast-panel monitor-section" hidden style="padding-top:6px">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 7px">
+<button type="button" id="radareuSelect" aria-pressed="true" style="min-width:0;padding:9px 5px;border:1px solid #54bfc9;border-radius:8px;background:#146073;color:white;font:600 12px system-ui">🌧️ RadarEU</button>
+<button type="button" id="ventuskySelect" aria-pressed="false" style="min-width:0;padding:9px 5px;border:1px solid #54bfc9;border-radius:8px;background:#102a3a;color:white;font:600 12px system-ui">🌡️ Ventusky</button>
+</div>
+<div id="radareuView">
+<iframe src="https://radareu.cz/embed/?m=hbneqkpzi5" width="100%" height="700" style="display:block;width:100%;height:calc(100dvh - 290px);min-height:440px;max-height:850px;border:0;border-radius:10px;background:#071a27" loading="lazy" allow="fullscreen" title="RadarEU rain radar"></iframe>
+<p style="font:11px sans-serif;margin:5px 0"><a href="https://radareu.cz/" rel="nofollow noopener" target="_blank">RadarEU rain radar</a> · Previsioni indicative, non sostituiscono le allerte ufficiali.</p>
+</div>
+<div id="ventuskyView" hidden>
+<iframe id="ventuskyForecastFrame" title="Ventusky mappa meteo Romagna" width="100%" height="700" style="display:block;width:100%;height:calc(100dvh - 290px);min-height:440px;max-height:850px;border:0;border-radius:10px;background:#071a27" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<p style="font:11px sans-serif;margin:5px 0"><a href="https://www.ventusky.com/" rel="nofollow noopener" target="_blank">Ventusky</a> · Previsioni indicative, non sostituiscono le allerte ufficiali.</p>
+</div>
+<span id="forecastStatus" hidden></span><span id="forecastFrame" hidden></span>
+</section>
 
     <section id="lightningPanel" class="lightning-panel monitor-section" hidden>
       <div class="secondary-compact-head lightning"><strong>FULMINI LIVE</strong><button id="reloadLightningBtn" type="button">↻</button></div>
@@ -257,9 +265,16 @@ body .forecast-note{line-height:1.5}
     </nav>
 
     <section id="message" class="message info" aria-live="polite">Connessione alla sorgente radar in corso…</section>
-    <footer><span>Radar: RainViewer · Evoluzione: Meteo & Radar · Fulmini: Blitzortung.org · Cartografia: OpenStreetMap</span><span>Prototipo personale non destinato ad allertamento ufficiale</span></footer>
+    <footer><span>Radar: RainViewer · Evoluzione: RadarEU / Ventusky · Fulmini: Blitzortung.org · Cartografia: OpenStreetMap</span><span>Prototipo personale non destinato ad allertamento ufficiale</span></footer>
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="radar.js?v=rc35-5"></script>
+<script>
+(function(){
+const r=document.getElementById('radareuSelect'),v=document.getElementById('ventuskySelect'),rv=document.getElementById('radareuView'),vv=document.getElementById('ventuskyView'),frame=document.getElementById('ventuskyForecastFrame');
+function show(which){const vent=which==='ventusky';rv.hidden=vent;vv.hidden=!vent;r.setAttribute('aria-pressed',String(!vent));v.setAttribute('aria-pressed',String(vent));r.style.background=vent?'#102a3a':'#146073';v.style.background=vent?'#146073':'#102a3a';if(vent&&!frame.src)frame.src='https://embed.ventusky.com/?p=44.4;11.95;8';}
+r.addEventListener('click',()=>show('radareu'));v.addEventListener('click',()=>show('ventusky'));
+})();
+</script>
 </body>
 </html>
