@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#111317">
+<title>Meteo Conte · Lamone · Prova multi-scheda</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#f4f5f7;background:#101216;color-scheme:dark;font-size:15px}
+*{box-sizing:border-box}body{margin:0}main{max-width:790px;margin:auto;padding:20px 14px 46px}
+.eyebrow{color:#64b6cb;letter-spacing:.16em;font-size:11px;font-weight:750;text-transform:uppercase}
+h1{font-size:clamp(29px,7vw,40px);letter-spacing:-.045em;margin:7px 0 3px}
+.subtitle{color:#adb3bd;margin:0 0 17px;font-size:13px;line-height:1.55}
+.section-title{font-size:21px;letter-spacing:-.025em;margin:27px 0 8px}
+.section-sub{font-size:12px;color:#9ea7b0;margin:0 0 14px;line-height:1.5}
+.card{background:#20232a;border:1px solid #31353e;border-radius:19px;padding:17px;margin:10px 0}
+.intro{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.intro p{color:#b5bbc4;line-height:1.55;margin:7px 0 0;font-size:13px}
+.kicker{color:#a8b0ba;font-size:11px;font-weight:760;letter-spacing:.11em;text-transform:uppercase}
+.pill{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border:1px solid #3c4650;border-radius:30px;color:#bcc9d2;font-size:11px;font-weight:650;white-space:nowrap}
+.pill.blue{color:#8bd8fa;border-color:#28546a;background:#16303b}
+.pill.amber{color:#f3ce94;border-color:#665037;background:#3a2d22}
+.pill.red{color:#ffaba5;border-color:#734542;background:#3b2626}
+.dot{height:7px;width:7px;border-radius:50%;background:currentColor;display:inline-block}
+.rain-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.rain-card{min-width:0;background:#1e252d;border:1px solid #35424d;border-radius:19px;padding:16px}
+.rain-name{font-size:23px;font-weight:740;letter-spacing:-.035em;margin:6px 0 0}
+.rain-context{color:#9fb6c6;font-size:12px}
+.rain-big{font-size:42px;line-height:1.13;font-weight:760;letter-spacing:-.055em;color:#eef8ff;margin:10px 0 0;font-variant-numeric:tabular-nums}
+.rain-big span{font-size:17px;font-weight:500;color:#9eacb9;letter-spacing:0}
+.caption{color:#a2aab4;font-size:12px;line-height:1.4}
+.rain-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:12px;padding:10px 0;border-top:1px solid #39414b;border-bottom:1px solid #39414b}
+.metric-val{font-size:15px;font-weight:730;line-height:1.4}
+.metric-label{font-size:10px;color:#9da9b3}
+.stamp{font-size:11px;color:#94a3ae;line-height:1.4;margin:9px 0 0}
+.spark{display:block;width:100%;height:49px;margin-top:10px}
+.separator{height:1px;background:#333943;margin:14px 0}
+.grouphead{font-size:15px;color:#e4e8ec;font-weight:750;margin:21px 0 9px}
+.sensor-list{display:grid;gap:9px}
+.sensor{background:#20232a;border:1px solid #313741;border-radius:17px;padding:15px 16px}
+.sensor-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.sensor-name{font-size:17px;font-weight:740;margin:0;letter-spacing:-.02em}
+.sensor-route{font-size:11px;color:#98a9b4;margin-top:3px}
+.sensor-level{font-size:28px;font-weight:770;letter-spacing:-.055em;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.15}
+.sensor-level span{font-size:13px;color:#b3bbc5;letter-spacing:0;font-weight:500}
+.sensor-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:11px}
+.trend{font-size:12px;font-weight:720}
+.trend.up{color:#ffc184}.trend.down{color:#7fdac3}.trend.flat{color:#b5c7ce}
+.threshold{font-size:11px;color:#a8b5be;margin-top:7px}
+.small{color:#9aa6af;font-size:11px;line-height:1.45}
+a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
+.link{display:block;text-align:center;text-decoration:none;border:1px solid #36566b;background:#16313e;color:#d4f4fb;border-radius:13px;padding:12px;font-size:13px;font-weight:750;margin-top:12px}
+.footnote{color:#a1a7b0;font-size:11px;line-height:1.55;margin:17px 2px}
+#status{font-weight:700}
+@media(max-width:435px){.rain-grid{grid-template-columns:1fr}.rain-card{padding:16px}.rain-big{font-size:44px}.intro{align-items:flex-start;flex-wrap:wrap}}
+
+/* V3.1: percorso dei due bacini e monitoraggio di propagazione */
+.quicklink{background:#183d50;border-color:#4291a8;color:#f0fcff;font-size:14px;margin:14px 0 0}
+.basin-streams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:stretch}
+.stream-lane{min-width:0;padding:12px 9px 4px;border-radius:19px;border:1px solid #304c5b;background:linear-gradient(180deg,#152735,#1b222b)}
+.stream-title{font-size:17px;font-weight:760;letter-spacing:-.015em;line-height:1.3}
+.stream-mark{font-size:12px;margin-right:4px}.stream-mark.blue{color:#5ab9e4}.stream-mark.cyan{color:#80dad3}
+.stream-route{font-size:11px;color:#adc3d2;line-height:1.5;margin:5px 0 12px}
+.stream-lane .sensor{padding:12px 10px;border-radius:14px}
+.stream-lane .sensor-top{display:block}
+.stream-lane .sensor-name{font-size:16px}
+.stream-lane .sensor-level{font-size:25px;margin-top:8px}
+.stream-lane .sensor-foot{margin-top:8px}
+.stream-lane .trend{font-size:11px;line-height:1.5}
+.stream-lane .stamp{font-size:10px}
+.stream-lane .spark{height:34px;margin-top:7px}
+.stream-lane .threshold{font-size:10px}
+.stream-flow{text-align:center;font-size:24px;color:#6eacbe;font-weight:800;margin:4px auto 0}
+.confluence{position:relative;margin:10px auto 0;padding:13px 10px;border-radius:15px;background:#173745;border:1px solid #357289;text-align:center}
+.confluence strong{display:block;font-size:15px;color:#b4f0ff}.confluence span{display:block;font-size:11px;color:#bdd0d8;line-height:1.5;margin-top:4px}
+.wave-panel{background:#192530;border-color:#345567}
+.wave-main{font-size:17px;font-weight:720;line-height:1.5;margin:9px 0 13px}
+.wave-text{font-size:13px;color:#c6d4de;line-height:1.6;margin:9px 0}
+.stage-grid{display:grid;gap:8px}
+.stage-item{border:1px solid #3a4852;border-radius:12px;padding:10px 12px;background:#202c34}
+.stage-item strong{font-size:13px;display:block}
+.stage-item span{font-size:12px;color:#b0bdc7;display:block;margin-top:4px;line-height:1.45}
+@media(min-width:560px){.stage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:370px){.basin-streams{gap:6px}.stream-lane{padding:10px 6px}.stream-lane .sensor{padding:10px 7px}.stream-lane .sensor-name{font-size:14px}.stream-lane .sensor-level{font-size:22px}}
+.refresh-toolbar{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:13px}.refresh-toolbar button{font:inherit;font-size:12px;font-weight:750;color:#e0faff;background:#205366;border:1px solid #508297;border-radius:10px;padding:9px 13px;cursor:pointer}.refresh-toolbar button:disabled{opacity:.5;cursor:default}.refresh-toolbar button:focus-visible{outline:2px solid #8be0ff}
+.sensor-extremes{font-size:11px;color:#9ecbd6;margin-top:6px;line-height:1.5}.sensor.empty .sensor-level{color:#a3aeba}.spark[aria-label]{overflow:visible}
+.diagnostics{border:1px solid #3f4c58;border-radius:13px;background:#1a2029;padding:12px;margin:11px 0 15px}
+.diagnostics summary{cursor:pointer;font-size:12px;font-weight:700;color:#b9d9e3}
+.diagnostics summary:focus-visible{outline:2px solid #80d5e8}
+.diag-lines{font-size:11px;color:#bac8d2;line-height:1.5;overflow-wrap:anywhere}
+.diag-line{padding:7px 0;border-top:1px solid #35404a}
+.sensor-graph-title{font-size:10px;color:#93b6c6;margin-top:12px;letter-spacing:.02em}
+
+/* Prova: compact summary, independent multi-open full-width station cards */
+.sensor>.spark,.sensor>.sensor-graph-title,.sensor>.sensor-extremes{display:none!important}
+.sensor-detail-toggle{display:block;width:100%;margin-top:10px;border:1px solid #447083;border-radius:10px;background:#183c50;color:#d5f4ff;padding:10px 8px;font:inherit;font-size:12px;font-weight:750;cursor:pointer;text-align:center}
+.sensor-detail-toggle[aria-expanded="true"]{background:#244e5b;border-color:#6aa5b9}
+.sensor-detail-toggle:focus-visible,.detail-action:focus-visible{outline:2px solid #96ddf5;outline-offset:2px}
+.expanded-area{display:grid;gap:12px;margin:12px 0 14px}
+.expanded-area:empty{display:none}
+.station-detail{background:linear-gradient(160deg,#1b2c3b,#1c2632);border:1px solid #456676;border-radius:20px;padding:17px 13px 14px;scroll-margin-top:14px}
+.detail-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.detail-name{font-size:22px;font-weight:800;letter-spacing:-.03em}
+.detail-name small{display:block;font-size:11px;font-weight:500;color:#aac3d0;letter-spacing:0;margin-top:3px}
+.detail-action{font:inherit;border-radius:10px;border:1px solid #486b7c;background:#233d4b;color:#e0f5ff;padding:8px 10px;font-size:11px;font-weight:750;cursor:pointer}
+.detail-reading{display:flex;align-items:end;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:15px 0}
+.detail-reading strong{font-size:35px;letter-spacing:-.05em}
+.detail-reading .value-label{font-size:11px;color:#a9c3cf}
+.detail-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.detail-metric{background:#132632;border:1px solid #35586a;border-radius:11px;padding:9px 7px}
+.detail-metric small{display:block;font-size:10px;color:#a5c1cd}
+.detail-metric strong{display:block;font-size:14px;margin-top:5px;font-variant-numeric:tabular-nums}
+.detail-toolbar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:17px}
+.detail-toolbar strong{font-size:14px}
+.graph-tabs{display:flex;gap:4px;align-items:center;background:#132634;border:1px solid #335569;border-radius:10px;padding:3px}
+.graph-tabs button{font:inherit;font-size:11px;font-weight:700;background:none;border:0;border-radius:8px;padding:7px 9px;color:#bacfd7;cursor:pointer}
+.graph-tabs button[aria-pressed="true"]{background:#2d6882;color:#fff}
+.station-plot{display:block;width:100%;height:auto;min-height:140px;background:#102332;border:1px solid #2f4b5a;border-radius:12px;margin:9px auto 0}
+.detail-chart-note{color:#9fbdc9;font-size:11px;line-height:1.5;margin-top:9px}
+.detail-thresholds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:12px}
+.detail-threshold{padding:9px 7px;border-radius:10px;background:#172835;border:1px solid #35505d}
+.detail-threshold small{display:block;font-size:10px;color:#a6bcca}
+.detail-threshold strong{display:block;margin-top:4px;font-size:14px}
+.detail-threshold span{display:block;font-size:10px;color:#a8c1cd;margin-top:4px;line-height:1.4}
+.detail-threshold.s1{border-left:3px solid #e6cc64}.detail-threshold.s2{border-left:3px solid #f3a359}.detail-threshold.s3{border-left:3px solid #f1797b}
+.detail-scale{height:18px;background:#26495a;border-radius:7px;position:relative;margin:41px 7px 48px}
+.detail-scale .bar{height:100%;position:absolute;top:0}
+.detail-scale .mark{position:absolute;top:-7px;height:32px;width:2px;background:#fff}
+.detail-scale .pin{position:absolute;top:-9px;width:4px;height:38px;background:#fff;box-shadow:0 0 0 2px #101c26}
+.detail-scale .pin-label{position:absolute;top:-33px;transform:translateX(-50%);font-size:10px;color:#fff;white-space:nowrap;background:#31566a;padding:3px 7px;border-radius:5px}
+.detail-scale .mark-label{position:absolute;top:27px;transform:translateX(-50%);font-size:10px;color:#bbd5e0;white-space:nowrap}
+.detail-foot{font-size:11px;color:#a1bdc8;line-height:1.55;margin-top:11px}
+@media(max-width:410px){.station-detail{padding:12px 9px}.detail-name{font-size:19px}.detail-reading strong{font-size:30px}.graph-tabs button{font-size:10px;padding:7px}.detail-threshold strong{font-size:12px}}
+</style>
+</head><body><main>
+<div class="eyebrow">Meteo Conte · Bacino del Lamone</div>
+<h1>Lamone · prova multi-scheda</h1>
+<p class="subtitle">Apri contemporaneamente le stazioni che vuoi seguire. I dettagli restano visibili fino a quando li chiudi tu. Questa è una prova isolata.</p>
+<section class="card" aria-live="polite">
+ <div class="intro"><div><div class="kicker">Quadro di monitoraggio</div><p id="status">Controllo delle fonti in corso…</p></div><span class="pill blue" id="update"><i class="dot"></i> In aggiornamento</span></div>
+ <p class="small" id="availability">Le misure sono indicative e vanno confrontate con le comunicazioni ufficiali.</p>
+ <div class="refresh-toolbar"><button type="button" id="refresh-now">↻ Aggiorna dati</button><span class="small">Aggiornamento ogni 15 minuti con la pagina aperta</span></div>
+</section>
+<a class="link quicklink" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener noreferrer">↗ Apri tutti i sensori Lamone · Protezione Civile Calderara</a>
+<p class="small" style="margin:5px 3px 16px">Pagina unica con grafici dei sensori · dati regionali elaborati dai volontari.</p>
+<h2 class="section-title">Pioggia nel bacino</h2>
+<p class="section-sub">Due punti distinti: Marradi per l'alto Lamone, Modigliana per il Marzeno. Gli accumuli osservati e quelli modellistici sono sempre identificati separatamente.</p>
+<div class="rain-grid">
+ <article class="rain-card" id="rain-marradi">
+  <div class="kicker">Alto Lamone</div><h3 class="rain-name">Marradi</h3>
+  <div class="rain-context">Precipitazioni nelle ultime 24 ore</div>
+  <div class="rain-big" id="m24">— <span>mm</span></div>
+  <span class="pill" id="mtype">Fonte in verifica</span>
+  <div class="rain-metrics"><div><div class="metric-val" id="m6">—</div><div class="metric-label">6 ore</div></div><div><div class="metric-val" id="m12">—</div><div class="metric-label">12 ore</div></div><div><div class="metric-val" id="m48">—</div><div class="metric-label">48 ore</div></div></div>
+  <svg class="spark" id="mchart" viewBox="0 0 300 49" preserveAspectRatio="none" role="img" aria-label="Andamento pioggia a Marradi"></svg>
+  <p class="stamp" id="mstamp">Ultima rilevazione: —</p>
+ </article>
+ <article class="rain-card" id="rain-modigliana">
+  <div class="kicker">Affluente Marzeno</div><h3 class="rain-name">Modigliana</h3>
+  <div class="rain-context">Precipitazioni nelle ultime 24 ore</div>
+  <div class="rain-big" id="z24">— <span>mm</span></div>
+  <span class="pill" id="ztype">Fonte in verifica</span>
+  <div class="rain-metrics"><div><div class="metric-val" id="z6">—</div><div class="metric-label">6 ore</div></div><div><div class="metric-val" id="z12">—</div><div class="metric-label">12 ore</div></div><div><div class="metric-val" id="z48">—</div><div class="metric-label">48 ore</div></div></div>
+  <svg class="spark" id="zchart" viewBox="0 0 300 49" preserveAspectRatio="none" role="img" aria-label="Andamento pioggia a Modigliana"></svg>
+  <p class="stamp" id="zstamp">Ultima rilevazione: —</p>
+ </article>
+</div>
+<a class="link" href="https://www.arpae.it/it/temi-ambientali/meteo/dati-e-osservazioni/dati-in-tempo-reale/dati-in-tempo-reale-in-emilia-romagna" target="_blank" rel="noopener">Verifica precipitazioni ARPAE ↗</a>
+
+<h2 class="section-title">Percorso del fiume</h2>
+<details class="diagnostics" id="hydro-diag"><summary>Verifica collegamento sensori idrometrici</summary>
+ <p class="small">Questo riquadro aiuta a distinguere un sensore senza dati da una richiesta non riuscita. Non contiene valutazioni di rischio.</p>
+ <p class="small" id="hydro-summary">Diagnostica in corso…</p>
+ <div id="hydro-details" class="diag-lines"></div>
+</details>
+<p class="section-sub">Due bacini a monte: Lamone e Marzeno. I punti sono disposti nell'ordine del corso d'acqua; Sarna è prima della confluenza e la stazione Faenza è a valle.</p>
+<div class="basin-streams">
+ <section class="stream-lane upstream" aria-label="Bacino alto Lamone">
+  <div class="stream-title"><span class="stream-mark blue">●</span> Lamone</div>
+  <div class="stream-route">Marradi → Strada Casale → Sarna</div>
+  <div class="sensor-list" id="stations-lamone-upper"><div class="card small">Caricamento…</div></div>
+  <div class="stream-flow" aria-hidden="true">↓</div>
+ </section>
+ <section class="stream-lane upstream" aria-label="Bacino Marzeno">
+  <div class="stream-title"><span class="stream-mark cyan">●</span> Marzeno</div>
+  <div class="stream-route">Modigliana → Rivalta</div>
+  <div class="sensor-list" id="stations-marzeno-upper"><div class="card small">Caricamento…</div></div>
+  <div class="stream-flow" aria-hidden="true">↓</div>
+ </section>
+</div>
+<div id="expanded-upstream" class="expanded-area" aria-live="polite"></div>
+<div class="confluence"><strong>⇣ Confluenza Lamone + Marzeno</strong><span>Faenza · unione delle acque a monte della stazione idrometrica cittadina</span></div>
+<div class="stream-title" style="margin-top:14px">Lamone · verso valle</div>
+<div class="stream-route" style="margin-bottom:10px">Faenza → Reda → Pieve Cesato → Mezzano</div>
+<div class="sensor-list downstream-list" id="stations-lamone-downstream"><div class="card small">Caricamento…</div></div>
+<div id="expanded-downstream" class="expanded-area" aria-live="polite"></div>
+<a class="link" href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener noreferrer">Livelli, grafici e soglie ufficiali ARPAE ↗</a>
+<h2 class="section-title">Evoluzione e possibile piena</h2>
+<p class="section-sub">Lettura automatica della sequenza degli idrometri. Mostra dove il fiume sta salendo; non attribuisce tempi di arrivo inventati.</p>
+<section class="card wave-panel" aria-live="polite">
+ <div class="kicker">Cosa mostrano i sensori adesso?</div>
+ <p id="wave-status" class="wave-main">Analisi in corso…</p>
+ <div id="wave-stage-list" class="stage-grid"><div class="small">In attesa delle misure recenti…</div></div>
+ <div class="separator"></div>
+ <div class="kicker">Propagazione osservata</div>
+ <p id="wave-propagation" class="wave-text">In attesa delle variazioni idrometriche…</p>
+ <div class="separator"></div>
+ <div class="kicker">Quando arriverà a Faenza o Mezzano?</div>
+ <p class="wave-text"><strong>Orario di arrivo non determinabile automaticamente con questi dati.</strong> Un rialzo registrato a monte non permette da solo di stabilire che si formerà una piena, né la velocità con cui si propagherà. Servono portate, modelli idrologico-idraulici validati e aggiornamenti ufficiali.</p>
+ <p class="small" id="downstream">Le differenze di livello tra stazioni non sono confrontabili direttamente: ogni idrometro ha uno zero proprio.</p>
+</section>
+<a class="link" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener noreferrer">Allerte, previsioni e bollettini della Regione ↗</a>
+<a class="link" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener noreferrer">Pagina unica di tutti i sensori Lamone ↗</a>
+<p class="footnote">Versione sperimentale Lamone · schede multiple · Le misure delle reti sono provvisorie e non validate. Il dato assente, incompleto o vecchio non viene mai trasformato in uno stato di sicurezza. Il dato modellistico è segnalato come stima. Nessun codice colore di questa schermata costituisce un'allerta di Protezione Civile.</p>
+</main><script>
+'use strict';
+const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
+const API='https://allertameteo.regione.emilia-romagna.it/o/api/allerta/';
+const HYDRO_VAR='254,0,0/1,-,-,-/B13215';
+const RAIN_VAR='1,0,3600/1,-,-,-/B13011';
+const specs=[
+ {name:'Marradi',group:'lamone',route:'Alto Lamone'},
+ {name:'Strada Casale',group:'lamone',route:'Brisighella · Lamone'},
+ {name:'Sarna',group:'lamone',route:'Lamone'},
+ {name:'Faenza',group:'lamone',route:'Lamone'},
+ {name:'Reda',group:'lamone',route:'Lamone'},
+ {name:'Pieve Cesato',group:'lamone',route:'Lamone'},
+ {name:'Mezzano',group:'lamone',route:'Bassa Romagna · Lamone'},
+ {name:'Modigliana',group:'marzeno',route:'Alto Marzeno'},
+ {name:'Rivalta',group:'marzeno',route:'Confluenza Marzeno · Faenza'}
+];
+const normal=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+const fmt=(v,n=1)=>Number.isFinite(v)?v.toLocaleString('it-IT',{minimumFractionDigits:n,maximumFractionDigits:n}):'—';
+const time=t=>Number.isFinite(t)?new Date(t).toLocaleString('it-IT',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+async function json(url,timeoutMs=12000){
+ const c=new AbortController(),timer=setTimeout(()=>c.abort(),timeoutMs);
+ try{let r=await fetch(url,{signal:c.signal,cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(timer)}
+}
+function station(list,name){
+ const key=normal(name),valid=list.filter(x=>x&&x.idstazione&&normal(x.nomestaz||x.nome));
+ const rank=x=>{const n=normal(x.nomestaz||x.nome);return n===key?3:n.endsWith(' '+key)||n.startsWith(key+' ')?2:0};
+ const candidates=valid.filter(x=>rank(x)>0);
+ // Quando esistono omonimi, preferire misure attuali valide, non il primo record.
+ candidates.sort((a,b)=>(rank(b)-rank(a))||(hasNumber(b.value)?1:0)-(hasNumber(a.value)?1:0));
+ return candidates[0]||null;
+}
+function hasNumber(x){return x!==null&&x!==undefined&&String(x).trim()!==''&&Number.isFinite(Number(x))}
+function points(raw){
+ // Null o stringa vuota non devono MAI diventare 0: in idrologia uno zero falso può essere pericoloso.
+ return Array.isArray(raw)?raw.filter(x=>x&&x.t!==null&&x.t!==undefined&&x.v!==null&&x.v!==undefined&&String(x.v).trim()!=='')
+ .map(x=>({t:Number(x.t),v:Number(x.v)}))
+ .filter(x=>Number.isFinite(x.t)&&x.t>1000000000000&&x.t<=Date.now()+600000&&Number.isFinite(x.v))
+ .sort((a,b)=>a.t-b.t)
+ .filter((x,i,a)=>i===a.length-1||x.t!==a[i+1].t):[];
+}
+function validLatest(arr,maxMin=120){
+ const x=arr.at(-1);return x&&Date.now()-x.t>=-600000&&Date.now()-x.t<=maxMin*60000?x:null;
+}
+function delta(arr,h){
+ const end=validLatest(arr);if(!end)return null;
+ const target=end.t-h*3600000;
+ const ref=arr.filter(x=>x.t<=target&&target-x.t<=45*60000).at(-1);
+ return ref?Math.round((end.v-ref.v)*100):null;
+}
+function spark(id,arr,color='#57a9d2',filled=true){
+ let el=$(id);el.replaceChildren();const vals=arr.map(x=>typeof x==='number'?x:x.v).filter(Number.isFinite);
+ if(vals.length<2)return;
+ let low=Math.min(...vals),high=Math.max(...vals),range=Math.max(.1,high-low);
+ let ps=vals.map((v,i)=>(5+i*290/(vals.length-1)).toFixed(1)+','+(43-(v-low)/range*37).toFixed(1)).join(' ');
+ if(filled){let poly=document.createElementNS(NS,'polygon');poly.setAttribute('points','5,47 '+ps+' 295,47');poly.setAttribute('fill',color);poly.setAttribute('opacity','.13');el.append(poly)}
+ let poly=document.createElementNS(NS,'polyline');poly.setAttribute('points',ps);poly.setAttribute('fill','none');poly.setAttribute('stroke',color);poly.setAttribute('stroke-width','2.8');poly.setAttribute('stroke-linecap','round');poly.setAttribute('stroke-linejoin','round');el.append(poly);
+}
+const openedStations=new Set();
+const stationChartModes=new Map();
+let lastHydroData=[];
+function detailId(name){return 'station-detail-'+normal(name).replace(/s+/g,'-')}
+function toggleStation(name){
+ if(openedStations.has(name))openedStations.delete(name);else openedStations.add(name);
+ renderOpenStationDetails();
+ for(const b of document.querySelectorAll('.sensor-detail-toggle')){
+  const active=openedStations.has(b.dataset.station);
+  b.setAttribute('aria-expanded',String(active));
+  b.textContent=active?'− Nascondi scheda':'＋ Apri scheda completa';
+ }
+}
+function renderSensor(parent,s,live,arr){
+ const current=validLatest(arr),fallback=live?.value===null||live?.value===undefined||String(live.value).trim()===''?NaN:Number(live.value);
+ const value=current?.v??(Number.isFinite(fallback)?fallback:NaN),d1=delta(arr,1),d3=delta(arr,3);
+ const one=Number.isFinite(d1)?(d1>0?'+':'')+d1+' cm':'n.d.';
+ const three=Number.isFinite(d3)?(d3>0?'+':'')+d3+' cm':'n.d.';
+ const trendClass=!Number.isFinite(d1)?'flat':d1>=3?'up':d1<=-3?'down':'flat';
+ const trendLabel=!Number.isFinite(d1)?'trend non disponibile':d1>=3?'↑ in aumento':d1<=-3?'↓ in calo':'→ stabile';
+ const card=document.createElement('article');card.className='sensor'+(!current?' empty':'');
+ const top=document.createElement('div');top.className='sensor-top';
+ const text=document.createElement('div'),name=document.createElement('div');name.className='sensor-name';name.textContent=s.name;
+ const route=document.createElement('div');route.className='sensor-route';route.textContent=s.route;text.append(name,route);
+ const level=document.createElement('div');level.className='sensor-level';level.textContent=Number.isFinite(value)?fmt(value,2)+' m':'— m';
+ top.append(text,level);card.append(top);
+ const footer=document.createElement('div');footer.className='sensor-foot';
+ const tr=document.createElement('div');tr.className='trend '+trendClass;tr.textContent=trendLabel+' · 1h '+one+' · 3h '+three;footer.append(tr);card.append(footer);
+ const history=document.createElementNS(NS,'svg');history.setAttribute('viewBox','0 0 300 49');history.setAttribute('preserveAspectRatio','none');history.setAttribute('class','spark');history.setAttribute('role','img');history.setAttribute('aria-label','Storico del livello idrometrico a '+s.name);
+ history.id='chart-'+normal(s.name).replace(/\s+/g,'-');
+ const graphTitle=document.createElement('div');graphTitle.className='sensor-graph-title';graphTitle.textContent='Andamento livello · ultime 24h';
+ card.append(graphTitle,history);
+ const stamp=document.createElement('div');stamp.className='stamp';stamp.textContent=current?'Ultima misura '+time(current.t):arr.length?'Serie non recente · ultima '+time(arr.at(-1).t):Number.isFinite(fallback)?'Valore disponibile senza orario verificabile; trend non utilizzabile':'Misura non disponibile';
+ card.append(stamp);
+ const values24=arr.filter(x=>x.t>=Date.now()-24*3600000);
+ if(values24.length>=3){
+  const extrema=document.createElement('div');extrema.className='sensor-extremes';
+  const vs=values24.map(x=>x.v);
+  extrema.textContent='Ultime 24h · min '+fmt(Math.min(...vs),2)+' m · max '+fmt(Math.max(...vs),2)+' m';
+  card.append(extrema);
+ }
+ const thresholds=[live?.soglia1,live?.soglia2,live?.soglia3].map(v=>v===null||v===undefined?NaN:Number(v));
+ if(thresholds.every(x=>Number.isFinite(x)&&x>0)){
+  const line=document.createElement('div');line.className='threshold';
+  line.textContent='Soglie stazione: '+thresholds.map(x=>fmt(x,2)).join(' / ')+' m';
+  if(current&&Number.isFinite(value)&&value>=thresholds[0]){
+   const count=thresholds.filter(x=>value>=x).length;
+   const pill=document.createElement('span');pill.className='pill '+(count>=2?'red':'amber');pill.style.marginLeft='7px';pill.textContent='Superata soglia '+count;line.append(pill)
+  }
+  card.append(line)
+ }
+ const action=document.createElement('button');action.type='button';action.className='sensor-detail-toggle';
+ action.dataset.station=s.name;action.setAttribute('aria-controls',detailId(s.name));
+ action.setAttribute('aria-expanded',String(openedStations.has(s.name)));
+ action.textContent=openedStations.has(s.name)?'− Nascondi scheda':'＋ Apri scheda completa';
+ action.addEventListener('click',()=>toggleStation(s.name));card.append(action);
+ parent.append(card);
+ if(arr.length>=3){spark(history.id,arr.filter(x=>x.t>=Date.now()-24*3600000),'#4db3e5')}
+ return {usable:!!current,up:Number.isFinite(d1)&&d1>=3};
+}
+
+
+function node(tag,className,content){
+ const el=document.createElement(tag);if(className)el.className=className;
+ if(content!==undefined)el.textContent=content;return el;
+}
+function addSvg(parent,tag,attrs,content){
+ const el=document.createElementNS(NS,tag);
+ for(const [k,v] of Object.entries(attrs))el.setAttribute(k,String(v));
+ if(content!==undefined)el.textContent=content;
+ parent.append(el);return el;
+}
+function makeDetail(row){
+ const {s,live,arr}=row,name=s.name,details=node('section','station-detail');
+ details.id=detailId(name);details.setAttribute('aria-label','Dettagli idrometrici di '+name);
+ const current=validLatest(arr),fresh=!!current;
+ const thresholds=[live?.soglia1,live?.soglia2,live?.soglia3].map(v=>hasNumber(v)?Number(v):NaN);
+ const valid=thresholds.every(Number.isFinite)&&thresholds.every(x=>x>0)&&thresholds[0]<thresholds[1]&&thresholds[1]<thresholds[2];
+ const now=current?.v??NaN;
+ const head=node('div','detail-head'),label=node('div','detail-name',name);
+ label.append(node('small','',s.route+' · '+(current?'ultima lettura '+time(current.t):'dato recente non disponibile')));
+ const close=node('button','detail-action','Chiudi ×');close.type='button';close.addEventListener('click',()=>toggleStation(name));
+ head.append(label,close);details.append(head);
+ const reading=node('div','detail-reading'),value=node('div','');
+ value.append(node('div','value-label','Livello idrometrico'));
+ value.append(node('strong','',Number.isFinite(now)?fmt(now,2)+' m':'— m'));reading.append(value);
+ let situation='Lettura non recente';
+ if(fresh&&valid)situation=now>=thresholds[2]?'Sopra soglia 3':now>=thresholds[1]?'Sopra soglia 2':now>=thresholds[0]?'Sopra soglia 1':'Sotto soglia 1';
+ if(fresh&&!valid)situation='Soglie non disponibili';
+ reading.append(node('span','pill '+(fresh&&valid&&now>=thresholds[1]?'red':fresh&&valid&&now>=thresholds[0]?'amber':''),situation));details.append(reading);
+ const delta1=cmTrend(arr,current?.t??0,1),delta3=cmTrend(arr,current?.t??0,3);
+ const recent=arr.filter(x=>x.t>=Date.now()-24*3600000&&x.t<=Date.now());
+ const min=recent.length?Math.min(...recent.map(x=>x.v)):NaN,max=recent.length?Math.max(...recent.map(x=>x.v)):NaN;
+ const metrics=node('div','detail-metrics');
+ const items=[['Ultima ora',fresh&&delta1!==null?(delta1>0?'+':'')+delta1+' cm':'n.d.'],
+ ['Ultime 3 ore',fresh&&delta3!==null?(delta3>0?'+':'')+delta3+' cm':'n.d.'],
+ ['Min / Max 24h',Number.isFinite(min)?fmt(min,2)+' / '+fmt(max,2):'—']];
+ for(const [key,val] of items){const metric=node('div','detail-metric');metric.append(node('small','',key),node('strong','',val));metrics.append(metric)}
+ details.append(metrics);
+ const tool=node('div','detail-toolbar');tool.append(node('strong','','Andamento e soglie'));
+ const tabs=node('div','graph-tabs');
+ const btnTrend=node('button','','Dettaglio 24h'),btnSoglie=node('button','','Confronto soglie');
+ for(const [button,m] of [[btnTrend,'trend'],[btnSoglie,'soglie']]){
+  button.type='button';button.setAttribute('aria-pressed',String((stationChartModes.get(name)||'trend')===m));
+  button.addEventListener('click',()=>{stationChartModes.set(name,m);renderOpenStationDetails()});
+ }
+ tabs.append(btnTrend,btnSoglie);tool.append(tabs);details.append(tool);
+ const graph=document.createElementNS(NS,'svg');graph.setAttribute('viewBox','0 0 800 264');graph.setAttribute('preserveAspectRatio','xMidYMid meet');
+ graph.setAttribute('class','station-plot');graph.setAttribute('role','img');
+ graph.setAttribute('aria-label','Grafico delle ultime 24 ore e soglie idrometriche di '+name);
+ details.append(graph);
+ const note=node('p','detail-chart-note');details.append(note);
+ drawDetailGraph(graph,note,arr,valid?thresholds:[],stationChartModes.get(name)||'trend');
+ const boxes=node('div','detail-thresholds');
+ for(let i=0;i<3;i++){
+  const b=node('div','detail-threshold s'+(i+1));
+  b.append(node('small','','Soglia '+(i+1)));
+  b.append(node('strong','',valid?fmt(thresholds[i],2)+' m':'—'));
+  const diff=fresh&&valid?(now>=thresholds[i]?'Superata di '+fmt(now-thresholds[i],2)+' m':'Distanza '+fmt(thresholds[i]-now,2)+' m'):'n.d.';
+  b.append(node('span','',diff));boxes.append(b)
+ }
+ details.append(boxes);
+ if(valid){const gauge=node('div','detail-scale');drawGauge(gauge,thresholds,now);details.append(gauge)}
+ details.append(node('p','detail-foot','Grafici e valori ARPAE provvisori, aggiornati con il monitoraggio. Ogni stazione ha uno zero idrometrico proprio. Non è una previsione di piena né sostituisce allerte e indicazioni ufficiali.'));
+ return details;
+}
+function drawDetailGraph(board,note,arr,thresholds,mode){
+ const pts=arr.filter(p=>p.t>=Date.now()-24*3600000&&p.t<=Date.now());
+ if(!pts.length){note.textContent='Serie storica non disponibile';addSvg(board,'text',{x:400,y:140,fill:'#b7cad3','text-anchor':'middle','font-size':17},'Serie non disponibile');return}
+ const a=pts.map(x=>x.v),min=Math.min(...a),max=Math.max(...a);
+ let lo,hi;const thresholdMode=mode==='soglie'&&thresholds.length===3;
+ if(thresholdMode){lo=Math.min(0,min-.1);hi=Math.max(thresholds[2]*1.06,max+.1);}
+ else{const pad=Math.max(.05,(max-min)*.20);lo=min-pad;hi=max+pad;}
+ if(hi<=lo)hi=lo+.1;
+ const L=77,R=739,T=19,B=224,t0=Date.now()-24*3600000,t1=Date.now();
+ const xp=t=>L+(t-t0)/(t1-t0)*(R-L),yp=v=>B-(v-lo)/(hi-lo)*(B-T);
+ for(let i=0;i<=4;i++){
+  let y=T+i*(B-T)/4;
+  addSvg(board,'line',{x1:L,x2:R,y1:y,y2:y,stroke:'#365060','stroke-width':1});
+  addSvg(board,'text',{x:L-8,y:y+4,fill:'#a7c2cf','font-size':14,'text-anchor':'end'},fmt(hi-i*(hi-lo)/4,2));
+  let x=L+i*(R-L)/4;
+  addSvg(board,'line',{x1:x,x2:x,y1:T,y2:B,stroke:'#293e4c','stroke-width':1});
+  addSvg(board,'text',{x:x,y:B+24,fill:'#a5bac8','font-size':14,'text-anchor':'middle'},new Date(t0+i*(t1-t0)/4).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
+ }
+ addSvg(board,'text',{x:22,y:15,fill:'#a7c2cf','font-size':13},'m');
+ const outside=[];
+ thresholds.forEach((level,i)=>{
+  if(level<lo||level>hi){outside.push('S'+(i+1));return}
+  const y=yp(level),color=['#e6cc64','#f3a359','#f1797b'][i];
+  addSvg(board,'line',{x1:L,x2:R,y1:y,y2:y,stroke:color,'stroke-width':2,'stroke-dasharray':'9 6'});
+  const labelY=Math.max(T+12,Math.min(B-7,y-7));
+  addSvg(board,'text',{x:R-7,y:labelY,fill:color,'font-size':14,'font-weight':750,'text-anchor':'end'},'S'+(i+1)+' '+fmt(level,2));
+ });
+ let path='',prev=null;
+ for(const p of pts){
+  path+=(!prev||p.t-prev.t>45*60000?'M':'L')+xp(p.t).toFixed(1)+' '+yp(p.v).toFixed(1)+' ';
+  prev=p;
+ }
+ addSvg(board,'path',{d:path,stroke:'#62c5ea',fill:'none','stroke-width':4,'stroke-linejoin':'round','stroke-linecap':'round'});
+ const last=pts.at(-1);
+ addSvg(board,'circle',{cx:xp(last.t),cy:yp(last.v),r:6,fill:'#1398c6',stroke:'#f1fcff','stroke-width':3});
+ addSvg(board,'text',{x:Math.min(R-5,Math.max(L+65,xp(last.t))),y:Math.max(T+22,yp(last.v)-16),fill:'#e9faff','font-size':16,'font-weight':760,'text-anchor':'end'},fmt(last.v,2)+' m');
+ note.textContent=mode==='soglie'?
+  (thresholdMode?'Livello e soglie condividono la stessa scala in metri. Le piccole oscillazioni possono apparire quasi piatte.':'Soglie non disponibili: viene mostrato il solo andamento osservato.'):
+  (outside.length?'Scala ingrandita per vedere i rialzi. '+outside.join(', ')+' fuori vista: seleziona “Confronto soglie”.':'Scala ingrandita: le soglie comprese nell’intervallo sono visibili.');
+}
+function drawGauge(gauge,thresholds,value){
+ const end=Math.max(thresholds[2]*1.10,Number.isFinite(value)?value*1.05:0,.1);
+ const pct=v=>Math.min(100,Math.max(0,v/end*100));
+ const stops=[0,...thresholds,end],colors=['#26536c','#84733d','#a56b39','#763d46'];
+ for(let i=0;i<4;i++){
+  const seg=node('div','bar');seg.style.left=pct(stops[i])+'%';seg.style.width=Math.max(0,pct(stops[i+1])-pct(stops[i]))+'%';seg.style.background=colors[i];gauge.append(seg);
+ }
+ thresholds.forEach((v,i)=>{
+  const pos=pct(v),tick=node('div','mark');tick.style.left=pos+'%';gauge.append(tick);
+  const text=node('div','mark-label','S'+(i+1)+' '+fmt(v,2));text.style.left=Math.min(91,Math.max(9,pos))+'%';gauge.append(text);
+ });
+ if(Number.isFinite(value)){
+  const pin=node('div','pin'),pos=pct(value);pin.style.left=pos+'%';gauge.append(pin);
+  const label=node('div','pin-label',fmt(value,2)+' m');label.style.left=Math.max(12,Math.min(88,pos))+'%';gauge.append(label);
+ }
+}
+function renderOpenStationDetails(){
+ for(const id of ['expanded-upstream','expanded-downstream'])$(id).replaceChildren();
+ for(const row of lastHydroData){
+  if(!openedStations.has(row.s.name))continue;
+  const upstream=['Marradi','Strada Casale','Sarna','Modigliana','Rivalta'].includes(row.s.name);
+  $(upstream?'expanded-upstream':'expanded-downstream').append(makeDetail(row));
+ }
+}
+function stageSummary(data,names){
+ const matches=data.filter(x=>names.includes(x.s.name));
+ const recent=matches.filter(x=>validLatest(x.arr));
+ const rises=recent.filter(x=>{
+  const h1=delta(x.arr,1),h3=delta(x.arr,3);
+  return (Number.isFinite(h1)&&h1>=8)||(Number.isFinite(h3)&&h3>=15);
+ });
+ return {recent,rises,count:matches.length};
+}
+function summarizeWave(data){
+ const segments=[
+  {label:'Alto Lamone',names:['Marradi','Strada Casale','Sarna']},
+  {label:'Marzeno',names:['Modigliana','Rivalta']},
+  {label:'Faenza · dopo confluenza',names:['Faenza']},
+  {label:'Bassa Romagna',names:['Reda','Pieve Cesato','Mezzano']}
+ ];
+ const enriched=segments.map(s=>({...s,...stageSummary(data,s.names)}));
+ const valid=enriched.reduce((n,s)=>n+s.recent.length,0);
+ const active=enriched.flatMap(s=>s.rises);
+ const stage=$('wave-stage-list');stage.replaceChildren();
+ for(const s of enriched){
+  const d=document.createElement('div');d.className='stage-item';
+  const title=document.createElement('strong');title.textContent=s.label;
+  const desc=document.createElement('span');
+  desc.textContent=s.recent.length===0?'Nessuna serie idrometrica recente':s.rises.length?'Rialzo rilevato: '+s.rises.map(x=>x.s.name).join(', '):'Nessun rialzo significativo confermato · dati '+s.recent.length+'/'+s.count;
+  d.append(title,desc);stage.append(d);
+ }
+ if(!valid){
+  $('wave-status').textContent='Misure insufficienti per valutare la risposta del fiume';
+  $('wave-propagation').textContent='Non è possibile individuare un movimento tra le stazioni: le serie temporali sono assenti o non recenti.';
+ }else if(active.length){
+  $('wave-status').textContent='Rialzi misurati in '+active.length+' stazioni su '+valid+' con dati recenti';
+  $('wave-propagation').textContent='I rialzi in corso, nell’ordine del bacino, riguardano: '+active.map(x=>{
+   const h1=delta(x.arr,1),h3=delta(x.arr,3),v=Number.isFinite(h1)?h1+' cm/1h':h3+' cm/3h';
+   return x.s.name+' ('+v+', lettura '+time(x.arr.at(-1).t)+')';
+  }).join(' · ')+'. Questa sequenza indica dove sono stati rilevati aumenti, non prova che sia la stessa onda in movimento.';
+ }else{
+  $('wave-status').textContent='Nessun rialzo significativo confermato nelle serie recenti';
+  $('wave-propagation').textContent='Le serie disponibili non mostrano rialzi oltre la soglia analitica (8 cm in 1h oppure 15 cm in 3h). Questo non esclude nuove piene, afflussi improvvisi o criticità locali.';
+ }
+ $('downstream').textContent='Serie idrometriche recenti: '+valid+'/'+data.length+'. Letture e tendenze sono osservazioni non validate; il passaggio del colmo e un orario di arrivo richiedono analisi idrologica e dati ufficiali.';
+}
+
+async function hydro(){
+ const ids=['stations-lamone-upper','stations-marzeno-upper','stations-lamone-downstream'];
+ for(const id of ids)$(id).textContent='';
+ $('hydro-summary').textContent='Contatto ARPAE in corso…';
+ $('hydro-details').replaceChildren();
+ try{
+  const all=await json(API+'get-sensor-values?'+new URLSearchParams({variabile:HYDRO_VAR,time:String(Date.now())}));
+  if(!Array.isArray(all))throw Error('Catalogo sensori non valido');
+  const data=[];
+  // Gruppi controllati: abbastanza rapidi anche con una fonte rallentata.
+  // I tentativi hanno scadenze corte, così il quadro non resta bloccato.
+  for(let i=0;i<specs.length;i+=5){
+   const batch=await Promise.all(specs.slice(i,i+5).map(async s=>{
+    const live=station(all,s.name);
+    let arr=[],error='',rawCount=0,alt=false;
+    if(!live?.idstazione){
+     error='Stazione non trovata nel catalogo';
+    }else{
+     const params=new URLSearchParams({stazione:live.idstazione,variabile:HYDRO_VAR});
+     try{
+      const result=await json(API+'get-time-series/?'+params,6500);
+      rawCount=Array.isArray(result)?result.length:0;
+      arr=points(result);
+      if(!Array.isArray(result))error='Formato storico non riconosciuto';
+      else if(!arr.length)error='Storico vuoto o non interpretabile ('+rawCount+' righe)';
+     }catch(e){error='Serie: '+(e?.message||'errore sconosciuto')}
+     // Fallback 1 sola volta se la richiesta originale è fallita. Variante di URL
+     // usata in esempi del portale regionale (stazione non codificata).
+     if(!arr.length){
+      try{
+       const url=API+'get-time-series/?stazione='+live.idstazione+'&variabile='+HYDRO_VAR;
+       const result=await json(url,4000);
+       const fallback=points(result);
+       if(fallback.length){arr=fallback;alt=true;error='';}
+      }catch(e){if(!error)error='Secondo tentativo: '+(e?.message||'errore')}
+     }
+    }
+    return {s,live,arr,error,rawCount,alt};
+   }));
+   data.push(...batch);
+  }
+  let active=0,seriesCount=0,valueCount=0;
+  const diagnostic=$('hydro-details');
+  for(const x of data){
+   let id=x.s.group==='marzeno'?'stations-marzeno-upper':
+    ['Marradi','Strada Casale','Sarna'].includes(x.s.name)?'stations-lamone-upper':'stations-lamone-downstream';
+   const state=renderSensor($(id),x.s,x.live,x.arr);
+   if(state.usable)active++;
+   if(x.arr.length)seriesCount++;
+   if(hasNumber(x.live?.value))valueCount++;
+   const line=document.createElement('div');line.className='diag-line';
+   let label=x.s.name+': ';
+   if(!x.live)label+='non presente in elenco';
+   else if(state.usable)label+='serie recente · '+x.arr.length+' punti, ultima '+time(x.arr.at(-1).t);
+   else if(x.arr.length)label+='serie non recente · ultima '+time(x.arr.at(-1).t);
+   else label+='nessuna misura storica';
+   if(x.live)label+=' · valore catalogo: '+(hasNumber(x.live.value)?String(x.live.value):'assente');
+   if(x.alt)label+=' · URL alternativo';
+   if(x.error)label+=' · '+x.error;
+   line.textContent=label;diagnostic.append(line);
+  }
+  $('status').textContent=active+'/'+specs.length+' stazioni con serie recenti';
+  $('hydro-summary').textContent='Catalogo: '+data.filter(x=>x.live).length+'/'+specs.length+' · serie ricevute: '+seriesCount+'/'+specs.length+' · valori istantanei: '+valueCount+'/'+specs.length+' · serie recenti: '+active+'/'+specs.length;
+  $('availability').textContent=active===specs.length?'Serie recenti disponibili dalle stazioni regionali.':'Alcune misure idrometriche non sono disponibili. Se Calderara mostra trend ma qui no, apri il dettaglio tecnico sopra; non considerare sicure le stazioni senza dato.';
+  lastHydroData=data;
+  renderOpenStationDetails();
+  summarizeWave(data);
+ }catch(e){
+  for(const id of ids)$(id).textContent='Il servizio idrometrico non risponde. Consulta i sensori ufficiali dai collegamenti presenti nella pagina.';
+  lastHydroData=[];
+  renderOpenStationDetails();
+  $('status').textContent='Livelli non disponibili';
+  $('availability').textContent='Servizio regionale temporaneamente non raggiungibile o non compatibile: '+e.message;
+  $('hydro-summary').textContent='Catalogo livelli: '+e.message;
+  $('wave-status').textContent='Analisi della propagazione non disponibile';
+  $('wave-propagation').textContent='Senza misure recenti non è possibile riconoscere rialzi o passaggi di piena.';
+  $('downstream').textContent='Nessun orario di arrivo calcolato.';
+  $('wave-stage-list').textContent='Dati insufficienti.';
+ }
+}
+function windowRain(arr,h){
+ // La variabile B13011/1h è precipitazione oraria: seleziona una sola lettura per ora.
+ // Non sommare letture ripetute sub-orarie, né dichiarare cumulati con grandi buchi.
+ const now=Date.now(),cutoff=now-h*3600000;
+ const slots=new Map();
+ for(const x of arr){
+  if(x.t<=cutoff||x.t>now||!Number.isFinite(x.v)||x.v<0||x.v>300)continue;
+  const hour=Math.floor(x.t/3600000);
+  const prior=slots.get(hour);
+  if(!prior||x.t>prior.t)slots.set(hour,x);
+ }
+ const hourly=[...slots.values()].sort((a,b)=>a.t-b.t);
+ if(hourly.length<Math.ceil(h*.90))return null;
+ if(hourly.length>=2&&hourly.some((x,i)=>i>0&&x.t-hourly[i-1].t>1.8*3600000))return null;
+ return hourly.reduce((n,x)=>n+x.v,0);
+}
+async function model(lat,lon){
+ const url='https://api.open-meteo.com/v1/forecast?'+new URLSearchParams({latitude:String(lat),longitude:String(lon),hourly:'precipitation',past_days:'3',forecast_days:'1',timezone:'Europe/Rome',timeformat:'unixtime'});
+ let raw=await json(url);if(!raw.hourly||!Array.isArray(raw.hourly.time))throw Error('Dati modello non disponibili');
+ const ts=raw.hourly.time,v=raw.hourly.precipitation;
+ return points(ts.map((epoch,i)=>({t:Number(epoch)*1000,v:v[i]})));
+}
+function renderRain(idPrefix,data,observed,sourceName){
+ for(let h of [6,12,24,48]){
+  const val=windowRain(data,h),el=$(idPrefix+h);
+  if(h===24)el.innerHTML=val===null?'— <span>mm</span>':fmt(val)+' <span>mm</span>';
+  else el.textContent=val===null?'—':fmt(val)+' mm';
+ }
+ const label=$(idPrefix+'type');label.className='pill '+(observed?'blue':'amber');
+ label.textContent=observed?'● Pluviometro · rilevato':'◌ '+(data.length?'Stima modellistica':'Nessun dato disponibile');
+ const last=data.at(-1),age=last?Math.round((Date.now()-last.t)/60000):null;
+ $(idPrefix+'stamp').textContent='Fonte: '+sourceName+' · '+(last?'ora '+time(last.t)+(age>120?' · dato non recente':''):'dato non disponibile')+(observed?' · dati provvisori':' · non è una misura al suolo');
+ spark(idPrefix+'chart',data.filter(x=>x.t>=Date.now()-24*3600000).map(x=>x.v),observed?'#4db3e5':'#d0a269');
+}
+async function rain(){
+ let all=[];
+ try{
+  const d=await json(API+'get-sensor-values?'+new URLSearchParams({variabile:RAIN_VAR,time:String(Date.now())}));
+  if(Array.isArray(d))all=d;
+ }catch(e){console.warn('Pluviometri ARPAE',e)}
+ const places=[{name:'Marradi',prefix:'m',lat:44.08,lon:11.61},{name:'Modigliana',prefix:'z',lat:44.16,lon:11.79}];
+ await Promise.all(places.map(async p=>{
+  const live=station(all,p.name);
+  let observed=[];
+  if(live?.idstazione)try{
+   observed=points(await json(API+'get-time-series/?'+new URLSearchParams({stazione:live.idstazione,variabile:RAIN_VAR})));
+   observed=observed.filter(x=>x.v>=0&&x.v<=300);
+  }catch(e){console.warn('Storico pluviometro',p.name,e)}
+  if(validLatest(observed,120)&&windowRain(observed,24)!==null){
+   renderRain(p.prefix,observed,true,'ARPAE · rete regionale');
+  }else{
+   try{renderRain(p.prefix,await model(p.lat,p.lon),false,'Open-Meteo');}
+   catch(e){renderRain(p.prefix,[],false,'non disponibile')}
+  }
+ }))
+}
+let working=false;
+async function refresh(){
+ if(working)return;
+ working=true;
+ $('refresh-now').disabled=true;
+ $('update').textContent='Lettura in corso…';
+ try{
+  await Promise.allSettled([hydro(),rain()]);
+  $('update').textContent='Controllo '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+ }finally{
+  working=false;
+  $('refresh-now').disabled=false;
+  reportHeight();
+ }
+}
+$('refresh-now').addEventListener('click',refresh);
+function reportHeight(){
+ if(window.parent===window)return;
+ window.parent.postMessage({type:'meteo-conte-lamone-height',height:Math.ceil(document.documentElement.scrollHeight)},window.location.origin)
+}
+if(window.parent!==window&&'ResizeObserver'in window)new ResizeObserver(reportHeight).observe(document.body);
+refresh();document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
+setInterval(()=>{if(!document.hidden)refresh()},15*60000);
+window.addEventListener('load',reportHeight);
+</script></body></html>
