@@ -271,7 +271,7 @@ function spark(id,arr,color='#57a9d2',filled=true){
 const openedStations=new Set();
 const stationChartModes=new Map();
 let lastHydroData=[];
-function detailId(name){return 'station-detail-'+normal(name).replace(/s+/g,'-')}
+function detailId(name){return 'station-detail-'+normal(name).replace(/\s+/g,'-')}
 function toggleStation(name){
  if(openedStations.has(name))openedStations.delete(name);else openedStations.add(name);
  renderOpenStationDetails();
@@ -358,7 +358,7 @@ function makeDetail(row){
  if(fresh&&valid)situation=now>=thresholds[2]?'Sopra soglia 3':now>=thresholds[1]?'Sopra soglia 2':now>=thresholds[0]?'Sopra soglia 1':'Sotto soglia 1';
  if(fresh&&!valid)situation='Soglie non disponibili';
  reading.append(node('span','pill '+(fresh&&valid&&now>=thresholds[1]?'red':fresh&&valid&&now>=thresholds[0]?'amber':''),situation));details.append(reading);
- const delta1=cmTrend(arr,current?.t??0,1),delta3=cmTrend(arr,current?.t??0,3);
+ const delta1=delta(arr,1),delta3=delta(arr,3);
  const recent=arr.filter(x=>x.t>=Date.now()-24*3600000&&x.t<=Date.now());
  const min=recent.length?Math.min(...recent.map(x=>x.v)):NaN,max=recent.length?Math.max(...recent.map(x=>x.v)):NaN;
  const metrics=node('div','detail-metrics');
