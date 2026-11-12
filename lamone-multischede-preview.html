@@ -129,6 +129,37 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 .detail-scale .mark-label{position:absolute;top:27px;transform:translateX(-50%);font-size:10px;color:#bbd5e0;white-space:nowrap}
 .detail-foot{font-size:11px;color:#a1bdc8;line-height:1.55;margin-top:11px}
 @media(max-width:410px){.station-detail{padding:12px 9px}.detail-name{font-size:19px}.detail-reading strong{font-size:30px}.graph-tabs button{font-size:10px;padding:7px}.detail-threshold strong{font-size:12px}}
+
+/* Lamone rainfall professional cards: hourly bars, source and completeness */
+.rain-grid-pro{grid-template-columns:minmax(0,1fr);gap:13px}
+.rain-card-pro{background:linear-gradient(155deg,#1a2d3b 0%,#1d2935 65%,#1a252f 100%);border:1px solid #405d70;border-radius:21px;padding:17px}
+.rain-card-top{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.rain-card-top .pill{max-width:100%;white-space:normal;line-height:1.3}
+.rain-eyebrow{color:#8ec8e4}
+.rain-card-pro .rain-name{font-size:25px;letter-spacing:-.04em;margin-top:5px}
+.rain-card-pro .rain-context{font-size:11px;color:#a1bcca}
+.rain-primary{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 0 14px}
+.rain-card-pro .rain-big{font-size:51px;margin:0}
+.rain-big-caption{font-size:11px;color:#a8bfcd;margin-top:6px}
+.rain-side-stat{background:#172735;border:1px solid #365365;border-radius:12px;padding:10px 12px;min-width:145px;display:flex;flex-direction:column;gap:3px}
+.rain-side-stat span{font-size:11px;color:#a7bdc8}
+.rain-side-stat strong{font-size:19px;font-weight:760;font-variant-numeric:tabular-nums}
+.rain-side-stat small{font-size:10px;color:#96adbc}
+.rain-card-pro .rain-metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 17px;padding:0;border:0}
+.rain-card-pro .rain-metrics>div{background:#142533;border:1px solid #365365;border-radius:12px;padding:10px 12px}
+.rain-card-pro .metric-label{font-size:11px}
+.rain-card-pro .metric-val{font-size:19px;margin-top:5px}
+.rain-plot-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.rain-plot-head strong{font-size:14px}
+.rain-tabs{display:flex;background:#102431;border:1px solid #345569;border-radius:11px;padding:3px;gap:3px}
+.rain-tabs button{font:inherit;font-size:12px;font-weight:750;background:none;border:0;border-radius:8px;color:#b1cad5;padding:7px 13px;cursor:pointer}
+.rain-tabs button[aria-pressed="true"]{background:#2d6981;color:#fff}
+.rain-tabs button:focus-visible{outline:2px solid #96ddf5}
+.rain-plot-wrap{border:1px solid #334d60;background:#102431;border-radius:14px;margin-top:10px;padding:6px 5px 1px}
+.rain-plot-wrap svg{display:block;width:100%;height:auto}
+.rain-plot-explain{color:#a7c5d1;font-size:11px;line-height:1.5;margin-top:9px}
+.rain-card-pro .rain-source{font-size:11px;color:#aac1ce;border-top:1px solid #385163;padding-top:11px;margin:14px 0 0;line-height:1.55}
+@media(max-width:435px){.rain-card-pro{padding:13px}.rain-primary{gap:9px}.rain-card-pro .rain-big{font-size:45px}.rain-side-stat{min-width:125px}.rain-card-pro .rain-metrics>div{padding:9px 7px}.rain-card-pro .metric-val{font-size:15px}}
 </style>
 </head><body><main>
 <div class="eyebrow">Meteo Conte · Bacino del Lamone</div>
@@ -142,27 +173,42 @@ a{color:#88d6ee}a:focus-visible{outline:2px solid #95d9ea}
 <a class="link quicklink" href="https://www.protezionecivilecalderara.org/sensori_fiumi/Fiume_Lamone/slamone.php" target="_blank" rel="noopener noreferrer">↗ Apri tutti i sensori Lamone · Protezione Civile Calderara</a>
 <p class="small" style="margin:5px 3px 16px">Pagina unica con grafici dei sensori · dati regionali elaborati dai volontari.</p>
 <h2 class="section-title">Pioggia nel bacino</h2>
-<p class="section-sub">Due punti distinti: Marradi per l'alto Lamone, Modigliana per il Marzeno. Gli accumuli osservati e quelli modellistici sono sempre identificati separatamente.</p>
-<div class="rain-grid">
- <article class="rain-card" id="rain-marradi">
-  <div class="kicker">Alto Lamone</div><h3 class="rain-name">Marradi</h3>
-  <div class="rain-context">Precipitazioni nelle ultime 24 ore</div>
-  <div class="rain-big" id="m24">— <span>mm</span></div>
-  <span class="pill" id="mtype">Fonte in verifica</span>
-  <div class="rain-metrics"><div><div class="metric-val" id="m6">—</div><div class="metric-label">6 ore</div></div><div><div class="metric-val" id="m12">—</div><div class="metric-label">12 ore</div></div><div><div class="metric-val" id="m48">—</div><div class="metric-label">48 ore</div></div></div>
-  <svg class="spark" id="mchart" viewBox="0 0 300 49" preserveAspectRatio="none" role="img" aria-label="Andamento pioggia a Marradi"></svg>
-  <p class="stamp" id="mstamp">Ultima rilevazione: —</p>
+<p class="section-sub">Due pluviometri rappresentativi dei rami a monte: Marradi sul Lamone e Modigliana sul Marzeno. Le barre mostrano la pioggia oraria, mentre gli accumuli riassumono diverse finestre temporali.</p>
+<div class="rain-grid rain-grid-pro">
+ <article class="rain-card rain-card-pro" id="rain-marradi">
+  <div class="rain-card-top">
+   <div><div class="kicker rain-eyebrow">Alto Lamone · Pluviometro</div><h3 class="rain-name">Marradi</h3><div class="rain-context">Pioggia accumulata nelle ultime 24 ore</div></div>
+   <span class="pill" id="mtype">Fonte in verifica</span>
+  </div>
+  <div class="rain-primary"><div><div class="rain-big" id="m24">— <span>mm</span></div><div class="rain-big-caption">Accumulo ultime 24h</div></div><div class="rain-side-stat"><span>Ultimo dato orario</span><strong id="mlast">—</strong><small id="mlast-time">Ora —</small></div></div>
+  <div class="rain-metrics">
+   <div><div class="metric-label">6 ore</div><div class="metric-val" id="m6">—</div></div>
+   <div><div class="metric-label">12 ore</div><div class="metric-val" id="m12">—</div></div>
+   <div><div class="metric-label">48 ore</div><div class="metric-val" id="m48">—</div></div>
+  </div>
+  <div class="rain-plot-head"><strong>Distribuzione oraria</strong><div class="rain-tabs" role="group" aria-label="Intervallo grafico pioggia Marradi"><button type="button" id="m24btn" aria-pressed="true">24h</button><button type="button" id="m48btn" aria-pressed="false">48h</button></div></div>
+  <div class="rain-plot-wrap"><svg id="mchart" viewBox="0 0 760 246" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Precipitazioni orarie a Marradi"></svg></div>
+  <div class="rain-plot-explain" id="mcoverage">Verifica completezza dati…</div>
+  <p class="stamp rain-source" id="mstamp">Fonte: in verifica…</p>
  </article>
- <article class="rain-card" id="rain-modigliana">
-  <div class="kicker">Affluente Marzeno</div><h3 class="rain-name">Modigliana</h3>
-  <div class="rain-context">Precipitazioni nelle ultime 24 ore</div>
-  <div class="rain-big" id="z24">— <span>mm</span></div>
-  <span class="pill" id="ztype">Fonte in verifica</span>
-  <div class="rain-metrics"><div><div class="metric-val" id="z6">—</div><div class="metric-label">6 ore</div></div><div><div class="metric-val" id="z12">—</div><div class="metric-label">12 ore</div></div><div><div class="metric-val" id="z48">—</div><div class="metric-label">48 ore</div></div></div>
-  <svg class="spark" id="zchart" viewBox="0 0 300 49" preserveAspectRatio="none" role="img" aria-label="Andamento pioggia a Modigliana"></svg>
-  <p class="stamp" id="zstamp">Ultima rilevazione: —</p>
+ <article class="rain-card rain-card-pro" id="rain-modigliana">
+  <div class="rain-card-top">
+   <div><div class="kicker rain-eyebrow">Affluente Marzeno · Pluviometro</div><h3 class="rain-name">Modigliana</h3><div class="rain-context">Pioggia accumulata nelle ultime 24 ore</div></div>
+   <span class="pill" id="ztype">Fonte in verifica</span>
+  </div>
+  <div class="rain-primary"><div><div class="rain-big" id="z24">— <span>mm</span></div><div class="rain-big-caption">Accumulo ultime 24h</div></div><div class="rain-side-stat"><span>Ultimo dato orario</span><strong id="zlast">—</strong><small id="zlast-time">Ora —</small></div></div>
+  <div class="rain-metrics">
+   <div><div class="metric-label">6 ore</div><div class="metric-val" id="z6">—</div></div>
+   <div><div class="metric-label">12 ore</div><div class="metric-val" id="z12">—</div></div>
+   <div><div class="metric-label">48 ore</div><div class="metric-val" id="z48">—</div></div>
+  </div>
+  <div class="rain-plot-head"><strong>Distribuzione oraria</strong><div class="rain-tabs" role="group" aria-label="Intervallo grafico pioggia Modigliana"><button type="button" id="z24btn" aria-pressed="true">24h</button><button type="button" id="z48btn" aria-pressed="false">48h</button></div></div>
+  <div class="rain-plot-wrap"><svg id="zchart" viewBox="0 0 760 246" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Precipitazioni orarie a Modigliana"></svg></div>
+  <div class="rain-plot-explain" id="zcoverage">Verifica completezza dati…</div>
+  <p class="stamp rain-source" id="zstamp">Fonte: in verifica…</p>
  </article>
 </div>
+<p class="footnote">La precipitazione è espressa in mm e gli accumuli si riferiscono a intervalli mobili. Ogni ora mancante è indicata come dato assente, mai come pioggia zero. Il modello Open-Meteo, quando necessario, è una <strong>stima</strong>, non una misura del pluviometro. Questi dati non sono un'allerta e non sostituiscono le comunicazioni ufficiali.</p>
 <a class="link" href="https://www.arpae.it/it/temi-ambientali/meteo/dati-e-osservazioni/dati-in-tempo-reale/dati-in-tempo-reale-in-emilia-romagna" target="_blank" rel="noopener">Verifica precipitazioni ARPAE ↗</a>
 
 <h2 class="section-title">Percorso del fiume</h2>
@@ -603,17 +649,109 @@ async function model(lat,lon){
  const ts=raw.hourly.time,v=raw.hourly.precipitation;
  return points(ts.map((epoch,i)=>({t:Number(epoch)*1000,v:v[i]})));
 }
-function renderRain(idPrefix,data,observed,sourceName){
- for(let h of [6,12,24,48]){
-  const val=windowRain(data,h),el=$(idPrefix+h);
-  if(h===24)el.innerHTML=val===null?'— <span>mm</span>':fmt(val)+' <span>mm</span>';
-  else el.textContent=val===null?'—':fmt(val)+' mm';
+
+const rainfallCache=new Map();
+const rainfallRange=new Map([['m',24],['z',24]]);
+function rainHourlySamples(data,rangeHours){
+ // Preserve real hourly gaps. One observation per UTC hour, as in windowRain.
+ const now=Date.now(),hourMs=3600000,start=now-rangeHours*hourMs;
+ const endHour=Math.floor(now/hourMs),startHour=Math.floor(start/hourMs);
+ const candidates=new Map();
+ for(const p of data){
+  if(!p||!Number.isFinite(p.t)||!Number.isFinite(p.v)||p.t<=start||p.t>now||p.v<0||p.v>300)continue;
+  const h=Math.floor(p.t/hourMs),previous=candidates.get(h);
+  if(!previous||previous.t<p.t)candidates.set(h,p);
  }
- const label=$(idPrefix+'type');label.className='pill '+(observed?'blue':'amber');
- label.textContent=observed?'● Pluviometro · rilevato':'◌ '+(data.length?'Stima modellistica':'Nessun dato disponibile');
- const last=data.at(-1),age=last?Math.round((Date.now()-last.t)/60000):null;
- $(idPrefix+'stamp').textContent='Fonte: '+sourceName+' · '+(last?'ora '+time(last.t)+(age>120?' · dato non recente':''):'dato non disponibile')+(observed?' · dati provvisori':' · non è una misura al suolo');
- spark(idPrefix+'chart',data.filter(x=>x.t>=Date.now()-24*3600000).map(x=>x.v),observed?'#4db3e5':'#d0a269');
+ // First bucket can be partial due to rolling 24h/48h interval.
+ return Array.from({length:endHour-startHour+1},(_,i)=>{
+  const hour=startHour+i;
+  return {hour,t:hour*hourMs,point:candidates.get(hour)||null}
+ });
+}
+function drawRainPlot(prefix){
+ const cached=rainfallCache.get(prefix),board=$(prefix+'chart');
+ if(!board)return;board.replaceChildren();
+ const hours=rainfallRange.get(prefix)||24;
+ for(const h of [24,48]){
+  const button=$(prefix+h+'btn');
+  button.setAttribute('aria-pressed',String(hours===h));
+ }
+ if(!cached){$(prefix+'coverage').textContent='Nessuna serie oraria disponibile';return}
+ const bins=rainHourlySamples(cached.data,hours);
+ const actual=bins.filter(b=>b.point),validCount=actual.length;
+ const available=actual.map(b=>b.point.v);
+ const max=available.length?Math.max(...available):0;
+ const upper=Math.max(1,Math.ceil(max/2)*2);
+ const L=54,R=748,T=24,B=205,W=R-L,unit= W/Math.max(1,bins.length);
+ const observed=cached.observed,barColor=observed?'#67c5ef':'#e5ae66';
+ for(let i=0;i<=4;i++){
+  const y=B-i*(B-T)/4;
+  addSvg(board,'line',{x1:L,x2:R,y1:y,y2:y,stroke:'#365262','stroke-width':1});
+  addSvg(board,'text',{x:L-9,y:y+4,fill:'#a3bbca','font-size':13,'text-anchor':'end'},fmt(upper*i/4,1));
+ }
+ addSvg(board,'text',{x:8,y:16,fill:'#a3bbca','font-size':13},'mm');
+ for(let i=0;i<bins.length;i++){
+  const bin=bins[i],x=L+i*unit+unit*.15,w=Math.max(2,unit*.70);
+  if(!bin.point){
+   if(i%2===0)addSvg(board,'rect',{x,y:B-5,width:w,height:5,rx:1,fill:'#526371',opacity:.55});
+   continue;
+  }
+  const value=bin.point.v;
+  if(value===0)continue; // Zero is real only for a present observation.
+  const h=Math.max(1.5,value/upper*(B-T));
+  addSvg(board,'rect',{x,y:B-h,width:w,height:h,rx:Math.min(3,w/4),fill:barColor});
+ }
+ const step=hours===24?6:12;
+ for(let i=0;i<=hours;i+=step){
+  const pos=Math.min(bins.length-1,Math.round(i/bins.length*(bins.length-1)));
+  const x=L+pos*unit+unit/2;
+  const target=bins[pos];
+  const label=new Date(target.t).toLocaleString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  addSvg(board,'text',{x,y:B+25,fill:'#a3bbca','font-size':13,'text-anchor':'middle'},label);
+ }
+ const timeLast=actual.at(-1)?.point.t,age=Number.isFinite(timeLast)?Math.round((Date.now()-timeLast)/60000):Infinity;
+ const missing=bins.length-validCount,wet=actual.filter(x=>x.point.v>0).length;
+ const dry=validCount>0&&wet===0;
+ const stale=age>120?' · ultima misura non recente':'';
+ const info='Ore con dato: '+validCount+'/'+bins.length+
+ (missing?' · '+missing+' intervalli senza dato':'')+
+ ' · '+(dry?'nessuna precipitazione nei campioni disponibili':'ore con pioggia: '+wet)+
+ ' · picco orario: '+(validCount?fmt(max,1)+' mm':'n.d.')+stale;
+ $(prefix+'coverage').textContent=info;
+ if(!validCount){
+  addSvg(board,'text',{x:(L+R)/2,y:110,fill:'#abc4d1','font-size':17,'text-anchor':'middle'},'Serie oraria non disponibile');
+ }
+}
+function renderRain(idPrefix,data,observed,sourceName){
+ // Keep the same observations and coverage checks used by windowRain.
+ for(const h of [6,12,24,48]){
+  const val=windowRain(data,h),el=$(idPrefix+h);
+  if(h===24){
+   el.replaceChildren(document.createTextNode(val===null?'—':fmt(val,1)+' '));
+   const unit=document.createElement('span');unit.textContent='mm';el.append(unit);
+  }else el.textContent=val===null?'n.d.':fmt(val,1)+' mm';
+ }
+ const label=$(idPrefix+'type');
+ label.className='pill '+(observed?'blue':'amber');
+ label.textContent=observed?'● ARPAE · Misura osservata':(data.length?'◌ Open-Meteo · Stima':'● Dati non disponibili');
+ // A model value for a past hour is never presented as an observed station reading.
+ const last=data.filter(x=>x.t<=Date.now()).at(-1),age=last?Math.round((Date.now()-last.t)/60000):null;
+ const validLast=last&&age>=-10&&age<=120;
+ $(idPrefix+'last').textContent=validLast?fmt(last.v,1)+' mm':'n.d.';
+ $(idPrefix+'last-time').textContent=last?'Riferimento '+time(last.t)+(validLast?'':' · non recente'):'Ora non disponibile';
+ $(idPrefix+'stamp').textContent='Fonte: '+sourceName+' · '+(last?'ultima serie '+time(last.t):'nessun dato')+
+ (observed?' · misura provvisoria ARPAE':' · stima, non misura al suolo')+
+ '. Accumuli non mostrati se lo storico è incompleto.';
+ rainfallCache.set(idPrefix,{data,observed});
+ drawRainPlot(idPrefix);
+}
+for(const prefix of ['m','z']){
+ for(const hours of [24,48]){
+  $(prefix+hours+'btn').addEventListener('click',()=>{
+   rainfallRange.set(prefix,hours);
+   drawRainPlot(prefix);
+  });
+ }
 }
 async function rain(){
  let all=[];
