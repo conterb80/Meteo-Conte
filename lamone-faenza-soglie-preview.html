@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0e131b">
+<title>Lamone · Prova scheda Faenza · Meteo Conte</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#0e131b;color:#edf5f9}
+*{box-sizing:border-box}body{margin:0}main{max-width:760px;margin:auto;padding:18px 13px 48px}
+a{color:#8bd9f1}a:focus-visible,button:focus-visible{outline:2px solid #82d9fa;outline-offset:3px}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-size:12px;color:#95adb9;flex-wrap:wrap}
+h1{font-size:32px;line-height:1.1;letter-spacing:-.04em;margin:12px 0 5px}
+.subtitle{font-size:13px;color:#99abb7;line-height:1.55;margin:0 0 16px}
+.card{background:#1d2732;border:1px solid #354a59;border-radius:21px;padding:18px;margin-top:12px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.overline{color:#91bbcc;letter-spacing:.13em;font-size:10px;font-weight:800;text-transform:uppercase}
+.hname{font-size:26px;letter-spacing:-.035em;font-weight:800;margin:5px 0 2px}
+.metadata{font-size:12px;color:#a1b1bc}
+.source{font-size:11px;color:#abb9c1;border:1px solid #3c5968;background:#1c3946;border-radius:20px;padding:6px 10px}
+.reading{display:flex;gap:12px;align-items:flex-end;justify-content:space-between;margin:15px 0 12px;flex-wrap:wrap}
+.value{font-size:53px;line-height:1;font-weight:790;letter-spacing:-.065em;font-variant-numeric:tabular-nums}
+.value small{font-size:19px;letter-spacing:0;font-weight:500;color:#bed2df}
+.current-label{color:#9db1bd;font-size:12px}
+.status{display:inline-flex;border-radius:20px;padding:7px 10px;font-size:12px;font-weight:740;background:#263b48;border:1px solid #466172;color:#c7dfe9;line-height:1.3}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:15px 0}
+.stat{background:#17222d;border:1px solid #344553;border-radius:13px;padding:12px 10px;min-width:0}
+.stat .label{font-size:11px;color:#a1b0be}
+.stat .n{font-size:19px;font-weight:760;margin-top:4px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.stat .n small{font-size:11px;font-weight:500}
+.graph-head{margin-top:19px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.graph-title{font-size:15px;font-weight:750}
+.tabs{display:flex;gap:3px;padding:4px;border:1px solid #354856;border-radius:12px;background:#111c25}
+.tab{color:#a7bfca;background:transparent;border:0;padding:8px 10px;border-radius:9px;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.tab[aria-pressed="true"]{background:#275c73;color:#f2fbff}
+.chart-box{background:#121c27;border:1px solid #314654;border-radius:16px;padding:8px 4px 8px;margin-top:12px}
+#chart{display:block;width:100%;height:auto;min-height:175px}
+#chart-title{font-size:12px;color:#c2d9e4;padding:8px 10px 0}
+#chart-note{font-size:11px;line-height:1.55;color:#9fafbb;padding:0 10px 10px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.rule{height:1px;background:#364854;margin:20px 0 17px}
+.threshold-title{font-size:15px;font-weight:760}
+.gauge-help{font-size:11px;color:#9dafbb;line-height:1.55;margin-top:5px}
+.gauge{position:relative;margin:41px 11px 57px;height:20px;border-radius:8px;background:#274254}
+.track-seg{position:absolute;height:100%;top:0}
+.marker{position:absolute;top:-12px;transform:translateX(-50%);width:3px;height:44px;background:#f4faff;border-radius:3px;box-shadow:0 0 0 3px #081822}
+.marker:before{content:"";position:absolute;top:-7px;left:-4px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:7px solid #fff}
+.marker-label{position:absolute;top:-36px;transform:translateX(-50%);font-size:11px;font-weight:760;white-space:nowrap;background:#28495a;border:1px solid #557686;border-radius:8px;padding:3px 7px}
+.gauge-tick{position:absolute;top:0;height:27px;width:2px;background:#edf2f4;transform:translateX(-50%);opacity:.85}
+.tick-label{position:absolute;top:29px;transform:translateX(-50%);font-size:11px;color:#c4d1da;white-space:nowrap;text-align:center}
+.tick-label span{display:block;font-size:10px;color:#90a9b6}
+.thresholds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:3px}
+.threshold{border:1px solid #3e4b57;border-radius:12px;padding:9px 8px}
+.threshold b{display:block;font-size:11px}.threshold strong{display:block;font-size:16px;margin-top:3px}
+.threshold em{display:block;font-style:normal;font-size:10px;color:#9aaebb;margin-top:3px}
+.t1{border-left:3px solid #e3c55e}.t2{border-left:3px solid #f1a34f}.t3{border-left:3px solid #ed6d78}
+.foot{font-size:11px;color:#a3b1bd;line-height:1.65;margin-top:17px}
+button.refresh{font:inherit;font-size:12px;color:#cfeefa;font-weight:700;border:1px solid #467186;border-radius:11px;background:#214455;padding:9px 12px;cursor:pointer}
+button.refresh:disabled{opacity:.5;cursor:default}
+.notice{font-size:12px;color:#f2cd93;padding:12px 13px;border:1px solid #665438;background:#322a21;border-radius:12px;margin-top:13px;display:none}
+.notice.show{display:block}
+@media(max-width:435px){.card{padding:13px}.value{font-size:46px}.graph-head{align-items:flex-start}.threshold strong{font-size:14px}.stat .n{font-size:17px}.tab{padding:8px 7px;font-size:11px}}
+</style>
+</head>
+<body><main>
+<div class="breadcrumb"><a href="./lamone-v3-dashboard.html?v=3-4">← Lamone V3.4</a> <span>·</span><strong>Laboratorio scheda singola</strong></div>
+<h1>Monitoraggio Faenza</h1>
+<p class="subtitle">Prova grafica della stazione idrometrica, con il livello misurato e le tre soglie sulla stessa scala. Nessuna modifica alle altre stazioni.</p>
+<section class="card">
+ <div class="header">
+  <div><div class="overline">Fiume Lamone · Dopo la confluenza</div><div class="hname">Faenza</div><div class="metadata" id="stamp">Lettura dati in corso…</div></div>
+  <span class="source" id="source">ARPAE · dati regionali</span>
+ </div>
+ <div class="reading">
+  <div><div class="current-label">Livello idrometrico</div><div class="value" id="current">— <small>m</small></div></div>
+  <span class="status" id="level-status">Attendo le misure</span>
+ </div>
+ <div class="stats">
+  <div class="stat"><div class="label">Ultima ora</div><div class="n" id="delta1">— <small>cm</small></div></div>
+  <div class="stat"><div class="label">Ultime 3 ore</div><div class="n" id="delta3">— <small>cm</small></div></div>
+  <div class="stat"><div class="label">Min / Max 24h</div><div class="n" id="minmax" style="font-size:15px">— / —</div></div>
+ </div>
+ <div class="graph-head"><div class="graph-title">Andamento e soglie</div>
+  <div class="tabs" role="group" aria-label="Modalità grafico">
+    <button type="button" class="tab" id="btn-trend" aria-pressed="true">Dettaglio 24h</button>
+    <button type="button" class="tab" id="btn-threshold" aria-pressed="false">Confronto soglie</button>
+  </div>
+ </div>
+ <div class="chart-box">
+  <div id="chart-title">Livello · ultime 24 ore</div>
+  <svg id="chart" viewBox="0 0 800 270" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Grafico del livello idrometrico a Faenza"></svg>
+  <div id="chart-note">In attesa della serie temporale.</div>
+ </div>
+ <div class="rule"></div>
+ <div class="row"><div class="threshold-title">Distanza dalle soglie</div><button class="refresh" type="button" id="refresh">↻ Aggiorna</button></div>
+ <p class="gauge-help">Scala proporzionale al livello in metri. Il segno bianco mostra la lettura più recente; le tre tacche corrispondono alle soglie ufficiali della stazione.</p>
+ <div class="gauge" id="gauge" aria-label="Scala idrometrica con soglie">
+  <div id="gauge-track"></div><div id="gauge-labels"></div><div id="gauge-marker"></div>
+ </div>
+ <div class="thresholds">
+  <div class="threshold t1"><b>Soglia 1</b><strong id="s1">— m</strong><em id="gap1">—</em></div>
+  <div class="threshold t2"><b>Soglia 2</b><strong id="s2">— m</strong><em id="gap2">—</em></div>
+  <div class="threshold t3"><b>Soglia 3</b><strong id="s3">— m</strong><em id="gap3">—</em></div>
+ </div>
+ <div class="notice" id="notice"></div>
+ <p class="foot">Le soglie sono livelli ufficiali della singola stazione, non previsioni. La visualizzazione dettagliata adatta la scala alla variazione delle ultime 24 ore; la vista “Confronto soglie” usa invece la stessa scala per curva e soglie. Valori provvisori, da confrontare con il <a href="https://allertameteo.regione.emilia-romagna.it/livello-idrometrico" target="_blank" rel="noopener noreferrer">portale ufficiale</a>. Non sostituisce allerte o indicazioni della Protezione Civile.</p>
+</section>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const NS='http://www.w3.org/2000/svg';
+const BASE='https://allertameteo.regione.emilia-romagna.it/o/api/allerta/';
+const VAR='254,0,0/1,-,-,-/B13215';
+let data=[],levels=[],mode='trend',liveTime=NaN,measured=NaN,busy=false;
+const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+const fmt=(n,p=2)=>Number.isFinite(n)?n.toLocaleString('it-IT',{minimumFractionDigits:p,maximumFractionDigits:p}):'—';
+const tm=t=>Number.isFinite(t)?new Date(t).toLocaleString('it-IT',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+function validNum(v){return v!==null&&v!==undefined&&String(v).trim()!==''&&Number.isFinite(Number(v))}
+function svg(tag,attrs={},txt){
+ const e=document.createElementNS(NS,tag);
+ Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,String(v)));
+ if(txt!==undefined)e.textContent=txt;
+ return e;
+}
+async function get(url,ms=11000){
+ const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),ms);
+ try{let r=await fetch(url,{cache:'no-store',signal:ctrl.signal});if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}
+ finally{clearTimeout(timer)}
+}
+function clean(raw){
+ if(!Array.isArray(raw))return [];
+ const a=raw.filter(p=>p&&validNum(p.t)&&validNum(p.v))
+ .map(p=>({t:Number(p.t),v:Number(p.v)}))
+ .filter(p=>p.t>1000000000000&&p.t<=Date.now()+600000)
+ .sort((a,b)=>a.t-b.t);
+ return a.filter((p,i)=>i===a.length-1||p.t!==a[i+1].t);
+}
+function seriesDelta(points,h){
+ const end=points.at(-1);if(!end)return NaN;
+ const target=end.t-h*3600000;
+ const before=points.filter(p=>p.t<=target&&target-p.t<=45*60000).at(-1);
+ return before?(end.v-before.v)*100:NaN;
+}
+function draw(){
+ const board=$('chart');board.replaceChildren();
+ $('btn-trend').setAttribute('aria-pressed',mode==='trend'?'true':'false');
+ $('btn-threshold').setAttribute('aria-pressed',mode==='threshold'?'true':'false');
+ const latest=data.at(-1),all=data.filter(p=>p.t>=Date.now()-24*3600000);
+ const left=76,right=744,top=22,bottom=227;
+ const title=mode==='trend'?'Dettaglio dei livelli nelle ultime 24 ore':'Curva e tre soglie sulla stessa scala';
+ $('chart-title').textContent=title;
+ const validThresholds=levels.length===3;
+ if(!all.length||(!validThresholds&&mode==='threshold')){
+   $('chart-note').textContent=all.length?'Soglie ufficiali non disponibili: impossibile disegnare la scala di confronto.':'Serie temporale non disponibile.';
+   board.append(svg('text',{x:400,y:130,fill:'#a8bfcc','text-anchor':'middle','font-size':17},'Grafico non disponibile'));
+   return;
+ }
+ const observed=all.map(p=>p.v),loObs=Math.min(...observed),hiObs=Math.max(...observed);
+ const minT=Date.now()-24*3600000,maxT=Date.now();
+ let lo,hi;
+ if(mode==='threshold'){
+   lo=Math.min(0,loObs-.1);
+   hi=Math.max(levels[2]*1.07,hiObs+.1);
+ }else{
+   const pad=Math.max(.045,(hiObs-loObs)*.22);
+   lo=loObs-pad;hi=hiObs+pad;
+ }
+ if(hi<=lo)hi=lo+.1;
+ const xx=t=>left+(t-minT)/(maxT-minT)*(right-left);
+ const yy=v=>bottom-(v-lo)/(hi-lo)*(bottom-top);
+ for(let i=0;i<=4;i++){
+   const y=top+i*(bottom-top)/4;
+   board.append(svg('line',{x1:left,x2:right,y1:y,y2:y,stroke:'#354554','stroke-width':1}));
+   board.append(svg('text',{x:left-12,y:y+4,fill:'#9fb3bf','font-size':14,'text-anchor':'end'},fmt(hi-i*(hi-lo)/4,2)));
+ }
+ for(let i=0;i<=4;i++){
+   const x=left+i*(right-left)/4;
+   board.append(svg('line',{x1:x,x2:x,y1:top,y2:bottom,stroke:'#273644','stroke-width':1}));
+   const t=minT+i*(maxT-minT)/4;
+   board.append(svg('text',{x:x,y:bottom+25,fill:'#9baeba','text-anchor':'middle','font-size':14},new Date(t).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})));
+ }
+ board.append(svg('text',{x:15,y:16,fill:'#9aafbb','font-size':13},'m'));
+ if(validThresholds){
+   let off=[];
+   for(let i=0;i<3;i++){
+     const val=levels[i],color=['#e3c55e','#f1a34f','#ed6d78'][i];
+     if(val>=lo&&val<=hi){
+       const y=yy(val);
+       board.append(svg('line',{x1:left,x2:right,y1:y,y2:y,stroke:color,'stroke-width':2,'stroke-dasharray':'8 6',opacity:.95}));
+       board.append(svg('rect',{x:right-80,y:y-22,width:76,height:19,rx:6,fill:'#26313b'}));
+       board.append(svg('text',{x:right-42,y:y-8,'text-anchor':'middle',fill:color,'font-size':13,'font-weight':700},'S'+(i+1)+' '+fmt(val)));
+     }else off.push('S'+(i+1));
+   }
+   $('chart-note').textContent=mode==='trend'?
+    (off.length?'Soglie '+off.join(', ')+' fuori dalla scala ingrandita. Tocca “Confronto soglie” per vedere la curva rispetto alle tre linee.':'Le soglie sono tracciate sulla stessa scala dei livelli osservati.'):
+    'Scala assoluta: curva e soglie condividono l’asse verticale in metri. Le oscillazioni minute possono apparire quasi piatte.';
+ }else $('chart-note').textContent='Soglie non disponibili dalla fonte regionale.';
+ let seg='',last=null;
+ for(const p of all){
+   if(p.t<minT)continue;
+   const op=!last||p.t-last.t>45*60000?'M':'L';
+   seg+=op+xx(p.t).toFixed(1)+' '+yy(p.v).toFixed(1)+' ';
+   last=p;
+ }
+ if(seg){
+  board.append(svg('path',{d:seg,fill:'none',stroke:'#55bfe8','stroke-width':4,'stroke-linejoin':'round','stroke-linecap':'round'}));
+  const q=all.at(-1),x=xx(q.t),y=yy(q.v);
+  board.append(svg('circle',{cx:x,cy:y,r:7,stroke:'#e9faff','stroke-width':3,fill:'#158ebd'}));
+  const textX=Math.min(right-3,Math.max(left+50,x));
+  const textY=y<top+32?y+27:y-15;
+  board.append(svg('text',{x:textX,y:textY,fill:'#e8f9ff','text-anchor':'end','font-size':15,'font-weight':740},fmt(q.v)+' m'));
+ }
+}
+function gauge(){
+ const track=$('gauge-track'),ticks=$('gauge-labels'),marker=$('gauge-marker');
+ track.replaceChildren();ticks.replaceChildren();marker.replaceChildren();
+ if(levels.length!==3)return;
+ const scale=Math.max(levels[2]*1.1,Number.isFinite(measured)?measured*1.05:0,0.1);
+ const percent=v=>Math.max(0,Math.min(100,v/scale*100));
+ const stops=[0,...levels,scale],colors=['#244f66','#826b38','#9b5b35','#74333d'];
+ for(let i=0;i<4;i++){
+  const el=document.createElement('div');el.className='track-seg';el.style.left=percent(stops[i])+'%';el.style.width=Math.max(0,percent(stops[i+1])-percent(stops[i]))+'%';el.style.background=colors[i];
+  if(i===0)el.style.borderRadius='8px 0 0 8px';if(i===3)el.style.borderRadius='0 8px 8px 0';
+  track.append(el)
+ }
+ levels.forEach((v,i)=>{
+  const tick=document.createElement('div');tick.className='gauge-tick';tick.style.left=percent(v)+'%';ticks.append(tick);
+  const lab=document.createElement('div');lab.className='tick-label';lab.style.left=percent(v)+'%';
+  const b=document.createElement('b');b.textContent='S'+(i+1);
+  const span=document.createElement('span');span.textContent=fmt(v)+' m';
+  lab.append(b,span);ticks.append(lab)
+ });
+ if(Number.isFinite(measured)){
+  const pct=percent(measured),m=document.createElement('div');m.className='marker';m.style.left=pct+'%';marker.append(m);
+  const lab=document.createElement('div');lab.className='marker-label';lab.style.left=Math.max(12,Math.min(88,pct))+'%';lab.textContent='Attuale '+fmt(measured)+' m';marker.append(lab)
+ }
+}
+async function refresh(){
+ if(busy)return;busy=true;$('refresh').disabled=true;
+ $('stamp').textContent='Aggiornamento in corso…';$('notice').classList.remove('show');
+ try{
+   const catalog=await get(BASE+'get-sensor-values?'+new URLSearchParams({variabile:VAR,time:String(Date.now())}));
+   if(!Array.isArray(catalog))throw Error('Elenco sensori non valido');
+   const sensors=catalog.filter(x=>x&&x.idstazione&&norm(x.nomestaz||x.nome)==='faenza');
+   const station=sensors.find(x=>validNum(x.value))||sensors[0];
+   if(!station)throw Error('Sensore Faenza non trovato');
+   levels=[station.soglia1,station.soglia2,station.soglia3].map(v=>validNum(v)?Number(v):NaN);
+   if(!levels.every(Number.isFinite)||!(levels[0]<levels[1]&&levels[1]<levels[2]))levels=[];
+   let raw;
+   try{raw=await get(BASE+'get-time-series/?'+new URLSearchParams({stazione:station.idstazione,variabile:VAR}),7500)}
+   catch(e){raw=await get(BASE+'get-time-series/?stazione='+station.idstazione+'&variabile='+VAR,5000)}
+   const cleaned=clean(raw);
+   if(!cleaned.length)throw Error('Serie storica non disponibile');
+   data=cleaned;const last=data.at(-1),age=(Date.now()-last.t)/60000;
+   measured=age<=120&&age>=-10?last.v:NaN;
+   liveTime=last.t;
+   $('current').textContent=Number.isFinite(measured)?fmt(measured)+' m':'— m';
+   $('stamp').textContent='Ultima lettura '+tm(last.t)+(age>120?' · dato non recente':'');
+   $('source').textContent='ARPAE · serie osservata';
+   $('delta1').textContent=age<=120&&age>=-10&&Number.isFinite(seriesDelta(data,1))?((seriesDelta(data,1)>0?'+':'')+Math.round(seriesDelta(data,1))+' cm'):'n.d.';
+   $('delta3').textContent=age<=120&&age>=-10&&Number.isFinite(seriesDelta(data,3))?((seriesDelta(data,3)>0?'+':'')+Math.round(seriesDelta(data,3))+' cm'):'n.d.';
+   const recent=data.filter(p=>p.t>=Date.now()-24*3600000);
+   $('minmax').textContent=recent.length?' '+fmt(Math.min(...recent.map(p=>p.v)))+' / '+fmt(Math.max(...recent.map(p=>p.v)))+' m':'—';
+   let status=age>120?'Lettura non recente':levels.length===3?
+    measured>=levels[2]?'Sopra soglia 3':measured>=levels[1]?'Sopra soglia 2':measured>=levels[0]?'Sopra soglia 1':'Sotto soglia 1':'Soglie non disponibili';
+   $('level-status').textContent=status;
+   levels.forEach((v,i)=>{
+    $('s'+(i+1)).textContent=fmt(v)+' m';
+    $('gap'+(i+1)).textContent=Number.isFinite(measured)?(measured>=v?'superata di '+fmt(measured-v)+' m':'distanza '+fmt(v-measured)+' m'):'distanza n.d.';
+   });
+   if(!levels.length){
+    for(let i=1;i<=3;i++){$('s'+i).textContent='—';$('gap'+i).textContent='Dato non disponibile'}
+   }
+   gauge();draw();
+ }catch(e){
+   $('stamp').textContent='Lettura non riuscita';
+   $('notice').textContent='Non è stato possibile aggiornare la serie: '+(e?.message||String(e))+'. Verifica i livelli sul portale ufficiale.';
+   $('notice').classList.add('show');
+ }finally{busy=false;$('refresh').disabled=false}
+}
+$('btn-trend').addEventListener('click',()=>{mode='trend';draw()});
+$('btn-threshold').addEventListener('click',()=>{mode='threshold';draw()});
+$('refresh').addEventListener('click',refresh);
+refresh();setInterval(()=>{if(!document.hidden)refresh()},15*60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
+</script>
+</body>
+</html>
