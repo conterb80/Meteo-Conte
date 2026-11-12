@@ -716,7 +716,7 @@ function drawRainPlot(prefix){
  const dry=validCount>0&&wet===0;
  const stale=age>120?' · ultima misura non recente':'';
  const info='Fasce orarie con dato: '+validCount+'/'+bins.length+' (finestra mobile di '+hours+'h)'+
- (missing?' · '+missing+' intervalli senza dato':'')+
+ (missing?' · '+missing+' '+(missing===1?'fascia senza dato':'fasce senza dato'):'')+
  ' · '+(dry?'nessuna precipitazione nei campioni disponibili':'ore con pioggia: '+wet)+
  ' · picco orario: '+(validCount?fmt(max,1)+' mm':'n.d.')+stale;
  $(prefix+'coverage').textContent=info;
