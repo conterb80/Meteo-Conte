@@ -32,8 +32,8 @@ a{color:#8bdaff}
 (()=>{'use strict';
 const base='https://raw.githubusercontent.com/conterb80/Meteo-Conte/icon2i-preview-pages/';
 const status=document.getElementById('status'),seek=document.getElementById('seek'),play=document.getElementById('play'),time=document.getElementById('time');
-let map,layer,data,index=0,timer=null,horizon=3,windowStart=0,windowEnd=0;
-function stop(){if(timer){clearInterval(timer);timer=null;}play.textContent='▶ Play';}
+let map,layer,data,index=0,timer=null,horizon=3,windowStart=0,windowEnd=0,fadeLayer=null;
+function stop(){if(timer){clearInterval(timer);timer=null;}if(fadeLayer){map.removeLayer(fadeLayer);fadeLayer=null;}if(layer)layer.setOpacity(.78);play.textContent='▶ Play';}
 function tab(show){document.getElementById('intro').classList.toggle('hidden',show);document.getElementById('forecast').classList.toggle('hidden',!show);document.getElementById('tabInfo').setAttribute('aria-selected',String(!show));document.getElementById('tabMap').setAttribute('aria-selected',String(show));if(show&&map)setTimeout(()=>map.invalidateSize(),50);}
 document.getElementById('tabInfo').onclick=()=>{stop();tab(false)};document.getElementById('tabMap').onclick=()=>tab(true);
 if(typeof L==='undefined'){status.textContent='Errore: libreria cartografica non disponibile.';return;}
@@ -48,15 +48,18 @@ function firstFutureFrame(d){const now=Date.now();const found=d.metadata.findInd
 function setHorizon(hours){horizon=hours;stop();document.getElementById('horizon3').setAttribute('aria-pressed',String(hours===3));document.getElementById('horizon6').setAttribute('aria-pressed',String(hours===6));if(!data)return;const first=firstFutureFrame(data);if(first<0){status.textContent='⚠️ Nessuna previsione futura disponibile.';return;}windowStart=first;windowEnd=Math.min(data.frames.length-1,first+hours-1);seek.min=windowStart;seek.max=windowEnd;index=windowStart;draw();}
 document.getElementById('horizon3').onclick=()=>setHorizon(3);
 document.getElementById('horizon6').onclick=()=>setHorizon(6);
-function draw(){if(!data)return;const m=data.metadata[index];if(layer)map.removeLayer(layer);
+function draw(){if(!data)return;const m=data.metadata[index];if(fadeLayer){map.removeLayer(fadeLayer);fadeLayer=null;}if(layer)map.removeLayer(layer);
 layer=L.imageOverlay(base+data.frames[index]+'?run='+encodeURIComponent(data.run),data.bounds||legacyBounds,{opacity:.78,interactive:false}).addTo(map);
 seek.value=index;const d=String(m.validityDate),t=String(m.validityTime).padStart(4,'0');
 const utc=new Date(Date.UTC(+d.slice(0,4),+d.slice(4,6)-1,+d.slice(6,8),+t.slice(0,2),+t.slice(2)));
 time.textContent=new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(utc);
-status.textContent=(validUtc(m)<Date.now()?'⚠️ ORA PASSATA · ':'PREVISIONE FUTURA · ')+'Orizzonte +'+horizon+'h · ora '+(index-windowStart+1)+'/'+(windowEnd-windowStart+1)+' · Run '+data.run+' · pioggia prevista (mm/1h)';
+status.textContent='Ora attuale '+new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit'}).format(new Date())+' · primo intervallo previsto fino alle '+new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',hour:'2-digit',minute:'2-digit'}).format(new Date(validUtc(data.metadata[windowStart])))+' · +'+horizon+'h · '+(index-windowStart+1)+'/'+(windowEnd-windowStart+1)+' · transizioni grafiche, dati orari';
 }
 seek.oninput=()=>{index=+seek.value;draw()};
-play.onclick=()=>{if(!data)return;if(timer){stop();return;}const first=firstFutureFrame(data);if(first<0){status.textContent='⚠️ Nessuna previsione futura disponibile.';return;}if(first!==windowStart)setHorizon(horizon);if(index>=windowEnd)index=windowStart;draw();if(windowEnd===windowStart)return;timer=setInterval(()=>{if(index>=windowEnd){stop();return;}index++;draw();if(index>=windowEnd)stop();},2500);play.textContent='⏸ Pausa';};
+function overlayUrl(i){return base+data.frames[i]+'?run='+encodeURIComponent(data.run);}
+function preload(i){return new Promise((resolve,reject)=>{const im=new Image();im.onload=resolve;im.onerror=reject;im.src=overlayUrl(i);});}
+async function animate(){const first=firstFutureFrame(data);if(first<0){status.textContent='⚠️ Nessuna previsione futura disponibile.';return;}if(first!==windowStart)setHorizon(horizon);if(index>=windowEnd)index=windowStart;draw();if(index===windowEnd)return;play.textContent='Caricamento…';play.disabled=true;try{await Promise.all(Array.from({length:windowEnd-windowStart+1},(_,j)=>preload(windowStart+j)));}catch(e){status.textContent='⚠️ Immagini non caricate: riprova.';play.disabled=false;play.textContent='▶ Play';return;}play.disabled=false;play.textContent='⏸ Pausa';let tick=0;timer=setInterval(()=>{if(index>=windowEnd){stop();return;}if(!fadeLayer){fadeLayer=L.imageOverlay(overlayUrl(index+1),data.bounds||legacyBounds,{opacity:0,interactive:false}).addTo(map);tick=0;}tick++;const alpha=Math.min(1,tick/20);fadeLayer.setOpacity(.78*alpha);layer.setOpacity(.78*(1-alpha));if(tick>=20){map.removeLayer(layer);layer=fadeLayer;fadeLayer=null;index++;seek.value=index;const m=data.metadata[index];time.textContent=new Intl.DateTimeFormat('it-IT',{timeZone:'Europe/Rome',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(validUtc(m)));status.textContent='Transizione grafica fra previsioni orarie · +'+horizon+'h · '+(index-windowStart+1)+'/'+(windowEnd-windowStart+1)+' · dati ICON-2I ogni ora';if(index>=windowEnd)stop();}},125);}
+play.onclick=()=>{if(!data)return;if(timer){stop();return;}animate();};
 fetch(base+'data.json?check='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(d=>{
 if(!Array.isArray(d.frames)||d.frames.length<24||d.frames.length!==d.metadata?.length)throw Error('Sequenza futura incompleta o dati vecchi: richiesti almeno 24 fotogrammi');
 if(d.rendererVersion!=='icon2i-future-v2')throw Error('Versione previsionale vecchia: attendere aggiornamento');
