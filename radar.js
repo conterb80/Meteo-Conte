@@ -198,13 +198,29 @@
     const l2=l1+Math.atan2(Math.sin(br)*Math.sin(d)*Math.cos(p1),Math.cos(d)-Math.sin(p1)*Math.sin(p2));
     return {lat:toDeg(p2),lon:toDeg(l2)};
   }
+  let analysisRunId=0;
   async function runAutomaticAnalysis(){
+    const runId=++analysisRunId;
     if(!allFrames.length){autoEls.level.textContent='DATI NON DISPONIBILI';autoEls.summary.textContent='Attendo i fotogrammi radar.';return;}
     autoEls.level.textContent='ANALISI IN CORSO';autoEls.summary.textContent='Ricerca automatica dei nuclei radar attorno a Borgo Viazza…';
     ['rain','cell','move','speed','trend','eta','confidence'].forEach(k=>autoEls[k].textContent='…');
     try{
-      const latest=allFrames.at(-1),prev=allFrames[Math.max(0,allFrames.length-3)];
-      const [a,b]=await Promise.all([analyseFrame(prev),analyseFrame(latest)]),pair=chooseTrackedPair(a,b);
+      const latest=allFrames.at(-1);
+      const ageMinutes=Math.max(0,(Date.now()/1000-latest.time)/60);
+      const previousCandidates=allFrames.filter(f=>f.time<latest.time && latest.time-f.time>=600 && latest.time-f.time<=1800);
+      const prev=previousCandidates.at(-1);
+      if(ageMinutes>30 || !prev){
+        clearAutoLayer();
+        autoEls.level.textContent=ageMinutes>30?'DATI RADAR IN RITARDO':'STORICO INSUFFICIENTE';
+        autoEls.summary.textContent=ageMinutes>30?'Ultima immagine radar troppo vecchia per stimare movimento e arrivo.':'Servono due scansioni distinte distanziate tra 10 e 30 minuti per una stima del movimento.';
+        ['rain','cell','move','speed','trend','eta'].forEach(k=>autoEls[k].textContent='--');
+        autoEls.confidence.textContent='NON VALUTABILE';
+        syncLiveSummary();
+        return;
+      }
+      const [a,b]=await Promise.all([analyseFrame(prev),analyseFrame(latest)]);
+      if(runId!==analysisRunId)return;
+      const pair=chooseTrackedPair(a,b);
       const rain=b.localStrong>=2?'INTENSA':b.localHits>=4?'IN CORSO':b.localHits>0?'DEBOLE / MARGINALE':'NON RILEVATA';
       autoEls.rain.textContent=rain;
       if(!pair){clearAutoLayer();autoEls.level.textContent='NESSUN NUCLEO RILEVATO';autoEls.cell.textContent='--';autoEls.move.textContent='--';autoEls.speed.textContent='--';autoEls.trend.textContent='STABILE';autoEls.eta.textContent='--';autoEls.confidence.textContent='LIMITATA';autoEls.summary.textContent=`Precipitazione locale: ${rain.toLowerCase()}. Nessun nucleo radar organizzato è stato riconosciuto nell’area analizzata.`;syncLiveSummary();recordAutoEvent(latest.time);return;}
@@ -215,7 +231,7 @@
         heading=bearingDeg({lat:pair.previous.lat,lng:pair.previous.lon},{lat:c.lat,lng:c.lon});speed=dt>0?moved/dt:null;
         const prevDist=pair.previous.dist,delta=c.dist-prevDist,toward=bearingDeg({lat:c.lat,lng:c.lon},{lat:LOCATION.lat,lng:LOCATION.lon}),deviation=angleDiff(heading,toward);
         if(Math.abs(delta)<2)trend='LATERALE / STABILE';else trend=delta<0?'AVVICINAMENTO':'ALLONTANAMENTO';
-        if(speed>=5&&speed<=140&&trend==='AVVICINAMENTO'&&deviation<=38)eta=`~${Math.max(1,Math.round(c.dist/speed*60))} min`;
+        if(speed>=5&&speed<=110&&trend==='AVVICINAMENTO'&&deviation<=25&&pair.matchScore<25&&c.count>=25&&pair.previous.count>=18)eta=`~${Math.max(1,Math.round(c.dist/speed*60))} min`;
         confidence=(c.count>=12&&pair.previous.count>=8&&pair.matchScore<45&&speed<=140)?'MEDIA':'BASSA';
         if(c.count>=25&&pair.previous.count>=18&&pair.matchScore<25&&speed>=5&&speed<=110)confidence='BUONA';
         autoEls.move.textContent=`${compass(heading)} · ${Math.round(heading)}°`;
@@ -232,10 +248,10 @@
         if(rain==='INTENSA')state='PRECIPITAZIONE INTENSA';else if(rain==='IN CORSO')state='PRECIPITAZIONE SULLA ZONA';else if(c.dist<=10)state='NUCLEO MOLTO VICINO';else if(c.dist<=25)state='NUCLEO VICINO';else if(confidence!=='BASSA'&&trend==='AVVICINAMENTO')state='NUCLEO IN AVVICINAMENTO';else if(confidence!=='BASSA'&&trend==='ALLONTANAMENTO')state='NUCLEO IN ALLONTANAMENTO';else state='BERSAGLIO IN VERIFICA';
       }
       autoEls.level.textContent=state;drawAutoCell(c,heading);
-      const etaText=eta==='--'?'ETA non disponibile: traiettoria o velocità non abbastanza coerenti.':`Possibile arrivo del centro stimato in ${eta}.`;
+      const etaText=eta==='--'?'ETA non disponibile: traiettoria o velocità non abbastanza coerenti.':`Proiezione indicativa del centro radar: ${eta}; non è una previsione certa di pioggia sul punto.`;
       autoEls.summary.textContent=`${state}. Centro radar stimato a ${c.dist.toFixed(1)} km; tendenza ${trend.toLowerCase()}. ${etaText} Affidabilità ${confidence.toLowerCase()}.`;
       syncLiveSummary();recordAutoEvent(latest.time);
-    }catch(err){console.warn('Analisi automatica non disponibile',err);clearAutoLayer();autoEls.level.textContent='LETTURA NON DISPONIBILE';autoEls.summary.textContent='Il radar resta utilizzabile, ma il browser non consente l’analisi automatica delle tile. Nessuna stima è stata prodotta.';['rain','cell','move','speed','trend','eta'].forEach(k=>autoEls[k].textContent='--');autoEls.confidence.textContent='NESSUNA';syncLiveSummary();}
+    }catch(err){if(runId!==analysisRunId)return;console.warn('Analisi automatica non disponibile',err);clearAutoLayer();autoEls.level.textContent='LETTURA NON DISPONIBILE';autoEls.summary.textContent='Il radar resta utilizzabile, ma il browser non consente l’analisi automatica delle tile. Nessuna stima è stata prodotta.';['rain','cell','move','speed','trend','eta'].forEach(k=>autoEls[k].textContent='--');autoEls.confidence.textContent='NESSUNA';syncLiveSummary();}
   }
   autoEls.run?.addEventListener('click',runAutomaticAnalysis);
 
