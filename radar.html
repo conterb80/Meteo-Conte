@@ -272,7 +272,7 @@ body .forecast-note{line-height:1.5}
 <script>
 (function(){
 const r=document.getElementById('radareuSelect'),v=document.getElementById('ventuskySelect'),rv=document.getElementById('radareuView'),vv=document.getElementById('ventuskyView'),frame=document.getElementById('ventuskyForecastFrame');
-function show(which){const vent=which==='ventusky';rv.hidden=vent;vv.hidden=!vent;r.setAttribute('aria-pressed',String(!vent));v.setAttribute('aria-pressed',String(vent));r.style.background=vent?'#102a3a':'#146073';v.style.background=vent?'#146073':'#102a3a';if(vent&&!frame.src)frame.src='https://embed.ventusky.com/?p=44.4;11.95;8';}
+function show(which){const vent=which==='ventusky';rv.hidden=vent;vv.hidden=!vent;r.setAttribute('aria-pressed',String(!vent));v.setAttribute('aria-pressed',String(vent));r.style.background=vent?'#102a3a':'#146073';v.style.background=vent?'#146073':'#102a3a';if(vent&&!frame.src)frame.src='https://embed.ventusky.com/?p=44.4;11.95;8&l=radar';}
 r.addEventListener('click',()=>show('radareu'));v.addEventListener('click',()=>show('ventusky'));
 })();
 </script>
