@@ -78,9 +78,19 @@ html,body{background:#101216!important;color:#f4f5f7!important}
 .live-badge{background:#173b35!important;color:#9af2ca!important}
 #lamoneCard,#lamoneDrawer{box-shadow:none!important}
 #previewDesignFlag{position:sticky;top:0;z-index:1000;margin:0 0 12px;padding:9px 12px;border-radius:10px;background:#233b4a;border:1px solid #4e7c94;color:#e6f6ff;font:700 12px system-ui;text-align:center}
+/* RC2: barra meteo unificata e intestazioni più compatte */
+.weather-hero .hero-metrics{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:0!important;background:#18232c!important;border:1px solid #354957!important;border-radius:13px!important;overflow:hidden!important}
+.weather-hero .hero-metrics button{min-width:0!important;margin:0!important;border:0!important;border-right:1px solid #354957!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;padding:8px 2px!important}
+.weather-hero .hero-metrics button:last-child{border-right:0!important}
+.weather-hero .hero-metrics button span{min-width:0!important}
+.home-cockpit>.card{padding-top:11px!important;padding-bottom:11px!important}
+.monitor-head{padding-bottom:7px!important;margin-bottom:9px!important}
+.monitor-head .label{letter-spacing:.08em!important}
+.home-hourly-strip{margin-top:2px!important}
+@media(max-width:440px){.app{padding:10px 9px 24px!important}.weather-hero .hero-metrics button{padding:7px 1px!important}.monitor-head b{line-height:1.15!important}}
 </style></head>
 <body>
-<main class="app"><div id="previewDesignFlag">ANTEPRIMA GRAFICA · HOME · nessuna modifica alla versione ufficiale</div>
+<main class="app"><div id="previewDesignFlag">ANTEPRIMA HOME · VERSIONE 2 · solo grafica</div>
 <section aria-label="Pannello meteo principale" class="home-cockpit">
 <header aria-label="Meteo attuale Borgo Viazza" class="topbar logo-head weather-hero weather-clear" id="headerWeather">
 <div class="weather-hero-main">
