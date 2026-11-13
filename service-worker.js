@@ -7,10 +7,10 @@ const APP_SHELL = [
   './pwa-register.js?v=rc13',
   './manifest.webmanifest',
   './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/icon-maskable-192.png',
-  './icons/icon-maskable-512.png'
+  './icon.svg',
+  './icon.svg',
+  './icon.svg',
+  './icon.svg'
 ];
 
 self.addEventListener('install', event => {
