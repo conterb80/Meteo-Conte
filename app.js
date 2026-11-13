@@ -1041,7 +1041,7 @@ async function showConteNotification(title,body,tag){
  try{
   const reg=await navigator.serviceWorker?.ready;
   if(!reg || !reg.showNotification)return false;
-  await reg.showNotification(title,{body,icon:'./icon.png',badge:'./icon.png',tag});
+  await reg.showNotification(title,{body,icon:'./icon.svg',badge:'./icon.svg',tag});
   return true;
  }catch(err){console.warn('Notifica non disponibile',err);return false;}
 }
