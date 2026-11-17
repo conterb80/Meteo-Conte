@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#071f2b"><title>Meteo Conte · Laboratorio vento</title>
+<style>
+:root{font-family:system-ui,-apple-system,Arial;color:#eaf8fc;background:#061923}*{box-sizing:border-box}body{margin:0}main{max-width:850px;margin:auto;padding:20px 15px 55px}.eyebrow{letter-spacing:.19em;text-transform:uppercase;color:#8ed5e7;font-size:11px;font-weight:800}h1{font-size:30px;margin:8px 0}h2{font-size:19px;margin:0 0 12px}p{line-height:1.55;color:#b4ccd5}.panel{border:1px solid #31596b;background:#0c2a38;border-radius:22px;padding:19px;margin:16px 0}.intro{background:linear-gradient(140deg,#123d4d,#0b2838)}.tag{display:inline-block;border:1px solid #3c778b;border-radius:20px;padding:5px 10px;font-size:12px;color:#b7e9f6}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.metric{background:#153b4a;border:1px solid #2c5b6b;padding:14px;border-radius:15px}.metric strong{font-size:27px;display:block;margin:8px 0}.metric small{color:#afc8d0}.controls{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}button,a.btn{background:#1b5267;border:1px solid #42859b;color:#eaffff;padding:11px 14px;border-radius:12px;font:inherit;font-weight:650;text-decoration:none;cursor:pointer}button.active{background:#42c7cb;color:#06212c;border-color:#42c7cb}.muted{font-size:13px;color:#a5c3cf}.status{border-left:3px solid #f6bd52;padding:9px 12px;background:#24363a;border-radius:8px}.hour{display:grid;grid-template-columns:55px 1fr 80px;gap:8px;align-items:center;margin:13px 0;font-size:14px}.track{height:12px;background:#244553;border-radius:10px;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,#48c9d2,#f4ca55,#f07768);border-radius:10px}.hour b{text-align:right}.footer{font-size:12px;color:#a7c3cc}.error{color:#ffb5a5}@media(min-width:620px){.grid{grid-template-columns:repeat(4,1fr)}}
+</style></head><body><main>
+<div class="eyebrow">Meteo Conte · test isolato · non integrato</div><h1>Monitoraggio vento</h1><p>Una lettura rapida delle previsioni di vento e raffiche, da confrontare con Ventusky. Nessuna modifica all'app principale.</p>
+<section class="panel intro"><div class="eyebrow">Seleziona località</div><div class="controls" id="places"></div><div id="state" class="status" aria-live="polite">Caricamento previsioni…</div><p class="muted" id="stamp"></p></section>
+<section class="panel"><h2>Situazione prevista adesso</h2><div class="grid">
+<div class="metric"><small>Vento medio</small><strong id="wind">—</strong><small>km/h · modello</small></div>
+<div class="metric"><small>Raffica prevista</small><strong id="gust">—</strong><small>km/h · modello</small></div>
+<div class="metric"><small>Direzione</small><strong id="direction">—</strong><small>Da dove soffia</small></div>
+<div class="metric"><small>Massima prossime 12h</small><strong id="peak">—</strong><small id="peakHour">km/h · modello</small></div>
+</div><p class="muted">I valori sono previsioni Open-Meteo per la località selezionata, non letture di anemometri. Possono differire da Ventusky perché il modello e la risoluzione possono essere diversi.</p></section>
+<section class="panel"><h2>Come evolvono le raffiche?</h2><div id="chart">In attesa dei dati…</div><p class="muted">Barre proporzionali alla raffica massima visualizzata. Orari locali italiani. Non rappresentano soglie ufficiali di allerta.</p></section>
+<section class="panel"><h2>Confronta con la mappa</h2><p>Ventusky consente di esplorare il territorio e cambiare livello tra velocità del vento e raffiche. Il laboratorio mostra una sintesi indipendente per la località selezionata.</p><a class="btn" href="https://www.ventusky.com/" target="_blank" rel="noopener noreferrer">Apri Ventusky ↗</a><p class="muted">Le allerte ufficiali si verificano sul portale regionale: <a style="color:#9ee6f3" href="https://allertameteo.regione.emilia-romagna.it/" target="_blank" rel="noopener noreferrer">Allerta Meteo Emilia-Romagna ↗</a></p></section>
+<p class="footer">PROTOTIPO INDIPENDENTE · solo consultazione · nessun dato personale memorizzato · non sostituisce avvisi ufficiali.</p>
+</main><script>
+const locations=[{name:"Villanova",lat:44.51,lon:11.97},{name:"Ravenna",lat:44.417,lon:12.2},{name:"Faenza",lat:44.286,lon:11.884},{name:"Forlì",lat:44.223,lon:12.04},{name:"Modigliana",lat:44.159,lon:11.793}];
+let current=0,controller;
+const el=id=>document.getElementById(id);
+const compass=d=>{if(!Number.isFinite(d))return "—";return ["N","NE","E","SE","S","SO","O","NO"][Math.round(d/45)%8]};
+const fmt=n=>Number.isFinite(n)?Math.round(n).toString():"—";
+function drawButtons(){el("places").innerHTML="";locations.forEach((p,i)=>{let b=document.createElement("button");b.textContent=p.name;b.className=i===current?"active":"";b.onclick=()=>{current=i;drawButtons();load()};el("places").append(b)})}
+async function load(){controller?.abort();controller=new AbortController();const p=locations[current];el("state").textContent="Aggiornamento "+p.name+"…";el("chart").textContent="Caricamento…";try{
+const url=new URL("https://api.open-meteo.com/v1/forecast");Object.entries({latitude:p.lat,longitude:p.lon,current:"wind_speed_10m,wind_direction_10m,wind_gusts_10m",hourly:"wind_gusts_10m,wind_speed_10m",forecast_hours:"24",timezone:"Europe/Rome",wind_speed_unit:"kmh"}).forEach(([k,v])=>url.searchParams.set(k,v));
+const r=await fetch(url,{signal:controller.signal,cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);const d=await r.json();if(current!==locations.indexOf(p))return;
+const c=d.current||{};el("wind").textContent=fmt(c.wind_speed_10m);el("gust").textContent=fmt(c.wind_gusts_10m);el("direction").textContent=compass(c.wind_direction_10m);
+const hours=(d.hourly?.time||[]).map((t,i)=>({t,v:d.hourly.wind_gusts_10m[i]})).filter(x=>Number.isFinite(x.v));const next=hours.slice(0,12),peak=next.reduce((a,b)=>!a||b.v>a.v?b:a,null);
+el("peak").textContent=peak?fmt(peak.v):"—";el("peakHour").textContent=peak?"km/h · "+peak.t.slice(11,16):"Non disponibile";
+el("stamp").textContent="Modello: "+(d.current?.time||"orario non disponibile")+" · Aggiornamento pagina "+new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});el("state").textContent="Previsioni disponibili · "+p.name;
+const max=Math.max(40,...next.map(x=>x.v));el("chart").innerHTML=next.map(x=>'<div class="hour"><span>'+x.t.slice(11,16)+'</span><div class="track"><div class="bar" style="width:'+Math.max(0,Math.min(100,x.v/max*100))+'%"></div></div><b>'+fmt(x.v)+' km/h</b></div>').join("")||"Dati orari non disponibili";
+}catch(e){if(e.name==="AbortError")return;el("state").innerHTML='<span class="error">Dati non disponibili: '+String(e.message).replace(/[<>]/g,"")+'</span>';el("chart").textContent="Impossibile caricare le previsioni. Riprova."}}
+drawButtons();load();
+</script></body></html>
