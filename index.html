@@ -145,6 +145,16 @@ html,body{background:#101216!important;color:#f4f5f7!important}
 .trend-diagnosis p{color:#d5e0e7!important}
 .trend-disclaimer{color:#a7b7c2!important}
 @media(max-width:430px){.trend-page-shell{padding:10px 8px 24px!important}.trend-page-head h2{font-size:26px!important}.dcs-panel,.trend-diagnosis{padding:11px!important}.trend-periods button{padding:7px 9px!important}.dcs-kpis b{font-size:16px!important}}
+</style><style>
+/* Accesso riservato Vento: non modifica radar, Lamone, previsioni e motori esistenti. */
+.home-cockpit>.vento-quick-entry{display:flex!important;align-items:center;gap:12px;min-height:0!important;text-decoration:none!important;padding:13px 15px!important;border:1px solid #346577!important;border-radius:14px!important;background:#173845!important;color:#edf7f9!important;box-sizing:border-box}
+.vento-quick-entry .vento-quick-icon{font-size:25px;flex:0 0 auto;line-height:1}
+.vento-quick-entry .vento-quick-copy{display:flex;flex:1;flex-direction:column;gap:3px;min-width:0}
+.vento-quick-entry .vento-quick-copy b{font-size:17px;line-height:1.2}
+.vento-quick-entry .vento-quick-copy small{font-size:12px;line-height:1.35;color:#b8d8e1;white-space:normal}
+.vento-quick-entry .vento-quick-go{white-space:nowrap;font-size:12px;color:#83dfe9;font-weight:700}
+.vento-quick-entry:focus-visible{outline:3px solid #67d7e5;outline-offset:3px}
+@media(max-width:380px){.home-cockpit>.vento-quick-entry{gap:9px;padding:11px!important}.vento-quick-entry .vento-quick-copy small{font-size:11px}.vento-quick-entry .vento-quick-go{font-size:11px}}
 </style></head>
 <body>
 <main class="app">
@@ -177,7 +187,8 @@ html,body{background:#101216!important;color:#f4f5f7!important}
  <div class="conte-alert-icon" id="conteAlertIcon">🔔</div>
  <div class="conte-alert-copy"><small id="conteAlertKind">AVVISI CONTE</small><b id="conteAlertTitle">Attiva gli avvisi Meteo Conte</b><span id="conteAlertText">Ricevi un avviso quando il quadro locale richiede un controllo.</span></div>
  <div class="conte-alert-actions"><button id="conteAlertOpen" type="button">CONTROLLA</button><button id="conteNotifyBtn" type="button">🔔 ATTIVA</button><button id="conteAlertDismiss" type="button" aria-label="Nascondi avviso">×</button></div>
-</section><article aria-label="Apri previsioni dettagliate delle prossime ore" class="card hourly-monitor-card hourly-trend-launcher" id="openHourlyTrend" role="button" tabindex="0">
+</section><a class="card vento-quick-entry" id="ventoQuickEntry" href="https://meteo-conte-vento-laboratorio.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Apri la sezione Vento riservata di Meteo Conte">
+<span class="vento-quick-icon" aria-hidden="true">🌬️</span><span class="vento-quick-copy"><b>Vento</b><small>Previsioni · raffiche · misure ARPAE</small></span><span class="vento-quick-go" aria-hidden="true">Apri ↗</span></a><article aria-label="Apri previsioni dettagliate delle prossime ore" class="card hourly-monitor-card hourly-trend-launcher" id="openHourlyTrend" role="button" tabindex="0">
 <div class="monitor-head">
 <div><span class="label">2 · PROSSIME ORE</span><b>Temperatura e precipitazioni</b></div>
 <small>tocca per dettaglio ›</small>
@@ -324,12 +335,13 @@ html,body{background:#101216!important;color:#f4f5f7!important}
 <nav aria-label="Strumenti operativi" class="weather-analysis-tools control-room-tools compact-tools primary-tools">
 <a class="weather-analysis-tool" data-pretemp-direct="1" href="https://www.pretemp.it/" id="weatherAnalysisPretemp" rel="noopener" target="_blank"><i>⛈️</i><span><b>PRETEMP</b><small>Pericolosità e bollettino</small></span><em>1</em></a>
 <button class="weather-analysis-tool" id="weatherAnalysisLamone" type="button"><i>🌊</i><span><b>Lamone</b><small>Pioggia a monte e piena</small></span><em>2</em></button>
-<a class="weather-analysis-tool" href="https://www.guardcostaus-ravenna.it/MeteoPagine/webcam.html" rel="noopener" target="_blank"><i>📷</i><span><b>Webcam</b><small>Conferma visiva del cielo</small></span><em>3</em></a>
-<a class="weather-analysis-tool" href="https://allertameteo.regione.emilia-romagna.it/web/bagnacavallo" rel="noopener" target="_blank"><i>🛡️</i><span><b>Allerte</b><small>Zona D1 · Bagnacavallo</small></span><em>4</em></a>
+<a class="weather-analysis-tool" id="weatherAnalysisVento" href="https://meteo-conte-vento-laboratorio.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Apri Vento riservato: previsioni, raffiche e stazioni ARPAE"><i>🌬️</i><span><b>Vento</b><small>Raffiche, direzione e stazioni ARPAE</small></span><em>3</em></a>
+<a class="weather-analysis-tool" href="https://www.guardcostaus-ravenna.it/MeteoPagine/webcam.html" rel="noopener" target="_blank"><i>📷</i><span><b>Webcam</b><small>Conferma visiva del cielo</small></span><em>4</em></a>
+<a class="weather-analysis-tool" href="https://allertameteo.regione.emilia-romagna.it/web/bagnacavallo" rel="noopener" target="_blank"><i>🛡️</i><span><b>Allerte</b><small>Zona D1 · Bagnacavallo</small></span><em>5</em></a>
 </nav>
 <div class="tool-group-title sources-title"><span>FONTI LOCALI</span><small>AGGIORNAMENTI</small></div>
 <nav aria-label="Fonti meteo locali" class="weather-analysis-tools control-room-tools compact-tools source-tools">
-<button class="weather-analysis-tool" id="weatherAnalysisNews" type="button"><i>📰</i><span><b>Meteo Live locale</b><small>Fonti e aggiornamenti dal territorio</small></span><em>5</em></button>
+<button class="weather-analysis-tool" id="weatherAnalysisNews" type="button"><i>📰</i><span><b>Meteo Live locale</b><small>Fonti e aggiornamenti dal territorio</small></span><em>6</em></button>
 </nav>
 <section class="weather-analysis-tip"><span>💡</span><p><b>Regola operativa</b><br/>Radar prima di tutto. PRETEMP conferma il rischio; Lamone si apre quando la pioggia diventa persistente o interessa il bacino a monte.</p></section>
 </div>
