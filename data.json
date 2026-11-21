@@ -1,0 +1,619 @@
+{
+  "run": "2026112100",
+  "source": "https://meteohub.agenziaitaliameteo.it/nwp/ICON-2I_SURFACE_PRESSURE_LEVELS/2026112100/TOT_PREC/ICON_2I_SURFACE_PRESSURE_LEVELS_2026112100_surface-0.grib",
+  "rendererVersion": "icon2i-future-v2",
+  "bounds": [
+    [
+      42.25,
+      8.25
+    ],
+    [
+      46.65,
+      15.25
+    ]
+  ],
+  "frames": [
+    "frame-000.png",
+    "frame-001.png",
+    "frame-002.png",
+    "frame-003.png",
+    "frame-004.png",
+    "frame-005.png",
+    "frame-006.png",
+    "frame-007.png",
+    "frame-008.png",
+    "frame-009.png",
+    "frame-010.png",
+    "frame-011.png",
+    "frame-012.png",
+    "frame-013.png",
+    "frame-014.png",
+    "frame-015.png",
+    "frame-016.png",
+    "frame-017.png",
+    "frame-018.png",
+    "frame-019.png",
+    "frame-020.png",
+    "frame-021.png",
+    "frame-022.png",
+    "frame-023.png",
+    "frame-024.png",
+    "frame-025.png",
+    "frame-026.png",
+    "frame-027.png",
+    "frame-028.png",
+    "frame-029.png"
+  ],
+  "metadata": [
+    {
+      "step": "2",
+      "validityDate": "20261121",
+      "validityTime": "200",
+      "points": 61600,
+      "max": 2.69,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 1.0,
+        "stepHours": 2.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.000488,
+        "hourlyMeanMm": 0.0159,
+        "hourlyMaxMm": 2.686,
+        "wetPoints": 1403,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "3",
+      "validityDate": "20261121",
+      "validityTime": "300",
+      "points": 61600,
+      "max": 3.82,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 2.0,
+        "stepHours": 3.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0174,
+        "hourlyMaxMm": 3.8184,
+        "wetPoints": 1048,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "4",
+      "validityDate": "20261121",
+      "validityTime": "400",
+      "points": 61600,
+      "max": 1.45,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 3.0,
+        "stepHours": 4.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.007,
+        "hourlyMaxMm": 1.4453,
+        "wetPoints": 1003,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "5",
+      "validityDate": "20261121",
+      "validityTime": "500",
+      "points": 61600,
+      "max": 1.52,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 4.0,
+        "stepHours": 5.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0064,
+        "hourlyMaxMm": 1.5225,
+        "wetPoints": 809,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "6",
+      "validityDate": "20261121",
+      "validityTime": "600",
+      "points": 61600,
+      "max": 1.82,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 5.0,
+        "stepHours": 6.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0054,
+        "hourlyMaxMm": 1.8213,
+        "wetPoints": 797,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "7",
+      "validityDate": "20261121",
+      "validityTime": "700",
+      "points": 61600,
+      "max": 1.53,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 6.0,
+        "stepHours": 7.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0048,
+        "hourlyMaxMm": 1.5303,
+        "wetPoints": 784,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "8",
+      "validityDate": "20261121",
+      "validityTime": "800",
+      "points": 61600,
+      "max": 1.68,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 7.0,
+        "stepHours": 8.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0038,
+        "hourlyMaxMm": 1.6816,
+        "wetPoints": 659,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "9",
+      "validityDate": "20261121",
+      "validityTime": "900",
+      "points": 61600,
+      "max": 0.8,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 8.0,
+        "stepHours": 9.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0024,
+        "hourlyMaxMm": 0.8008,
+        "wetPoints": 499,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "10",
+      "validityDate": "20261121",
+      "validityTime": "1000",
+      "points": 61600,
+      "max": 0.69,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 9.0,
+        "stepHours": 10.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0018,
+        "hourlyMaxMm": 0.6865,
+        "wetPoints": 343,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "11",
+      "validityDate": "20261121",
+      "validityTime": "1100",
+      "points": 61600,
+      "max": 0.69,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 10.0,
+        "stepHours": 11.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0014,
+        "hourlyMaxMm": 0.6914,
+        "wetPoints": 293,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "12",
+      "validityDate": "20261121",
+      "validityTime": "1200",
+      "points": 61600,
+      "max": 0.46,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 11.0,
+        "stepHours": 12.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0008,
+        "hourlyMaxMm": 0.4619,
+        "wetPoints": 164,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "13",
+      "validityDate": "20261121",
+      "validityTime": "1300",
+      "points": 61600,
+      "max": 0.34,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 12.0,
+        "stepHours": 13.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0005,
+        "hourlyMaxMm": 0.3359,
+        "wetPoints": 89,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "14",
+      "validityDate": "20261121",
+      "validityTime": "1400",
+      "points": 61600,
+      "max": 3.56,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 13.0,
+        "stepHours": 14.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0017,
+        "hourlyMaxMm": 3.5566,
+        "wetPoints": 136,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "15",
+      "validityDate": "20261121",
+      "validityTime": "1500",
+      "points": 61600,
+      "max": 0.92,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 14.0,
+        "stepHours": 15.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0007,
+        "hourlyMaxMm": 0.9199,
+        "wetPoints": 113,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "16",
+      "validityDate": "20261121",
+      "validityTime": "1600",
+      "points": 61600,
+      "max": 2.8,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 15.0,
+        "stepHours": 16.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0011,
+        "hourlyMaxMm": 2.7959,
+        "wetPoints": 145,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "17",
+      "validityDate": "20261121",
+      "validityTime": "1700",
+      "points": 61600,
+      "max": 2.17,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 16.0,
+        "stepHours": 17.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0019,
+        "hourlyMaxMm": 2.165,
+        "wetPoints": 253,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "18",
+      "validityDate": "20261121",
+      "validityTime": "1800",
+      "points": 61600,
+      "max": 1.05,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 17.0,
+        "stepHours": 18.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.001,
+        "hourlyMaxMm": 1.0537,
+        "wetPoints": 153,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "19",
+      "validityDate": "20261121",
+      "validityTime": "1900",
+      "points": 61600,
+      "max": 1.56,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 18.0,
+        "stepHours": 19.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0011,
+        "hourlyMaxMm": 1.5566,
+        "wetPoints": 133,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "20",
+      "validityDate": "20261121",
+      "validityTime": "2000",
+      "points": 61600,
+      "max": 2.92,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 19.0,
+        "stepHours": 20.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0035,
+        "hourlyMaxMm": 2.9248,
+        "wetPoints": 294,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "21",
+      "validityDate": "20261121",
+      "validityTime": "2100",
+      "points": 61600,
+      "max": 5.12,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 20.0,
+        "stepHours": 21.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0046,
+        "hourlyMaxMm": 5.1201,
+        "wetPoints": 259,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "22",
+      "validityDate": "20261121",
+      "validityTime": "2200",
+      "points": 61600,
+      "max": 3.2,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 21.0,
+        "stepHours": 22.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0012,
+        "hourlyMaxMm": 3.2031,
+        "wetPoints": 78,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "23",
+      "validityDate": "20261121",
+      "validityTime": "2300",
+      "points": 61600,
+      "max": 2.36,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 22.0,
+        "stepHours": 23.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0017,
+        "hourlyMaxMm": 2.3574,
+        "wetPoints": 172,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "24",
+      "validityDate": "20261122",
+      "validityTime": "0",
+      "points": 61600,
+      "max": 1.75,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 23.0,
+        "stepHours": 24.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0038,
+        "hourlyMaxMm": 1.7461,
+        "wetPoints": 663,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "25",
+      "validityDate": "20261122",
+      "validityTime": "100",
+      "points": 61600,
+      "max": 3.87,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 24.0,
+        "stepHours": 25.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0101,
+        "hourlyMaxMm": 3.8691,
+        "wetPoints": 1632,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "26",
+      "validityDate": "20261122",
+      "validityTime": "200",
+      "points": 61600,
+      "max": 3.69,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 25.0,
+        "stepHours": 26.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.0546,
+        "hourlyMaxMm": 3.6895,
+        "wetPoints": 5647,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "27",
+      "validityDate": "20261122",
+      "validityTime": "300",
+      "points": 61600,
+      "max": 12.28,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 26.0,
+        "stepHours": 27.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.1658,
+        "hourlyMaxMm": 12.2842,
+        "wetPoints": 9095,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "28",
+      "validityDate": "20261122",
+      "validityTime": "400",
+      "points": 61600,
+      "max": 12.95,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 27.0,
+        "stepHours": 28.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.2379,
+        "hourlyMaxMm": 12.9463,
+        "wetPoints": 13173,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "29",
+      "validityDate": "20261122",
+      "validityTime": "500",
+      "points": 61600,
+      "max": 11.79,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 28.0,
+        "stepHours": 29.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.3268,
+        "hourlyMaxMm": 11.7871,
+        "wetPoints": 18830,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "30",
+      "validityDate": "20261122",
+      "validityTime": "600",
+      "points": 61600,
+      "max": 14.94,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 29.0,
+        "stepHours": 30.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.4323,
+        "hourlyMaxMm": 14.9414,
+        "wetPoints": 23024,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    },
+    {
+      "step": "31",
+      "validityDate": "20261122",
+      "validityTime": "700",
+      "points": 61600,
+      "max": 11.58,
+      "unit": "mm/1h",
+      "audit": {
+        "previousStep": 30.0,
+        "stepHours": 31.0,
+        "negativePoints": 0,
+        "reconstructionMaxErrorMm": 0.0,
+        "hourlyMeanMm": 0.4955,
+        "hourlyMaxMm": 11.582,
+        "wetPoints": 26155,
+        "gridPoints": 61600,
+        "projection": "EPSG:3857"
+      }
+    }
+  ]
+}
