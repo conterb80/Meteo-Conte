@@ -1,0 +1,29 @@
+name: Laboratorio Meteo - archivio previsioni
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: lab-previsioni-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: lab-motore-previsionale-v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python laboratorio/collect.py
+      - name: Save forecast to laboratory branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add laboratorio/storico/
+          git commit -m "Archive forecast snapshot"
+          git pull --rebase origin lab-motore-previsionale-v2
+          git push origin HEAD:lab-motore-previsionale-v2
